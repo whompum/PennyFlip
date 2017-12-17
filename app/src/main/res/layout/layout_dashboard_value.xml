@@ -16,13 +16,14 @@
     bottom x/y axis. I think in use this will be a good feature
     since a users thumb will approach from the bottom they might
     be more likely to touch the bottom edges of the star/callibrate
-    image which is dead center in the views touch boundaries-->
+    image which is dead center in the views touch boundaries
+    Also note this implementation provides poor support for RTL
+    so i'll either have rid the squishing feature, or add
+    styles-->
 <ImageButton
     android:id="@id/id_dashboard_goal"
     android:paddingBottom="@dimen/dashboard_icon_shrink"
-    android:paddingRight="@dimen/dashboard_icon_shrink"
-    android:paddingEnd="@dimen/dashboard_icon_shrink"
-    android:scaleType="fitEnd"
+    android:scaleType="@string/dashboard_scale_type_goal"
     android:background="@null"
     android:src="@drawable/ic_star"
     android:layout_gravity="start|top"
@@ -32,9 +33,7 @@
 <ImageButton
     android:id="@id/id_dashboard_callibrate"
     android:paddingBottom="@dimen/dashboard_icon_shrink"
-    android:paddingStart="@dimen/dashboard_icon_shrink"
-    android:paddingLeft="@dimen/dashboard_icon_shrink"
-    android:scaleType="fitEnd"
+    android:scaleType="@string/dashboard_scale_type_callibrate"
     android:background="@null"
     android:src="@drawable/ic_callibrate"
     android:layout_gravity="end|top"
@@ -61,7 +60,7 @@
     tools:textColor="@color/white"
     tools:textStyle="normal"
 
-    android:layout_gravity="bottom"
+    android:layout_gravity="bottom|start"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 

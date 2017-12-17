@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="id_dashboard_goal" type="id"/>
+    <item name="id_dashboard_callibrate" type="id"/>
+
     <item name="id_today_item_timestamp" type="id"/>
     <item name="id_today_item_transaction" type="id"/>
     <item name="id_today_item_total" type="id"/>
