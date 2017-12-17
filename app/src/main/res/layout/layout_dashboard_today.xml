@@ -32,6 +32,8 @@
         app:fabSize="normal"
         android:layout_gravity="bottom|start"
         app:backgroundTint="@color/white"
+        android:scaleType="center"
+        android:src="@drawable/hamburger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
