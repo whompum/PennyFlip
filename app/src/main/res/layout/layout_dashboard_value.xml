@@ -9,6 +9,37 @@
     android:layout_width="match_parent"
     android:layout_height="0dp">
 
+<!--With these two image buttons i'm essentially
+    squishing the views against their bounds. What
+    this does in effect is make the source images smaller
+    but have a touch bound that extends well past the contents
+    bottom x/y axis. I think in use this will be a good feature
+    since a users thumb will approach from the bottom they might
+    be more likely to touch the bottom edges of the star/callibrate
+    image which is dead center in the views touch boundaries-->
+<ImageButton
+    android:id="@id/id_dashboard_goal"
+    android:paddingBottom="@dimen/dashboard_icon_shrink"
+    android:paddingRight="@dimen/dashboard_icon_shrink"
+    android:paddingEnd="@dimen/dashboard_icon_shrink"
+    android:scaleType="fitEnd"
+    android:background="@null"
+    android:src="@drawable/ic_star"
+    android:layout_gravity="start|top"
+    android:layout_width="@dimen/dashboard_icon_size"
+    android:layout_height="@dimen/dashboard_icon_size" />
+
+<ImageButton
+    android:id="@id/id_dashboard_callibrate"
+    android:paddingBottom="@dimen/dashboard_icon_shrink"
+    android:paddingStart="@dimen/dashboard_icon_shrink"
+    android:paddingLeft="@dimen/dashboard_icon_shrink"
+    android:scaleType="fitEnd"
+    android:background="@null"
+    android:src="@drawable/ic_callibrate"
+    android:layout_gravity="end|top"
+    android:layout_width="@dimen/dashboard_icon_size"
+    android:layout_height="@dimen/dashboard_icon_size" />
 
     <!--Keep the width as match_parent so TextView can wrap itself
         If its width is > screen width-->
