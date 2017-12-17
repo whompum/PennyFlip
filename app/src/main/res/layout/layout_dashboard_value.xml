@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/dashboard"
+    android:background="#cccccc"
+    android:layout_weight="5"
+    android:padding="@dimen/screen_padding"
+    android:layout_width="match_parent"
+    android:layout_height="0dp">
+
+
+    <!--Keep the width as match_parent so TextView can wrap itself
+        If its width is > screen width-->
+<TextView
+    tools:text="$87.22"
+    tools:textSize="42sp"
+    tools:textColor="@color/light_blue"
+    tools:textStyle="bold"
+
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+
+<TextView
+    tools:text="Updated: 8:57 AM"
+    tools:textSize="@dimen/text_normal"
+    tools:textColor="@color/white"
+    tools:textStyle="normal"
+
+    android:layout_gravity="bottom"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+
+</FrameLayout>

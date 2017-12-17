@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,19 +13,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:padding="@dimen/screen_padding"
-        android:background="@drawable/background_shadow_frame"
-        android:layout_weight="5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
+    <include layout="@layout/layout_dashboard_value"
+              android:id="@+id/TEMP"/>
 
-
-    </FrameLayout>
-
+    <include layout="@layout/layout_dashboard_today"/>
 
 </LinearLayout>
 
 
+<android.support.design.widget.FloatingActionButton
+    tools:layout_marginEnd="16dp"
+    tools:layout_marginRight="16dp"
 
-</android.support.constraint.ConstraintLayout>
+    app:fabSize="normal"
+    app:backgroundTint="@color/white"
+    app:layout_anchor="@id/TEMP"
+    app:layout_anchorGravity="end|bottom"
+
+     android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+<android.support.design.widget.FloatingActionButton
+    tools:layout_marginEnd="86dp"
+    tools:layout_marginRight="86dp"
+
+    app:fabSize="mini"
+    app:backgroundTint="@color/white"
+    app:layout_anchor="@id/TEMP"
+    app:layout_anchorGravity="end|bottom"
+
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+</android.support.design.widget.CoordinatorLayout>

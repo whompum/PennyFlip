@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_marginTop="16dp"
+    tools:layout_marginBottom="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        tools:text="9:41 AM"
+        tools:textSize="@dimen/text_teeny"
+        tools:textColor="@color/dark_grey"
+        android:id="@id/id_today_item_timestamp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        tools:textColor="@color/light_red"
+        tools:textSize="@dimen/text_normal"
+        tools:textStyle="bold"
+        tools:text="@string/spent"
+
+        android:id="@id/id_today_item_transaction"
+        android:layout_marginStart="64dp"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        tools:text="$21.72"
+        tools:textColor="@color/light_blue"
+        tools:textSize="@dimen/text_bigboi"
+
+        android:id="@id/id_today_item_total"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        tools:text="Eating Out"
+        tools:textColor="@color/dark_grey"
+
+        android:id="@id/id_today_item_source_main"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

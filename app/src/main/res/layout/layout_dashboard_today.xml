@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_weight="5"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+
+    tools:showIn="@layout/dashboard">
+
+    <TextView
+        tools:layout_margin="@dimen/screen_padding"
+        tools:text="@string/today"
+        tools:textSize="@dimen/text_normal"
+        tools:textColor="@color/dark_grey"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        tools:listitem="@layout/layout_item_list_today"
+        tools:padding="@dimen/screen_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        tools:layout_margin="@dimen/screen_padding"
+        app:fabSize="normal"
+        android:layout_gravity="bottom|start"
+        app:backgroundTint="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>
