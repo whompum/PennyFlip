@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Screen padding is the offset of the content to the screen bounds. -->
+    <dimen name="screen_padding">16dp</dimen>
+
+    <!--The five text sizes for the app. Most content should use normal, but feel free to change
+        these values as needed-->
+    <dimen name="text_teeny">10sp</dimen>
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="text_normal">14sp</dimen>
+    <dimen name="text_bigboi">24sp</dimen>
+    <dimen name="text_hulk">32sp</dimen>
+
+</resources>
