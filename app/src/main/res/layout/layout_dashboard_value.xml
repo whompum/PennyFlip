@@ -48,6 +48,7 @@
         If its width is > screen width-->
 <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
     tools:text="$87.22"
+    android:id="@id/id_dashboard_value"
     android:background="@android:color/transparent"
     android:enabled="false"
     android:textSize="42sp"
@@ -65,6 +66,8 @@
     android:textSize="@dimen/text_normal"
     android:textColor="@color/white"
     android:textStyle="normal"
+
+    android:id="@id/id_dashboard_timestamp"
 
     android:layout_gravity="bottom|start"
     android:layout_width="wrap_content"

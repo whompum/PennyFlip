@@ -1,20 +1,13 @@
 <resources>
-    <string name="app_name">PennyFlip</string>
+    <string name="string_app_name">PennyFlip</string>
 
-    <string name="today">Today</string>
-    <string name="spent">Spent</string>
-    <string name="added">Added</string>
+    <string name="string_today">Today</string>
+    <string name="string_spent">Spent</string>
+    <string name="string_added">Added</string>
 
-    <string name="null_today_status">No transactions for today.</string>
+    <string name="string_null_transactionlist">No transactions for today.</string>
+    <string name="string_tooltip_calibrate">Re-callibrate your pennies with how much money you really have</string>
 
-    <string name="tooltip_calibrate">Re-callibrate your pennies with how much money you really have</string>
-    <string name="penny_dialog_title">Enter total to add</string>
-
-    <!--DO NOT TRANSLATE
-     These values are used as literal values for
-     android:scaleType for Left to Right layouts-->
-    <string name="dashboard_scale_type_goal">fitStart</string>
-    <string name="dashboard_scale_type_callibrate">fitEnd</string>
-
-
+    <string name="string_add_dialog">Enter The Amount You Made</string>
+    <string name="string_minus_dialog">Enter The Amount You\'ve Spent</string>
 </resources>
