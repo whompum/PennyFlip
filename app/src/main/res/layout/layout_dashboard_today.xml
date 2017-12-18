@@ -21,6 +21,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:src="@drawable/image_no_transactions"
+            android:layout_width="72dp"
+            android:layout_height="72dp" />
+
+        <TextView
+            android:textSize="@dimen/text_normal"
+            android:textStyle="bold"
+            android:text="@string/null_today_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+
     <android.support.v7.widget.RecyclerView
         tools:listitem="@layout/layout_item_list_today"
 
