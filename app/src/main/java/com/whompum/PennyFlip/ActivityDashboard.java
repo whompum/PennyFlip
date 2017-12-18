@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -28,9 +29,21 @@ public class ActivityDashboard extends AppCompatActivity {
         setContentView(R.layout.dashboard);
 
         pennyDialog = PennyDialog.newInstance(null,null);
-
+        toggleTransactions();
     }
 
+    private void toggleTransactions(){
+
+       // boolean hasTransactedToday = (transactions.getAdapter().getItemCount() > 0); //Un comment when ready
+
+        final ViewGroup nullTransaction = findViewById(R.id.null_transaction_layout);
+
+        if(false)
+            nullTransaction.setVisibility(View.VISIBLE);
+        else
+            nullTransaction.setVisibility(View.INVISIBLE);
+
+    }
 
     public void onGoalClicked(final View view){
     }

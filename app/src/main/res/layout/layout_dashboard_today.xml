@@ -63,7 +63,7 @@
         app:backgroundTint="@color/white"
 
         android:id="@id/id_dashboard_fab_hamburger"
-        android:onClick="onNavigationFabClicked"
+
 
         android:layout_gravity="bottom|start"
         android:scaleType="center"
