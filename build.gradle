@@ -19,7 +19,13 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
+}
+
+ext{
+    designVer = '26.1.0'
+    pennyDialogVer = '1.1'
 }
 
 task clean(type: Delete) {
