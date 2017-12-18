@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="dashboard_scale_type_goal">2</integer>
+    <integer name="dashboard_scale_type_callibrate">4</integer>
+</resources>

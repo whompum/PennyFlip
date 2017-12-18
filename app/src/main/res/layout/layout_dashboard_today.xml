@@ -11,29 +11,40 @@
     tools:showIn="@layout/dashboard">
 
     <TextView
-        tools:layout_margin="@dimen/screen_padding"
         tools:text="@string/today"
-        tools:textSize="@dimen/text_normal"
-        tools:textColor="@color/dark_grey"
+
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/dark_grey"
 
         android:layout_gravity="start"
+        android:layout_margin="@dimen/screen_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
         tools:listitem="@layout/layout_item_list_today"
-        tools:padding="@dimen/screen_padding"
+
+        android:paddingTop="@dimen/screen_padding"
+        android:paddingLeft="@dimen/screen_padding"
+        android:paddingRight="@dimen/screen_padding"
+        android:paddingStart="@dimen/screen_padding"
+        android:paddingEnd="@dimen/screen_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
 
     <android.support.design.widget.FloatingActionButton
-        tools:layout_margin="@dimen/screen_padding"
         app:fabSize="normal"
-        android:layout_gravity="bottom|start"
         app:backgroundTint="@color/white"
+
+        android:id="@id/id_dashboard_fab_hamburger"
+        android:onClick="onNavigationFabClicked"
+
+        android:layout_gravity="bottom|start"
         android:scaleType="center"
         android:src="@drawable/hamburger"
+
+        android:layout_margin="@dimen/screen_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
