@@ -6,13 +6,18 @@
     <item name="id_dashboard_goal" type="id"/>
     <item name="id_dashboard_callibrate" type="id"/>
 
-    <item name="null_transaction_layout" type="id"/>
+    <item name="id_dashboard_null_transactionlist" type="id"/>
+
+    <item name="id_dashboard_value" type="id"/>
+    <item name="id_dashboard_timestamp" type="id"/>
+
+    <item name="id_dashboard_transactionlist" type="id"/>
 
     <!--Today Transaction Items-->
-    <item name="id_today_item_timestamp" type="id"/>
-    <item name="id_today_item_transaction" type="id"/>
-    <item name="id_today_item_total" type="id"/>
-    <item name="id_today_item_source_main" type="id"/>
+    <item name="id_dashboard_transactionlist_timestamp" type="id"/>
+    <item name="id_dashboard_transactionlist_transaction_type" type="id"/>
+    <item name="id_dashboard_transactionlist_total" type="id"/>
+    <item name="id_dashboard_transactionlist_source" type="id"/>
 
     <!--DASHBOARD FABS-->
     <item name="id_dashboard_fab_plus" type="id"/>
