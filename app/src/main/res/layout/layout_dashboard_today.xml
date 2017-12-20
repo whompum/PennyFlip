@@ -61,19 +61,9 @@
         android:layout_height="wrap_content"/>
 
 
-    <android.support.design.widget.FloatingActionButton
-        app:fabSize="normal"
-        app:backgroundTint="@color/white"
-
-        android:id="@id/id_dashboard_fab_hamburger"
-        android:onClick="onNavFabClicked"
-
-        android:layout_gravity="bottom|start"
-        android:scaleType="center"
-        android:src="@drawable/hamburger"
-
-        android:layout_margin="@dimen/screen_padding"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+   <include layout="@layout/layout_nav_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"/>
 
 </FrameLayout>
