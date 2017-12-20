@@ -2,7 +2,7 @@
 <resources>
     <!--Screen padding is the offset of the content to the screen bounds. -->
     <dimen name="screen_padding">16dp</dimen>
-
+    <dimen name="dimen_margin_dashboard_icon">-12dp</dimen>
     <!--The five text sizes for the app. Most content should use normal, but feel free to change
         these values as needed-->
     <dimen name="text_teeny">10sp</dimen>
@@ -24,5 +24,5 @@
     <dimen name="dimen_nav_fab_margin_hor">20dp</dimen>
     <dimen name="dimen_nav_fab_margin_ver">8dp</dimen>
 
-    <dimen name="dimen_nav_cardview_margin">2dp</dimen>
+    <dimen name="dimen_nav_cardview_margin">8dp</dimen>
 </resources>

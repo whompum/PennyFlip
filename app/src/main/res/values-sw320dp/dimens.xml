@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="screen_padding">12dp</dimen>
+    <dimen name="dimen_margin_dashboard_icon">-12dp</dimen>
+
 </resources>
