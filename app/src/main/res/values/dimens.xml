@@ -17,4 +17,12 @@
     <dimen name="dashboard_margin_fab_plus">16dp</dimen>
     <dimen name="dashboard_margin_fab_minus">86dp</dimen>
 
+    <!--Nav menu dimensions-->
+    <dimen name="dimen_anchor_fab_margin">@dimen/screen_padding</dimen>
+
+    <dimen name="dimen_nav_title_padding">8dp</dimen>
+    <dimen name="dimen_nav_fab_margin_hor">20dp</dimen>
+    <dimen name="dimen_nav_fab_margin_ver">8dp</dimen>
+
+    <dimen name="dimen_nav_cardview_margin">2dp</dimen>
 </resources>

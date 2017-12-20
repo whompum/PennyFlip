@@ -22,8 +22,11 @@
     <!--DASHBOARD FABS-->
     <item name="id_dashboard_fab_plus" type="id"/>
     <item name="id_dashboard_fab_minus" type="id"/>
-    <item name="id_dashboard_fab_hamburger" type="id"/>
 
-
-
+    <!--Menu IDS-->
+    <item name="id_nav_menu_layout" type="id"/>
+    <item name="id_nav_menu_anchor" type="id"/>
+    <item name="id_nav_menu_source" type="id"/>
+    <item name="id_nav_menu_statistics" type="id"/>
+    <item name="id_nav_menu_history" type="id"/>
 </resources>

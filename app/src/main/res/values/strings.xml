@@ -10,4 +10,8 @@
 
     <string name="string_add_dialog">Enter The Amount You Made</string>
     <string name="string_minus_dialog">Enter The Amount You\'ve Spent</string>
+
+    <string name="string_history">History</string>
+    <string name="string_statistics">Statistics</string>
+    <string name="string_sources">Sources</string>
 </resources>

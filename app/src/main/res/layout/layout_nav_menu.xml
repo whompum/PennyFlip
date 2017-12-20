@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@id/id_nav_menu_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <android.support.design.widget.FloatingActionButton
+        style="@style/StyleMenuFab"
+        android:id="@id/id_nav_menu_statistics"
+        android:src="@drawable/ic_statistics"
+        android:tag="ONE"/>
+
+        <android.support.v7.widget.CardView
+            style="@style/StyleMenuCardView">
+            <TextView
+                style="@style/StyleMenuTitle"
+                android:text="@string/string_statistics"/>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.FloatingActionButton
+            style="@style/StyleMenuFab"
+
+            android:id="@id/id_nav_menu_history"
+            android:src="@drawable/ic_history"/>
+
+        <android.support.v7.widget.CardView
+            style="@style/StyleMenuCardView">
+            <TextView
+                style="@style/StyleMenuTitle"
+                android:text="@string/string_history" />
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.FloatingActionButton
+            style="@style/StyleMenuFab"
+            android:id="@id/id_nav_menu_source"
+            android:src="@drawable/ic_source" />
+
+        <android.support.v7.widget.CardView
+           style="@style/StyleMenuCardView">
+            <TextView
+                style="@style/StyleMenuTitle"
+                android:text="@string/string_sources" />
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        app:fabSize="normal"
+        app:backgroundTint="@color/white"
+
+        android:id="@id/id_nav_menu_anchor"
+        android:onClick="onNavFabClicked"
+        android:layout_margin="@dimen/dimen_anchor_fab_margin"
+        android:layout_gravity="bottom|start"
+        android:scaleType="center"
+        android:src="@drawable/hamburger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+</LinearLayout>
