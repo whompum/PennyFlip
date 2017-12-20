@@ -5,15 +5,15 @@
 
     </style>
 
+    <!--PennyDialog styles-->
     <style name="AddPennyDialogStyle" parent="PennyDialog">
-        <item name="pennyFabSource">@drawable/plus</item>
+        <item name="pennyFabSource">@drawable/ic_shape_plus</item>
         <item name="pennyTitleText">@string/string_add_dialog</item>
         <item name="pennyTitleTextColor">@android:color/black</item>
         <item name="pennyValueCardColor">@color/light_green</item>
     </style>
-
     <style name="MinusPennyDialogStyle" parent="PennyDialog">
-        <item name="pennyFabSource">@drawable/minus</item>
+        <item name="pennyFabSource">@drawable/ic_shape_minus</item>
         <item name="pennyTitleText">@string/string_minus_dialog</item>
         <item name="pennyValueCardColor">@color/light_red</item>
     </style>
@@ -24,26 +24,19 @@
     <style name="StyleMenuCardView">
         <item name="contentPadding">@dimen/dimen_nav_title_padding</item>
 
-        <item name="android:layout_margin">@dimen/dimen_nav_cardview_margin</item>
+        <item name="android:layout_marginTop">@dimen/dimen_nav_cardview_margin</item>
 
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
-
-
     <style name="StyleMenuTitle">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
-
-
     <style name="StyleMenuFab">
         <item name="android:visibility">invisible</item>
         <item name="fabSize">mini</item>
-        <item name="backgroundTint">@color/white</item>
         <item name="android:scaleType">center</item>
 
         <item name="android:layout_marginRight">@dimen/dimen_nav_fab_margin_hor</item>
