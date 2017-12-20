@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!--DO NOT TRANSLATE
-     These two are used as literal values for android:ScaleType
-     for Right to Left layouts-->
-    <string name="dashboard_scale_type_goal">fitEnd</string>
-    <string name="dashboard_scale_type_callibrate">fitStart</string>
-</resources>
