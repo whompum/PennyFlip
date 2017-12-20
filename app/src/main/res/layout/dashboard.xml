@@ -32,7 +32,7 @@
 
     android:scaleType="center"
     android:padding="16dp"
-    android:src="@drawable/plus"
+    android:src="@drawable/ic_shape_plus"
 
     android:layout_marginEnd="@dimen/dashboard_margin_fab_plus"
     android:layout_marginRight="@dimen/dashboard_margin_fab_plus"
@@ -49,7 +49,7 @@
     android:onClick="onMinusFabClicked"
 
     android:scaleType="center"
-    android:src="@drawable/minus"
+    android:src="@drawable/ic_shape_minus"
 
     android:layout_marginEnd="@dimen/dashboard_margin_fab_minus"
     android:layout_marginRight="@dimen/dashboard_margin_fab_minus"
