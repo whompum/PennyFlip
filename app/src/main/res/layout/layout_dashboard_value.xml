@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="@layout/dashboard"
-    android:background="#cccccc"
+    android:background="@color/light_grey"
     android:layout_weight="5"
     android:padding="@dimen/screen_padding"
     android:layout_width="match_parent"
@@ -62,7 +62,7 @@
 
 
 <TextView
-    tools:text="Updated: 8:57 AM"
+    android:text="@string/string_null_transactionlist"
 
     android:textSize="@dimen/text_normal"
     android:textColor="@color/white"

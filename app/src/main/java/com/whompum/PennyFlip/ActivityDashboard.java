@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,45 +26,42 @@ public class ActivityDashboard extends AppCompatActivity {
 
     private NavMenuAnimator navMenuAnimator;
 
-    private FloatingActionButton statsFab;
-    private FloatingActionButton historyFab;
-    private FloatingActionButton sourcesFab;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
 
-
-        initViews();
-        toggleNullTransactionImage();
-    }
-
-
-    private void initViews(){
         transactionsList = findViewById(R.id.id_dashboard_transactionlist);
+        transactionsList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+
         dashboardValue = findViewById(R.id.id_dashboard_value);
         lastTransactionTimestamp = findViewById(R.id.id_dashboard_timestamp);
 
         findViewById(R.id.id_nav_menu_statistics).setOnClickListener(this.statsListener);
         findViewById(R.id.id_nav_menu_history).setOnClickListener(this.historyListener);
         findViewById(R.id.id_nav_menu_source).setOnClickListener(this.sourcesListener);
+        findViewById(R.id.id_nav_menu_anchor).setOnClickListener(this.anchorListner);
 
-        FloatingActionButton anchor = findViewById(R.id.id_nav_menu_anchor);
-        anchor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navMenuAnimator.animate();
-            }
-        });
         initNavMenu();
+
+        toggleNullTransactionImage();
     }
+
+
+
 
     private void initNavMenu(){
         this.navMenuAnimator = new NavMenuAnimator();
         navMenuAnimator.bindMenu( ((LinearLayout)findViewById(R.id.id_nav_menu_layout)) );
 
     }
+
+    private final View.OnClickListener anchorListner = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            navMenuAnimator.animate();
+        }
+    };
 
     private final View.OnClickListener statsListener = new View.OnClickListener() {
         @Override
@@ -97,13 +95,22 @@ public class ActivityDashboard extends AppCompatActivity {
     public void onPlusFabClicked(final View view){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.AddPennyDialogStyle);
-        launchPennyDialog(style);
+        launchPennyDialog(style, new PennyDialog.CashChangeListener() {
+            @Override
+            public void onPenniesChange(long l) {
+            }
+
+            @Override
+            public void onCashChange(String s) {
+                dashboardValue.setText(s);
+            }
+        });
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
 
     public void onMinusFabClicked(final View view){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.MinusPennyDialogStyle);
-        launchPennyDialog(style);
+        launchPennyDialog(style, null);
     }
 
 
@@ -119,8 +126,8 @@ public class ActivityDashboard extends AppCompatActivity {
             nullTransaction.setVisibility(View.INVISIBLE);
 
     }
-    private void launchPennyDialog(@Nullable final Bundle pennyArgs){
-        PennyDialog.newInstance(null, pennyArgs)
+    private void launchPennyDialog(@Nullable final Bundle pennyArgs, @Nullable PennyDialog.CashChangeListener cashChangeListener){
+        PennyDialog.newInstance(cashChangeListener, pennyArgs)
                 .show(getSupportFragmentManager(), PennyDialog.TAG);
     }
 
