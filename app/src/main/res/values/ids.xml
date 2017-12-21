@@ -29,4 +29,14 @@
     <item name="id_nav_menu_source" type="id"/>
     <item name="id_nav_menu_statistics" type="id"/>
     <item name="id_nav_menu_history" type="id"/>
+
+    <!--Source Dialog IDS-->
+    <item name="id_source_dialog_source_list" type="id"/>
+    <item name="id_source_dialog_search_view" type="id"/>
+    <item name="id_source_dialog_fab" type="id"/>
+    <item name="id_source_dialog_header" type="id"/>
+    <!--Source Dialog IDS handled by the RecyclerView Adapter-->
+    <item name="id_source_dialog_source_title" type="id"/>
+    <item name="id_source_dialog_source_tag" type="id"/>
+    <item name="id_source_dialog_source_item_container" type="id"/>
 </resources>

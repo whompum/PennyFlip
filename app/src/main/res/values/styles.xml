@@ -18,6 +18,19 @@
         <item name="pennyValueCardColor">@color/light_red</item>
     </style>
 
+    <style name="StyleAddTotalFab">
+        <item name="fabSize">normal</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:src">@drawable/ic_shape_plus</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="StyleMinusTotalFab" parent="StyleAddTotalFab">
+        <item name="fabSize">mini</item>
+        <item name="android:src">@drawable/ic_shape_minus</item>
+    </style>
 
 
      <!--MENU STYLES-->

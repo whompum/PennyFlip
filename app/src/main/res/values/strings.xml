@@ -19,5 +19,6 @@
     <string name="string_source_tag_base">BASE</string>
     <string name="string_source_tag_sub_source">SUB-SOURCE</string>
     <string name="string_source_tag_new">NEW</string>
+    <string name="string_source_dialog_search">Enter source name here</string>
 
 </resources>
