@@ -4,7 +4,7 @@
     <color name="light_blue">#80bbff</color>
     <color name="light_red">#ff8080</color>
     <color name="light_green">#87de87</color>
-
+    <color name="color_light_orange">#ffb380</color>
 
     <color name="dark_grey">#999999</color>
     <color name="light_grey">#cccccc</color>
@@ -12,5 +12,6 @@
 
     <color name="white">#ffffff</color>
 
+    z
 
 </resources>

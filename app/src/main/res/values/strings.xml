@@ -14,4 +14,10 @@
     <string name="string_history">History</string>
     <string name="string_statistics">Statistics</string>
     <string name="string_sources">Sources</string>
+
+    <!--Source Dialog Tag strings-->
+    <string name="string_source_tag_base">BASE</string>
+    <string name="string_source_tag_sub_source">SUB-SOURCE</string>
+    <string name="string_source_tag_new">NEW</string>
+
 </resources>

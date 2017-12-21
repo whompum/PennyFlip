@@ -25,4 +25,7 @@
     <dimen name="dimen_nav_fab_margin_ver">8dp</dimen>
 
     <dimen name="dimen_nav_cardview_margin">8dp</dimen>
+
+    <!--CORNER RADIUS FOR THE DIALOGS-->
+    <dimen name="dimen_corner_radius">10dp</dimen>
 </resources>
