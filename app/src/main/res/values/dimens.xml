@@ -28,4 +28,8 @@
 
     <!--CORNER RADIUS FOR THE DIALOGS-->
     <dimen name="dimen_corner_radius">10dp</dimen>
+
+
+    <dimen name="dimen_source_dialog_offset_hor">32dp</dimen>
+    <dimen name="dimen_source_dialog_offset_ver">96dp</dimen>
 </resources>

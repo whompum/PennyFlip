@@ -5,6 +5,8 @@
 
     </style>
 
+
+
     <!--PennyDialog styles-->
     <style name="AddPennyDialogStyle" parent="PennyDialog">
         <item name="pennyFabSource">@drawable/ic_shape_plus</item>
@@ -65,5 +67,9 @@
     </style>
 
 
+    <style name="SourceDialogTheme" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
 </resources>

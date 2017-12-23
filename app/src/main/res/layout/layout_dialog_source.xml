@@ -2,15 +2,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/drawable_shape_background_rounded_right"
-    android:layout_margin="16dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:background="@drawable/drawable_shape_shadow_background_rounded_right"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <FrameLayout
@@ -25,18 +25,17 @@
             tools:text="Enter Source Name Here"
             android:drawableStart="@drawable/ic_svg_search"
             android:drawableLeft="@drawable/ic_svg_search"
-            android:background="@null"
+            android:backgroundTint="@color/white"
             android:drawablePadding="8dp"
             android:hint="@string/string_source_dialog_search"
             android:textColorHint="@color/white"
             android:id="@id/id_source_dialog_search_view"
             android:textSize="@dimen/text_normal"
             android:textColor="@color/white"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </FrameLayout>
-
 
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
@@ -44,7 +43,7 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:padding="@dimen/screen_padding"
         android:id="@id/id_source_dialog_source_list"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
 
