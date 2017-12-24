@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="@layout/dashboard"
-    app:cardBackgroundColor="@color/light_blue"
-    app:contentPadding="@dimen/screen_padding"
-
+    android:padding="@dimen/screen_padding"
+    android:background="@drawable/drawable_shape_background_rounded_bottom"
     android:layout_weight="5"
     android:layout_width="match_parent"
     android:layout_height="0dp">
 
-<!--With these two image buttons i'm essentially
-    squishing the views against their bounds. What
-    this does in effect is make the source images smaller
-    but have a touch bound that extends well past the contents
-    bottom x/y axis. I think in use this will be a good feature
-    since a users thumb will approach from the bottom they might
-    be more likely to touch the bottom edges of the star/callibrate
-    image which is dead center in the views touch boundaries
-    Also note this implementation provides poor support for RTL
-    so i'll either have rid the squishing feature, or add
-    styles-->
+
 <android.support.v7.widget.AppCompatImageButton
     app:srcCompat="@drawable/ic_svg_star"
 
@@ -76,4 +66,4 @@
     android:layout_height="wrap_content" />
 
 
-</android.support.v7.widget.CardView>
+</FrameLayout>
