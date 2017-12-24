@@ -27,7 +27,7 @@ public class TransactionTodayAdapter extends RecyclerView.Adapter<TransactionTod
     @LayoutRes
     private final int LAYOUT = R.layout.layout_item_list_today;
 
-    private Stack<Transactions> transactionsList = null;
+    private List<Transactions> transactionsList = null;
 
     private LayoutInflater inflater = null;
 
@@ -36,18 +36,19 @@ public class TransactionTodayAdapter extends RecyclerView.Adapter<TransactionTod
         this(context, null);
     }
 
-    public TransactionTodayAdapter(final Context context, final Stack<Transactions> dataSet){
+    public TransactionTodayAdapter(final Context context, final List<Transactions> dataSet){
 
         if(dataSet!=null)
-            transactionsList = new Stack<>();
+            transactionsList = new ArrayList<>();
         else
-            transactionsList = new Stack<>();
+            transactionsList = new ArrayList<>();
 
         inflater = LayoutInflater.from(context);
     }
 
+    //REMOVE METHOD L8R
     public void insert(@NonNull final Transactions transactions){
-        transactionsList.push(transactions);
+        transactionsList.add(transactions);
         notifyDataSetChanged();
     }
 
