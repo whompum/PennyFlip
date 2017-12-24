@@ -58,6 +58,10 @@ public class NavMenuAnimator {
     }
 
 
+    public boolean isOpen(){
+        return isOpen;
+    }
+
     public void animate(){
 
         if(!isInitialized){
@@ -79,7 +83,7 @@ public class NavMenuAnimator {
 
     }
 
-    private void open(){
+    public void open(){
 
         final Iterator<ViewWrapper> iterator = containers.iterator();
 
@@ -95,7 +99,7 @@ public class NavMenuAnimator {
         isOpen = true;
     }
 
-    private void close(){
+    public void close(){
         final Iterator<ViewWrapper> iterator = containers.iterator();
 
         long delay = 500L;

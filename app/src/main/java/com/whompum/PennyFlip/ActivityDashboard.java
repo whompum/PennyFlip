@@ -1,7 +1,6 @@
 package com.whompum.PennyFlip;
 
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.NavMenu.NavMenuAnimator;
+import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Transaction.TransactionTodayAdapter;
+import com.whompum.PennyFlip.Transaction.Transactions;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
@@ -33,6 +36,8 @@ public class ActivityDashboard extends AppCompatActivity {
 
         transactionsList = findViewById(R.id.id_dashboard_transactionlist);
         transactionsList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        transactionsList.addOnScrollListener(this.scrollListener); //Binds a scrollListener IMPL
+
 
         dashboardValue = findViewById(R.id.id_dashboard_value);
         lastTransactionTimestamp = findViewById(R.id.id_dashboard_timestamp);
@@ -42,19 +47,19 @@ public class ActivityDashboard extends AppCompatActivity {
         findViewById(R.id.id_nav_menu_source).setOnClickListener(this.sourcesListener);
         findViewById(R.id.id_nav_menu_anchor).setOnClickListener(this.anchorListner);
 
-        initNavMenu();
+        this.navMenuAnimator = new NavMenuAnimator();
+        navMenuAnimator.bindMenu( ((LinearLayout)findViewById(R.id.id_nav_menu_layout)) ); //Binds the views to the animator
 
         toggleNullTransactionImage();
     }
 
 
-
-
-    private void initNavMenu(){
-        this.navMenuAnimator = new NavMenuAnimator();
-        navMenuAnimator.bindMenu( ((LinearLayout)findViewById(R.id.id_nav_menu_layout)) );
-
-    }
+    private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+    };
 
     private final View.OnClickListener anchorListner = new View.OnClickListener() {
         @Override
@@ -69,15 +74,12 @@ public class ActivityDashboard extends AppCompatActivity {
 
         }
     };
-
     private final View.OnClickListener historyListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
         }
     };
-
-
     private final View.OnClickListener sourcesListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -85,28 +87,23 @@ public class ActivityDashboard extends AppCompatActivity {
         }
     };
 
+
+
     public void onGoalClicked(final View view){
     }
-
     public void onCallibrateClicked(final View view){
     }
 
 
     public void onPlusFabClicked(final View view){
-        final Bundle style = new Bundle();
-        style.putInt(PennyDialog.STYLE_KEY, R.style.AddPennyDialogStyle);
-        launchPennyDialog(style, new PennyDialog.CashChangeListener() {
-            @Override
-            public void onPenniesChange(long l) {
-            }
+        if(transactionsList.getAdapter()==null)
+            transactionsList.setAdapter(new TransactionTodayAdapter(this));
 
-            @Override
-            public void onCashChange(String s) {
-                dashboardValue.setText(s);
-            }
-        });
+        ((TransactionTodayAdapter)transactionsList.getAdapter()).insert(new Transactions(2782, Transactions.TYPE.ADDED, "test"));
+
+        toggleNullTransactionImage();
+
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
-
     public void onMinusFabClicked(final View view){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.MinusPennyDialogStyle);
@@ -116,16 +113,28 @@ public class ActivityDashboard extends AppCompatActivity {
 
     private void toggleNullTransactionImage(){
 
-        // boolean hasTransactedToday = (transactionsList.getAdapter().getItemCount() > 0); //Un comment when ready
-
         final ViewGroup nullTransaction = findViewById(R.id.id_dashboard_null_transactionlist);
 
-        if(true)
-            nullTransaction.setVisibility(View.VISIBLE);
+
+        if(transactionsList.getAdapter() != null)
+            if(transactionsList.getAdapter().getItemCount() > 0)
+                nullTransaction.setVisibility(View.INVISIBLE);
+            else
+                nullTransaction.setVisibility(View.INVISIBLE);
+
         else
-            nullTransaction.setVisibility(View.INVISIBLE);
+            nullTransaction.setVisibility(View.VISIBLE);
 
     }
+
+
+    /**
+     * Convenience method that launches the PennyDialog Dialog window.
+     *
+     *
+     * @param pennyArgs Styling bundle
+     * @param cashChangeListener Listener
+     */
     private void launchPennyDialog(@Nullable final Bundle pennyArgs, @Nullable PennyDialog.CashChangeListener cashChangeListener){
         PennyDialog.newInstance(cashChangeListener, pennyArgs)
                 .show(getSupportFragmentManager(), PennyDialog.TAG);

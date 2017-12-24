@@ -6,12 +6,13 @@
     <color name="light_green">#77d977</color>
     <color name="color_light_orange">#ffb380</color>
 
+    <color name="darkest_grey">#666666</color>
     <color name="dark_grey">#999999</color>
     <color name="light_grey">#cccccc</color>
     <color name="lightest_grey">#e6e6e6</color>
-
+    <color name="milk_white">#dedede</color>
     <color name="white">#ffffff</color>
 
-    z
+
 
 </resources>

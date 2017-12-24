@@ -7,11 +7,17 @@ package com.whompum.PennyFlip.SourceDialog;
 
 public class SourceWrapper {
 
+    public static final String EMPTY = "EMPTY";
+
     private String sourceTitle;
 
     private TAG tag;
 
-    public SourceWrapper(final String title, final TAG tag){
+    public SourceWrapper(String title, final TAG tag){
+
+        if(title.equals(""))
+            title = EMPTY;
+
         this.sourceTitle = title;
         this.tag = tag;
     }
@@ -26,9 +32,11 @@ public class SourceWrapper {
             return "BASE";
         else if(tag == TAG.SUBSOURCE)
             return "SUBSOURCE";
-        else return "NEW";
 
+        else if(tag == TAG.NEW)
+            return "NEW";
 
+    return "DEFAULT";
     }
 
     public String getTag(){
@@ -40,7 +48,6 @@ public class SourceWrapper {
     }
 
     public enum TAG {BASE, SUBSOURCE, NEW}
-
 
 
 }

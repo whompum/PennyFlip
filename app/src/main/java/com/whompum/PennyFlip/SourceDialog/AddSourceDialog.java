@@ -1,8 +1,10 @@
 package com.whompum.PennyFlip.SourceDialog;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.animation.AnticipateInterpolator;
 
 import com.whompum.PennyFlip.R;
 
@@ -28,21 +30,21 @@ public class AddSourceDialog extends SourceDialog {
     }
 
 
+    @Override //Creates the adapter. Normally this guy would comb through a Database or file.
+    protected SourceWrapperAdapter manifestAdapter() {
+        this.sourceListAdapter = new SourceWrapperAdapter(getContext(), HEADER_COLOR, new AdapterSelecteable<SourceWrapper>());
+
+    return sourceListAdapter;
+    }
+
     @Override
     protected void populate(@Nullable CharSequence popData) {
-        final List<SourceWrapper> wrappers = new ArrayList<>();
-
-        for(int i = 0; i < 15; i++){
-            wrappers.add(new SourceWrapper("TESTING", SourceWrapper.TAG.BASE));
-        }
-        sourceList.setAdapter(new SourceWrapperAdapter(getContext(), HEADER_COLOR, wrappers));
-
-        Log.i("test", "IS RECYLER NULL: " + String.valueOf(sourceList != null));
 
     }
 
     @Override
     protected void onDone() {
+        super.onDone();
         //Puts the final Pieces on the TransactionBuilder object, and then sends it on its way to storage.
     }
 }

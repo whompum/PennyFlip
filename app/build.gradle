@@ -35,4 +35,5 @@ dependencies {
 
     //external Apis
     implementation 'com.github.whompum:PennyDialog:v1.1'
+    implementation 'joda-time:joda-time:2.9.9'
 }
