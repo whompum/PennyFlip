@@ -9,13 +9,13 @@
 
     <!--PennyDialog styles-->
     <style name="AddPennyDialogStyle" parent="PennyDialog">
-        <item name="pennyFabSource">@drawable/ic_shape_plus</item>
+        <item name="pennyFabSource">@drawable/ic_shape_plus_green</item>
         <item name="pennyTitleText">@string/string_add_dialog</item>
         <item name="pennyTitleTextColor">@android:color/black</item>
         <item name="pennyValueCardColor">@color/light_green</item>
     </style>
     <style name="MinusPennyDialogStyle" parent="PennyDialog">
-        <item name="pennyFabSource">@drawable/ic_shape_minus</item>
+        <item name="pennyFabSource">@drawable/ic_shape_minus_red</item>
         <item name="pennyTitleText">@string/string_minus_dialog</item>
         <item name="pennyValueCardColor">@color/light_red</item>
     </style>
