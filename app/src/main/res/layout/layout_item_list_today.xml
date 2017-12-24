@@ -2,9 +2,8 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    android:padding="8dp"
+    android:padding="24dp"
     android:background="@color/milk_white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -12,7 +11,7 @@
     <TextView
         tools:text="9:41 AM"
 
-        android:textSize="@dimen/text_teeny"
+        android:textSize="@dimen/text_small"
         android:textColor="@color/darkest_grey"
 
         android:id="@id/id_dashboard_transactionlist_timestamp"
@@ -28,9 +27,9 @@
 
         android:enabled="false"
         android:background="@android:color/transparent"
-        android:textColor="@color/light_blue"
+        android:textColor="@color/light_green"
         android:textSize="@dimen/text_bigboi"
-
+        android:textStyle="bold"
         android:id="@id/id_dashboard_transactionlist_total"
 
         android:layout_gravity="center"

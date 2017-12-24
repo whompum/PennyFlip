@@ -52,7 +52,7 @@
 
         android:id="@id/id_dashboard_transactionlist"
 
-        android:paddingTop="24dp"
+        android:paddingTop="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

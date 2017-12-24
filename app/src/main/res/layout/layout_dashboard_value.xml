@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="@layout/dashboard"
-    android:background="@color/light_grey"
+    app:cardBackgroundColor="@color/light_blue"
+    app:contentPadding="@dimen/screen_padding"
+
     android:layout_weight="5"
-    android:padding="@dimen/screen_padding"
     android:layout_width="match_parent"
     android:layout_height="0dp">
 
@@ -28,7 +29,7 @@
     android:layout_marginLeft="@dimen/dimen_margin_dashboard_icon"
     android:layout_marginStart="@dimen/dimen_margin_dashboard_icon"
     android:layout_marginTop="@dimen/dimen_margin_dashboard_icon"
-    android:background="@null"
+    android:background="?attr/selectableItemBackgroundBorderless"
     android:layout_gravity="start|top"
     android:layout_width="@dimen/dashboard_icon_size"
     android:layout_height="@dimen/dashboard_icon_size" />
@@ -36,7 +37,7 @@
 <android.support.v7.widget.AppCompatImageButton
     android:id="@id/id_dashboard_callibrate"
     android:onClick="onCallibrateClicked"
-    android:background="@null"
+    android:background="?attr/selectableItemBackgroundBorderless"
     android:layout_marginRight="@dimen/dimen_margin_dashboard_icon"
     android:layout_marginEnd="@dimen/dimen_margin_dashboard_icon"
     android:layout_marginTop="@dimen/dimen_margin_dashboard_icon"
@@ -53,7 +54,7 @@
     android:background="@android:color/transparent"
     android:enabled="false"
     android:textSize="42sp"
-    android:textColor="@color/light_blue"
+    android:textColor="@color/white"
     android:textStyle="bold"
     android:layout_gravity="center"
     android:gravity="center"
@@ -75,4 +76,4 @@
     android:layout_height="wrap_content" />
 
 
-</FrameLayout>
+</android.support.v7.widget.CardView>
