@@ -3,10 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:visibility="invisible"
     android:orientation="vertical"
     android:id="@id/id_nav_menu_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
+
+
+
 
     <LinearLayout
         android:orientation="horizontal"
@@ -16,7 +21,6 @@
         style="@style/StyleMenuFab"
 
         app:srcCompat="@drawable/ic_svg_statistics"
-        app:backgroundTint="@color/light_red"
 
         android:id="@id/id_nav_menu_statistics"/>
 
@@ -28,6 +32,12 @@
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
+
+
+
+
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -35,7 +45,6 @@
         <android.support.design.widget.FloatingActionButton
             style="@style/StyleMenuFab"
 
-            app:backgroundTint="@color/light_blue"
             app:srcCompat="@drawable/ic_svg_history"
 
             android:id="@id/id_nav_menu_history" />
@@ -48,6 +57,12 @@
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
+
+
+
+
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -55,7 +70,6 @@
         <android.support.design.widget.FloatingActionButton
             style="@style/StyleMenuFab"
 
-            app:backgroundTint="@color/light_green"
             app:srcCompat="@drawable/ic_svg_money"
 
             android:id="@id/id_nav_menu_source" />
@@ -68,6 +82,10 @@
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
+
+
+
+
 
     <android.support.design.widget.FloatingActionButton
         app:fabSize="normal"

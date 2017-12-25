@@ -22,17 +22,13 @@
 
 
 <android.support.design.widget.FloatingActionButton
-    app:fabSize="normal"
-    app:backgroundTint="@color/light_green"
+    style="@style/StyleAddTotalFab"
+
     app:layout_anchor="@id/TEMP"
     app:layout_anchorGravity="end|bottom"
 
     android:id="@id/id_dashboard_fab_plus"
     android:onClick="onPlusFabClicked"
-
-    android:scaleType="center"
-    android:padding="16dp"
-    android:src="@drawable/ic_shape_plus"
 
     android:layout_marginEnd="@dimen/dashboard_margin_fab_plus"
     android:layout_marginRight="@dimen/dashboard_margin_fab_plus"
@@ -40,16 +36,13 @@
     android:layout_height="wrap_content" />
 
 <android.support.design.widget.FloatingActionButton
-    app:fabSize="mini"
-    app:backgroundTint="@color/light_red"
+    style="@style/StyleMinusTotalFab"
+
     app:layout_anchor="@id/TEMP"
     app:layout_anchorGravity="end|bottom"
 
     android:id="@id/id_dashboard_fab_minus"
     android:onClick="onMinusFabClicked"
-
-    android:scaleType="center"
-    android:src="@drawable/ic_shape_minus"
 
     android:layout_marginEnd="@dimen/dashboard_margin_fab_minus"
     android:layout_marginRight="@dimen/dashboard_margin_fab_minus"

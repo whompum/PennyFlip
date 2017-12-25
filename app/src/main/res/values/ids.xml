@@ -6,12 +6,15 @@
     <item name="id_dashboard_goal" type="id"/>
     <item name="id_dashboard_callibrate" type="id"/>
 
-    <item name="id_dashboard_null_transactionlist" type="id"/>
+    <item name="id_dashboard_transactions_null_image" type="id"/>
 
     <item name="id_dashboard_value" type="id"/>
-    <item name="id_dashboard_timestamp" type="id"/>
+    <item name="id_dashboard_total_label" type="id"/>
 
-    <item name="id_dashboard_transactionlist" type="id"/>
+    <item name="id_dashboard_today_value" type="id"/>
+    <item name="id_dashboard_today_total_label" type="id"/>
+    <item name="id_dashboard_today_value_secondary" type="id"/>
+    <item name="id_dashboard_today_total_label_secondary" type="id"/>
 
     <!--Today Transaction Items-->
     <item name="id_dashboard_transactionlist_timestamp" type="id"/>

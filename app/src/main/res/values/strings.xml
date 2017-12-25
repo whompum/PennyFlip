@@ -1,9 +1,10 @@
 <resources>
     <string name="string_app_name">PennyFlip</string>
 
+    <string name="string_total">Total</string>
     <string name="string_today">Today</string>
-    <string name="string_spent">Spent</string>
-    <string name="string_added">Added</string>
+    <string name="string_total_spent">Total Spent</string>
+    <string name="string_total_added">Total Made</string>
 
     <string name="string_null_transactionlist">No transactions for today.</string>
     <string name="string_tooltip_calibrate">Re-callibrate your pennies with how much money you really have</string>
