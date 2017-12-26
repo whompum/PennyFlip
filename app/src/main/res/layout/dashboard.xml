@@ -22,7 +22,7 @@
 
 
 <android.support.design.widget.FloatingActionButton
-    style="@style/StyleAddTotalFab"
+    style="@style/StyleDashboardAddFab"
 
     app:layout_anchor="@id/TEMP"
     app:layout_anchorGravity="end|bottom"
@@ -36,7 +36,7 @@
     android:layout_height="wrap_content" />
 
 <android.support.design.widget.FloatingActionButton
-    style="@style/StyleMinusTotalFab"
+    style="@style/StyleDashboardMinusFab"
 
     app:layout_anchor="@id/TEMP"
     app:layout_anchorGravity="end|bottom"

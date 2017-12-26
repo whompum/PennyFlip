@@ -1,5 +1,7 @@
 package com.whompum.PennyFlip;
 
+import android.support.v4.app.DialogFragment;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.NavMenu.NavMenuAnimator;
+import com.whompum.PennyFlip.SourceDialog.AddSourceDialog;
+import com.whompum.PennyFlip.SourceDialog.SourceDialog;
+import com.whompum.PennyFlip.SourceDialog.SpendingSourceDialog;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
@@ -87,29 +92,70 @@ public class ActivityDashboard extends AppCompatActivity {
     }
 
 
+
     public void onPlusFabClicked(final View view){
+        final Bundle style = new Bundle();
+        style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogAdd);
+
+        final SlidePennyDialog pennyDialog = (SlidePennyDialog) SlidePennyDialog.newInstance(cashListener, style);
+        launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
+
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
 
+    final PennyDialog.CashChangeListener cashListener = new PennyDialog.CashChangeListener() {
+        @Override
+        public void onPenniesChange(long l) {
 
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    final SourceDialog addSourceDialog = AddSourceDialog.newInstance(null);
+                    launchPennyDialog(addSourceDialog, AddSourceDialog.TAG);
+                }
+            }, 500L);
+
+        }
+
+        @Override
+        public void onCashChange(String s) {
+
+        }
+    };
+
+
+    private final PennyDialog.CashChangeListener minusListener = new PennyDialog.CashChangeListener() {
+        @Override
+        public void onPenniesChange(long l) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    SourceDialog dialog = SpendingSourceDialog.newInstance(null);
+                    launchPennyDialog(dialog, SpendingSourceDialog.TAG);
+                }
+            }, 500L);
+
+        }
+
+        @Override
+        public void onCashChange(String s) {
+
+        }
+    };
 
     public void onMinusFabClicked(final View view){
         final Bundle style = new Bundle();
-        style.putInt(PennyDialog.STYLE_KEY, R.style.MinusPennyDialogStyle);
-        launchPennyDialog(style, null);
+        style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
+        final PennyDialog dialog = SlidePennyDialog.newInstance(minusListener, style);
+        launchPennyDialog(dialog, SlidePennyDialog.TAG);
     }
 
-
-
     /**
-     * Convenience method that launches the PennyDialog Dialog window.
      *
-     *
-     * @param pennyArgs Styling bundle
-     * @param cashChangeListener Listener
+     * @param dialog Dialog to show
+     * @param tag the tag to associate with the dialog
      */
-    private void launchPennyDialog(@Nullable final Bundle pennyArgs, @Nullable PennyDialog.CashChangeListener cashChangeListener){
-        PennyDialog.newInstance(cashChangeListener, pennyArgs)
-                .show(getSupportFragmentManager(), PennyDialog.TAG);
+    private void launchPennyDialog(final DialogFragment dialog, final String tag){
+        dialog.show(getSupportFragmentManager(), tag);
     }
 
     private class StateAdjust{

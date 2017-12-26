@@ -17,10 +17,12 @@ import java.util.List;
 
 public class AddSourceDialog extends SourceDialog {
 
-    static{
+    {
         HEADER_COLOR = R.color.light_green;
-        FAB_SRC = R.drawable.ic_shape_plus;
+        FAB_SRC = R.drawable.ic_shape_plus_green;
     }
+
+    public static final String TAG = "AddSourceDialog";
 
     public static SourceDialog newInstance(final Bundle args){
         SourceDialog sourceDialog = new AddSourceDialog();

@@ -45,9 +45,9 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
      */
 
     @ColorRes
-    protected static int HEADER_COLOR = R.color.light_grey;
+    protected int HEADER_COLOR = R.color.light_grey;
     @DrawableRes
-    protected static int FAB_SRC = R.drawable.ic_checkmark;
+    protected int FAB_SRC = R.drawable.ic_checkmark;
 
     @LayoutRes
     protected int LAYOUT = R.layout.layout_dialog_source;
@@ -185,15 +185,19 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
 
     protected  void onDone(){
         getDialog().getWindow().getDecorView().animate().x(-1000).setInterpolator(new AnticipateInterpolator()).setDuration(500L).start();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 dismiss();
             }
         }, 500L);
+
     }
 
 
+
+    @NonNull
     protected abstract SourceWrapperAdapter manifestAdapter();
     protected abstract void populate(@Nullable final CharSequence popData);
 

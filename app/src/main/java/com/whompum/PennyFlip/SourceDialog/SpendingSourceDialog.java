@@ -13,13 +13,15 @@ import com.whompum.PennyFlip.R;
 
 public class SpendingSourceDialog extends SourceDialog {
 
-    static{
+    {
         HEADER_COLOR = R.color.light_red;
-        FAB_SRC = R.drawable.ic_shape_minus;
+        FAB_SRC = R.drawable.ic_shape_minus_red;
     }
 
 
-    public SourceDialog newInstance(final Bundle args){
+    public static final String TAG = "SpendingSourceDialog";
+
+    public static SourceDialog newInstance(final Bundle args){
         final SourceDialog dialog = new SpendingSourceDialog();
         dialog.setArguments(args);
 
@@ -29,9 +31,9 @@ public class SpendingSourceDialog extends SourceDialog {
 
     @Override
     protected SourceWrapperAdapter manifestAdapter() {
-        //Creates the Adapter specific for itself, and gives to the RecylerView
-        //This method helps ensure that every child generates the same Adapter
-        return null;
+        this.sourceListAdapter = new SourceWrapperAdapter(getContext(), HEADER_COLOR, new AdapterSelecteable<SourceWrapper>());
+
+        return sourceListAdapter;
     }
 
     @Override
