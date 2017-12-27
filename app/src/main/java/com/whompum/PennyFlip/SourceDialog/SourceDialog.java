@@ -15,22 +15,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnticipateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.R;
 
 
-public abstract class SourceDialog extends DialogFragment implements OnSourceListItemCliked{
+public abstract class SourceDialog extends DialogFragment implements OnSourceListItemChange {
 
     /**
      * --Is a base SourceDialog that is defines basic behavior for the views.
@@ -62,6 +59,8 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     protected SourceWrapper item;
 
     private AnimateScale animator;
+
+    protected OnSourceItemSelected sourceItemSelectedListener;
 
     @NonNull
     @Override
@@ -129,7 +128,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
                  }
              });
 
-        animator = new AnimateScale(actionFab);
+        animator = new AnimateScale(actionFab, false);
 
     return layout;
     }
@@ -147,11 +146,14 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
 
-            if(newState == RecyclerView.SCROLL_STATE_DRAGGING)
-                hideFab();
-            else if(newState == RecyclerView.SCROLL_STATE_IDLE)
-                showFab();
+            //If the item has been set, then we can do animations; Otherwise the fab is already hidden so no animations are needed
+            if(item !=null) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING)
+                    hideFab();
 
+                else if (newState == RecyclerView.SCROLL_STATE_IDLE)
+                    showFab();
+            }
 
         }
 
@@ -179,10 +181,24 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     }
 
     @Override
-    public void onSourceItemClicked(SourceWrapper sourceWrapper) {
+    public void onSourceListItemChange(SourceWrapper sourceWrapper) {
+
+        /**
+         * If the first element is selected, but has been changed, and the fab is showing, hide.
+         * Else if any element has been selected, and the fab isn't show, show.
+         */
+
+        if(sourceWrapper == null & animator.isShowing())
+            animator.hide(250L);
+
+        else if(sourceWrapper != null & !animator.isShowing())
+            animator.show(250L);
+
         this.item = sourceWrapper;
+
     }
 
+    @CallSuper
     protected  void onDone(){
         getDialog().getWindow().getDecorView().animate().x(-1000).setInterpolator(new AnticipateInterpolator()).setDuration(500L).start();
 
@@ -193,6 +209,17 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
             }
         }, 500L);
 
+        notifyListener();
+    }
+
+    @CallSuper
+    protected void notifyListener(){
+        if(sourceItemSelectedListener != null)
+            sourceItemSelectedListener.onSourceItemSelected(item);
+    }
+
+    public void registerItemSelectedListener(final OnSourceItemSelected l){
+        this.sourceItemSelectedListener = l;
     }
 
 
@@ -200,6 +227,11 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     @NonNull
     protected abstract SourceWrapperAdapter manifestAdapter();
     protected abstract void populate(@Nullable final CharSequence popData);
+
+
+    public interface OnSourceItemSelected{
+        void onSourceItemSelected(final SourceWrapper wrapper);
+    }
 
 
 }

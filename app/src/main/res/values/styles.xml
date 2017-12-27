@@ -13,11 +13,14 @@
         <item name="pennyTitleText">@string/string_add_dialog</item>
         <item name="pennyTitleTextColor">@color/white</item>
         <item name="pennyValueCardColor">@color/light_green</item>
+        <item name="pennyNumbersCardColor">@color/darkest_grey</item>
     </style>
+
     <style name="StylePennyDialogMinus" parent="PennyDialog">
         <item name="pennyFabSource">@drawable/ic_shape_minus_red</item>
         <item name="pennyTitleText">@string/string_minus_dialog</item>
         <item name="pennyValueCardColor">@color/light_red</item>
+        <item name="pennyNumbersCardColor">@color/darkest_grey</item>
     </style>
 
 

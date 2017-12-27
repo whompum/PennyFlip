@@ -2,18 +2,19 @@ package com.whompum.PennyFlip;
 
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.whompum.PennyFlip.NavMenu.NavMenuAnimator;
 import com.whompum.PennyFlip.SourceDialog.AddSourceDialog;
 import com.whompum.PennyFlip.SourceDialog.SourceDialog;
+import com.whompum.PennyFlip.SourceDialog.SourceWrapper;
 import com.whompum.PennyFlip.SourceDialog.SpendingSourceDialog;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
@@ -23,16 +24,14 @@ public class ActivityDashboard extends AppCompatActivity {
 
 
     private CurrencyEditText value;
-    private ImageButton goal;
-    private ImageButton callibrate;
 
     private ViewGroup nullTransactionImage;
 
-    private TextView valueSecondaryLabel;
-    private CurrencyEditText valueSecondary;
+    private TextView todayValueLabel;
+    private CurrencyEditText todayValue;
 
-    private TextView valueTertiaryLabel;
-    private CurrencyEditText valueTertiary;
+    private TextView todayValueSecondaryLabel;
+    private CurrencyEditText todaySecondaryValue;
 
     private NavMenuAnimator navMenuAnimator;
 
@@ -42,57 +41,37 @@ public class ActivityDashboard extends AppCompatActivity {
         setContentView(R.layout.dashboard);
 
 
-        findViewById(R.id.id_dashboard_value);
+        value = findViewById(R.id.id_dashboard_value);
+        nullTransactionImage = findViewById(R.id.id_dashboard_transactions_null_image);
+        nullTransactionImage.setVisibility(View.INVISIBLE);
 
-        findViewById(R.id.id_nav_menu_statistics).setOnClickListener(this.statsListener);
-        findViewById(R.id.id_nav_menu_history).setOnClickListener(this.historyListener);
-        findViewById(R.id.id_nav_menu_source).setOnClickListener(this.sourcesListener);
-        findViewById(R.id.id_nav_menu_anchor).setOnClickListener(this.anchorListner);
+        todayValueLabel = findViewById(R.id.id_dashboard_today_total_label);
+        todayValue = findViewById(R.id.id_dashboard_today_value);
+
+        todayValueSecondaryLabel = findViewById(R.id.id_dashboard_today_total_label_secondary);
+        todaySecondaryValue = findViewById(R.id.id_dashboard_today_value_secondary);
+
 
         this.navMenuAnimator = new NavMenuAnimator();
         navMenuAnimator.bindMenu( ((LinearLayout)findViewById(R.id.id_nav_menu_layout)) ); //Binds the views to the animator
-
-        findViewById(R.id.id_dashboard_transactions_null_image).setVisibility(View.INVISIBLE);
 
     }
 
 
 
-    private final View.OnClickListener anchorListner = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            navMenuAnimator.animate();
-        }
-    };
 
-    private final View.OnClickListener statsListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-    private final View.OnClickListener historyListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-    private final View.OnClickListener sourcesListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-
-
-
+    /*
+     * Goal/Callibrate imageButton onClick references
+     */
     public void onGoalClicked(final View view){
     }
     public void onCallibrateClicked(final View view){
     }
 
 
-
+    /*
+     * Add/Spend Dialog Fab onClick references
+     */
     public void onPlusFabClicked(final View view){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogAdd);
@@ -101,8 +80,33 @@ public class ActivityDashboard extends AppCompatActivity {
         launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
 
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
+    public void onMinusFabClicked(final View view){
+        final Bundle style = new Bundle();
+        style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
+        final PennyDialog dialog = SlidePennyDialog.newInstance(minusListener, style);
+        launchPennyDialog(dialog, SlidePennyDialog.TAG);
+    }
 
-    final PennyDialog.CashChangeListener cashListener = new PennyDialog.CashChangeListener() {
+
+    /*
+     * Navigation Fab onClick references
+     */
+    public void onStatisticsFabClicked(final View view){
+
+    }
+    public void onHistoryFabClicked(final View view){
+
+    }
+    public void onSourceFabClicked(final View view){
+
+    }
+    public void onAnchorFabClicked(final View view) {
+            navMenuAnimator.animate();
+    }
+
+
+
+    private final PennyDialog.CashChangeListener cashListener = new PennyDialog.CashChangeListener() {
         @Override
         public void onPenniesChange(long l) {
 
@@ -111,6 +115,12 @@ public class ActivityDashboard extends AppCompatActivity {
                 public void run() {
                     final SourceDialog addSourceDialog = AddSourceDialog.newInstance(null);
                     launchPennyDialog(addSourceDialog, AddSourceDialog.TAG);
+                    addSourceDialog.registerItemSelectedListener(new SourceDialog.OnSourceItemSelected() {
+                        @Override
+                        public void onSourceItemSelected(SourceWrapper wrapper) {
+                            Toast.makeText(getBaseContext(), wrapper.getTitle(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }, 500L);
 
@@ -121,8 +131,6 @@ public class ActivityDashboard extends AppCompatActivity {
 
         }
     };
-
-
     private final PennyDialog.CashChangeListener minusListener = new PennyDialog.CashChangeListener() {
         @Override
         public void onPenniesChange(long l) {
@@ -142,12 +150,7 @@ public class ActivityDashboard extends AppCompatActivity {
         }
     };
 
-    public void onMinusFabClicked(final View view){
-        final Bundle style = new Bundle();
-        style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
-        final PennyDialog dialog = SlidePennyDialog.newInstance(minusListener, style);
-        launchPennyDialog(dialog, SlidePennyDialog.TAG);
-    }
+
 
     /**
      *

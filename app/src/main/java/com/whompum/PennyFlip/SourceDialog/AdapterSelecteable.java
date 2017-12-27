@@ -15,6 +15,10 @@ public class AdapterSelecteable<E> extends ArrayList<E> {
         super();
     }
 
+    public void removeSelected(){
+        selecteable = null;
+    }
+
     public void setSelected(final E e){
         this.selecteable = e;
     }

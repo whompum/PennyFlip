@@ -7,16 +7,12 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * TODO fix bug where previously tapped item doesn't always turn off when a new element is tapped.
@@ -41,7 +37,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
     private int tagBgColor;
 
 
-    private OnSourceListItemCliked onSourceListItemCliked;
+    private OnSourceListItemChange onSourceListItemChange;
 
 
     public SourceWrapperAdapter(final Context context, @ColorRes final int textColor){
@@ -70,11 +66,24 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
 
     public void insertToFirst(final SourceWrapper wrapper){
 
+        boolean isOldSelected = false;
+
+        /**
+         * If the dataset doesn't contain data, skip all logic below and simply add the new one.
+         * Else, if the old wrapper is "NEW" then remove it from index zero, and pass it to AdapterSelectable wrappers object
+         * to check if that one has been selected. (In this case we are going to tell the client a sourceItem was clicked, but
+         * we'll hand it a null value, since that wrapper was clicked but is removed from the list.
+         * After this logic is ran, we are going to check IF the new wrapper is EMPTY or not.
+         * E.G. the user backspaced until the value for SourceWrapper#title is "". In that case we add nothing
+         */
         if(wrappers.size() != 0){
             if(wrappers.get(0).getTagType() == SourceWrapper.TAG.NEW)
-                wrappers.remove(0);
+                isOldSelected = wrappers.isSelected(wrappers.remove(0));
 
-            //Adds a NEW wrapper
+
+            if(isOldSelected)
+               notifyListener(null);
+
             if(!wrapper.getTitle().equals(SourceWrapper.EMPTY))
                 wrappers.add(0, wrapper);
         }else
@@ -91,23 +100,31 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
         else
             this.wrappers = new AdapterSelecteable<>();
 
+        wrappers.removeSelected();
+        notifyListener(null);
+
+
         notifyDataSetChanged();
+    }
+
+    protected void notifyListener(@Nullable final SourceWrapper wrapper){
+
+        if(onSourceListItemChange != null)
+            onSourceListItemChange.onSourceListItemChange(wrapper);
 
     }
 
-    public void registerOnClickListener(final OnSourceListItemCliked listener){
-        this.onSourceListItemCliked = listener;
+    public void registerOnClickListener(final OnSourceListItemChange listener){
+        this.onSourceListItemChange = listener;
     }
 
 
 
-    public void onItemClicked(final SourceViewCache item, final int position){
-        Log.i("test", "ITEM WAS CLICKED");
+    public void onItemClicked(final int position){
 
         wrappers.setSelected(wrappers.get(position));
 
-        if(onSourceListItemCliked!=null)
-             onSourceListItemCliked.onSourceItemClicked(wrappers.get(position));
+        notifyListener(wrappers.get(position));
         /**
          * Below is used so this class re-calls onBindViewHolder() which turns items on/off based on
          * whether they're in the AdapterSelectable selecteable state; This implementation
@@ -206,12 +223,11 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
 
         @Override
         public void onClick(final View v) {
-           instance.onItemClicked(this, getAdapterPosition());
+           instance.onItemClicked(getAdapterPosition());
            setIsRecyclable(false);
         }
 
         private void turnOn(){
-        Log.i("test", "FUCK ME");
             int color = 0;
 
             if(Build.VERSION.SDK_INT >=23)
