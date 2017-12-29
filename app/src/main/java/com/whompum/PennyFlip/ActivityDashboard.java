@@ -1,10 +1,10 @@
 package com.whompum.PennyFlip;
 
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -12,10 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whompum.PennyFlip.NavMenu.NavMenuAnimator;
-import com.whompum.PennyFlip.SourceDialog.AddSourceDialog;
-import com.whompum.PennyFlip.SourceDialog.SourceDialog;
-import com.whompum.PennyFlip.SourceDialog.SourceWrapper;
-import com.whompum.PennyFlip.SourceDialog.SpendingSourceDialog;
+import com.whompum.PennyFlip.Source.SourceListActivity.ActivitySourceList;
+import com.whompum.PennyFlip.Source.SourceDialog.AddSourceDialog;
+import com.whompum.PennyFlip.Source.SourceDialog.SourceDialog;
+import com.whompum.PennyFlip.Source.SourceDialog.SourceWrapper;
+import com.whompum.PennyFlip.Source.SourceDialog.SpendingSourceDialog;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
@@ -98,7 +99,7 @@ public class ActivityDashboard extends AppCompatActivity {
 
     }
     public void onSourceFabClicked(final View view){
-
+        startActivity(new Intent(this, ActivitySourceList.class));
     }
     public void onAnchorFabClicked(final View view) {
             navMenuAnimator.animate();

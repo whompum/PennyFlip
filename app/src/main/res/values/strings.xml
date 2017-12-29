@@ -21,5 +21,13 @@
     <string name="string_source_tag_sub_source">SUB-SOURCE</string>
     <string name="string_source_tag_new">NEW</string>
     <string name="string_source_dialog_search">Enter source name here</string>
+    <string name="title_activity_source_master">ActivitySourceMaster</string>
 
+
+    <!--SOURCE MASTER STRING-->
+    <string name="string_adding">ADDING</string>
+    <string name="string_spending">SPENDING</string>
+    <string name="string_view">VIEW</string>
+    <string name="string_expand">EXPAND</string>
+    <string name="string_collapse">COLLAPSE</string>
 </resources>

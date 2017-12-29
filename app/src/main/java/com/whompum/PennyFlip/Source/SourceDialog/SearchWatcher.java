@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.SourceDialog;
+package com.whompum.PennyFlip.Source.SourceDialog;
 
 import android.text.Editable;
 import android.text.TextWatcher;

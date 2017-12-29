@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.SourceDialog;
+package com.whompum.PennyFlip.Source.SourceDialog;
 
 
 import java.util.ArrayList;

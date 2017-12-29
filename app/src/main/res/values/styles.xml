@@ -6,7 +6,6 @@
     </style>
 
 
-
     <!--PennyDialog styles-->
     <style name="StylePennyDialogAdd" parent="PennyDialog">
         <item name="pennyFabSource">@drawable/ic_shape_plus_green</item>
@@ -24,7 +23,6 @@
     </style>
 
 
-
     <style name="StyleDashboardAddFab">
         <item name="fabSize">normal</item>
         <item name="backgroundTint">@color/white</item>
@@ -40,7 +38,7 @@
     </style>
 
 
-     <!--MENU STYLES-->
+    <!--MENU STYLES-->
     <style name="StyleMenuCardView">
         <item name="contentPadding">@dimen/dimen_nav_title_padding</item>
 
@@ -49,11 +47,13 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="StyleMenuTitle">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="StyleMenuFab">
         <item name="android:visibility">invisible</item>
         <item name="fabSize">mini</item>
@@ -75,6 +75,11 @@
     <style name="SourceDialogTheme" parent="Base.Theme.AppCompat.Light.Dialog">
         <item name="android:windowBackground">@null</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    
+    <style name="StyleSourceMasterAddToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/darkest_grey</item>
     </style>
 
 </resources>

@@ -1,9 +1,7 @@
-package com.whompum.PennyFlip.SourceDialog;
+package com.whompum.PennyFlip.Source.SourceDialog;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.animation.AnticipateInterpolator;
 
 import com.whompum.PennyFlip.R;
 

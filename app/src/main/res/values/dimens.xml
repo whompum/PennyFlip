@@ -34,4 +34,9 @@
 
     <dimen name="dimen_source_dialog_offset_hor">32dp</dimen>
     <dimen name="dimen_source_dialog_offset_ver">96dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!--DIMENSIONS FOR SOURCE_MASTER-->
+    <dimen name="dimen_source_master_toolbar_height">76dp</dimen>
+
 </resources>

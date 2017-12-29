@@ -37,8 +37,33 @@
     <item name="id_source_dialog_search_view" type="id"/>
     <item name="id_source_dialog_fab" type="id"/>
     <item name="id_source_dialog_header" type="id"/>
+
+
     <!--Source Dialog IDS handled by the RecyclerView Adapter-->
     <item name="id_source_dialog_source_title" type="id"/>
     <item name="id_source_dialog_source_tag" type="id"/>
     <item name="id_source_dialog_source_item_container" type="id"/>
+
+
+    <!--SOURCE MASTER IDS -->
+    <item name="id_source_master_container" type="id"/>
+    <item name="id_source_master_list" type="id"/>
+    <item name="id_source_master_add_fab" type="id"/>
+
+    <item name="id_source_master_list_source_label" type="id"/>
+    <item name="id_source_master_list_source_last_update" type="id"/>
+    <item name="id_source_master_list_source_statistics" type="id"/>
+    <item name="id_source_master_list_source_view" type="id"/>
+    <item name="id_source_master_list_source_purse" type="id"/>
+
+
+
+    <item name="id_source_master_toolbar" type="id"/>
+    <item name="id_source_master_toolbar_up" type="id"/>
+    <item name="id_source_master_toolbar_search" type="id"/>
+    <item name="id_source_master_toolbar_filter" type="id"/>
+    <item name="id_source_master_toolbar_adding_label" type="id"/>
+    <item name="id_source_master_toolbar_spending_label" type="id"/>
+
+
 </resources>

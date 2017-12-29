@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/screen_padding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        tools:text="Car Wash"
+        android:id="@id/id_source_master_list_source_label"
+        android:textSize="@dimen/text_bigboi"
+        android:textColor="@color/darkest_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        tools:text="Updated 10:20 PM"
+        android:id="@id/id_source_master_list_source_last_update"
+        android:textColor="@color/darkest_grey"
+        android:layout_below="@id/id_source_master_list_source_label"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/ic_svg_history_dark"
+        android:drawableLeft="@drawable/ic_svg_history_dark"
+        android:textSize="@dimen/text_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+        android:textColor="@color/darkest_grey"
+        android:enabled="false"
+        android:layout_alignBaseline="@id/id_source_master_list_source_label"
+        android:id="@id/id_source_master_list_source_statistics"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/ic_svg_statistics_dark"
+        android:drawableLeft="@drawable/ic_svg_statistics_dark"
+        android:drawablePadding="4dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:text="@string/string_view"
+        android:id="@id/id_source_master_list_source_view"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/light_blue"
+        android:layout_below="@id/id_source_master_list_source_statistics"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -46,6 +46,7 @@ public class Timestamp {
         return timestamp;
     }
 
+
     public long millis(){
         return timestamp.getMillis();
     }
@@ -71,5 +72,7 @@ public class Timestamp {
     public int minute(){return timestamp.getMinuteOfHour(); }
 
     public int second(){return timestamp.getSecondOfMinute(); }
+
+
 
 }

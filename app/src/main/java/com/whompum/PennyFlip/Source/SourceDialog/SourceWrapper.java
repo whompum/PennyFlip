@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.SourceDialog;
+package com.whompum.PennyFlip.Source.SourceDialog;
 
 
 /**
@@ -10,7 +10,6 @@ public class SourceWrapper {
     public static final String EMPTY = "EMPTY";
 
     private String sourceTitle;
-
     private TAG tag;
 
     public SourceWrapper(String title, final TAG tag){
@@ -25,6 +24,10 @@ public class SourceWrapper {
     public String getTitle(){
         return sourceTitle;
     }
+    public TAG getTagType(){
+        return tag;
+    }
+
 
     public String getTag(final TAG tag){
 
@@ -38,14 +41,10 @@ public class SourceWrapper {
 
     return "DEFAULT";
     }
-
     public String getTag(){
         return getTag(tag);
     }
 
-    public TAG getTagType(){
-        return tag;
-    }
 
     public enum TAG {BASE, SUBSOURCE, NEW}
 

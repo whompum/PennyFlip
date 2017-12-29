@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/screen_padding"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.whompum.PennyFlip.PurseTotalView
+        app:purseSize="56dp"
+        app:purseTextScale=".6"
+        android:id="@+id/id_source_master_list_source_purse"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <include layout="@layout/layout_source_master_list_item"
+             android:layout_marginStart="@dimen/screen_padding"
+             android:layout_marginLeft="@dimen/screen_padding"
+             android:layout_toEndOf="@id/id_source_master_list_source_purse"
+             android:layout_toRightOf="@id/id_source_master_list_source_purse"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"/>
+
+
+
+
+</RelativeLayout>

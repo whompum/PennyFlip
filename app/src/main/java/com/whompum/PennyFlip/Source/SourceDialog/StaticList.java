@@ -1,7 +1,7 @@
-package com.whompum.PennyFlip.SourceDialog;
+package com.whompum.PennyFlip.Source.SourceDialog;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.whompum.PennyFlip.Source.SourceDialog.AdapterSelecteable;
+import com.whompum.PennyFlip.Source.SourceDialog.SourceWrapper;
 
 /**
  * Created by bryan on 12/21/2017.

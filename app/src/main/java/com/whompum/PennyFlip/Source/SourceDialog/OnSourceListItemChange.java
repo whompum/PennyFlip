@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.SourceDialog;
+package com.whompum.PennyFlip.Source.SourceDialog;
 
 /**
  * Created by bryan on 12/21/2017.
