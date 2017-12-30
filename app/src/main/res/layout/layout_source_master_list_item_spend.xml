@@ -7,8 +7,8 @@
 
 
     <com.whompum.PennyFlip.PurseTotalView
-        app:purseSize="56dp"
-        app:purseTextScale=".6"
+        app:totalViewSize="56dp"
+        app:totalViewTextScale=".6"
         android:id="@+id/id_source_master_list_source_purse"
         android:layout_centerVertical="true"
         android:layout_gravity="center"

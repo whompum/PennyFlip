@@ -2,10 +2,19 @@
 <resources>
 
     <declare-styleable name="PurseTotalView">
-        <attr name="purseSize" format="dimension|integer"/>
-        <attr name="purseTextScale" format="float"/>
-        <attr name="purseValue" format="integer"/>
         <attr name="NAEnabled" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="CircleTotalView">
+        <attr name="circleTotalViewValueColor" format="color|reference"/>
+        <attr name="circleTotalViewBackgroundColor" format="color|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="TotalView">
+        <attr name="totalViewSize" format="dimension|integer"/>
+        <attr name="totalViewTextScale" format="float"/>
+        <attr name="totalViewValue" format="integer"/>
+    </declare-styleable>
+
 
 </resources>
