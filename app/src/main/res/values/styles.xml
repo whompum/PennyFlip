@@ -2,7 +2,19 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="sourceDataColorSecondary">@color/light_blue</item>
+        <item name="sourceDataColorPrimary">@color/light_green</item>
+    </style>
 
+
+    <style name="StyleSourceDataAdded" parent="AppTheme">
+        <item name="sourceDataColorPrimary">@color/light_green</item>
+        <item name="sourceDataTotalLabel">@string/string_total_added</item>
+    </style>
+
+    <style name="StyleSourceDataSpent" parent="AppTheme">
+        <item name="sourceDataColorPrimary">@color/light_red</item>
+        <item name="sourceDataTotalLabel">@string/string_total_spent</item>
     </style>
 
 

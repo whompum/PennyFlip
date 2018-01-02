@@ -66,4 +66,34 @@
     <item name="id_source_master_toolbar_spending_label" type="id"/>
 
 
+    <!--SOURCE DATA IDS-->
+    <item name="id_source_data_up" type="id"/>
+    <item name="id_source_data_sourcename" type="id"/>
+    <item name="id_source_data_value_label" type="id"/>
+    <item name="id_source_data_value" type="id"/>
+    <item name="id_source_data_value_timestamp" type="id"/>
+    <item name="id_source_data_container" type="id"/>
+    <item name="id_source_data_title_indicator" type="id"/>
+
+    <item name="id_source_data_transaction_container" type="id"/>
+
+    <!--TRANSACTIONS LIST ITEM IDS-->
+    <item name="id_transctions_list_item_timestamp" type="id"/>
+    <item name="id_transactions_list_item_value" type="id"/>
+    <item name="id_transactions_list_item_original_value" type="id"/>
+
+
+    <!--Statistics Data-->
+    <item name="id_source_stats_value" type="id"/>
+    <item name="id_source_stats_time_period_label" type="id"/>
+    <item name="id_source_stats_time_period_icon" type="id"/>
+    <item name="id_source_stats_source_total" type="id"/>
+    <item name="id_source_stats_time_period_total" type="id"/>
+    <item name="id_source_stats_summary" type="id"/>
+    
 </resources>
+
+
+
+
+

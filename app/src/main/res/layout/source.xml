@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:weightSum="10"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivitySourceData.ActivitySourceData">
+
+
+    <RelativeLayout
+        tools:background="@color/light_green"
+        android:background="?attr/sourceDataColorPrimary"
+        android:layout_weight="4.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@id/id_source_data_up"
+            app:srcCompat="@drawable/ic_svg_chevron"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <TextView
+            tools:text="Source Name"
+            android:id="@+id/id_source_data_sourcename"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/id_source_data_up"
+            android:layout_toEndOf="@id/id_source_data_up"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_mediano"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--Convert to a style, and re-use
+            Also convert below into a separate layout, and merge-->
+        <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+            android:textSize="@dimen/text_OG"
+            android:id="@id/id_source_data_value"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white"
+            android:clickable="false"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            tools:text="Total Added"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_normal"
+            android:text="?attr/sourceDataTotalLabel"
+            android:layout_alignLeft="@id/id_source_data_value"
+            android:layout_alignStart="@id/id_source_data_value"
+            android:layout_above="@id/id_source_data_value"
+            android:id="@id/id_source_data_value_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/string_null_transactions"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_small"
+            android:layout_alignLeft="@id/id_source_data_value"
+            android:layout_alignStart="@id/id_source_data_value"
+            android:layout_below="@id/id_source_data_value"
+            android:id="@id/id_source_data_value_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout
+            android:layout_margin="@dimen/screen_padding"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:id="@id/id_source_data_title_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:layout_weight="5.5"
+        android:id="@id/id_source_data_container"
+        android:background="@color/milk_white"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+</LinearLayout>

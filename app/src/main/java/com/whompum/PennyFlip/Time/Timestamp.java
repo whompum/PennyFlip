@@ -1,6 +1,7 @@
 package com.whompum.PennyFlip.Time;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
 
 /**
  * Simple container class for a timestamp.
@@ -66,7 +67,11 @@ public class Timestamp {
     }
 
     public int hour(){
-        return timestamp.getHourOfDay();
+        return timestamp.get(DateTimeFieldType.hourOfHalfday());
+    }
+
+    public int amPm(){
+        return timestamp.get(DateTimeFieldType.halfdayOfDay());
     }
 
     public int minute(){return timestamp.getMinuteOfHour(); }

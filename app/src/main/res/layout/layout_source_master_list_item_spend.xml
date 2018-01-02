@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <com.whompum.PennyFlip.PurseTotalView
+    <com.whompum.PennyFlip.Widgets.PurseTotalView
         app:totalViewSize="56dp"
         app:totalViewTextScale=".6"
         android:id="@+id/id_source_master_list_source_purse"

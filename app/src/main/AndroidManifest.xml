@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ActivityDashboard"
+            android:name=".ActivityDashboard.ActivityDashboard"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,18 +18,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
-            android:name=".Source.SourceListActivity.ActivitySourceList"
+            android:name=".ActivitySourceList.ActivitySourceList"
             android:label="@string/title_activity_source_master"
+            android:parentActivityName=".ActivityDashboard.ActivityDashboard"
             android:theme="@style/AppTheme"
-            android:parentActivityName=".ActivityDashboard"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityDashboard" />
+                android:value=".ActivityDashboard.ActivityDashboard" />
         </activity>
+
+
+        <activity android:name=".ActivitySourceData.ActivitySourceDataAdded"
+                  android:theme="@style/StyleSourceDataAdded"
+                  android:windowSoftInputMode="stateHidden"
+                  android:parentActivityName=".ActivityDashboard.ActivityDashboard">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityDashboard.ActivityDashboard" />
+        </activity>
+
+        <activity android:name=".ActivitySourceData.ActivitySourceDataSpent"
+                  android:theme="@style/StyleSourceDataSpent"
+                  android:windowSoftInputMode="stateHidden"
+                  android:parentActivityName=".ActivityDashboard.ActivityDashboard">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityDashboard.ActivityDashboard" />
+        </activity>
+
+
     </application>
 
 </manifest>

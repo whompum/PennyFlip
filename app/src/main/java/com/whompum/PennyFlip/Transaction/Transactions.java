@@ -14,19 +14,21 @@ public class Transactions {
     private Timestamp timestamp;
 
     private long pennyAmount;
-    private TYPE transactionType;
+
+    private long originalAmount;
+
     private String sourceName; //Maybe a reference to a source too?
 
 
-    public Transactions(final long pennyAmount, final TYPE transactionType, final String sourceName){
-        this(Long.MIN_VALUE, pennyAmount, transactionType, sourceName);
+    public Transactions(final long pennyAmount, final long originalAmount, final String sourceName){
+        this(Long.MIN_VALUE, pennyAmount, originalAmount, sourceName);
     }
 
 
-    public Transactions(final long millis, final long pennyAmount, final TYPE transactionType, final String sourceName){
+    public Transactions(final long millis, final long pennyAmount, final long originalAmount, final String sourceName){
         this.pennyAmount = pennyAmount;
-        this.transactionType = transactionType;
         this.sourceName = sourceName;
+        this.originalAmount = originalAmount;
 
         if(millis == Long.MIN_VALUE)
             timestamp = Timestamp.now();
@@ -42,22 +44,22 @@ public class Transactions {
         return pennyAmount;
     }
 
-    public TYPE getTransactionType(){
-        return transactionType;
-    }
+    public long getOriginalAmount(){return originalAmount;}
 
     public String getName(){
         return sourceName;
     }
 
+
+
     public String simpleTime(){
-        return PennyFlipTimeFormatter.simpleTime(timestamp.getTimestamp());
+        return PennyFlipTimeFormatter.simpleTime(timestamp);
     }
 
-
-    public enum TYPE{
-        SPENT, ADDED
+    public String simpleDate(){
+        return PennyFlipTimeFormatter.simpleDate(timestamp);
     }
+
 
 }
 

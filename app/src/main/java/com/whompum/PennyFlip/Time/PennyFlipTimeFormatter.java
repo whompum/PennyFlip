@@ -20,14 +20,16 @@ public class PennyFlipTimeFormatter {
 
     private static StringBuilder formatter = new StringBuilder();
 
+
+
     /**
      * @return a formatted simple time such as 12:18 PM
      */
-    public static String simpleTime(@NonNull final DateTime timeStamp){
+    public static String simpleTime(@NonNull final Timestamp timeStamp){
 
         formatter.delete(0, formatter.length());
 
-        int hour = timeStamp.get(DateTimeFieldType.hourOfHalfday());
+        int hour = timeStamp.hour();
 
         if(hour == 0)
             formatter.append(12);
@@ -36,14 +38,14 @@ public class PennyFlipTimeFormatter {
 
         formatter.append(HOUR_SEP);
 
-        int minute = timeStamp.getMinuteOfHour();
+        int minute = timeStamp.minute();
 
         if(minute < 10)
             formatter.append(0);
 
         formatter.append(minute);
 
-        final int AM_PM = timeStamp.get(DateTimeFieldType.halfdayOfDay());
+        final int AM_PM = timeStamp.amPm();
 
         final String cycle = (AM_PM == AM) ? " AM" : " PM";
 
@@ -52,6 +54,29 @@ public class PennyFlipTimeFormatter {
     return formatter.toString();
     }
 
+
+    public static String simpleDate(@NonNull final Timestamp timeStamp){
+
+        final int month = timeStamp.month();
+        final int day = timeStamp.day();
+
+        formatter.delete(0, formatter.length());
+
+
+        if(month < 10)
+            formatter.append(0);
+
+        formatter.append(month);
+
+        formatter.append("/");
+
+        if(day < 10)
+            formatter.append(0);
+
+        formatter.append(day);
+
+        return formatter.toString();
+    }
 
 
 

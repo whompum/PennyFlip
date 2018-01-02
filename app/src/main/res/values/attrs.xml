@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <!--ATTRIBUTES USED FOR STYLING THE SOURCE DATA ACTIVITY UI-->
+    <attr name="sourceDataColorPrimary" format="color|reference"/>
+    <attr name="sourceDataColorSecondary" format="color|reference"/>
+    <attr name="sourceDataTotalLabel" format="string|reference"/>
+
+
     <declare-styleable name="PurseTotalView">
         <attr name="NAEnabled" format="boolean"/>
     </declare-styleable>

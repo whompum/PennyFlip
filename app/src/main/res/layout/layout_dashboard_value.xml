@@ -45,7 +45,7 @@
     android:id="@id/id_dashboard_value"
     android:background="@android:color/transparent"
     android:enabled="false"
-    android:textSize="42sp"
+    android:textSize="@dimen/text_OG"
     android:textColor="@color/white"
     android:textStyle="bold"
     android:layout_centerInParent="true"

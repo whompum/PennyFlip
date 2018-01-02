@@ -3,10 +3,15 @@
 
     <string name="string_total">Total</string>
     <string name="string_today">Today</string>
+    <string name="string_today_cap">TODAY</string>
     <string name="string_total_spent">Total Spent</string>
-    <string name="string_total_added">Total Made</string>
+    <string name="string_total_added">Total Added</string>
+    <string name="string_total_made">Total Made</string>
 
-    <string name="string_null_transactionlist">No transactions for today.</string>
+    <string name="string_null_transactionlist">No transactions for today</string>
+    <string name="string_null_transactions">No Recent Transactions</string>
+    <string name="string_last_update">Last Update: </string>
+
     <string name="string_tooltip_calibrate">Re-callibrate your pennies with how much money you really have</string>
 
     <string name="string_add_dialog">Enter The Amount You Made</string>
@@ -30,4 +35,9 @@
     <string name="string_view">VIEW</string>
     <string name="string_expand">EXPAND</string>
     <string name="string_collapse">COLLAPSE</string>
+
+    <string name="string_transaction">Transaction</string>
+    <string name="string_purse">Purse</string>
+
+
 </resources>

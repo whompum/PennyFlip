@@ -11,7 +11,7 @@
     <dimen name="text_mediano">20sp</dimen>
     <dimen name="text_bigboi">24sp</dimen>
     <dimen name="text_hulk">32sp</dimen>
-    <dimen name="text_OG_mudbone">42dp</dimen>
+    <dimen name="text_OG">42dp</dimen>
 
     <dimen name="dashboard_icon_size">48dp</dimen>
     <dimen name="dashboard_icon_shrink">24dp</dimen>
