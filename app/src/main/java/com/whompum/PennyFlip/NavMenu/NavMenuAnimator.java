@@ -30,6 +30,7 @@ import java.util.Iterator;
 public class NavMenuAnimator {
 
     public static final String TAG = "NavMenuAnimator";
+    public static final long DURATION = 150L;
 
 
     private FloatingActionButton anchor;
@@ -94,7 +95,7 @@ public class NavMenuAnimator {
                 wrapper.init(anchor.getY());
 
             wrapper.open(wrapper.openTop, delay);
-            delay += 250L;
+            delay += DURATION;
         }
         isOpen = true;
     }
@@ -108,7 +109,7 @@ public class NavMenuAnimator {
             final ViewWrapper wrapper = iterator.next();
                 wrapper.close(anchor.getTop(), delay);
 
-            delay -= 250L;
+            delay -= DURATION;
         }
         isOpen = false;
     }
@@ -150,7 +151,7 @@ public class NavMenuAnimator {
             fab.setVisibility(View.VISIBLE);
             container.animate()
                     .setStartDelay(delay)
-                    .setDuration(250L)
+                    .setDuration(DURATION)
                     .y(to)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
@@ -168,7 +169,7 @@ public class NavMenuAnimator {
         void close(int to, final long delay){
             container.animate()
                     .setStartDelay(delay)
-                    .setDuration(250L)
+                    .setDuration(DURATION)
                     .y(to)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .setListener(new AnimatorListenerAdapter() {
