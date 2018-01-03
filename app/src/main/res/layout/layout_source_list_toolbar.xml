@@ -27,7 +27,7 @@
         android:layout_toEndOf="@id/id_source_master_toolbar_up"
         android:text="@string/string_sources"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_bigboi"
+        android:textSize="@dimen/dimen_text_bigboi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

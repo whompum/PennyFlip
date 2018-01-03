@@ -2,14 +2,14 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="@dimen/screen_padding"
+    android:layout_margin="@dimen/dimen_screen_padding"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         tools:text="Car Wash"
         android:id="@id/id_source_master_list_source_label"
-        android:textSize="@dimen/text_bigboi"
+        android:textSize="@dimen/dimen_text_bigboi"
         android:textColor="@color/darkest_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -23,16 +23,15 @@
         android:drawablePadding="4dp"
         android:drawableStart="@drawable/ic_svg_history_dark"
         android:drawableLeft="@drawable/ic_svg_history_dark"
-        android:textSize="@dimen/text_small"
+        android:textSize="@dimen/dimen_text_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+        style="@style/StyleCurrentEditText"
         android:textColor="@color/darkest_grey"
-        android:enabled="false"
         android:layout_alignBaseline="@id/id_source_master_list_source_label"
         android:id="@id/id_source_master_list_source_statistics"
-        android:background="@android:color/transparent"
         android:drawableStart="@drawable/ic_svg_statistics_dark"
         android:drawableLeft="@drawable/ic_svg_statistics_dark"
         android:drawablePadding="4dp"
