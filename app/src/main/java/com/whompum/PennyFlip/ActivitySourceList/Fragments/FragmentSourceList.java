@@ -33,7 +33,7 @@ import java.util.List;
 public abstract class FragmentSourceList extends Fragment implements SourceListClickListener {
 
     @LayoutRes
-    protected static final int LAYOUT = R.layout.layout_source_master_list;
+    protected static final int LAYOUT = R.layout.layout_source_list_container;
 
     protected RecyclerView list;
     protected SourceListAdapterBase listAdapter;

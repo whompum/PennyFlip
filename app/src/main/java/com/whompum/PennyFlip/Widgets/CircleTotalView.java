@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Widgets.TotalView;
 
 /**
  * Created by bryan on 12/30/2017.
@@ -63,19 +62,19 @@ public class CircleTotalView extends TotalView {
         valuePathBounds.set(0.0F, 0.0F, width, height);
 
         /**
-         * STEP NUMERO UNO (STRAIGHT LINES)
+         * PASO NUMERO UNO (STRAIGHT LINES)
          * Move to 0 DEGREES (Translated from Cartesian coordinates)
          *
-         * STEP NUMERO DOS
+         * PASO NUMERO DOS
          * Line to center X/Y
          *
-         * STEP NUMERO TRES
+         * PASO STEP NUMERO TRES
          * Line to SweepAngle (Translated fro Cartesian coordinates)
          *
-         * STEP NUMERO CUATROS
+         * PASO NUMERO CUATROS
          * CLOSE PATH
          *
-         * STEP NUMERO CINCO
+         * PASO NUMERO CINCO
          * Profit??
          *
          **/

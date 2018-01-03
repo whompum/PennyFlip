@@ -38,7 +38,7 @@ public class SourceSpendListAdapter extends SourceListAdapterBase {
 
     @Override
     protected int setLayout() {
-        return R.layout.layout_source_master_list_item_spend;
+        return R.layout.layout_source_list_item_spend;
     }
 
     @Override

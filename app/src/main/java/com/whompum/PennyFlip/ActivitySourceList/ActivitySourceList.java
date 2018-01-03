@@ -32,7 +32,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_source_master);
+        setContentView(R.layout.layout_source_list);
 
         toolyBary = findViewById(R.id.id_source_master_toolbar);
         setSupportActionBar(toolyBary);
