@@ -6,9 +6,16 @@
     android:layout_height="match_parent">
     <!--Wrapped in a FrameLayout so we can later add graphics if no transactions are available-->
 <android.support.v7.widget.RecyclerView
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:listitem="@layout/layout_transaction_list_item"
+    android:paddingLeft="@dimen/dimen_screen_padding"
+    android:paddingRight="@dimen/dimen_screen_padding"
+    android:paddingStart="@dimen/dimen_screen_padding"
+    android:paddingEnd="@dimen/dimen_screen_padding"
     android:id="@id/id_source_data_transaction_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 </android.support.v7.widget.RecyclerView>
+
 </FrameLayout>

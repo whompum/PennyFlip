@@ -31,28 +31,22 @@
             android:layout_toRightOf="@id/id_source_data_up"
             android:layout_toEndOf="@id/id_source_data_up"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_mediano"
+            android:textSize="@dimen/dimen_text_mediano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <!--Convert to a style, and re-use
             Also convert below into a separate layout, and merge-->
         <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-            android:textSize="@dimen/text_OG"
+            style="@style/StyleCurrentEditTextLarge"
             android:id="@id/id_source_data_value"
-            android:textStyle="bold"
-            android:background="@android:color/transparent"
-            android:textColor="@color/white"
-            android:clickable="false"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             tools:text="Total Added"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_normal"
+            style="@style/StyleTotalLabel"
             android:text="?attr/sourceDataTotalLabel"
             android:layout_alignLeft="@id/id_source_data_value"
             android:layout_alignStart="@id/id_source_data_value"
@@ -62,9 +56,8 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            style="@style/StyleLastUpdate"
             android:text="@string/string_null_transactions"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_small"
             android:layout_alignLeft="@id/id_source_data_value"
             android:layout_alignStart="@id/id_source_data_value"
             android:layout_below="@id/id_source_data_value"
@@ -74,7 +67,7 @@
 
 
         <LinearLayout
-            android:layout_margin="@dimen/screen_padding"
+            android:layout_margin="@dimen/dimen_screen_padding"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
             android:id="@id/id_source_data_title_indicator"

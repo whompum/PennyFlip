@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <include layout="@layout/layout_source_master_list_item"
+    <include layout="@layout/layout_source_list_item"
              android:layout_marginStart="@dimen/dimen_screen_padding"
              android:layout_marginLeft="@dimen/dimen_screen_padding"
              android:layout_toEndOf="@id/id_source_master_list_source_purse"

@@ -8,7 +8,7 @@
 
 <android.support.v7.widget.RecyclerView
 
-    tools:listitem="@layout/layout_source_master_list_item"
+    tools:listitem="@layout/layout_source_list_item"
     android:id="@id/id_source_master_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />

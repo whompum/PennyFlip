@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="@dimen/screen_padding"
+    android:layout_marginTop="@dimen/dimen_screen_padding"
+    android:layout_marginBottom="@dimen/dimen_screen_padding"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -15,25 +16,21 @@
     android:layout_height="wrap_content" />
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-        tools:text="$77.98"
-        tools:textColor="@color/light_green"
+        style="@style/StyleCurrentEditText"
         android:textColor="?attr/sourceDataColorPrimary"
-        android:background="@android:color/transparent"
         android:layout_marginStart="16dp"
         android:layout_centerVertical="true"
-        android:textStyle="bold"
-        android:textSize="@dimen/text_mediano"
+        android:textSize="@dimen/dimen_text_mediano"
         android:layout_toEndOf="@id/id_transctions_list_item_timestamp"
         android:id="@id/id_transactions_list_item_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-        tools:text="$567.99"
+        style="@style/StyleCurrentEditText"
         android:id="@id/id_transactions_list_item_original_value"
         android:textColor="@color/dark_grey"
-        android:textSize="@dimen/text_bigboi"
-        android:background="@android:color/transparent"
+        android:textSize="@dimen/dimen_text_bigboi"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

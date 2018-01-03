@@ -11,12 +11,10 @@
     tools:showIn="@layout/dashboard">
 
     <TextView
+        style="@style/StyleDateLabel"
         android:text="@string/string_today"
 
-        android:textSize="@dimen/text_mediano"
-        android:textColor="@color/white"
-
-        android:layout_margin="@dimen/screen_padding"
+        android:layout_margin="@dimen/dimen_screen_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -35,7 +33,7 @@
             android:layout_height="72dp" />
 
         <TextView
-            android:textSize="@dimen/text_normal"
+            android:textSize="@dimen/dimen_text_normal"
             android:textStyle="bold"
             android:text="@string/string_null_transactionlist"
             android:layout_width="wrap_content"
@@ -50,7 +48,7 @@
         android:id="@id/id_dashboard_today_value"
         android:background="@android:color/transparent"
         android:enabled="false"
-        android:textSize="@dimen/text_hulk"
+        android:textSize="@dimen/dimen_text_hulk"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_centerInParent="true"
@@ -60,11 +58,8 @@
 
 
     <TextView
+    style="@style/StyleTotalLabel"
     android:text="@string/string_total_added"
-
-    android:textSize="@dimen/text_normal"
-    android:textColor="@color/white"
-    android:textStyle="normal"
 
     android:id="@id/id_dashboard_today_total_label"
     android:layout_alignLeft="@id/id_dashboard_today_value"
@@ -74,27 +69,22 @@
     android:layout_height="wrap_content" />
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-        android:text="$21.99"
+        style="@style/StyleCurrentEditText"
+        android:textSize="@dimen/dimen_text_normal"
 
-        android:textSize="@dimen/text_normal"
-        android:textColor="@color/white"
-        android:textStyle="normal"
-        android:background="@android:color/transparent"
         android:id="@id/id_dashboard_today_value_secondary"
-        android:layout_marginBottom="@dimen/screen_padding"
-        android:layout_marginEnd="@dimen/screen_padding"
-        android:layout_marginRight="@dimen/screen_padding"
+        android:layout_marginBottom="@dimen/dimen_screen_padding"
+        android:layout_marginEnd="@dimen/dimen_screen_padding"
+        android:layout_marginRight="@dimen/dimen_screen_padding"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:text="@string/string_total_spent"
+        style="@style/StyleTotalLabel"
 
-        android:textSize="@dimen/text_normal"
-        android:textColor="@color/white"
-        android:textStyle="normal"
+        android:text="@string/string_total_spent"
 
         android:id="@id/id_dashboard_today_total_label_secondary"
         android:layout_above="@id/id_dashboard_today_value_secondary"
