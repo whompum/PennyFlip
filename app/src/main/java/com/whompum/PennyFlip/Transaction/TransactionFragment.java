@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.whompum.PennyFlip.ActivityHistory.TransactionsAdapter;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ListPopulator;
 
@@ -24,8 +25,6 @@ public class TransactionFragment extends Fragment implements ListPopulator<Trans
 
     @LayoutRes
     private static final int LAYOUT_RES = R.layout.layout_transaction;
-
-    private String title;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -48,7 +47,7 @@ public class TransactionFragment extends Fragment implements ListPopulator<Trans
         recyclerView = layout.findViewById(R.id.id_source_data_transaction_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new TransactionsListAdapter(getContext());
+        adapter = new TransactionsAdapter(getContext());
 
         if(pendingData)
             bindAdapter(dataSet);
@@ -76,7 +75,7 @@ public class TransactionFragment extends Fragment implements ListPopulator<Trans
 
 
     private void bindAdapter(final List<Transactions> dataSet){
-        ((TransactionsListAdapter)adapter).setDataSet(dataSet);
+        ((TransactionsAdapter)adapter).swapDataSet(dataSet);
     }
 
 

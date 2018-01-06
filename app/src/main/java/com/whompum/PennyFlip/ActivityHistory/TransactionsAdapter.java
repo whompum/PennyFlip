@@ -51,6 +51,13 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
 
     }
 
+    public void swapDataSet(final List<Transactions> transactions){
+        if(transactions!=null) {
+            this.dataSet = transactions;
+            notifyDataSetChanged();
+        }
+    }
+
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
