@@ -35,9 +35,10 @@
 
         <LinearLayout
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginStart="48dp"
             android:layout_marginLeft="48dp"
+            android:orientation="horizontal"
             android:id="@+id/someId"
             android:layout_below="@id/positioning_dummy_source_label"
             android:layout_width="wrap_content"

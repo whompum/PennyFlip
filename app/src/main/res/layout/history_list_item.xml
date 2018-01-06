@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:textColor="@color/darkest_grey"
+        android:text="3:49 PM"
+        android:layout_marginStart="8dp"
+        android:id="@+id/id_history_date_label"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:layout_below="@id/id_history_date_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:textColor="@color/light_green"
+        android:text="CarWash"
+        android:id="@id/id_history_source_name"
+        android:drawableStart="@drawable/drawable_shape_circle_green"
+        android:drawablePadding="8dp"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/dimen_text_mediano"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+            style="@style/StyleCurrentEditText"
+            android:id="@id/id_history_transaction_amount"
+            android:textColor="@color/light_green"
+            android:text="$44.72"
+            android:layout_gravity="end|center"
+            android:textSize="@dimen/dimen_text_bigboi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+
+
+
+</RelativeLayout>

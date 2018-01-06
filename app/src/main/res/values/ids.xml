@@ -77,7 +77,9 @@
 
     <item name="id_source_data_transaction_container" type="id"/>
 
-    <!--TRANSACTIONS LIST ITEM IDS-->
+    <!--TRANSACTIONS LIST ITEM IDS
+        REPLACE WITH BELOW HISTORY IDS
+    -->
     <item name="id_transctions_list_item_timestamp" type="id"/>
     <item name="id_transactions_list_item_value" type="id"/>
     <item name="id_transactions_list_item_original_value" type="id"/>
@@ -90,7 +92,19 @@
     <item name="id_source_stats_source_total" type="id"/>
     <item name="id_source_stats_time_period_total" type="id"/>
     <item name="id_source_stats_summary" type="id"/>
-    
+
+
+    <!--HISTORY LABEL-->
+    <item name="id_history_up" type="id"/>
+    <item name="id_history_time_range" type="id"/>
+    <item name="id_history_time_picker" type="id"/>
+    <item name="id_history_today_label" type="id"/>
+    <item name="id_history_recycler" type="id"/>
+    <item name="id_history_transactions_amount_label" type="id"/>
+    <item name="id_history_date_label" type="id"/>
+    <item name="id_history_source_name" type="id"/>
+    <item name="id_history_transaction_amount" type="id"/>
+
 </resources>
 
 

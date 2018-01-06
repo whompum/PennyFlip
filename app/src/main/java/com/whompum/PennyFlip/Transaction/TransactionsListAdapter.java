@@ -109,8 +109,8 @@ public class TransactionsListAdapter extends RecyclerView.Adapter<TransactionsLi
             else
                 adjustForPast(transDate);
 
-            value.setText(String.valueOf(transactions.getAmount()));
-            originalValue.setText(String.valueOf(transactions.getOriginalAmount()));
+            value.setText(String.valueOf(transactions.getTransactionAmount()));
+            originalValue.setText(String.valueOf(transactions.getOriginalTransactionAmount()));
         }
 
         private void adjustTextForToday(){

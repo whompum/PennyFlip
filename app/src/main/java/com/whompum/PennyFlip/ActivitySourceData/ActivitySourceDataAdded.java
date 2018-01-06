@@ -50,7 +50,7 @@ public class ActivitySourceDataAdded extends ActivitySourceData implements Stati
         int day = 0;
 
         for(int i =0; i < 10; i ++){
-            data.add(new Transactions(currTime - TimeUnit.DAYS.toMillis(day),2782, 5997, "Food"));
+            data.add(new Transactions(Transactions.ADD ,currTime - TimeUnit.DAYS.toMillis(day),2782, 5997, "Food"));
 
             day += 64;
         }

@@ -1,5 +1,8 @@
 package com.whompum.PennyFlip.Transaction;
 
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;
 
@@ -20,12 +23,24 @@ public class Transactions {
     private String sourceName; //Maybe a reference to a source too?
 
 
-    public Transactions(final long pennyAmount, final long originalAmount, final String sourceName){
-        this(Long.MIN_VALUE, pennyAmount, originalAmount, sourceName);
+    public static final int ADD = 1;
+    public static final int SPEND = 10;
+
+
+    @TYPE private int transactionType = -1;
+
+    @IntDef(ADD)
+    public @interface TYPE{}
+
+
+
+
+    public Transactions(@NonNull @TYPE final int type, final long pennyAmount, final long originalAmount, final String sourceName){
+        this(type, Long.MIN_VALUE, pennyAmount, originalAmount, sourceName);
     }
 
 
-    public Transactions(final long millis, final long pennyAmount, final long originalAmount, final String sourceName){
+    public Transactions(@NonNull @TYPE final int type, final long millis, final long pennyAmount, final long originalAmount, final String sourceName){
         this.pennyAmount = pennyAmount;
         this.sourceName = sourceName;
         this.originalAmount = originalAmount;
@@ -34,23 +49,31 @@ public class Transactions {
             timestamp = Timestamp.now();
         else
             timestamp = Timestamp.from(millis);
+
+        this.transactionType = type;
+
     }
+
+
+
 
     public Timestamp getTimestamp(){
         return timestamp;
     }
 
-    public long getAmount(){
+    public long getTransactionAmount(){
         return pennyAmount;
     }
 
-    public long getOriginalAmount(){return originalAmount;}
+    public long getOriginalTransactionAmount(){return originalAmount;}
 
-    public String getName(){
+    public String getSourceName(){
         return sourceName;
     }
 
-
+    public int getTransactionType(){
+        return transactionType;
+    }
 
     public String simpleTime(){
         return PennyFlipTimeFormatter.simpleTime(timestamp);

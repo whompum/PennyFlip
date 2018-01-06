@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.NavMenu.NavMenuAnimator;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
@@ -98,7 +99,7 @@ public class ActivityDashboard extends AppCompatActivity {
 
     }
     public void onHistoryFabClicked(final View view){
-
+        startActivity(new Intent(this, ActivityHistory.class));
     }
     public void onSourceFabClicked(final View view){
         startActivity(new Intent(this, ActivitySourceList.class));
