@@ -104,6 +104,8 @@
     <item name="id_history_date_label" type="id"/>
     <item name="id_history_source_name" type="id"/>
     <item name="id_history_transaction_amount" type="id"/>
+    <item name="id_history_transaction_header_date" type="id"/>
+    <item name="id_history_transaction_header_cuantos" type="id"/>
 
 </resources>
 

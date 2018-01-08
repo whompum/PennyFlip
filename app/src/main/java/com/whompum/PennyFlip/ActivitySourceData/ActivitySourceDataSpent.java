@@ -1,7 +1,6 @@
 package com.whompum.PennyFlip.ActivitySourceData;
 
 
-import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceData;
 import com.whompum.PennyFlip.ListPopulator;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
@@ -10,7 +9,7 @@ import com.whompum.PennyFlip.Statistics.SourceStatistic;
 import com.whompum.PennyFlip.Statistics.StatisticsFragment;
 import com.whompum.PennyFlip.Statistics.TimeRange;
 import com.whompum.PennyFlip.Transaction.TransactionFragment;
-import com.whompum.PennyFlip.Transaction.Transactions;
+import com.whompum.PennyFlip.Transaction.Models.Transactions;
 
 import java.util.ArrayList;
 import java.util.List;
