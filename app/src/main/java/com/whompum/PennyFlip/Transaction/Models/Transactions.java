@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Transaction;
+package com.whompum.PennyFlip.Transaction.Models;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
