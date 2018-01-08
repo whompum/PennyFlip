@@ -8,6 +8,7 @@ import com.whompum.PennyFlip.Statistics.Populator;
 import com.whompum.PennyFlip.Statistics.SourceStatistic;
 import com.whompum.PennyFlip.Statistics.StatisticsFragment;
 import com.whompum.PennyFlip.Statistics.TimeRange;
+import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
 import com.whompum.PennyFlip.Transaction.TransactionFragment;
 import com.whompum.PennyFlip.Transaction.Models.Transactions;
 
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class ActivitySourceDataSpent extends ActivitySourceData implements StatisticsFragment.StatisticsServer<TimeRange> {
 
 
-    private ListPopulator<Transactions> transactionFragment;
+    private ListPopulator<HeaderItem> transactionFragment;
     private Populator<SourceStatistic> sourceStatisticPopulator;
 
     @Override
@@ -42,24 +43,7 @@ public class ActivitySourceDataSpent extends ActivitySourceData implements Stati
 
     @Override
     protected void populateFragments() {
-
-        final List<Transactions> data = new ArrayList<>();
-
-        final long currTime = System.currentTimeMillis();
-
-
-        int day = 0;
-
-        for(int i =0; i < 10; i ++){
-            data.add(new Transactions(Transactions.SPEND ,currTime - TimeUnit.DAYS.toMillis(day),2782, 5997, "Food"));
-
-            day += 64;
-        }
-
-
-        transactionFragment.populate(data);
         sourceStatisticPopulator.populate(new SourceStatistic( 30000));
-
     }
 
     @Override

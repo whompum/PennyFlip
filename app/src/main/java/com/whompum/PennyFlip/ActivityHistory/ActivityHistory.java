@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.github.badoualy.datepicker.DatePickerTimeline;
@@ -21,12 +22,17 @@ import com.whompum.PennyFlip.Transaction.TransactionStickyHeaders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bryan on 1/4/2018.
  */
 
 public class ActivityHistory extends AppCompatActivity implements TransactionStickyHeaders.StickyData{
+
+    private ImageButton up;
+    private TextView timeRange;
+
 
     private DatePickerTimeline pickerTimeline;
 
@@ -47,8 +53,9 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
 
 
         pickerTimeline = findViewById(R.id.id_history_time_picker);
-        pickerTimeline.setFirstVisibleDate(2017, 11, 31);
-        pickerTimeline.setLastVisibleDate(2018, 0, 6);
+        pickerTimeline.setFirstVisibleDate(2018, 0, 2);
+        pickerTimeline.setLastVisibleDate(2018, 0, 8);
+        pickerTimeline.setSelectedDate(2018, 0, 8);
 
 
         /**
@@ -60,13 +67,29 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
 
         final RecyclerView.ItemDecoration decoration = new TransactionStickyHeaders(this);
         transactionList.addItemDecoration(decoration);
-
-
-
-
     }
 
 
+
+    private void bindTimeLine(final TransactionHeaderItem item){
+
+        final TransactionHeaderItem headerItem = item;
+
+        final Timestamp timestamp = headerItem.getTimestamp();
+
+        final int day = timestamp.day();
+
+        pickerTimeline.setSelectedDate(2018, 0, day);
+    }
+
+
+    /**
+     * Boolean value on whether an item is a Header; Used for StickyHeader
+     *
+     * @param child some child at an arbitrary index (probably 0)
+     *
+     * @return if the Child is considered a HEADER by the adapter
+     */
     @Override
     public boolean isItemAHeader(final View child) {
 
@@ -74,9 +97,22 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
 
         final boolean isHeader = adapter.getItemViewType(position) == TransactionListAdapter.HEADER;
 
+        if(isHeader)
+            bindTimeLine((TransactionHeaderItem)adapter.getDataAt(position));
+
+
         return isHeader;
     }
 
+    /**
+     * Binds the header object to the child; NOTE this method is
+     * responsible for determining if it should bind the child to the Header
+     * or not.
+     *
+     * @param header Header object to bind to
+     * @param child The child to potentially bind
+     *
+     */
     @Override
     public void bindHeader(View header, final View child) {
 
@@ -91,35 +127,41 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
 
     }
 
+
+
+
+
+
     List<HeaderItem> temp(){
 
         final List<HeaderItem> transactions = new ArrayList<>();
 
-        final long month = 2629746000L;
-        final long day = 86499999L;
-        final long now = System.currentTimeMillis();
+        final long day = TimeUnit.DAYS.toMillis(1);
 
-        long time = now;
+        final long today = System.currentTimeMillis();
 
-        for(int i = 0; i < 50; i++){
+        long transactionDate = today;
 
-            final Timestamp timestamp = Timestamp.from(time);
+        for(int i = 0; i < 7; i++){
 
-            if(i==0 | i % 5 == 0) {
-                transactions.add(new TransactionHeaderItem(timestamp,8));
-                time -= month;
-            }else if (i % 2 == 0){
-                final Transactions tran = new Transactions(Transactions.ADD, time, 2782, 1120, "Car Wash" );
+            final TransactionHeaderItem headerItem = new TransactionHeaderItem(Timestamp.from(transactionDate), 4);
 
-                transactions.add(new TransactionsItem(tran));
-                time -= day;
-            }else if (i % 3 == 0){
+            transactions.add(headerItem);
 
-                final Transactions trans = new Transactions(Transactions.SPEND, time, 2782, 5782, "Food");
-                transactions.add(new TransactionsItem(trans));
-                time -= day;
+            for(int a = 0; a < 4; a++){
+
+              Transactions trans = null;
+
+              if(a % 2 == 0)
+                trans = new Transactions(Transactions.ADD, 2782L, 2113L, "Car Wash");
+              else
+                trans = new Transactions(Transactions.SPEND, 9999L, 5556L, "Food");
+
+
+                final TransactionsItem transItem = new TransactionsItem(trans);
+                transactions.add(transItem);
             }
-
+            transactionDate -= day;
         }
 
     return transactions;

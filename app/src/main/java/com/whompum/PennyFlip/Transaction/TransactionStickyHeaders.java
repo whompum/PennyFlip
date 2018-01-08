@@ -36,10 +36,18 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
         int deltaY;
 
-        if(isHeader(parent, 1) & parent.getChildAt(1).getTop() <= headerRect.bottom)
-            deltaY = parent.getChildAt(1).getTop();
-        else
+        if(isHeader(parent, 1)){
+
+            if(parent.getChildAt(1).getTop() <= headerRect.bottom){
+                deltaY = parent.getChildAt(1).getTop();
+            }else {
+                deltaY = header.getHeight(); //Will draw @ zero REF drawHeader
+            }
+
+        }else{
             deltaY = header.getHeight(); //Will draw @ zero REF drawHeader
+        }
+
 
 
         drawHeader(c, deltaY);

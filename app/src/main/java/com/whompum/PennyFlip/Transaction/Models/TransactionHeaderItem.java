@@ -21,6 +21,10 @@ public class TransactionHeaderItem implements HeaderItem {
         return PennyFlipTimeFormatter.simpleDate(timestamp);
     }
 
+    public Timestamp getTimestamp(){
+        return timestamp;
+    }
+
     public String getNumTransactions(){
         return String.valueOf(numTransactions);
     }

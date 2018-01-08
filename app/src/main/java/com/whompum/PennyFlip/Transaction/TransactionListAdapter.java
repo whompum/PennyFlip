@@ -110,6 +110,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
 
+
         final HeaderItem item = dataSet.get(position);
 
         if(item instanceof TransactionHeaderItem)
