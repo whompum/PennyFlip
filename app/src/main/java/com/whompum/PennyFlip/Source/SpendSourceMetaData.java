@@ -1,7 +1,8 @@
-package com.whompum.PennyFlip.ActivitySourceList.Models;
+package com.whompum.PennyFlip.Source;
 
 import android.support.annotation.NonNull;
 
+import com.whompum.PennyFlip.Source.SourceMetaData;
 import com.whompum.PennyFlip.Time.Timestamp;
 
 /**

@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceDataAdded;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceAddListAdapter;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapterBase;
-import com.whompum.PennyFlip.ActivitySourceList.Models.SourceMetaData;
+import com.whompum.PennyFlip.Source.SourceMetaData;
 import com.whompum.PennyFlip.Time.Timestamp;
 
 import java.util.ArrayList;

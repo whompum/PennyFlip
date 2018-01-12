@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Statistics;
+package com.whompum.PennyFlip.Time;
 
 /**
  * Created by bryan on 1/1/2018.

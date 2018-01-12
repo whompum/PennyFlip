@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.DialogSourceChooser;
+package com.whompum.PennyFlip.Source;
 
 
 /**

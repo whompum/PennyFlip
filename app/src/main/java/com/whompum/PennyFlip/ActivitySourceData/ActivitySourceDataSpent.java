@@ -5,16 +5,11 @@ import com.whompum.PennyFlip.ListPopulator;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
 import com.whompum.PennyFlip.Statistics.Populator;
-import com.whompum.PennyFlip.Statistics.SourceStatistic;
+import com.whompum.PennyFlip.Source.SourceStatistic;
 import com.whompum.PennyFlip.Statistics.StatisticsFragment;
-import com.whompum.PennyFlip.Statistics.TimeRange;
+import com.whompum.PennyFlip.Time.TimeRange;
 import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
 import com.whompum.PennyFlip.Transaction.TransactionFragment;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class ActivitySourceDataSpent extends ActivitySourceData implements StatisticsFragment.StatisticsServer<TimeRange> {

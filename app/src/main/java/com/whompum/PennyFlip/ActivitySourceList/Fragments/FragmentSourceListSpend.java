@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceDataSpent;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapterBase;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceSpendListAdapter;
-import com.whompum.PennyFlip.ActivitySourceList.Models.SourceMetaData;
-import com.whompum.PennyFlip.ActivitySourceList.Models.SpendSourceMetaData;
+import com.whompum.PennyFlip.Source.SourceMetaData;
+import com.whompum.PennyFlip.Source.SpendSourceMetaData;
 import com.whompum.PennyFlip.Time.Timestamp;
 
 import java.util.ArrayList;

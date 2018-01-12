@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.ActivitySourceList.Models.SourceMetaData;
+import com.whompum.PennyFlip.Source.SourceMetaData;
 
 import java.util.List;
 

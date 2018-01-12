@@ -25,6 +25,7 @@ import android.widget.EditText;
 
 import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Source.SourceWrapper;
 
 
 public abstract class SourceDialog extends DialogFragment implements OnSourceListItemChange {

@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Statistics;
+package com.whompum.PennyFlip.Source;
 
 
 import android.support.annotation.IntRange;

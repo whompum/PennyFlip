@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Source.SourceWrapper;
 
 /**
  * TODO fix bug where previously tapped item doesn't always turn off when a new element is tapped.

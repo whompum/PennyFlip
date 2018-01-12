@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.ActivitySourceList.Models.SourceMetaData;
+import com.whompum.PennyFlip.Source.SourceMetaData;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 

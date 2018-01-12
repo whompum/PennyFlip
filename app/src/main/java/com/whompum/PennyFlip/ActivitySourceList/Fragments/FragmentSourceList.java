@@ -22,7 +22,7 @@ import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceData;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListClickListener;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapterBase;
 import com.whompum.PennyFlip.ActivitySourceList.IntentReciever;
-import com.whompum.PennyFlip.ActivitySourceList.Models.SourceMetaData;
+import com.whompum.PennyFlip.Source.SourceMetaData;
 
 import java.util.List;
 

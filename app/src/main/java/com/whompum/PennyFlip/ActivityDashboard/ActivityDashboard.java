@@ -18,7 +18,7 @@ import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
 import com.whompum.PennyFlip.DialogSourceChooser.AddSourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
-import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
+import com.whompum.PennyFlip.Source.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
