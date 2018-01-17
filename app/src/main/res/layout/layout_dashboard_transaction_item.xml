@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/dimen_screen_padding"
+    android:layout_marginEnd="@dimen/dimen_screen_padding"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        tools:text="11:29 PM"
+        android:id="@id/id_transaction_timestamp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="@dimen/dimen_text_small"
+        style="@style/StyleDateLabel"
+        android:textColor="@color/darkest_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:background="@drawable/drawable_shape_oval"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            tools:text="Car-Wash"
+            android:id="@id/id_transaction_source"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_text_normal"
+            android:layout_marginEnd="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+            style="@style/StyleCurrentEditText"
+            android:id="@id/id_transaction_value"
+            android:textSize="@dimen/dimen_text_mediano"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

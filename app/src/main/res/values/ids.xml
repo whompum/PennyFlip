@@ -2,6 +2,12 @@
 <resources>
 
 
+    <!--RECENTLY ADDED-->
+    <item name="id_strips_indicator" type="id"/>
+    <item name="id_fragment_container" type="id"/>
+    <item name="id_today_transaction_list" type="id"/>
+    <item name="id_fab" type="id"/>
+
     <!--Dashboard icons-->
     <item name="id_dashboard_goal" type="id"/>
     <item name="id_dashboard_callibrate" type="id"/>
@@ -80,8 +86,9 @@
     <!--TRANSACTIONS LIST ITEM IDS
         REPLACE WITH BELOW HISTORY IDS
     -->
-    <item name="id_transctions_list_item_timestamp" type="id"/>
-    <item name="id_transactions_list_item_value" type="id"/>
+    <item name="id_transaction_timestamp" type="id"/>
+    <item name="id_transaction_value" type="id"/>
+    <item name="id_transaction_source" type="id"/>
     <item name="id_transactions_list_item_original_value" type="id"/>
 
 

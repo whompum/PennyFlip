@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="sourceDataColorSecondary">@color/light_blue</item>
         <item name="sourceDataColorPrimary">@color/light_green</item>
+        <item name="colorControlHighlight">@color/darkest_grey</item>
     </style>
 
 

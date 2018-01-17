@@ -1,18 +1,24 @@
 package com.whompum.PennyFlip.ActivityDashboard;
 
+import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Vibrator;
+import android.support.annotation.FloatRange;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
-import com.whompum.PennyFlip.NavMenu.NavMenuAnimator;
+import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
@@ -20,63 +26,153 @@ import com.whompum.PennyFlip.DialogSourceChooser.AddSourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
 import com.whompum.PennyFlip.Source.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
+import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public class ActivityDashboard extends AppCompatActivity {
 
+    private View colorBackground;
+    private ArgbEvaluator argb = new ArgbEvaluator();
+    private int sClr;
+    private int eClr;
+
+
 
     private CurrencyEditText value;
 
-    private ViewGroup nullTransactionImage;
+    private ViewPager addSpendContainer;
+    private ViewGroup stripsLayout;
 
-    private TextView todayValueLabel;
-    private CurrencyEditText todayValue;
+    private PageTitleStrips strips;
 
-    private TextView todayValueSecondaryLabel;
-    private CurrencyEditText todaySecondaryValue;
+    private FloatingActionButton addFab;
 
-    private NavMenuAnimator navMenuAnimator;
+    private Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
 
+        //View whose background will change color as the ViewPager is swiped :)
+        colorBackground = findViewById(R.id.dashboard_colored_background);
+
+        if(Build.VERSION.SDK_INT >= 23) {
+            sClr = getColor(R.color.light_green);
+            eClr = getColor(R.color.light_red);
+        }
+        else {
+            sClr = getResources().getColor(R.color.light_green);
+            eClr = getResources().getColor(R.color.light_red);
+        }
+
+        this.addFab = findViewById(R.id.id_fab );
+             addFab.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                    choreographFabClick();
+                 }
+             });
 
         value = findViewById(R.id.id_dashboard_value);
-        nullTransactionImage = findViewById(R.id.id_dashboard_transactions_null_image);
-        nullTransactionImage.setVisibility(View.INVISIBLE);
 
-        todayValueLabel = findViewById(R.id.id_dashboard_today_total_label);
-        todayValue = findViewById(R.id.id_dashboard_today_value);
+        addSpendContainer = findViewById(R.id.id_fragment_container);
 
-        todayValueSecondaryLabel = findViewById(R.id.id_dashboard_today_total_label_secondary);
-        todaySecondaryValue = findViewById(R.id.id_dashboard_today_value_secondary);
+        stripsLayout = findViewById(R.id.id_strips_indicator);
+
+        initTodayFragments();
+
+        findViewById(R.id.id_nav_menu_history).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        this.vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
 
-        this.navMenuAnimator = new NavMenuAnimator();
-        navMenuAnimator.bindMenu( ((LinearLayout)findViewById(R.id.id_nav_menu_layout)) ); //Binds the views to the animator
 
     }
 
+    private void initTodayFragments(){
+        addSpendContainer.setAdapter(new TodayFragmentAdapter(getSupportFragmentManager()));
 
+        strips = new PageTitleStrips(stripsLayout, stripClick);
+        strips.bindTitle(this, getString(R.string.string_adding));
+        strips.bindTitle(this, getString(R.string.string_spending));
 
+        addSpendContainer.addOnPageChangeListener(pageChangeListener);
+        addSpendContainer.setPageTransformer(true, pageTransformer);
 
-    /*
-     * Goal/Callibrate imageButton onClick references
-     */
-    public void onGoalClicked(final View view){
+        addSpendContainer.addOnLayoutChangeListener(new SimpleLayoutChange(){
+            @Override
+            public void onLayoutChange(int top) {
+                viewCenterYToTop(addFab, addSpendContainer, top);
+            }
+        });
+
     }
+
+    PageTitleStrips.StripClick stripClick = new PageTitleStrips.StripClick() {
+        @Override
+        public void onStripClicked(int position) {
+
+            if(addSpendContainer.getCurrentItem() != position) {
+                addSpendContainer.setCurrentItem(position);
+                vibrate(100L);
+            }
+
+        }
+    };
+
+    ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener(){
+        @Override
+        public void onPageSelected(int position) {
+            strips.setPosition(position);
+        }
+    };
+
+
+
+    ViewPager.PageTransformer pageTransformer = new ViewPager.PageTransformer() {
+        @Override
+        public void transformPage(View page, float position) {
+
+            if(  !((StickyViewPager)addSpendContainer).isDragging() ) {
+                final int color = (Integer) argb.evaluate((position), eClr, sClr);
+                colorBackground.setBackgroundColor(color);
+            }
+
+            Log.i("POSITION", "D: " + String.valueOf(position));
+            //setFabProgress(position);
+        }
+    };
+
+
+
+
+
     public void onCallibrateClicked(final View view){
+        vibrator.vibrate(100L);
     }
 
+
+    private void choreographFabClick(){
+
+        if(addSpendContainer.getCurrentItem() == 0)
+            onPlusFabClicked();
+        else
+            onMinusFabClicked();
+
+    }
 
     /*
      * Add/Spend Dialog Fab onClick references
      */
-    public void onPlusFabClicked(final View view){
+    public void onPlusFabClicked(){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogAdd);
 
@@ -84,7 +180,7 @@ public class ActivityDashboard extends AppCompatActivity {
         launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
 
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
-    public void onMinusFabClicked(final View view){
+    public void onMinusFabClicked(){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
         final PennyDialog dialog = SlidePennyDialog.newInstance(minusListener, style);
@@ -96,18 +192,17 @@ public class ActivityDashboard extends AppCompatActivity {
      * Navigation Fab onClick references
      */
     public void onStatisticsFabClicked(final View view){
+        vibrate(100L);
 
     }
     public void onHistoryFabClicked(final View view){
+        vibrate(100L);
         startActivity(new Intent(this, ActivityHistory.class));
     }
     public void onSourceFabClicked(final View view){
+        vibrate(100L);
         startActivity(new Intent(this, ActivitySourceList.class));
     }
-    public void onAnchorFabClicked(final View view) {
-            navMenuAnimator.animate();
-    }
-
 
 
     private final PennyDialog.CashChangeListener cashListener = new PennyDialog.CashChangeListener() {
@@ -166,7 +261,17 @@ public class ActivityDashboard extends AppCompatActivity {
     }
 
 
+    //Helper method that will position a views center Y to the top of another View.
+    private static void viewCenterYToTop(final View subject, final View object, final int top){
+        subject.setTranslationY( (top  +  object.getPaddingTop()) //Top + padding
+                - (subject.getHeight()  /  2));
 
+    }
+
+    private void vibrate(final long ms){
+        if(vibrator.hasVibrator())
+            vibrator.vibrate(ms);
+    }
 
 
 }

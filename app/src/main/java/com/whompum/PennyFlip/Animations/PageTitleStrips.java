@@ -4,9 +4,11 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Animates Text Views
@@ -24,7 +28,7 @@ import java.util.ArrayList;
  * to, this class will animate these changes.
  */
 
-public class PageTitleStrips{
+public class PageTitleStrips implements View.OnClickListener{
     public static final float TEXT_SIZE_CIEL = 16.0F;
     public static final float TEXT_SIZE_FLOOR = 12.0F;
     public static final float TRACK = (TEXT_SIZE_CIEL - TEXT_SIZE_FLOOR);
@@ -32,6 +36,7 @@ public class PageTitleStrips{
     
     //Map of the titles
     private ArrayList<TextView> strips;
+    private Map<String, Integer> clickMap = new HashMap<>(2);
 
     private int posToGrow = -1;
     private int posToShrink = -1;
@@ -44,7 +49,9 @@ public class PageTitleStrips{
     private ValueAnimator growthAnimator = new ValueAnimator();
     private ValueAnimator shrinkAnimator = new ValueAnimator();
 
-    public PageTitleStrips(final ViewGroup container){
+    private StripClick stripClick;
+
+    public PageTitleStrips(final ViewGroup container, @Nullable StripClick stripClick){
         this.container = container;
         strips = new ArrayList<>(2);
 
@@ -58,6 +65,9 @@ public class PageTitleStrips{
         shrinkAnimator.setDuration(450L);
         shrinkAnimator.setInterpolator(new AnticipateInterpolator());
         shrinkAnimator.addUpdateListener(shrinkListener);
+
+        this.stripClick = stripClick;
+
     }
 
     public void bindTitle(@NonNull final Context context,
@@ -79,10 +89,20 @@ public class PageTitleStrips{
                 setTextStyle(Typeface.NORMAL, strip);
             }
 
+            clickMap.put(title, strips.indexOf(strip));
+            strip.setOnClickListener(this);
+
     }
 
 
+    //Called when a strip is clicked;
+    @Override
+    public void onClick(View v) {
 
+        if(stripClick != null)
+            stripClick.onStripClicked(clickMap.get(((TextView)v).getText().toString()));
+
+    }
 
     public void setPosition(final int position){
 
@@ -161,7 +181,9 @@ public class PageTitleStrips{
     }
 
 
-
+    public interface StripClick{
+        void onStripClicked(final int position);
+    }
 
 
 }

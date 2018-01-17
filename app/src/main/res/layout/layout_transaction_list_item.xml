@@ -11,7 +11,7 @@
     tools:text="10/20"
     android:textColor="@color/dark_grey"
     android:layout_centerVertical="true"
-    android:id="@id/id_transctions_list_item_timestamp"
+    android:id="@id/id_transaction_timestamp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 
@@ -21,8 +21,8 @@
         android:layout_marginStart="16dp"
         android:layout_centerVertical="true"
         android:textSize="@dimen/dimen_text_mediano"
-        android:layout_toEndOf="@id/id_transctions_list_item_timestamp"
-        android:id="@id/id_transactions_list_item_value"
+        android:layout_toEndOf="@id/id_transaction_timestamp"
+        android:id="@id/id_transaction_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

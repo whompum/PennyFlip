@@ -59,7 +59,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
     }
 
     private void bindFragmentTitles(){
-        strips = new PageTitleStrips( (ViewGroup)(findViewById(R.id.someId)) );
+        strips = new PageTitleStrips( (ViewGroup)(findViewById(R.id.someId)), null );
         strips.bindTitle(this, getString(R.string.string_adding));
         strips.bindTitle(this, getString(R.string.string_spending));
     }

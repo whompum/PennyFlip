@@ -75,7 +75,7 @@ public abstract class ActivitySourceData extends AppCompatActivity implements Vi
 
         value.setText(String.valueOf(sourcePennies));
 
-        strips = new PageTitleStrips(titleIndicator);
+        strips = new PageTitleStrips(titleIndicator, null);
 
         adapter = new SourceFragmentAdapter(getSupportFragmentManager());
         populateFragmentAdapter(adapter);

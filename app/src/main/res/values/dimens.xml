@@ -39,4 +39,8 @@
     <!--DIMENSIONS FOR SOURCE_MASTER-->
     <dimen name="dimen_source_master_toolbar_height">76dp</dimen>
 
+
+    <dimen name="dimen_nav_buttons_top_padding">10dp</dimen>
+    <dimen name="dimen_icon_size">48dp</dimen>
+
 </resources>
