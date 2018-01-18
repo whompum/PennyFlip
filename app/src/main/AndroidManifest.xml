@@ -54,6 +54,12 @@
                   android:windowSoftInputMode="stateHidden"/>
 
 
+        <!--Wallet Provider Information-->
+        <provider
+            android:exported="false"
+            android:authorities="com.whompum.PennyFlip.Data.Providers.WalletProvider"
+            android:name=".Data.Providers.WalletProvider"/>
+
 
     </application>
 

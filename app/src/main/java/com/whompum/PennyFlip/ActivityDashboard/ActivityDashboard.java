@@ -1,10 +1,12 @@
 package com.whompum.PennyFlip.ActivityDashboard;
 
 import android.animation.ArgbEvaluator;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Vibrator;
-import android.support.annotation.FloatRange;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
@@ -12,13 +14,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
+import com.whompum.PennyFlip.Data.Providers.WalletProvider;
+import com.whompum.PennyFlip.Data.Schemas.WalletSchema;
+import com.whompum.PennyFlip.Data.Storage.WalletHelper;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
@@ -84,15 +89,7 @@ public class ActivityDashboard extends AppCompatActivity {
 
         initTodayFragments();
 
-        findViewById(R.id.id_nav_menu_history).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         this.vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-
 
 
     }
@@ -173,6 +170,7 @@ public class ActivityDashboard extends AppCompatActivity {
      * Add/Spend Dialog Fab onClick references
      */
     public void onPlusFabClicked(){
+
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogAdd);
 
@@ -197,6 +195,7 @@ public class ActivityDashboard extends AppCompatActivity {
     }
     public void onHistoryFabClicked(final View view){
         vibrate(100L);
+        Toast.makeText(this, "fuck", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, ActivityHistory.class));
     }
     public void onSourceFabClicked(final View view){
