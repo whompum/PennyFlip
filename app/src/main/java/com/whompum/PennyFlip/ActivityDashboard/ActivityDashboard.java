@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.Data.Providers.WalletProvider;
+import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
+import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.Data.Schemas.WalletSchema;
 import com.whompum.PennyFlip.Data.Storage.WalletHelper;
 import com.whompum.PennyFlip.R;
@@ -33,6 +35,8 @@ import com.whompum.PennyFlip.Source.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
+
+import java.util.UUID;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
@@ -91,7 +95,8 @@ public class ActivityDashboard extends AppCompatActivity {
 
         this.vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-
+        Log.i("SCHEMA", SourceSchema.SourceTable.CREATE_TABLE);
+        //TODO Add Purse/MessageSchema
     }
 
     private void initTodayFragments(){

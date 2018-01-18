@@ -30,6 +30,11 @@ public class WalletSchema {
 
         public static final String DEF_VALUE_CONSTRAINT = " 0";
 
+        public static final Uri URI = Uri.withAppendedPath(WalletProvider.URI, "sqlite/"+TABLE_NAME );
+
+        public static final String MIME_TYPE_DIR = "vnd.com.whompum.PennyFlip/dir/money";
+        public static final String MIME_TYPE_ITEM = "vnd.com.whompum.PennyFlip/item/money";
+
 
         public static final String CREATE_TABLE = "create table " + TABLE_NAME + " ( " +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + " CHECK(" + BaseColumns._ID + " < 2), " +
