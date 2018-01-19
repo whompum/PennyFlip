@@ -1,8 +1,10 @@
 package com.whompum.PennyFlip.Data.Providers;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -23,9 +25,7 @@ public class SourceProvider extends ContentProvider {
 
     public static final Uri URI = Uri.parse(SCHEME + AUTHORITY);
 
-
     private SQLiteOpenHelper helper;
-
 
 
     @Override
@@ -38,7 +38,16 @@ public class SourceProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+
+        final Cursor queryCursor = helper.getReadableDatabase()
+                .query(SourceSchema.SourceTable.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+
+
+        if(queryCursor.getColumnCount() > 0)
+            if(getContext().getContentResolver() != null)
+                queryCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return queryCursor;
     }
 
     @Nullable
@@ -50,16 +59,46 @@ public class SourceProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+
+        long id = -1;
+
+        try {
+            id = helper.getWritableDatabase().insertOrThrow(SourceSchema.SourceTable.TABLE_NAME, null, values);
+        }catch(SQLException e){
+
+        }
+
+        Uri newUri = uri;
+
+        if(id != -1)
+            newUri = ContentUris.withAppendedId(uri, id);
+
+        return newUri;
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+
+        final int numRows =  helper.getWritableDatabase().delete(SourceSchema.SourceTable.TABLE_NAME, selection, selectionArgs);
+
+        if(numRows > 0)
+            if(getContext().getContentResolver()!=null)
+                getContext().getContentResolver().notifyChange(uri, null);
+
+        return numRows;
+
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+
+        final int numRows = helper.getWritableDatabase().update(SourceSchema.SourceTable.TABLE_NAME, values, selection, selectionArgs);
+
+        if(numRows > 0)
+            if(getContext().getContentResolver() != null)
+                getContext().getContentResolver().notifyChange(uri, null);
+
+        return numRows;
     }
+
 }

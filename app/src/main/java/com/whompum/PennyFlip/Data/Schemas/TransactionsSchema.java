@@ -16,7 +16,15 @@ public class TransactionsSchema {
     public static final  String TRANSACTIONS_DATABASE_NAME = "TransactionTable.db";
     public static final int TRANSACTIONS_DATABASE_VERSION = 1;
 
+    public static final String SORT_BY_TIME_DESC = TransactionTable.COL_TIMESTAMP + " DESC";
+
+
+
+
     private TransactionsSchema(){}
+
+
+
 
     public static class TransactionTable implements BaseColumns{
 
@@ -30,6 +38,8 @@ public class TransactionsSchema {
         public static final String COL_SOURCE_NAME = "name";
         public static final String COL_SOURCE_TYPE= "type";
 
+        public static final String[] COLUMNS_WITH_ID = {_ID, COL_TIMESTAMP, COL_TOTAL, COL_SOURCE_ID, COL_SOURCE_NAME, COL_SOURCE_TYPE};
+        public static final String[] COLUMNS_NO_ID = {COL_TIMESTAMP, COL_TOTAL, COL_SOURCE_ID, COL_SOURCE_NAME, COL_SOURCE_TYPE};
 
         public static Uri URI = Uri.withAppendedPath(TransactionsProvider.URI, "sqlite/" + TABLE_NAME);
 

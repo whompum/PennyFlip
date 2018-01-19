@@ -57,9 +57,14 @@ public class WalletProvider extends ContentProvider{
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
-        return helper.getReadableDatabase().query(WalletSchema.Wallet.TABLE_NAME,
+        final Cursor queryCursor = helper.getReadableDatabase().query(WalletSchema.Wallet.TABLE_NAME,
                 new String[]{WalletSchema.Wallet.COL_TOTAL}, WHERE, WHERE_ARGS, null, null, null);
 
+        if(queryCursor.getColumnCount() > 0)
+            if(getContext().getContentResolver() != null);
+                queryCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+    return queryCursor;
     }
 
     @Nullable
@@ -77,15 +82,12 @@ public class WalletProvider extends ContentProvider{
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String where, @Nullable String[] whereArgs) {
 
        final SQLiteDatabase sqlite = helper.getWritableDatabase();
-
-       where = "_id=?";
-       whereArgs = new String[]{String.valueOf(1)};
         /**
          * In future, run the URI through a matcher, and fetch an appended record index
          * e.g. content://authority/table/recordIndex
          */
 
-       sqlite.update(WalletSchema.Wallet.TABLE_NAME, values, where, whereArgs);
+       sqlite.update(WalletSchema.Wallet.TABLE_NAME, values, WHERE, WHERE_ARGS);
 
     return 1;
     }

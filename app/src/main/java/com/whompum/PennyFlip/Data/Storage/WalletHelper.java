@@ -45,7 +45,7 @@ public class WalletHelper extends SQLiteOpenHelper {
     private void insertRecord(final SQLiteDatabase database){
 
         final ContentValues values = new ContentValues();
-        values.put(WalletSchema.Wallet.COL_TOTAL, 0L);
+        values.put(WalletSchema.Wallet.COL_TOTAL, 89955L);
 
         try {
             database.insertOrThrow(WalletSchema.Wallet.TABLE_NAME, null, values);

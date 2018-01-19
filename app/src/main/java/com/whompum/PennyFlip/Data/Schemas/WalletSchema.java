@@ -23,12 +23,17 @@ public class WalletSchema {
 
         private Wallet(){}
 
+
         public static final String TABLE_NAME = "WALLET";
         public static final String COL_TOTAL = "WalletTotal";
 
         public static final String CONSTRAINT_DEFAULT = " DEFAULT";
 
         public static final String DEF_VALUE_CONSTRAINT = " 0";
+
+        public static final String[] COLUMNS_WITH_ID = {_ID, COL_TOTAL};
+        public static final String[] COLUMNS_NO_ID = {COL_TOTAL};
+
 
         public static final Uri URI = Uri.withAppendedPath(WalletProvider.URI, "sqlite/"+TABLE_NAME );
 
