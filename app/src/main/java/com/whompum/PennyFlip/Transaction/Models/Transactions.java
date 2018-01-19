@@ -1,8 +1,5 @@
 package com.whompum.PennyFlip.Transaction.Models;
 
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;
 
@@ -18,32 +15,20 @@ public class Transactions {
 
     private long pennyAmount;
 
-    private long originalAmount;
-
     private String sourceName; //Maybe a reference to a source too?
 
-
-    public static final int ADD = 1;
-    public static final int SPEND = 10;
-
-
-    @TYPE private int transactionType = -1;
-
-    @IntDef(ADD)
-    public @interface TYPE{}
+    private int transactionType = Integer.MIN_VALUE;
 
 
 
-
-    public Transactions(@NonNull @TYPE final int type, final long pennyAmount, final long originalAmount, final String sourceName){
-        this(type, Long.MIN_VALUE, pennyAmount, originalAmount, sourceName);
+    public Transactions(final int type, final long pennyAmount, final String sourceName){
+        this(type, Long.MIN_VALUE, pennyAmount, sourceName);
     }
 
 
-    public Transactions(@NonNull @TYPE final int type, final long millis, final long pennyAmount, final long originalAmount, final String sourceName){
+    public Transactions(final int type, final long millis, final long pennyAmount, final String sourceName){
         this.pennyAmount = pennyAmount;
         this.sourceName = sourceName;
-        this.originalAmount = originalAmount;
 
         if(millis == Long.MIN_VALUE)
             timestamp = Timestamp.now();
@@ -64,8 +49,6 @@ public class Transactions {
     public long getTransactionAmount(){
         return pennyAmount;
     }
-
-    public long getOriginalTransactionAmount(){return originalAmount;}
 
     public String getSourceName(){
         return sourceName;

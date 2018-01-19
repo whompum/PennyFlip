@@ -4,28 +4,26 @@ import android.animation.ArgbEvaluator;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
-import com.whompum.PennyFlip.Data.Providers.WalletProvider;
-import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
+import com.whompum.PennyFlip.Data.Loader.WalletLoader;
 import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.Data.Schemas.WalletSchema;
-import com.whompum.PennyFlip.Data.Storage.WalletHelper;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
@@ -33,20 +31,22 @@ import com.whompum.PennyFlip.DialogSourceChooser.AddSourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
 import com.whompum.PennyFlip.Source.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
+import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
-import java.util.UUID;
-
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-public class ActivityDashboard extends AppCompatActivity {
+public class ActivityDashboard extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    public static final int WALLET_LOADING_ID = 1;
+
 
     private View colorBackground;
     private ArgbEvaluator argb = new ArgbEvaluator();
     private int sClr;
     private int eClr;
-
 
 
     private CurrencyEditText value;
@@ -95,8 +95,40 @@ public class ActivityDashboard extends AppCompatActivity {
 
         this.vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        Log.i("SCHEMA", SourceSchema.SourceTable.CREATE_TABLE);
         //TODO Add Purse/MessageSchema
+
+        initWalletLoader();
+
+
+
+    }
+
+    private void initWalletLoader(){
+        getSupportLoaderManager().initLoader(WALLET_LOADING_ID, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new WalletLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        updateWalletTotal(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    private void updateWalletTotal(final Cursor cursor){
+
+        if(cursor.moveToFirst())
+            value.setText(String.valueOf(
+                    cursor.getLong(cursor.getColumnIndex(WalletSchema.Wallet.COL_TOTAL))
+            ));
+
     }
 
     private void initTodayFragments(){
@@ -180,14 +212,46 @@ public class ActivityDashboard extends AppCompatActivity {
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogAdd);
 
         final SlidePennyDialog pennyDialog = (SlidePennyDialog) SlidePennyDialog.newInstance(cashListener, style);
-        launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
+     //   launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
+
+        final ContentValues values = new ContentValues();
+
+        /**
+         * COL_TIMESTAMP + " INTEGER DEFAULT " + String.valueOf(Timestamp.now().millis()) + ", " +
+         COL_TOTAL + " INTEGER NOT NULL DEFAULT 0, " +
+         COL_SOURCE_ID + " TEXT NOT NULL, " +
+         COL_SOURCE_NAME + " TEXT NOT NULL, " +
+         COL_SOURCE_TYPE + " INTEGER );";
+         */
+
+        values.put(TransactionsSchema.TransactionTable.COL_TIMESTAMP, Timestamp.now().millis());
+        values.put(TransactionsSchema.TransactionTable.COL_TOTAL, 1000);
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_ID, "df33343-888963d-54533544-99d-dddfdf");
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_NAME, "Car Wash");
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_TYPE, TransactionType.ADD);
+
+
+        getContentResolver().insert(TransactionsSchema.TransactionTable.URI, values);
+
 
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
     public void onMinusFabClicked(){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
         final PennyDialog dialog = SlidePennyDialog.newInstance(minusListener, style);
-        launchPennyDialog(dialog, SlidePennyDialog.TAG);
+      //  launchPennyDialog(dialog, SlidePennyDialog.TAG);
+
+        final ContentValues values = new ContentValues();
+
+        values.put(TransactionsSchema.TransactionTable.COL_TIMESTAMP, Timestamp.now().millis());
+        values.put(TransactionsSchema.TransactionTable.COL_TOTAL, 1000);
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_ID, "df33343-888963d-54533544-99d-dddfdf");
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_NAME, "Car Wash");
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_TYPE, TransactionType.SPEND);
+
+
+        getContentResolver().insert(TransactionsSchema.TransactionTable.URI, values);
+
     }
 
 

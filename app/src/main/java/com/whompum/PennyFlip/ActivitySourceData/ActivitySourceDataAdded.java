@@ -12,6 +12,7 @@ import com.whompum.PennyFlip.Time.TimeRange;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
 import com.whompum.PennyFlip.Transaction.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 import com.whompum.PennyFlip.Transaction.Models.TransactionsItem;
 import com.whompum.PennyFlip.Transaction.TransactionFragment;
 import com.whompum.PennyFlip.Transaction.Models.Transactions;
@@ -71,9 +72,9 @@ public class ActivitySourceDataAdded extends ActivitySourceData implements Stati
                 Transactions trans = null;
 
                 if(a % 2 == 0)
-                    trans = new Transactions(Transactions.ADD, 2782L, 2113L, "Car Wash");
+                    trans = new Transactions(TransactionType.ADD, 2782L, "Car Wash");
                 else
-                    trans = new Transactions(Transactions.SPEND, 9999L, 5556L, "Food");
+                    trans = new Transactions(TransactionType.SPEND, 9999L, "Food");
 
 
                 final TransactionsItem transItem = new TransactionsItem(trans);

@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,6 +14,7 @@ import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
 import com.whompum.PennyFlip.Transaction.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 import com.whompum.PennyFlip.Transaction.TransactionListAdapter;
 import com.whompum.PennyFlip.Transaction.Models.Transactions;
 import com.whompum.PennyFlip.Transaction.Models.TransactionsItem;
@@ -153,9 +153,9 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
               Transactions trans = null;
 
               if(a % 2 == 0)
-                trans = new Transactions(Transactions.ADD, 2782L, 2113L, "Car Wash");
+                trans = new Transactions(TransactionType.ADD, 2782L, "Car Wash");
               else
-                trans = new Transactions(Transactions.SPEND, 9999L, 5556L, "Food");
+                trans = new Transactions(TransactionType.SPEND, 9999L, "Food");
 
 
                 final TransactionsItem transItem = new TransactionsItem(trans);

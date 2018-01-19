@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 import com.whompum.PennyFlip.Transaction.TransactionListAdapter;
 import com.whompum.PennyFlip.Transaction.Models.TransactionsItem;
 import com.whompum.PennyFlip.R;
@@ -44,11 +45,11 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
         transactionSource.setText(transactions.getSourceName());
         transactionAmount.setText(String.valueOf(transactions.getTransactionAmount()));
 
-        if(transactions.getTransactionType() == Transactions.ADD){
+        if(transactions.getTransactionType() == TransactionType.ADD){
             transactionSource.setTextColor(addColor);
             transactionAmount.setTextColor(addColor);
             transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.drawable_shape_circle_green,0,0,0);
-        }else if(transactions.getTransactionType() == Transactions.SPEND){
+        }else if(transactions.getTransactionType() == TransactionType.SPEND){
             transactionSource.setTextColor(spendColor);
             transactionAmount.setTextColor(spendColor);
             transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.drawable_shape_circle_red,0,0,0);

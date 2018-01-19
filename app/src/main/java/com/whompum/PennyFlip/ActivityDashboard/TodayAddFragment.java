@@ -1,12 +1,12 @@
 package com.whompum.PennyFlip.ActivityDashboard;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.whompum.PennyFlip.Transaction.Models.TransactionType;
+import com.whompum.PennyFlip.Transaction.TransactionsCursorAdapter;
 
 /**
  * Created by bryan on 1/12/2018.
@@ -14,9 +14,14 @@ import java.util.List;
 
 public class TodayAddFragment extends TodayFragment {
 
+
     {
-        VALUE_TEXT_COLOR = R.color.light_green;
+        super.VALUE_TEXT_COLOR = R.color.light_green;
+        super.TYPE = TransactionType.ADD;
     }
+
+    public static final int ADD_LOADER_ID = 15;
+
 
     public static TodayFragment newInstance(final Bundle args){
         final TodayAddFragment fragment = new TodayAddFragment();
@@ -26,20 +31,24 @@ public class TodayAddFragment extends TodayFragment {
     }
 
     @Override
-    protected void populate() {
-
-        final List<Transactions> tempData = new ArrayList<>();
-
-        tempData.add(new Transactions(Transactions.ADD, 2782, 0000, "Car Was" ));
-        tempData.add(new Transactions(Transactions.ADD, 2782, 0000, "Car Was" ));
-        tempData.add(new Transactions(Transactions.ADD, 2782, 0000, "Car Was" ));
-
-
-        setTransactions(tempData);
+    protected int getLoaderId() {
+        return ADD_LOADER_ID;
     }
+
+
 
     @Override
-    protected void populateValue() {
-        setValue(500);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        setTransactions(cursorAdapter.fromCursor(data));
     }
+
+
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+
+
 }

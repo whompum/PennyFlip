@@ -39,7 +39,9 @@ public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransacti
     public void setDataSet(final List<Transactions> data){
         if(data != null)
             this.dataSet = data;
-        
+
+        Log.i("TESTING", "DATA SIZE: " + String.valueOf(dataSet.size()));
+
         notifyDataSetChanged();
     }
 
@@ -74,7 +76,6 @@ public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransacti
         }
 
         public void bind(final Transactions item){
-            Log.i("TRANSACTIONS", "bind#TodayHolder");
             timeStamp.setText(item.simpleTime());
             sourceName.setText(item.getSourceName());
             transactionAmount.setText(String.valueOf(item.getTransactionAmount()));

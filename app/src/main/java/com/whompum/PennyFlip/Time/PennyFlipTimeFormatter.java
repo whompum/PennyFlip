@@ -2,9 +2,6 @@ package com.whompum.PennyFlip.Time;
 
 import android.support.annotation.NonNull;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
-
 /**
  * Simply converts timestamps into various formatted strings.
  * E.G. if i would want the short time of a transaction
@@ -29,7 +26,7 @@ public class PennyFlipTimeFormatter {
 
         formatter.delete(0, formatter.length());
 
-        int hour = timeStamp.hour();
+        int hour = timeStamp.semiHourOfDay();
 
         if(hour == 0)
             formatter.append(12);

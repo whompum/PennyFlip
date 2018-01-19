@@ -66,9 +66,11 @@ public class Timestamp {
         return timestamp.getDayOfWeek();
     }
 
-    public int hour(){
+    public int semiHourOfDay(){
         return timestamp.get(DateTimeFieldType.hourOfHalfday());
     }
+    public int wholeHourOfDay(){return timestamp.get(DateTimeFieldType.hourOfDay()); }
+
 
     public int amPm(){
         return timestamp.get(DateTimeFieldType.halfdayOfDay());

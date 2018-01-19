@@ -61,6 +61,17 @@
             android:name=".Data.Providers.WalletProvider"/>
 
 
+        <provider
+            android:exported="false"
+            android:authorities="com.whompum.PennyFlip.Data.Providers.TransactionsProvider"
+            android:name=".Data.Providers.TransactionsProvider"/>
+
+
+        <provider
+            android:exported="false"
+            android:authorities="com.whompum.PennyFlip.Data.Providers.SourceProvider"
+            android:name=".Data.Providers.SourceProvider"/>
+
     </application>
 
 </manifest>
