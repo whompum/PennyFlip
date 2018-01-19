@@ -2,6 +2,7 @@ package com.whompum.PennyFlip.ActivityDashboard;
 
 
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -15,6 +16,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -89,10 +92,47 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
              value.setTextColor(getColor(VALUE_TEXT_COLOR));
 
 
-             transactionsAdapter.registerAdapterDataObserver(listObserver);
+        transactionsAdapter.registerAdapterDataObserver(listObserver);
+
+        //TRIFECTA of touch handling!
+
+        layout.post(delegate);
+        layout.setOnTouchListener(listener);
+
+        transactionsList.requestDisallowInterceptTouchEvent(true);
 
     return layout;
     }
+
+    final Rect delegateBoundary = new Rect();
+
+    private final Runnable delegate = new Runnable() {
+        @Override
+        public void run() {
+
+            if(getView() == null)
+                return;
+
+            delegateBoundary.set(getView().getLeft(), transactionsList.getTop(), getView().getRight(), getView().getBottom());
+
+        }
+    };
+
+
+
+    View.OnTouchListener listener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+
+            if(delegateBoundary.contains((int)event.getX(), (int)event.getY())){
+                transactionsList.onTouchEvent(event);
+                return true;
+            }
+
+            return false;
+        }
+    };
 
     private final RecyclerView.AdapterDataObserver listObserver = new RecyclerView.AdapterDataObserver() {
         @Override
@@ -118,6 +158,8 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
 
         if(transactionsAdapter != null)
             ((TodayTransactionAdapter)transactionsAdapter).setDataSet(data);
+
+        Log.i("TEST", "DATA SIZE: " + data.size() );
 
         updateValue(data);
     }
