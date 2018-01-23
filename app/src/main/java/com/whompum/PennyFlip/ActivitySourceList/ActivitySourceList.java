@@ -140,7 +140,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
         });
 
         //Init the containers for Animation purposes
-        toolbarContainer = findViewById(R.id.source_list_toolbar_container);
+        toolbarContainer = findViewById(R.id.id_toolbar_container);
         searchBarContainer = findViewById(R.id.searchBarContainer);
 
 
