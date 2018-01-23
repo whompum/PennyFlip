@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:paddingTop="8dp"
+    android:paddingBottom="16dp"
+    android:paddingStart="48dp"
+    android:orientation="horizontal"
+    android:id="@+id/source_list_strips"
+    android:background="@color/light_green"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+

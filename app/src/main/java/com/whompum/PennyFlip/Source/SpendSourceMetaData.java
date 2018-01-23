@@ -15,8 +15,11 @@ public class SpendSourceMetaData extends SourceMetaData {
 
     public static final int NO_PURSE = Integer.MIN_VALUE;
 
-    public SpendSourceMetaData(final int purseValue, @NonNull final String sourceName, @NonNull final long pennies, @NonNull final Timestamp lastUpdate){
-        super(sourceName, pennies, lastUpdate);
+    public SpendSourceMetaData(final int purseValue, @NonNull final String sourceName,
+                               @NonNull final long pennies, @NonNull Timestamp creationDate,
+                               @NonNull final Timestamp lastUpdate,
+                               final long id){
+        super(sourceName, pennies, creationDate,  lastUpdate, id);
         this.purseValue = purseValue;
     }
 

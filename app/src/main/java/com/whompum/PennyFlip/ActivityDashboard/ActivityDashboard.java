@@ -212,12 +212,11 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogAdd);
 
         final SlidePennyDialog pennyDialog = (SlidePennyDialog) SlidePennyDialog.newInstance(cashListener, style);
-     //   launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
+        launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
 
         final ContentValues values = new ContentValues();
-
         /**
-         * COL_TIMESTAMP + " INTEGER DEFAULT " + String.valueOf(Timestamp.now().millis()) + ", " +
+         *  COL_TIMESTAMP + " INTEGER DEFAULT " + String.valueOf(Timestamp.now().millis()) + ", " +
          COL_TOTAL + " INTEGER NOT NULL DEFAULT 0, " +
          COL_SOURCE_ID + " TEXT NOT NULL, " +
          COL_SOURCE_NAME + " TEXT NOT NULL, " +
@@ -226,31 +225,29 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
         values.put(TransactionsSchema.TransactionTable.COL_TIMESTAMP, Timestamp.now().millis());
         values.put(TransactionsSchema.TransactionTable.COL_TOTAL, 1000);
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_ID, "df33343-888963d-54533544-99d-dddfdf");
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_NAME, "Car Wash");
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_ID, "8787df8d8d7f8d7dsf");
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_NAME, "TEST");
         values.put(TransactionsSchema.TransactionTable.COL_SOURCE_TYPE, TransactionType.ADD);
 
-
-        getContentResolver().insert(TransactionsSchema.TransactionTable.URI, values);
-
+        //getContentResolver().insert(TransactionsSchema.TransactionTable.URI, values);
 
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
     public void onMinusFabClicked(){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
         final PennyDialog dialog = SlidePennyDialog.newInstance(minusListener, style);
-      //  launchPennyDialog(dialog, SlidePennyDialog.TAG);
+        //launchPennyDialog(dialog, SlidePennyDialog.TAG);
 
         final ContentValues values = new ContentValues();
 
         values.put(TransactionsSchema.TransactionTable.COL_TIMESTAMP, Timestamp.now().millis());
         values.put(TransactionsSchema.TransactionTable.COL_TOTAL, 1000);
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_ID, "df33343-888963d-54533544-99d-dddfdf");
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_NAME, "Car Wash");
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_ID, "8787df8d8d7f8d7dsf");
+        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_NAME, "TEST");
         values.put(TransactionsSchema.TransactionTable.COL_SOURCE_TYPE, TransactionType.SPEND);
 
-
         getContentResolver().insert(TransactionsSchema.TransactionTable.URI, values);
+
 
     }
 

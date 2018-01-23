@@ -23,6 +23,11 @@ public class SourceSchema {
         public static final String COL_TITLE = "title";
         public static final String COL_TOTAL = "total";
         public static final String COL_TYPE = "type";
+        public static final String COL_CREATION_DATE = "creationDate";
+        public static final String COL_LAST_UPDATE = "lastUpdate";
+
+        public static final String[] COLUMNS_WITH_ID = {_ID, COL_TITLE, COL_TOTAL, COL_TYPE, COL_CREATION_DATE, COL_LAST_UPDATE};
+        public static final String[] COLUMNS_WITHOUT_ID = {_ID, COL_TITLE, COL_TOTAL, COL_TYPE, COL_CREATION_DATE, COL_LAST_UPDATE};
 
         public static Uri URI = Uri.withAppendedPath(SourceProvider.URI, "sqlite/" + TABLE_NAME);
 
@@ -44,17 +49,9 @@ public class SourceSchema {
                 _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_TITLE + " VARCHAR(20) UNIQUE NOT NULL, " +
                 COL_TOTAL + " INTEGER CHECK( " + COL_TOTAL + ">-1), " +
-                COL_TYPE + " INTEGER);";
-
-
-        /**
-         * --table_source
-         ---source_title#varchar(N)
-         ---source_total_value#long
-         ---source_type#Integer
-         ---source_UUID#long
-
-         */
+                COL_TYPE + " INTEGER NOT NULL, " +
+                COL_CREATION_DATE + " INTEGER NOT NULL, " +
+                COL_LAST_UPDATE + " INTEGER DEFAULT -1 );";
 
     }
 

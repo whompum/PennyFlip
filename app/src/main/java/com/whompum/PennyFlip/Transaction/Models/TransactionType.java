@@ -7,7 +7,7 @@ package com.whompum.PennyFlip.Transaction.Models;
 public class TransactionType {
 
     public static final int ADD = 0;
-    public static final int SPEND = 10;
-    public static final int CALLIBRATE = 100;
+    public static final int SPEND = 1;
+    public static final int CALLIBRATE = 2;
 
 }

@@ -13,12 +13,18 @@ public class SourceMetaData {
 
     private String sourceName;
     private long pennies;
+    private Timestamp creationDate;
     private Timestamp lastUpdate;
+    private long id;
 
-    public SourceMetaData(@NonNull final String sourceName,@NonNull final long pennies,@NonNull final Timestamp lastUpdate){
+    public SourceMetaData(@NonNull final String sourceName,@NonNull final long pennies,
+                          @NonNull final Timestamp creationDate, @NonNull final Timestamp lastUpdate,
+                          @NonNull final long id){
+
         this.sourceName = sourceName;
         this.pennies = pennies;
         this.lastUpdate = lastUpdate;
+        this.id = id;
     }
 
     public String getSourceName(){
@@ -33,4 +39,9 @@ public class SourceMetaData {
         return PennyFlipTimeFormatter.simpleTime(lastUpdate);
     }
 
+    public String getCreationDate(){return PennyFlipTimeFormatter.simpleTime(creationDate);}
+
+    public long getId(){
+        return id;
+    }
 }

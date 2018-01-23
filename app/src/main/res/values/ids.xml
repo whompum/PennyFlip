@@ -114,6 +114,10 @@
     <item name="id_history_transaction_header_date" type="id"/>
     <item name="id_history_transaction_header_cuantos" type="id"/>
 
+
+    <item name="id_action_search" type="id"/>
+    <item name="id_search_toolbar" type="id"/>
+
 </resources>
 
 

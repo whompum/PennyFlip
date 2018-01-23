@@ -6,23 +6,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList">
 
+    <android.support.v7.widget.CardView
+        app:cardElevation="9dp"
+        android:visibility="invisible"
+        android:id="@+id/searchBarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include layout="@layout/layout_toolbar_search" />
+
+</android.support.v7.widget.CardView>
 
 
     <android.support.v7.widget.CardView
         app:cardElevation="8dp"
-        android:id="@+id/tempToolbarPos"
+        android:background="@null"
+        android:id="@+id/source_list_toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <include layout="@layout/layout_source_list_toolbar" />
+    <include layout="@layout/page_title_strip_layout"/>
+    </LinearLayout>
+
     </android.support.v7.widget.CardView>
+
 
     <android.support.v4.view.ViewPager
         android:id="@id/id_source_master_container"
-        android:layout_below="@id/tempToolbarPos"
+        android:layout_below="@id/source_list_toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-
-
+    <FrameLayout
+        android:layout_below="@id/searchBarContainer"
+        android:visibility="gone"
+        android:id="@+id/fragmentContainer"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:collapseIcon="@drawable/ic_svg_chevron_green"
+    android:background="@color/white"
+    android:id="@id/id_search_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_source_master_toolbar_height">
+
+</android.support.v7.widget.Toolbar>

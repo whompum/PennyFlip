@@ -6,7 +6,7 @@
     android:background="@color/light_green"
     app:contentInsetStart="0dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="48dp">
 
 
     <RelativeLayout
@@ -23,7 +23,6 @@
     <TextView
         android:id="@+id/positioning_dummy_source_label"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@id/id_source_master_toolbar_up"
         android:layout_toEndOf="@id/id_source_master_toolbar_up"
         android:text="@string/string_sources"
         android:textColor="@color/white"
@@ -32,25 +31,10 @@
         android:layout_height="wrap_content" />
 
 
-
-        <LinearLayout
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginLeft="48dp"
-            android:orientation="horizontal"
-            android:id="@+id/someId"
-            android:layout_below="@id/positioning_dummy_source_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-
     <android.support.v7.widget.AppCompatImageButton
         android:id="@id/id_source_master_toolbar_search"
         app:srcCompat="@drawable/ic_svg_search"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_width="48dp"
         android:layout_height="48dp" />
@@ -58,7 +42,6 @@
     <android.support.v7.widget.AppCompatImageButton
         app:srcCompat="@drawable/drawable_shape_grid"
         android:id="@id/id_source_master_toolbar_filter"
-        android:layout_toLeftOf="@id/id_source_master_toolbar_search"
         android:layout_toStartOf="@id/id_source_master_toolbar_search"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_width="48dp"

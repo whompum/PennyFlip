@@ -39,5 +39,8 @@
     <string name="string_transaction">Transaction</string>
     <string name="string_purse">Purse</string>
 
+    <string name="string_search">Search</string>
+    <string name="string_search_loading">Search&#8230;</string>
+
 
 </resources>

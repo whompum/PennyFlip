@@ -145,6 +145,9 @@ public class PageTitleStrips implements View.OnClickListener{
         shrinkAnimator.start();
     }
 
+    public ViewGroup getContainer(){
+        return container;
+    }
 
     private final ValueAnimator.AnimatorUpdateListener growthListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override

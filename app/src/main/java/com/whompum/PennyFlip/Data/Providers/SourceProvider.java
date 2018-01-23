@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.Data.Storage.SourceHelper;
@@ -43,8 +44,7 @@ public class SourceProvider extends ContentProvider {
                 .query(SourceSchema.SourceTable.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
 
 
-        if(queryCursor.getColumnCount() > 0)
-            if(getContext().getContentResolver() != null)
+        if(getContext().getContentResolver() != null)
                 queryCursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return queryCursor;
@@ -73,6 +73,8 @@ public class SourceProvider extends ContentProvider {
         if(id != -1)
             newUri = ContentUris.withAppendedId(uri, id);
 
+        getContext().getContentResolver().notifyChange(newUri, null);
+
         return newUri;
     }
 
@@ -81,7 +83,6 @@ public class SourceProvider extends ContentProvider {
 
         final int numRows =  helper.getWritableDatabase().delete(SourceSchema.SourceTable.TABLE_NAME, selection, selectionArgs);
 
-        if(numRows > 0)
             if(getContext().getContentResolver()!=null)
                 getContext().getContentResolver().notifyChange(uri, null);
 
@@ -94,7 +95,6 @@ public class SourceProvider extends ContentProvider {
 
         final int numRows = helper.getWritableDatabase().update(SourceSchema.SourceTable.TABLE_NAME, values, selection, selectionArgs);
 
-        if(numRows > 0)
             if(getContext().getContentResolver() != null)
                 getContext().getContentResolver().notifyChange(uri, null);
 

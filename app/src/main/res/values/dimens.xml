@@ -3,6 +3,12 @@
     <!--Screen padding is the offset of the content to the screen bounds. -->
     <dimen name="dimen_screen_padding">16dp</dimen>
     <dimen name="dimen_margin_dashboard_icon">-12dp</dimen>
+
+
+    <!--CIRCULAR REVEAL OFFSET-->
+    <dimen name="dimen_circular_reveal_x_offset">76dp</dimen>
+
+
     <!--The five text sizes for the app. Most content should use normal, but feel free to change
         these values as needed-->
     <dimen name="dimen_text_teeny">10sp</dimen>
@@ -37,7 +43,7 @@
     <dimen name="dimen_fab_margin">16dp</dimen>
 
     <!--DIMENSIONS FOR SOURCE_MASTER-->
-    <dimen name="dimen_source_master_toolbar_height">76dp</dimen>
+    <dimen name="dimen_source_master_toolbar_height">48dp</dimen>
 
 
     <dimen name="dimen_nav_buttons_top_padding">10dp</dimen>

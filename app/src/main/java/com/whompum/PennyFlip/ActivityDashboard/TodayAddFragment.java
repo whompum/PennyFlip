@@ -39,7 +39,8 @@ public class TodayAddFragment extends TodayFragment {
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        setTransactions(cursorAdapter.fromCursor(data));
+        cursorAdapter.setCursor(data);
+        setTransactions(cursorAdapter.fromCursor());
     }
 
 
