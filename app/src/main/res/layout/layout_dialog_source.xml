@@ -55,7 +55,7 @@
 
 <android.support.design.widget.FloatingActionButton
     style="@style/StyleDashboardAddFab"
-    android:id="@id/id_source_dialog_fab"
+    android:id="@id/id_fab"
     android:scaleY="0"
     android:scaleX="0"
     android:visibility="invisible"

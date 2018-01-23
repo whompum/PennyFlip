@@ -134,7 +134,7 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
 
         this.list.addOnScrollListener(scrollListener);
 
-        addFab = view.findViewById(R.id.id_source_master_add_fab);
+        addFab = view.findViewById(R.id.id_fab);
         addFab.setOnClickListener(this);
 
         animator = new AnimateScale(addFab, true);

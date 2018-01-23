@@ -48,7 +48,7 @@ public abstract class ActivitySourceData extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.source);
 
-        upNav = findViewById(R.id.id_source_data_up);
+        upNav = findViewById(R.id.id_up_navigation);
         upNav.setOnClickListener(this);
         sourceNameLabel = findViewById(R.id.id_source_data_sourcename);
 
@@ -106,7 +106,7 @@ public abstract class ActivitySourceData extends AppCompatActivity implements Vi
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == R.id.id_source_data_up)
+        if(v.getId() == R.id.id_up_navigation)
             NavUtils.navigateUpFromSameTask(this);
 
     }

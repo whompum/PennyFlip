@@ -3,7 +3,6 @@ package com.whompum.PennyFlip.ActivitySourceList;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -14,17 +13,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListFragmentAdapter;
 import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceList;
@@ -32,9 +28,6 @@ import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceListAdd;
 import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceListSpend;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.R;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 
 public class  ActivitySourceList extends AppCompatActivity implements View.OnClickListener, IntentReciever {
@@ -99,10 +92,10 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
         setSupportActionBar(toolyBary); //Do we even really need?
 
         //Registers the Toolbar Up action
-        findViewById(R.id.id_source_master_toolbar_up).setOnClickListener(this);
+        findViewById(R.id.id_up_navigation).setOnClickListener(this);
 
         //Initialize the ViewPager, set its adapter, and the pageTransformer / pageChangeListener
-        container = findViewById(R.id.id_source_master_container);
+        container = findViewById(R.id.id_source_list_container);
         container.setAdapter(new SourceListFragmentAdapter(getSupportFragmentManager()));
         container.setPageTransformer(false, pageTransformer);
         container.addOnPageChangeListener(pageChangeListener);
@@ -157,7 +150,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
         txtSearch.setHintTextColor(Color.DKGRAY);
         txtSearch.setTextColor(getResources().getColor(R.color.light_green));
 
-        searchFragmentContainer = findViewById(R.id.fragmentContainer);
+        searchFragmentContainer = findViewById(R.id.id_fragment_container);
 
     }
 
@@ -191,7 +184,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
 
         //Navigate to parent activity
-        if(v.getId() == R.id.id_source_master_toolbar_up)
+        if(v.getId() == R.id.id_up_navigation)
             NavUtils.navigateUpFromSameTask(this);
 
         //Show the searchgit add
@@ -286,7 +279,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
             fragmentSourceList = FragmentSourceListSpend.newInstance(null);
 
         fragTrans.add(
-                R.id.fragmentContainer,
+                R.id.id_fragment_container,
                 fragmentSourceList,
                 "backstackTag"
         );

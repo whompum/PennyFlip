@@ -2,38 +2,21 @@
 <resources>
 
 
-    <!--RECENTLY ADDED-->
     <item name="id_strips_indicator" type="id"/>
     <item name="id_fragment_container" type="id"/>
     <item name="id_today_transaction_list" type="id"/>
     <item name="id_fab" type="id"/>
+    <item name="id_action_search" type="id"/>
+    <item name="id_search_toolbar" type="id"/>
+    <item name="id_up_navigation" type="id"/>
+
 
     <!--Dashboard icons-->
-    <item name="id_dashboard_goal" type="id"/>
     <item name="id_dashboard_callibrate" type="id"/>
-
-    <item name="id_dashboard_transactions_null_image" type="id"/>
-
     <item name="id_dashboard_value" type="id"/>
-    <item name="id_dashboard_total_label" type="id"/>
 
-    <item name="id_dashboard_today_value" type="id"/>
-    <item name="id_dashboard_today_total_label" type="id"/>
-    <item name="id_dashboard_today_value_secondary" type="id"/>
-    <item name="id_dashboard_today_total_label_secondary" type="id"/>
-
-    <!--Today Transaction Items-->
-    <item name="id_dashboard_transactionlist_timestamp" type="id"/>
-    <item name="id_dashboard_transactionlist_total" type="id"/>
-    <item name="id_dashboard_transactionlist_source" type="id"/>
-
-    <!--DASHBOARD FABS-->
-    <item name="id_dashboard_fab_plus" type="id"/>
-    <item name="id_dashboard_fab_minus" type="id"/>
 
     <!--Menu IDS-->
-    <item name="id_nav_menu_layout" type="id"/>
-    <item name="id_nav_menu_anchor" type="id"/>
     <item name="id_nav_menu_source" type="id"/>
     <item name="id_nav_menu_statistics" type="id"/>
     <item name="id_nav_menu_history" type="id"/>
@@ -41,7 +24,6 @@
     <!--Source Dialog IDS-->
     <item name="id_source_dialog_source_list" type="id"/>
     <item name="id_source_dialog_search_view" type="id"/>
-    <item name="id_source_dialog_fab" type="id"/>
     <item name="id_source_dialog_header" type="id"/>
 
 
@@ -52,9 +34,9 @@
 
 
     <!--SOURCE MASTER IDS -->
-    <item name="id_source_master_container" type="id"/>
+    <item name="id_source_list_container" type="id"/>
     <item name="id_source_master_list" type="id"/>
-    <item name="id_source_master_add_fab" type="id"/>
+
 
     <item name="id_source_master_list_source_label" type="id"/>
     <item name="id_source_master_list_source_last_update" type="id"/>
@@ -63,17 +45,14 @@
     <item name="id_source_master_list_source_purse" type="id"/>
 
 
-
     <item name="id_source_master_toolbar" type="id"/>
-    <item name="id_source_master_toolbar_up" type="id"/>
-    <item name="id_source_master_toolbar_search" type="id"/>
+l    <item name="id_source_master_toolbar_search" type="id"/>
     <item name="id_source_master_toolbar_filter" type="id"/>
     <item name="id_source_master_toolbar_adding_label" type="id"/>
     <item name="id_source_master_toolbar_spending_label" type="id"/>
 
 
     <!--SOURCE DATA IDS-->
-    <item name="id_source_data_up" type="id"/>
     <item name="id_source_data_sourcename" type="id"/>
     <item name="id_source_data_value_label" type="id"/>
     <item name="id_source_data_value" type="id"/>
@@ -102,7 +81,6 @@
 
 
     <!--HISTORY LABEL-->
-    <item name="id_history_up" type="id"/>
     <item name="id_history_time_range" type="id"/>
     <item name="id_history_time_picker" type="id"/>
     <item name="id_history_today_label" type="id"/>
@@ -114,9 +92,6 @@
     <item name="id_history_transaction_header_date" type="id"/>
     <item name="id_history_transaction_header_cuantos" type="id"/>
 
-
-    <item name="id_action_search" type="id"/>
-    <item name="id_search_toolbar" type="id"/>
 
 </resources>
 

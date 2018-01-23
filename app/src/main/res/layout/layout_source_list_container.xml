@@ -16,7 +16,7 @@
 
     <android.support.design.widget.FloatingActionButton
         style="@style/StyleDashboardAddFab"
-        android:id="@id/id_source_master_add_fab"
+        android:id="@id/id_fab"
         android:src="@drawable/ic_shape_plus_orange"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/dimen_screen_padding"

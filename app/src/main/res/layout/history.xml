@@ -30,8 +30,8 @@
         <TextView
             android:id="@+id/historyTextView"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/id_history_up"
-            android:layout_toEndOf="@id/id_history_up"
+            android:layout_toRightOf="@id/id_up_navigation"
+            android:layout_toEndOf="@id/id_up_navigation"
             android:text="@string/string_history"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_text_bigboi"

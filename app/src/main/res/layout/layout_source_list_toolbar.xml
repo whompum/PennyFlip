@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
     <android.support.v7.widget.AppCompatImageButton
-        android:id="@id/id_source_master_toolbar_up"
+        android:id="@id/id_up_navigation"
         app:srcCompat="@drawable/ic_svg_chevron"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_width="48dp"
@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/positioning_dummy_source_label"
         android:layout_marginTop="8dp"
-        android:layout_toEndOf="@id/id_source_master_toolbar_up"
+        android:layout_toEndOf="@id/id_up_navigation"
         android:text="@string/string_sources"
         android:textColor="@color/white"
         android:textSize="@dimen/dimen_text_bigboi"

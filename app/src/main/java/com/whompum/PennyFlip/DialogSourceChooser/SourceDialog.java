@@ -120,7 +120,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
         ((EditText)layout.findViewById(R.id.id_source_dialog_search_view)).addTextChangedListener(sherlock);
 
 
-        this.actionFab = layout.findViewById(R.id.id_source_dialog_fab);
+        this.actionFab = layout.findViewById(R.id.id_fab);
              actionFab.setImageResource(FAB_SRC);
              actionFab.setOnClickListener(new View.OnClickListener() {
                  @Override
