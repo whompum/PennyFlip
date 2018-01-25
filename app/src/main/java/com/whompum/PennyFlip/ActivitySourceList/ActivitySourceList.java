@@ -88,7 +88,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_source_list);
 
-        toolyBary = findViewById(R.id.id_source_master_toolbar);
+        toolyBary = findViewById(R.id.id_toolbar);
         setSupportActionBar(toolyBary); //Do we even really need?
 
         //Registers the Toolbar Up action

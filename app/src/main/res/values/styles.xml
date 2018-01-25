@@ -7,6 +7,9 @@
         <item name="colorControlHighlight">@color/darkest_grey</item>
     </style>
 
+<style name="T" parent="Base.Theme.AppCompat.Light.Dialog">
+    <item name="android:windowBackground">@null</item>
+</style>
 
     <style name="StyleSourceDataAdded" parent="AppTheme">
         <item name="sourceDataColorPrimary">@color/light_green</item>

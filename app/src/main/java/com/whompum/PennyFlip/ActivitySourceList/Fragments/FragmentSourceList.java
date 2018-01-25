@@ -1,11 +1,13 @@
 package com.whompum.PennyFlip.ActivitySourceList.Fragments;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,13 +19,20 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.format.Time;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.whompum.PennyFlip.ActivitySourceList.LimitDisplay;
 import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.Data.Loader.SourceLoader;
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
@@ -35,9 +44,7 @@ import com.whompum.PennyFlip.ActivitySourceList.IntentReciever;
 import com.whompum.PennyFlip.Source.SourceCursorAdapter;
 import com.whompum.PennyFlip.Source.SourceMetaData;
 import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -54,8 +61,11 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
      * *************STATE DECLARATIONS*************************
      *
      * @state LAYOUT: the layout file to inflate for this fragment (Same for all implementors of this class)
+     * @state DIALOG_LAYOUT: The layout resource file for the Add Source Dialog
+     * @state sourceNameLimit: The limit for the SourceName length
      * @state loaderId: The id of the loader; Set by children in an instance block initializer
      * @state sourceType: sourceType; Used as a whereArg for the loader; Set by children via initialization block
+     * @state newSourceDialogImage: Image reference set by children, to say which drawable item to use for the new source dialog
      * @state WHERE: Where key for the loader bundle query arguments
      * @state WHERE_ARGS_KEY: WhereArgs key for the loader bundle query arguments
      * @state SORT_ORDER_KEY: SortOder key for the loader bundle query arguments
@@ -69,13 +79,24 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
      *                Children set the class they want to start via the abstract method createIntent()
      * @state intentReciever: The object that handles the intent; ActivitySourceList
      * @state  loaderArgs: The query arguments for the Loader
+     * @state sourceNameEditor: EditText in the SourceDialog that users input the Sources name into
+     * @state sourceNameCounter: A source's name can only have 20 characters, and this object displays  (n / 20) characters left as
+     *                           the user changes the source name
+     * @state addSourceDialog: The dialog that users can use to add a source
      */
 
     @LayoutRes
     protected static final int LAYOUT = R.layout.layout_source_list_container;
+    @LayoutRes
+    public static final int DIALOG_LAYOUT = R.layout.layout_add_source_dialog;
+
+    public static final int SOURCE_NAME_LIMIT = 20;
 
     protected int loaderId = Integer.MIN_VALUE;
     protected int sourceType = Integer.MIN_VALUE;
+
+    @DrawableRes
+    protected int newSourceDialogImage = -1;
 
     public static final String WHERE_KEY = "Where.ky";
     public static final String WHERE_ARGS_KEY = "WhereArgs.ky";
@@ -97,6 +118,11 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
     private Bundle loaderArgs = new Bundle();
 
     protected SourceCursorAdapter cursorAdapter;
+
+    private EditText sourceNameEditor;
+    private TextView sourceNameCounter;
+
+    private Dialog addSourceDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,7 +151,7 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(LAYOUT, container, false);
 
-        this.list = view.findViewById(R.id.id_source_master_list);
+        this.list = view.findViewById(R.id.id_list);
         list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         listAdapter.registerSouceListClickListener(this);
@@ -143,21 +169,12 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
     }
 
 
-    int title = 100;
-
     @Override
     public void onClick(View v) {
-        //TODO add source creating logic + Dialog :)
+        this.addSourceDialog = makeDialog();
 
+        addSourceDialog.show();
 
-        final ContentValues values = new ContentValues();
-        values.put(SourceSchema.SourceTable.COL_TITLE, String.valueOf(title++));
-        values.put(SourceSchema.SourceTable.COL_TOTAL, 2782);
-        values.put(SourceSchema.SourceTable.COL_TYPE, sourceType);
-        values.put(SourceSchema.SourceTable.COL_CREATION_DATE, Timestamp.now().millis());
-        values.put(SourceSchema.SourceTable.COL_LAST_UPDATE, Timestamp.now().millis());
-
-        getContext().getContentResolver().insert(SourceSchema.SourceTable.URI, values);
     }
 
     private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
@@ -191,6 +208,92 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
 
         intentReciever.onDeliverIntent(intent);
     }
+
+
+    /**
+     * Makes the SourceDialog, and sets up all of its the view objects
+     *
+     * @return A dialog to add a new source
+     */
+    protected final Dialog makeDialog(){
+
+        final Dialog addSourceDialog = new Dialog(getContext(), R.style.T);
+
+        addSourceDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        final View dialogLayout = inflateAddDialog();
+
+        ((ImageView)dialogLayout.findViewById(R.id.temp_source_type_display))
+                .setImageResource(newSourceDialogImage);
+
+        dialogLayout.findViewById(R.id.temp_source_done_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onSourceAdded();
+                        addSourceDialog.dismiss();
+                    }
+                });
+
+        dialogLayout.findViewById(R.id.temp_source_cancel_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Why is this conditional even needed???
+                        if(addSourceDialog.isShowing())
+                            addSourceDialog.dismiss();
+                    }
+                });
+
+
+        this.sourceNameCounter = dialogLayout.findViewById(R.id.temp_source_title_counter);
+             sourceNameCounter.setText("0/20");
+
+        this.sourceNameEditor = dialogLayout.findViewById(R.id.temp_source_edit_text);
+        sourceNameEditor.addTextChangedListener(new LimitDisplay(sourceNameCounter));
+
+
+        addSourceDialog.setContentView(dialogLayout);
+
+        final WindowManager.LayoutParams params = addSourceDialog.getWindow().getAttributes();
+
+        if(params != null) {
+
+            final DisplayMetrics metrics = new DisplayMetrics();
+            addSourceDialog.getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+            //DP value to inset each side of the Dialog by
+            final int offset = getContext().getResources().getDimensionPixelSize(R.dimen.dimen_add_source_margin);
+
+            //Screen width MINUS (twice the size of the offset (to account for each side))
+            final int screenWidth = (metrics.widthPixels) - (2*offset);
+
+            params.width = screenWidth;
+
+        }
+
+
+     return addSourceDialog;
+    }
+
+    /**
+     * Returns a View layout to use for the Dialog
+     * @return the Dialogs Layout
+     */
+    private View inflateAddDialog(){
+
+        final LayoutInflater inflater = LayoutInflater.from(getContext());
+
+    return inflater.inflate(DIALOG_LAYOUT, null, false);
+    }
+
+
+
+    private void onSourceAdded(){
+        //TODO Fetch Source Type; Create Content Values; Launch A Service to insert into Database
+    }
+
+
 
 
     /**

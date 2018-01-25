@@ -42,5 +42,8 @@
     <string name="string_search">Search</string>
     <string name="string_search_loading">Search&#8230;</string>
 
+    <!--SOURCE ADD DIALOG-->
+    <string name="string_title">Title</string>
+    <string name="string_done">Done</string>
 
 </resources>

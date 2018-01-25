@@ -13,6 +13,7 @@ import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceDataAdded;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceAddListAdapter;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapterBase;
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
+import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Source.SourceCursorAdapter;
 import com.whompum.PennyFlip.Source.SourceMetaData;
 import com.whompum.PennyFlip.Time.Timestamp;
@@ -36,6 +37,7 @@ public class FragmentSourceListAdd extends FragmentSourceList {
     {
         loaderId = LOADER_ID;
         sourceType = SOURCE_TYPE;
+        newSourceDialogImage = R.drawable.ic_source_plus;
     }
 
     public static FragmentSourceList newInstance(@Nullable final Bundle args) {

@@ -6,9 +6,11 @@
     <item name="id_fragment_container" type="id"/>
     <item name="id_today_transaction_list" type="id"/>
     <item name="id_fab" type="id"/>
+    <item name="id_toolbar" type="id"/>
     <item name="id_action_search" type="id"/>
     <item name="id_search_toolbar" type="id"/>
     <item name="id_up_navigation" type="id"/>
+    <item name="id_list" type="id"/>
 
 
     <!--Dashboard icons-->
@@ -35,7 +37,6 @@
 
     <!--SOURCE MASTER IDS -->
     <item name="id_source_list_container" type="id"/>
-    <item name="id_source_master_list" type="id"/>
 
 
     <item name="id_source_master_list_source_label" type="id"/>
@@ -45,11 +46,8 @@
     <item name="id_source_master_list_source_purse" type="id"/>
 
 
-    <item name="id_source_master_toolbar" type="id"/>
-l    <item name="id_source_master_toolbar_search" type="id"/>
+    <item name="id_source_master_toolbar_search" type="id"/>
     <item name="id_source_master_toolbar_filter" type="id"/>
-    <item name="id_source_master_toolbar_adding_label" type="id"/>
-    <item name="id_source_master_toolbar_spending_label" type="id"/>
 
 
     <!--SOURCE DATA IDS-->

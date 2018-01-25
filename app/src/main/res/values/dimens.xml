@@ -49,4 +49,6 @@
     <dimen name="dimen_nav_buttons_top_padding">10dp</dimen>
     <dimen name="dimen_icon_size">48dp</dimen>
 
+    <dimen name="dimen_add_source_margin">16dp</dimen>
+
 </resources>

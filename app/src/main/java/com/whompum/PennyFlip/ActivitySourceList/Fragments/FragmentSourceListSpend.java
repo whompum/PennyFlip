@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceDataSpent;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapterBase;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceSpendListAdapter;
+import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Source.SourceCursorAdapter;
 import com.whompum.PennyFlip.Source.SourceMetaData;
 import com.whompum.PennyFlip.Source.SpendSourceCursorAdapter;
@@ -27,6 +28,7 @@ public class FragmentSourceListSpend extends FragmentSourceList {
     {
         loaderId = LOADER_ID;
         sourceType = SOURCE_TYPE;
+        newSourceDialogImage = R.drawable.ic_source_minus;
     }
 
 

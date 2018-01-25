@@ -2,7 +2,7 @@
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@id/id_source_master_toolbar"
+    android:id="@id/id_toolbar"
     android:background="@color/light_green"
     app:contentInsetStart="0dp"
     android:layout_width="match_parent"
