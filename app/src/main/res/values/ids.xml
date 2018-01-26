@@ -47,7 +47,7 @@
 
 
     <item name="id_source_master_toolbar_search" type="id"/>
-    <item name="id_source_master_toolbar_filter" type="id"/>
+    <item name="id_source_list_toolbar_sort" type="id"/>
 
 
     <!--SOURCE DATA IDS-->

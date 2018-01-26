@@ -68,12 +68,13 @@ public class SourceProvider extends ContentProvider {
 
         }
 
-        Uri newUri = uri;
+        Uri newUri = null;
 
-        if(id != -1)
+        if(id != -1) {
             newUri = ContentUris.withAppendedId(uri, id);
+            getContext().getContentResolver().notifyChange(newUri, null);
+        }
 
-        getContext().getContentResolver().notifyChange(newUri, null);
 
         return newUri;
     }

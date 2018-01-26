@@ -45,5 +45,24 @@
     <!--SOURCE ADD DIALOG-->
     <string name="string_title">Title</string>
     <string name="string_done">Done</string>
+    <string name="string_title_error_in_use">That title is taken!</string>
+    <string name="string_title_error_null">The title cannot be empty!</string>
+    <string name="string_some_wrong_error">Something went wrong :/</string>
+    <string name="string_successfully_saved">New source saved!</string>
+
+    <!--SORTING DIALOG ITEMS-->
+    <string name="string_sort_title">Sort Order</string>
+    <string-array name="sortOrderItems">
+        <item name="title_high_low">Title (A-z)</item>
+        <item name="title_low_high">Title (Z-a)</item>
+        <item name="recently_updated">Recently Updated</item>
+        <item name="least_recently_updated">Least Updated</item>
+        <item name="oldest_sources_added">Oldest</item>
+        <item name="newest_source_added">Newest</item>
+        <item name="total_high_low">Total (high to low)</item>
+        <item name="total_low_high">Total (low to high)</item>
+    </string-array>
+
+
 
 </resources>

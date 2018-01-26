@@ -34,7 +34,7 @@ public class StickyViewPager extends ViewPager {
 
     private BOUNDS bounds = null;
 
-    //Will use to filter out multi-touches since this is a single touch environment
+    //Will use to sort out multi-touches since this is a single touch environment
     int touchPointer = -1;
 
     private onStickyDrag OnStickyDrag;

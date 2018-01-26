@@ -47,10 +47,7 @@ public class FragmentSourceListAdd extends FragmentSourceList {
         return fragment;
     }
 
-    @Override
-    protected SourceCursorAdapter manifestCursorAdapter() {
-        return new SourceCursorAdapter(null);
-    }
+
 
     @Override //RESPONSIBLE ONLY TO RETURN ITS TYPE OF ADAPTER, THAT IS IT;
     protected SourceListAdapterBase manifestAdapter() {
@@ -63,9 +60,4 @@ public class FragmentSourceListAdd extends FragmentSourceList {
     }
 
 
-
-    @Override
-    protected void filter(Object filter) {
-
-    }
 }

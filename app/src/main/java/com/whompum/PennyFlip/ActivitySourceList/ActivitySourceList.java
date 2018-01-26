@@ -38,7 +38,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
      *
      * @state SEARCH_EDIT_TEXT_ID: The id of the SearchViews search edit text (Used to customize)
      *
-     * @state toolyBary: The main toolbar of our Activity (contains up arrow, search button, filter button)
+     * @state toolyBary: The main toolbar of our Activity (contains up arrow, search button, sort button)
      *
      * @state searchToolbar: The search Toolbar that animates ontop of toolyBary
      *
@@ -118,7 +118,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
 
         // reegister the search icon click listener
         findViewById(R.id.id_source_master_toolbar_search).setOnClickListener(this);
-
+        findViewById(R.id.id_source_list_toolbar_sort).setOnClickListener(this);
 
 
         searchToolbar = findViewById(R.id.id_search_toolbar);
@@ -187,9 +187,13 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
         if(v.getId() == R.id.id_up_navigation)
             NavUtils.navigateUpFromSameTask(this);
 
-        //Show the searchgit add
+        //Show the search git add
         else if(v.getId() == R.id.id_source_master_toolbar_search)
             searchToolbar.getMenu().findItem(R.id.id_action_search).expandActionView();
+
+        else if(v.getId() == R.id.id_source_list_toolbar_sort)
+            ((OnSortButtonClicked)((SourceListFragmentAdapter)container.getAdapter()).getItem(container.getCurrentItem())).onSortClicked(); //Only a pro can chain so smoothly ;)
+
     }
 
     private void showSearchBar(){

@@ -13,7 +13,6 @@ import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceSpendListAdapter;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Source.SourceCursorAdapter;
 import com.whompum.PennyFlip.Source.SourceMetaData;
-import com.whompum.PennyFlip.Source.SpendSourceCursorAdapter;
 import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 
 /**
@@ -38,10 +37,6 @@ public class FragmentSourceListSpend extends FragmentSourceList {
         return fragment;
     }
 
-    @Override
-    protected SourceCursorAdapter manifestCursorAdapter() {
-        return new SpendSourceCursorAdapter(null);
-    }
 
     @Override
     protected SourceListAdapterBase manifestAdapter() {
@@ -50,26 +45,11 @@ public class FragmentSourceListSpend extends FragmentSourceList {
 
     @Override
     protected void createIntent(@NonNull SourceMetaData data) {
-        this.intent = new Intent(getActivity(), ActivitySourceDataSpent.class);
+        super.intent = new Intent(getActivity(), ActivitySourceDataSpent.class);
     }
-
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        //Do nothing yet
     }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
-
-
-    @Override
-    protected void filter(Object filter) {
-
-    }
-
-
-
 }

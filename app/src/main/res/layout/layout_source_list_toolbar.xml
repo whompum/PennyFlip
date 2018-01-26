@@ -41,7 +41,7 @@
 
     <android.support.v7.widget.AppCompatImageButton
         app:srcCompat="@drawable/drawable_shape_grid"
-        android:id="@id/id_source_master_toolbar_filter"
+        android:id="@id/id_source_list_toolbar_sort"
         android:layout_toStartOf="@id/id_source_master_toolbar_search"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_width="48dp"

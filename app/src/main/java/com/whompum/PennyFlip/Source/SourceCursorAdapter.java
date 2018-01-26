@@ -47,8 +47,6 @@ public class SourceCursorAdapter implements PennyFlipCursorAdapter<SourceMetaDat
                 final long lastUpdateDate = cursor.getLong(lastUpdateIndex());
                 final long id = cursor.getLong(idIndex());
 
-                Log.i("SOURCE_DATA", "TYPE: " + String.valueOf(cursor.getInt(cursor.getColumnIndex(SourceSchema.SourceTable.COL_TYPE))));
-
                 sourceData.add(new SourceMetaData(title, total, Timestamp.from(creationDate), Timestamp.from(lastUpdateDate), id));
 
             }
