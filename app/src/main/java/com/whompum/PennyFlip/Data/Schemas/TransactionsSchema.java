@@ -18,13 +18,7 @@ public class TransactionsSchema {
 
     public static final String SORT_BY_TIME_DESC = TransactionTable.COL_TIMESTAMP + " DESC";
 
-
-
-
     private TransactionsSchema(){}
-
-
-
 
     public static class TransactionTable implements BaseColumns{
 
@@ -61,7 +55,6 @@ public class TransactionsSchema {
                 COL_SOURCE_ID + " TEXT NOT NULL, " +
                 COL_SOURCE_NAME + " TEXT NOT NULL, " +
                 COL_SOURCE_TYPE + " INTEGER );";
-
     }
 
 }

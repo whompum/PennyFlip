@@ -2,9 +2,10 @@ package com.whompum.PennyFlip.ActivitySourceData;
 
 
 
+import android.content.ContentValues;
 import android.content.Intent;
-import android.os.Bundle;
 
+import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.ListPopulator;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
@@ -15,15 +16,8 @@ import com.whompum.PennyFlip.Statistics.StatisticsFragment;
 import com.whompum.PennyFlip.Time.TimeRange;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
-import com.whompum.PennyFlip.Transaction.Models.TransactionHeaderItem;
 import com.whompum.PennyFlip.Transaction.Models.TransactionType;
-import com.whompum.PennyFlip.Transaction.Models.TransactionsItem;
 import com.whompum.PennyFlip.Transaction.TransactionFragment;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class ActivitySourceDataAdded extends ActivitySourceData implements StatisticsFragment.StatisticsServer<TimeRange>{
 
@@ -62,5 +56,6 @@ public class ActivitySourceDataAdded extends ActivitySourceData implements Stati
         //Requests data from server, or database for the specified time range
     }
 
+  
 
 }

@@ -42,12 +42,10 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
     public static final int WALLET_LOADING_ID = 1;
 
-
     private View colorBackground;
     private ArgbEvaluator argb = new ArgbEvaluator();
     private int sClr;
     private int eClr;
-
 
     private CurrencyEditText value;
 
@@ -126,7 +124,7 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
         if(cursor.moveToFirst())
             value.setText(String.valueOf(
-                    cursor.getLong(cursor.getColumnIndex(WalletSchema.Wallet.COL_TOTAL))
+                    cursor.getLong(cursor.getColumnIndex(WalletSchema.Wallet.COL_CURR_TOTAL))
             ));
 
     }
@@ -166,6 +164,12 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
         @Override
         public void onPageSelected(int position) {
             strips.setPosition(position);
+            if(position == 0)
+               addFab.setImageResource(R.drawable.ic_shape_plus_green);
+
+            else if(position == 1)
+                addFab.setImageResource(R.drawable.ic_shape_minus_red);
+
         }
     };
 
@@ -179,9 +183,6 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
                 final int color = (Integer) argb.evaluate((position), eClr, sClr);
                 colorBackground.setBackgroundColor(color);
             }
-
-            Log.i("POSITION", "D: " + String.valueOf(position));
-            //setFabProgress(position);
         }
     };
 
@@ -200,7 +201,6 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
             onPlusFabClicked();
         else
             onMinusFabClicked();
-
     }
 
     /*
@@ -213,42 +213,12 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
         final SlidePennyDialog pennyDialog = (SlidePennyDialog) SlidePennyDialog.newInstance(cashListener, style);
         launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
-
-        final ContentValues values = new ContentValues();
-        /**
-         *  COL_TIMESTAMP + " INTEGER DEFAULT " + String.valueOf(Timestamp.now().millis()) + ", " +
-         COL_TOTAL + " INTEGER NOT NULL DEFAULT 0, " +
-         COL_SOURCE_ID + " TEXT NOT NULL, " +
-         COL_SOURCE_NAME + " TEXT NOT NULL, " +
-         COL_SOURCE_TYPE + " INTEGER );";
-         */
-
-        values.put(TransactionsSchema.TransactionTable.COL_TIMESTAMP, Timestamp.now().millis());
-        values.put(TransactionsSchema.TransactionTable.COL_TOTAL, 1000);
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_ID, "8787df8d8d7f8d7dsf");
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_NAME, "TEST");
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_TYPE, TransactionType.ADD);
-
-        //getContentResolver().insert(TransactionsSchema.TransactionTable.URI, values);
-
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
     public void onMinusFabClicked(){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
         final PennyDialog dialog = SlidePennyDialog.newInstance(minusListener, style);
-        //launchPennyDialog(dialog, SlidePennyDialog.TAG);
-
-        final ContentValues values = new ContentValues();
-
-        values.put(TransactionsSchema.TransactionTable.COL_TIMESTAMP, Timestamp.now().millis());
-        values.put(TransactionsSchema.TransactionTable.COL_TOTAL, 1000);
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_ID, "8787df8d8d7f8d7dsf");
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_NAME, "TEST");
-        values.put(TransactionsSchema.TransactionTable.COL_SOURCE_TYPE, TransactionType.SPEND);
-
-        getContentResolver().insert(TransactionsSchema.TransactionTable.URI, values);
-
-
+        launchPennyDialog(dialog, SlidePennyDialog.TAG);
     }
 
 

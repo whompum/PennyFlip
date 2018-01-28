@@ -17,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,6 +37,29 @@ import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public abstract class TodayFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+
+    /**
+     * STATE DECLARATIONS
+     *
+     * LAYOUT: The layout resource File for this fragment
+     * VALUE_TEXT_COLOR: The text color for todays Value (Set by children)
+     * WHERE_ARGS_KEY: Key for the loader arguments 'Where arguments' args
+     * WHERE_KEY: Key for the loader arguments 'Where' args
+     * SORT_KEY: Key for the Loader arguments "sort order" args
+     *
+     * WHERE: Literal 'where' argument: Fetches arguments where timestamp is >= todays beginning timestamp (12:00 AM),
+     *        And source type of the transaction equals the Fragments source type (Either spend/add/callibrate)
+     *
+     * sourceType: The type of source this fragments transactions represent (Spend / Add / Callibrabate)
+     *
+     * value: Displays the total amount for the day, added/spended
+     *
+     * transactionsList: RecyclerView container for todays transactions
+     *
+     * transactionsAdapter: RecView adapter; Converts Transactions objects into RecyclerView views
+     *
+     */
+
     @LayoutRes
     public static final int LAYOUT = R.layout.layout_dasbhoard_summary;
 
@@ -53,8 +75,7 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
             + TransactionsSchema.TransactionTable.COL_SOURCE_TYPE + " =?";
 
 
-    protected int TYPE = Integer.MIN_VALUE;
-
+    protected int sourceType = Integer.MIN_VALUE;
 
     private CurrencyEditText value;
 
@@ -141,10 +162,15 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
             final int itemCount = transactionsAdapter.getItemCount();
 
             //Use itemCount to change things
-
+            //WTF IS THIS CLASS FOR AGAIN?
         }
     };
 
+    /**
+     * Just a utility method to return a color
+     * @param colorRes The resource id for the Color to fetch
+     * @return A resource-resolved Color
+     */
     private int getColor(@ColorRes final int colorRes){
 
         if(Build.VERSION.SDK_INT >= 23)
@@ -159,14 +185,12 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
         if(transactionsAdapter != null)
             ((TodayTransactionAdapter)transactionsAdapter).setDataSet(data);
 
-        Log.i("TEST", "DATA SIZE: " + data.size() );
-
         updateValue(data);
     }
 
     private Bundle getloaderArguments(){
         //Init the where args with a long value representing todays beginning, and the type we are which is ADD
-        final String[] whereArgs = {String.valueOf(new MidnightTimestamp().getTodayMidnightMillis()), String.valueOf(TYPE)};
+        final String[] whereArgs = {String.valueOf(new MidnightTimestamp().getTodayMidnightMillis()), String.valueOf(sourceType)};
 
         final Bundle searchArgs = new Bundle();
 
@@ -189,16 +213,21 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public abstract void onLoadFinished(Loader<Cursor> loader, Cursor data);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        cursorAdapter.setCursor(data);
+        setTransactions(cursorAdapter.fromCursor());
+    }
 
     @Override
-    public abstract void onLoaderReset(Loader<Cursor> loader);
+    public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
 
     /**
      * Updates the Total Display value for Today's Transactions
      *
-     * @param transactions
+     *
+     * @param transactions The current list of transactions
      */
     protected void updateValue(final List<Transactions> transactions){
 

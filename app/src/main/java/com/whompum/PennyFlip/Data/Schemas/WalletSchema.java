@@ -1,6 +1,5 @@
 package com.whompum.PennyFlip.Data.Schemas;
 
-import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -25,14 +24,16 @@ public class WalletSchema {
 
 
         public static final String TABLE_NAME = "WALLET";
-        public static final String COL_TOTAL = "WalletTotal";
+        public static final String COL_CURR_TOTAL = "walletTotal";
+        public static final String COL_TOTAL_ADDED = "totalAdded";
+        public static final String COL_TOTAL_SPENT = "totalSpent";
 
         public static final String CONSTRAINT_DEFAULT = " DEFAULT";
 
         public static final String DEF_VALUE_CONSTRAINT = " 0";
 
-        public static final String[] COLUMNS_WITH_ID = {_ID, COL_TOTAL};
-        public static final String[] COLUMNS_NO_ID = {COL_TOTAL};
+        public static final String[] COLUMNS_WITH_ID = {_ID, COL_CURR_TOTAL};
+        public static final String[] COLUMNS_NO_ID = {COL_CURR_TOTAL};
 
 
         public static final Uri URI = Uri.withAppendedPath(WalletProvider.URI, "sqlite/"+TABLE_NAME );
@@ -43,8 +44,10 @@ public class WalletSchema {
 
         public static final String CREATE_TABLE = "create table " + TABLE_NAME + " ( " +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + " CHECK(" + BaseColumns._ID + " < 2), " +
-                COL_TOTAL + " INTEGER" + CONSTRAINT_DEFAULT + DEF_VALUE_CONSTRAINT +
-                " CHECK(" + COL_TOTAL + " >= 0)" + " CHECK(" + COL_TOTAL + " <=" + String.valueOf(Long.MAX_VALUE) + ")" + ");";
+                COL_CURR_TOTAL + " INTEGER" + CONSTRAINT_DEFAULT + DEF_VALUE_CONSTRAINT +
+                " CHECK(" + COL_CURR_TOTAL + " >= 0)" + " CHECK(" + COL_CURR_TOTAL + " <=" + String.valueOf(Long.MAX_VALUE) + ")," +
+                COL_TOTAL_ADDED + " INTEGER CHECK(" + COL_TOTAL_ADDED + " >= 0)," +
+                COL_TOTAL_SPENT + " INTEGER CHECK( " + COL_TOTAL_SPENT + " >= 0)" + ");";
 
         /**
          * Check constraint against _id is to ensure only 1 record exists

@@ -42,7 +42,7 @@ public class TransactionsCursorAdapter implements PennyFlipCursorAdapter<Transac
 
         /**
          * COL_TIMESTAMP + " INTEGER DEFAULT " + String.valueOf(Timestamp.now().millis()) + ", " +
-         COL_TOTAL + " INTEGER NOT NULL DEFAULT 0, " +
+         COL_CURR_TOTAL + " INTEGER NOT NULL DEFAULT 0, " +
          COL_SOURCE_ID + " TEXT NOT NULL, " +
          COL_SOURCE_NAME + " TEXT NOT NULL, " +
          COL_SOURCE_TYPE + " INTEGER );";
