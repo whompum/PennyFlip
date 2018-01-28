@@ -33,7 +33,7 @@ public class SourceListHolderBase extends SourceListAdapterBase.Holder {
     @Override
     public void bind(SourceMetaData data) {
         this.sourceName.setText(data.getSourceName());
-        this.lastUpdate.setText(data.getLastUpdate());
+        this.lastUpdate.setText(data.getLastUpdateSimpleTime());
         this.statistics.setText(String.valueOf(data.getPennies()));
     }
 }

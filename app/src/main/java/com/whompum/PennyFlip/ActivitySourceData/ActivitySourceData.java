@@ -1,27 +1,35 @@
 package com.whompum.PennyFlip.ActivitySourceData;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.annotation.StringRes;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
+import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
+import com.whompum.PennyFlip.Source.SourceMetaData;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public abstract class ActivitySourceData extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String SOURCE_NAME_KEY = "SOURCE_NAME";
-    public static final String SOURCE_TIMESTAMP = "SOURCE_TIMESTAMP";
-    public static final String SOURCE_TOTAL = "SOURCE_TOTAL";
+    public static final String SOURCE_KEY = "source.ky";
 
+    @StringRes
+    public static final int LAST_UPDATE_PREFIX = R.string.string_last_update;
 
     protected AppCompatImageButton upNav;
     protected TextView sourceNameLabel;
@@ -31,9 +39,7 @@ public abstract class ActivitySourceData extends AppCompatActivity implements Vi
 
     private LinearLayout titleIndicator;
 
-    protected String sourceName;
-    protected String lastUpdate;
-    protected long sourcePennies;
+    protected SourceMetaData data;
 
     private ViewPager container;
 
@@ -61,29 +67,36 @@ public abstract class ActivitySourceData extends AppCompatActivity implements Vi
 
         this.container = findViewById(R.id.id_source_data_container);
 
-        sourceName = getIntent().getStringExtra(SOURCE_NAME_KEY);
-        lastUpdate = getIntent().getStringExtra(SOURCE_TIMESTAMP);
-        sourcePennies = getIntent().getLongExtra(SOURCE_TOTAL, 900L);
+        this.data = initMetaData(getIntent());
 
-        if(sourceName != null)
-            sourceNameLabel.setText(sourceName);
 
-        if(lastUpdate != null) {
-         final String lastUpdateConcat = getString(R.string.string_last_update) + " " + lastUpdate;
-            sourceUpdateTimestamp.setText(lastUpdateConcat);
+        sourceNameLabel.setText(data.getSourceName());
+        value.setText(String.valueOf(data.getPennies()));
+
+        final String lastUpdatePrefix = getString(LAST_UPDATE_PREFIX);
+
+        if(data.hasLastUpdate()) {
+         final String lastUpdate = lastUpdatePrefix + data.getLastUpdateSimpleTime();
+            sourceUpdateTimestamp.setText(lastUpdate);
         }
 
-        value.setText(String.valueOf(sourcePennies));
-
-        strips = new PageTitleStrips(titleIndicator, null);
+        strips = new PageTitleStrips(titleIndicator, new PageTitleStrips.StripClick() {
+            @Override
+            public void onStripClicked(int position) {
+                container.setCurrentItem(position);
+            }
+        });
 
         adapter = new SourceFragmentAdapter(getSupportFragmentManager());
         populateFragmentAdapter(adapter);
 
         container.setAdapter(adapter);
         container.addOnPageChangeListener(d);
+
+        findViewById(R.id.ic_delete_source).setOnClickListener(this);
     }
 
+    protected abstract SourceMetaData initMetaData(final Intent intent);
 
 
 
@@ -108,6 +121,49 @@ public abstract class ActivitySourceData extends AppCompatActivity implements Vi
 
         if(v.getId() == R.id.id_up_navigation)
             NavUtils.navigateUpFromSameTask(this);
+
+        if(v.getId() == R.id.ic_delete_source)
+            launchDeleteConfDialog();
+
+    }
+
+
+    private void launchDeleteConfDialog(){
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
+
+        final AlertDialog dialog = builder.setTitle(R.string.string_delete_conf_title)
+               .setMessage(R.string.string_delete_conf_message)
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                deleteSource();
+            }
+        }).create();
+
+        final WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+
+        if(params != null)
+            params.windowAnimations = R.style.StyleDialogAnimate;
+
+        dialog.show();
+    }
+
+    private void deleteSource(){
+
+        final String where = SourceSchema.SourceTable._ID + "=?";
+        final String[] args = {String.valueOf(data.getId())};
+
+        final int numRows = getContentResolver().delete(SourceSchema.SourceTable.URI, where, args);
+
+        if(numRows > 0)
+            finish();
 
     }
 

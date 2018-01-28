@@ -21,8 +21,8 @@
             android:id="@id/id_up_navigation"
             app:srcCompat="@drawable/ic_svg_chevron"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_width="@dimen/dimen_icon_size"
+            android:layout_height="@dimen/dimen_icon_size" />
 
         <TextView
             tools:text="Source Name"
@@ -34,6 +34,14 @@
             android:textSize="@dimen/dimen_text_mediano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/ic_delete_source"
+            app:srcCompat="@drawable/ic_material_trash_icon"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:layout_width="@dimen/dimen_icon_size"
+            android:layout_height="@dimen/dimen_icon_size" />
 
         <!--Convert to a style, and re-use
             Also convert below into a separate layout, and merge-->

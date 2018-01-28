@@ -7,7 +7,7 @@
         <item name="colorControlHighlight">@color/darkest_grey</item>
     </style>
 
-<style name="StyleAddSourceDialog" parent="Base.Theme.AppCompat.Light.Dialog">
+<style name="StyleDialogAnimate" parent="Base.Theme.AppCompat.Light.Dialog">
     <item name="android:windowBackground">@null</item>
     <item name="android:windowEnterAnimation">@anim/slide_up</item>
     <item name="android:windowExitAnimation">@anim/slide_left</item>

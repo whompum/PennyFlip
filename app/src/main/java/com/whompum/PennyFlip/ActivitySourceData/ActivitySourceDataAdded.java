@@ -2,9 +2,13 @@ package com.whompum.PennyFlip.ActivitySourceData;
 
 
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.whompum.PennyFlip.ListPopulator;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
+import com.whompum.PennyFlip.Source.SourceMetaData;
 import com.whompum.PennyFlip.Statistics.Populator;
 import com.whompum.PennyFlip.Source.SourceStatistic;
 import com.whompum.PennyFlip.Statistics.StatisticsFragment;
@@ -25,7 +29,6 @@ public class ActivitySourceDataAdded extends ActivitySourceData implements Stati
 
 
     private ListPopulator<HeaderItem> transactionFragment;
-
     private Populator<SourceStatistic> statisticsFragement;
 
     @Override
@@ -35,7 +38,7 @@ public class ActivitySourceDataAdded extends ActivitySourceData implements Stati
         transactionFragment = transFragment;
         adapter.addFragment(transFragment);
 
-        final StatisticsFragment statsFrag = (StatisticsFragment) StatisticsFragment.newInstance(sourcePennies);
+        final StatisticsFragment statsFrag = (StatisticsFragment) StatisticsFragment.newInstance(data.getPennies());
         adapter.addFragment(statsFrag);
         statisticsFragement = statsFrag;
 
@@ -46,47 +49,13 @@ public class ActivitySourceDataAdded extends ActivitySourceData implements Stati
 
     @Override
     protected void populateFragments() {
-        transactionFragment.populate(temp());
-        statisticsFragement.populate(new SourceStatistic( 19990));
+        //The fragments implement Populator, so call populate() on them
     }
 
-
-    List<HeaderItem> temp(){
-
-        final List<HeaderItem> transactions = new ArrayList<>();
-
-        final long day = TimeUnit.DAYS.toMillis(1);
-
-        final long today = System.currentTimeMillis();
-
-        long transactionDate = today;
-
-        for(int i = 0; i < 7; i++){
-
-            final TransactionHeaderItem headerItem = new TransactionHeaderItem(Timestamp.from(transactionDate), 4);
-
-            transactions.add(headerItem);
-
-            for(int a = 0; a < 4; a++){
-
-                Transactions trans = null;
-
-                if(a % 2 == 0)
-                    trans = new Transactions(TransactionType.ADD, 2782L, "Car Wash");
-                else
-                    trans = new Transactions(TransactionType.SPEND, 9999L, "Food");
-
-
-                final TransactionsItem transItem = new TransactionsItem(trans);
-                transactions.add(transItem);
-            }
-            transactionDate -= day;
-        }
-
-        return transactions;
+    @Override
+    protected SourceMetaData initMetaData(final Intent intent) {
+        return (SourceMetaData) intent.getParcelableExtra(SOURCE_KEY);
     }
-
-
 
     @Override
     public void onDataRequested(TimeRange o) {

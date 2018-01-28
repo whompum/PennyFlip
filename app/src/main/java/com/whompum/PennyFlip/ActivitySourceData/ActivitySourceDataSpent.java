@@ -1,9 +1,14 @@
 package com.whompum.PennyFlip.ActivitySourceData;
 
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.whompum.PennyFlip.ListPopulator;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
+import com.whompum.PennyFlip.Source.SourceMetaData;
+import com.whompum.PennyFlip.Source.SpendSourceMetaData;
 import com.whompum.PennyFlip.Statistics.Populator;
 import com.whompum.PennyFlip.Source.SourceStatistic;
 import com.whompum.PennyFlip.Statistics.StatisticsFragment;
@@ -24,7 +29,7 @@ public class ActivitySourceDataSpent extends ActivitySourceData implements Stati
         final TransactionFragment transFragment = (TransactionFragment) TransactionFragment.newInstance();
         this.transactionFragment = transFragment;
 
-        final StatisticsFragment statsFragment = (StatisticsFragment) StatisticsFragment.newInstance(sourcePennies, this);
+        final StatisticsFragment statsFragment = (StatisticsFragment) StatisticsFragment.newInstance(data.getPennies(), this);
         this.sourceStatisticPopulator = statsFragment;
 
 
@@ -38,7 +43,12 @@ public class ActivitySourceDataSpent extends ActivitySourceData implements Stati
 
     @Override
     protected void populateFragments() {
-        sourceStatisticPopulator.populate(new SourceStatistic( 30000));
+    }
+
+    @Override
+    protected SourceMetaData initMetaData(final Intent intent) {
+        //Implement Serizalizable on Spend
+        return (SpendSourceMetaData) intent.getParcelableExtra(SOURCE_KEY);
     }
 
     @Override

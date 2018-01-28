@@ -42,6 +42,9 @@
     <string name="string_search">Search</string>
     <string name="string_search_loading">Search&#8230;</string>
 
+    <string name="string_delete_conf_title">Delete</string>
+    <string name="string_delete_conf_message">Delete this source, and all of its meta data?</string>
+
     <!--SOURCE ADD DIALOG-->
     <string name="string_title">Title</string>
     <string name="string_done">Done</string>

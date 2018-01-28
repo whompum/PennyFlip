@@ -238,7 +238,7 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
      */
     protected final Dialog makeDialog(){
 
-        final int DIALOG_STYLE = R.style.StyleAddSourceDialog;
+        final int DIALOG_STYLE = R.style.StyleDialogAnimate;
 
         addSourceDialog = new Dialog(getContext(), DIALOG_STYLE);
 
@@ -425,9 +425,7 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
      */
     @CallSuper
     protected void initIntentArgs(@NonNull final SourceMetaData data){
-        this.intent.putExtra(ActivitySourceData.SOURCE_NAME_KEY, data.getSourceName());
-        this.intent.putExtra(ActivitySourceData.SOURCE_TIMESTAMP, data.getLastUpdate());
-        this.intent.putExtra(ActivitySourceData.SOURCE_TOTAL, data.getPennies());
+        intent.putExtra(ActivitySourceData.SOURCE_KEY, data);
     }
 
 
@@ -561,7 +559,7 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
         final WindowManager.LayoutParams attrs = dialog.getWindow().getAttributes();
 
         if(attrs != null)
-            attrs.windowAnimations = R.style.StyleAddSourceDialog;
+            attrs.windowAnimations = R.style.StyleDialogAnimate;
 
     dialog.show();
     }

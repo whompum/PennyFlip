@@ -1,6 +1,9 @@
 package com.whompum.PennyFlip.Source;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;
@@ -9,7 +12,7 @@ import com.whompum.PennyFlip.Time.Timestamp;
  * Created by bryan on 12/28/2017.
  */
 
-public class SourceMetaData {
+public class SourceMetaData implements Parcelable{
 
     private String sourceName;
     private long pennies;
@@ -23,8 +26,22 @@ public class SourceMetaData {
 
         this.sourceName = sourceName;
         this.pennies = pennies;
+        this.creationDate = creationDate;
         this.lastUpdate = lastUpdate;
         this.id = id;
+    }
+
+
+    public SourceMetaData(@NonNull final Parcel parcel){
+        this(parcel.readString(), //Source name
+                parcel.readLong(), //Amount
+                Timestamp.from(parcel.readLong()), // Creation date
+                Timestamp.from(parcel.readLong()), // Last Update
+                parcel.readLong()); //ID
+    }
+
+    public boolean hasLastUpdate(){
+        return lastUpdate.millis() != 0;
     }
 
     public String getSourceName(){
@@ -35,13 +52,76 @@ public class SourceMetaData {
         return pennies;
     }
 
-    public String getLastUpdate(){
+    public String getLastUpdateSimpleTime(){
         return PennyFlipTimeFormatter.simpleTime(lastUpdate);
     }
 
-    public String getCreationDate(){return PennyFlipTimeFormatter.simpleTime(creationDate);}
+    public String getLastUpdateSimpleDate(){
+        return PennyFlipTimeFormatter.simpleDate(lastUpdate);
+    }
+
+    public long getLastUpdateMillis(){
+        return lastUpdate.millis();
+    }
+
+    public String getCreationDateSimpleTime(){
+        return PennyFlipTimeFormatter.simpleTime(creationDate);
+    }
+
+    public String getCreationDateSimpleDate(){
+        return PennyFlipTimeFormatter.simpleDate(creationDate);
+    }
+
+    public long getCreationDateMillis(){
+        return creationDate.millis();
+    }
+
 
     public long getId(){
         return id;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        /**
+         * name: String, pennies: long, creationDate: long, lastUpdate: long, id: long
+         */
+
+        dest.writeString(sourceName);
+        dest.writeLong(pennies);
+        dest.writeLong(creationDate.millis());
+        dest.writeLong(lastUpdate.millis());
+        dest.writeLong(id);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
+
+        @Override
+        public Object createFromParcel(Parcel source) {
+            return new SourceMetaData(source);
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new Object[0];
+        }
+    };
+
+
 }
+
+
+
+
+
+
+
+
+
+
