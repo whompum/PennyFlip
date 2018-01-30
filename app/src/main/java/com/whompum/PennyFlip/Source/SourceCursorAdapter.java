@@ -2,11 +2,9 @@ package com.whompum.PennyFlip.Source;
 
 import android.database.Cursor;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.widget.TextView;
 
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
-import com.whompum.PennyFlip.PennyFlipCursorAdapter;
+import com.whompum.PennyFlip.PennyFlipCursorAdapterImpl;
 import com.whompum.PennyFlip.Time.Timestamp;
 
 import java.util.ArrayList;
@@ -16,7 +14,7 @@ import java.util.List;
  * Created by bryan on 1/22/2018.
  */
 
-public class SourceCursorAdapter implements PennyFlipCursorAdapter<SourceMetaData> {
+public class SourceCursorAdapter extends PennyFlipCursorAdapterImpl<SourceMetaData> {
 
     protected static final String TITLE = SourceSchema.SourceTable.COL_TITLE;
     protected static final String TOTAL = SourceSchema.SourceTable.COL_TITLE;
@@ -25,11 +23,9 @@ public class SourceCursorAdapter implements PennyFlipCursorAdapter<SourceMetaDat
     protected static final String ID = SourceSchema.SourceTable._ID;
 
 
-    private Cursor cursor;
-
 
     public SourceCursorAdapter(@Nullable final Cursor cursor){
-        this.cursor = cursor;
+        super(cursor);
     }
 
     @Override
@@ -37,15 +33,15 @@ public class SourceCursorAdapter implements PennyFlipCursorAdapter<SourceMetaDat
 
         final List<SourceMetaData> sourceData = new ArrayList<>();
 
-        if(cursor != null){
+        if(data != null){
 
-            while (cursor.moveToNext()){
+            while (data.moveToNext()){
 
-                final String title = cursor.getString(titleIndex());
-                final long total = cursor.getLong(totalIndex());
-                final long creationDate = cursor.getLong(creationDateIndex());
-                final long lastUpdateDate = cursor.getLong(lastUpdateIndex());
-                final long id = cursor.getLong(idIndex());
+                final String title = data.getString(titleIndex());
+                final long total = data.getLong(totalIndex());
+                final long creationDate = data.getLong(creationDateIndex());
+                final long lastUpdateDate = data.getLong(lastUpdateIndex());
+                final long id = data.getLong(idIndex());
 
                 sourceData.add(new SourceMetaData(title, total, Timestamp.from(creationDate), Timestamp.from(lastUpdateDate), id));
 
@@ -57,40 +53,35 @@ public class SourceCursorAdapter implements PennyFlipCursorAdapter<SourceMetaDat
         return sourceData;
     }
 
-    @Override
-    public void setCursor(@Nullable Cursor cursor) {
-        this.cursor = cursor;
-    }
-
 
     private int titleIndex(){
-        if(cursor==null) return -1;
+        if(data ==null) return -1;
 
-     return cursor.getColumnIndex(TITLE);
+     return data.getColumnIndex(TITLE);
     }
 
 
     private int totalIndex(){
-        if(cursor == null) return -1;
-    return cursor.getColumnIndex(TOTAL);
+        if(data == null) return -1;
+    return data.getColumnIndex(TOTAL);
     }
 
 
     private int creationDateIndex(){
-        if(cursor == null) return -1;
+        if(data == null) return -1;
 
-    return cursor.getColumnIndex(CREATION_DATE);
+    return data.getColumnIndex(CREATION_DATE);
     }
 
 
     private int lastUpdateIndex(){
-        if(cursor == null) return -1;
-    return cursor.getColumnIndex(LAST_UPDATE);
+        if(data == null) return -1;
+    return data.getColumnIndex(LAST_UPDATE);
     }
 
     private int idIndex(){
-        if(cursor == null) return -1;
-     return cursor.getColumnIndex(ID);
+        if(data == null) return -1;
+     return data.getColumnIndex(ID);
     }
 
 }

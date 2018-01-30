@@ -1,12 +1,12 @@
 package com.whompum.PennyFlip.DialogSourceChooser;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Build;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +15,7 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Source.SourceWrapper;
 
-/**
- * TODO fix bug where previously tapped item doesn't always turn off when a new element is tapped.
- */
+
 
 public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdapter.SourceViewCache> {
 
@@ -27,19 +25,12 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
     @LayoutRes
     private static final int LAYOUT = R.layout.layout_list_item_dialog_source;
 
-    @ColorRes
-    private static final int TAG_BG_COLOR = R.color.color_light_orange;
-
     private AdapterSelecteable<SourceWrapper> wrappers;
 
     private Context context;
-
     private int titleColor;
-    private int tagBgColor;
-
 
     private OnSourceListItemChange onSourceListItemChange;
-
 
     public SourceWrapperAdapter(final Context context, @ColorRes final int textColor){
         this(context, textColor, null);
@@ -48,21 +39,18 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
     public SourceWrapperAdapter(final Context context, @ColorRes final int textColor, final AdapterSelecteable wrappers){
         this.context = context;
 
-        if(Build.VERSION.SDK_INT >= 23) {
+        if(Build.VERSION.SDK_INT >= 23)
             titleColor = context.getColor(textColor);
-            tagBgColor = context.getColor(TAG_BG_COLOR);
-        }else {
+
+        else
             titleColor = context.getResources().getColor(textColor);
-            tagBgColor = context.getResources().getColor(TAG_BG_COLOR);
-        }
+
         if(wrappers != null)
             this.wrappers = wrappers;
         else
             this.wrappers = new AdapterSelecteable<>();
 
-
     }
-
 
 
     public void insertToFirst(final SourceWrapper wrapper){
@@ -77,16 +65,31 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
          * After this logic is ran, we are going to check IF the new wrapper is EMPTY or not.
          * E.G. the user backspaced until the value for SourceWrapper#title is "". In that case we add nothing
          */
+
+
+
         if(wrappers.size() != 0){
+
+
             if(wrappers.get(0).getTagType() == SourceWrapper.TAG.NEW)
                 isOldSelected = wrappers.isSelected(wrappers.remove(0));
-
 
             if(isOldSelected)
                notifyListener(null);
 
-            if(!wrapper.getTitle().equals(SourceWrapper.EMPTY))
+            /**
+             * If the searched sourcewrapper is actually in the list,
+             * then return. NOTE that the order of this logic. First we remove the first index,
+             * and only add if its a unique source wrapper
+             */
+            if(isSearchedSourceInList(wrapper))
+                return;
+
+            if(!wrapper.getTitle().equals(SourceWrapper.EMPTY)) {
                 wrappers.add(0, wrapper);
+                Log.i("SourceWrapperAdapter", "insertToFirst()#SourceWrapperAdapter" + " Inserting " +
+                " SOURCE NAMED: " + wrappers.get(0).getTitle() + " Into the first index");
+            }
         }else
             wrappers.add(wrapper);
 
@@ -94,16 +97,47 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
         notifyDataSetChanged();
     }
 
+    private boolean isSearchedSourceInList(final SourceWrapper wrapper){
+
+        for(SourceWrapper theWrapper : this.wrappers)
+            if(theWrapper.getTitle().equals(wrapper.getTitle()))
+                return true;
+
+        return false;
+    }
+
+
+    /**
+     * Swaps the data set;
+     *
+     * This methods responsibility is to set the current data set to the new dataset
+     * while also including the original "New" wrapper, if any.
+     *
+     * @param wrappers The new list of wrappers to swap
+     */
     public void swapDataSet(@Nullable final AdapterSelecteable<SourceWrapper> wrappers){
 
-        if(wrappers != null)
-            this.wrappers = wrappers;
+        //We have data
+        if(wrappers != null) {
+
+            boolean carryOverFirstIndex = false;  //Whether we should carry over the first index of this.wrappers, and store in the new dataset
+
+            if(this.wrappers.size() != 0)//avoiding an index outta' bounds hissy fit
+                //Only carry over if the first index is a new wrapper
+                carryOverFirstIndex = this.wrappers.get(0).getTagType() == SourceWrapper.TAG.NEW;
+
+            if(carryOverFirstIndex){ //If first index is a new wrapper, cache it, and insert it to the first index
+                final SourceWrapper cache = this.wrappers.get(0);
+                this.wrappers = wrappers;
+                insertToFirst(cache);
+            }else
+                this.wrappers = wrappers;
+        }
         else
             this.wrappers = new AdapterSelecteable<>();
 
-        wrappers.removeSelected();
-        notifyListener(null);
-
+        this.wrappers.removeSelected(); //Dataset changed. Remove any selected items
+        notifyListener(null); //Notify a listener that the selected item state has changed
 
         notifyDataSetChanged();
     }
@@ -120,7 +154,6 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
     }
 
 
-
     public void onItemClicked(final int position){
 
         wrappers.setSelected(wrappers.get(position));
@@ -135,11 +168,6 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
         notifyDataSetChanged();
     }
 
-    @Override
-    public void onViewRecycled(SourceViewCache holder) {
-        super.onViewRecycled(holder);
-
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -161,7 +189,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
 
         else if(viewType == TYPE_NEW)
             holder = new SourceViewCache(LayoutInflater.from(context)
-                .inflate(LAYOUT, parent, false), titleColor, tagBgColor, this);
+                .inflate(LAYOUT, parent, false), titleColor, SourceWrapper.TAG.NEW, this);
 
     return holder;
     }
@@ -176,7 +204,6 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
             holder.turnOff();
 
         holder.wrapperTitle.setText(data.getTitle());
-        holder.wrapperTag.setText(data.getTag());
     }
 
     @Override
@@ -192,28 +219,30 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
         @ColorRes
         private int OFF_COLOR = R.color.white;
 
-        private SourceWrapperAdapter instance;  //Is this even a smart design ?!
+        private SourceWrapperAdapter instance;
 
         private ViewGroup layout;
         private TextView  wrapperTitle;
         private TextView  wrapperTag;
 
         public SourceViewCache(final View layout, final int titleColor, final SourceWrapperAdapter instance){
-            this(layout, titleColor, Integer.MIN_VALUE, instance);
+            this(layout, titleColor, SourceWrapper.TAG.REGULAR, instance);
         }
 
-        public SourceViewCache(final View layout, final int titleColor, final int tagbgColor, final SourceWrapperAdapter instance){
+        public SourceViewCache(final View layout, final int titleColor, final SourceWrapper.TAG tag, final SourceWrapperAdapter instance){
             super(layout);
 
             wrapperTitle = layout.findViewById(R.id.id_source_dialog_source_title);
             wrapperTitle.setTextColor(titleColor);
             wrapperTag = layout.findViewById(R.id.id_source_dialog_source_tag);
 
-            if(tagbgColor!=Integer.MIN_VALUE)
-                if(Build.VERSION.SDK_INT >= 21)
-                wrapperTag.setBackgroundTintList(ColorStateList.valueOf(tagbgColor));
-            else
-                wrapperTag.setBackgroundColor(tagbgColor);
+            if(tag == SourceWrapper.TAG.REGULAR)
+                wrapperTag.setVisibility(View.GONE);
+
+            else if(tag == SourceWrapper.TAG.NEW)
+                wrapperTag.setVisibility(View.VISIBLE);
+
+
 
             this.layout = (ViewGroup) layout;
             layout.setOnClickListener(this);
@@ -229,7 +258,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
         }
 
         private void turnOn(){
-            int color = 0;
+            int color;
 
             if(Build.VERSION.SDK_INT >=23)
                 color = instance.context.getColor(ON_COLOR);
@@ -241,7 +270,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
         }
 
         private void turnOff(){
-            int color = 0;
+            int color;
 
             if(Build.VERSION.SDK_INT >=23)
                 color = instance.context.getColor(OFF_COLOR);

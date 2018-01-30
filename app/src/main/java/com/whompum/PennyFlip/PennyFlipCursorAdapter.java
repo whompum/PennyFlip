@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface PennyFlipCursorAdapter<D> {
     List<D> fromCursor();
-    void setCursor(final Cursor cursor);
+    void setData(final Cursor data);
 }

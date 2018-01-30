@@ -13,6 +13,7 @@ import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 
 public class SourceLoader extends CursorLoader {
 
+
     public SourceLoader(final Context context){
         super(context);
 

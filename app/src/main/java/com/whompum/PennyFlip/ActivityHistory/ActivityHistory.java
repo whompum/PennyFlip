@@ -47,7 +47,7 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
         transactionList = findViewById(R.id.id_history_recycler);
         transactionList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        adapter = new TransactionListAdapter(this, temp());
+        adapter = new TransactionListAdapter(this, null);
 
         transactionList.setAdapter(adapter);
 
@@ -128,44 +128,6 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
     }
 
 
-
-
-
-
-    List<HeaderItem> temp(){
-
-        final List<HeaderItem> transactions = new ArrayList<>();
-
-        final long day = TimeUnit.DAYS.toMillis(1);
-
-        final long today = System.currentTimeMillis();
-
-        long transactionDate = today;
-
-        for(int i = 0; i < 7; i++){
-
-            final TransactionHeaderItem headerItem = new TransactionHeaderItem(Timestamp.from(transactionDate), 4);
-
-            transactions.add(headerItem);
-
-            for(int a = 0; a < 4; a++){
-
-              Transactions trans = null;
-
-              if(a % 2 == 0)
-                trans = new Transactions(TransactionType.ADD, 2782L, "Car Wash");
-              else
-                trans = new Transactions(TransactionType.SPEND, 9999L, "Food");
-
-
-                final TransactionsItem transItem = new TransactionsItem(trans);
-                transactions.add(transItem);
-            }
-            transactionDate -= day;
-        }
-
-    return transactions;
-    }
 
 }
 

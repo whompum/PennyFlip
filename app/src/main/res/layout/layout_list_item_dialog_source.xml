@@ -17,7 +17,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        tools:text="@string/string_source_tag_base"
+        android:text="@string/string_source_tag_new"
         android:textColor="@color/white"
         android:paddingLeft="8dp"
         android:paddingStart="8dp"
@@ -25,7 +25,7 @@
         android:paddingEnd="8dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:background="@drawable/drawable_shape_background_oval"
+        android:background="@drawable/drawable_source_wrapper_new_background"
         android:id="@id/id_source_dialog_source_tag"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"

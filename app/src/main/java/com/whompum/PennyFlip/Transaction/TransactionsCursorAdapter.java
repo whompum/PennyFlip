@@ -1,32 +1,27 @@
 package com.whompum.PennyFlip.Transaction;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.widget.CursorAdapter;
 
 import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.PennyFlipCursorAdapter;
+import com.whompum.PennyFlip.PennyFlipCursorAdapterImpl;
 import com.whompum.PennyFlip.Transaction.Models.Transactions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
-public class TransactionsCursorAdapter implements PennyFlipCursorAdapter<Transactions> {
+public class TransactionsCursorAdapter extends PennyFlipCursorAdapterImpl<Transactions> {
 
 
     private final String TIMESTAMP = TransactionsSchema.TransactionTable.COL_TIMESTAMP;
     private final String TOTAL = TransactionsSchema.TransactionTable.COL_TOTAL;
+    private final String SOURCE_ID = TransactionsSchema.TransactionTable.COL_SOURCE_ID;
     private final String SOURCE_NAME = TransactionsSchema.TransactionTable.COL_SOURCE_NAME;
     private final String SOURCE_TYPE = TransactionsSchema.TransactionTable.COL_SOURCE_TYPE;
 
-
-    private Cursor cursor = null;
-
-
-    public TransactionsCursorAdapter(){
-
+    public TransactionsCursorAdapter(Cursor data) {
+        super(data);
     }
 
     /**
@@ -51,20 +46,22 @@ public class TransactionsCursorAdapter implements PennyFlipCursorAdapter<Transac
         final List<Transactions> transactionsList = new ArrayList<>(1);
 
 
-        if(cursor != null) {
+        if(data != null) {
             long transactionDate;
             long transactionPennies;
+            long sourceId;
             String sourceName;
             int sourceType;
 
-            while (cursor.moveToNext()) {
+            while (data.moveToNext()) {
 
-                transactionDate = cursor.getLong(timestampIndex());
-                transactionPennies = cursor.getLong(totalIndex());
-                sourceName = cursor.getString(sourceNameIndex());
-                sourceType = cursor.getInt(sourceTypeIndex());
+                transactionDate = data.getLong(timestampIndex());
+                transactionPennies = data.getLong(totalIndex());
+                sourceName = data.getString(sourceNameIndex());
+                sourceId = data.getLong(sourceIdIndex());
+                sourceType = data.getInt(sourceTypeIndex());
 
-                final Transactions transactions = new Transactions(sourceType, transactionDate, transactionPennies, sourceName);
+                final Transactions transactions = new Transactions(sourceType, transactionDate, transactionPennies, sourceName, sourceId);
 
                 transactionsList.add(transactions);
 
@@ -75,26 +72,23 @@ public class TransactionsCursorAdapter implements PennyFlipCursorAdapter<Transac
         return transactionsList;
     }
 
-    @Override
-    public void setCursor(final Cursor cursor){
-        this.cursor = cursor;
-
-    }
 
     private int timestampIndex(){
-        return cursor.getColumnIndex(TIMESTAMP);
+        return data.getColumnIndex(TIMESTAMP);
     }
 
     private int totalIndex(){
-        return cursor.getColumnIndex(TOTAL);
+        return data.getColumnIndex(TOTAL);
     }
 
     private int sourceNameIndex(){
-        return cursor.getColumnIndex(SOURCE_NAME);
+        return data.getColumnIndex(SOURCE_NAME);
     }
 
     private int sourceTypeIndex(){
-        return cursor.getColumnIndex(SOURCE_TYPE);
+        return data.getColumnIndex(SOURCE_TYPE);
     }
+
+    private int sourceIdIndex(){return data.getColumnIndex(SOURCE_ID);}
 
 }

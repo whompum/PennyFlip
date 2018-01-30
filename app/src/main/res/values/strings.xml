@@ -67,5 +67,7 @@
     </string-array>
 
 
+    <string name="string_service_save_transaction_description">Saving your recent transaction</string>
+
 
 </resources>

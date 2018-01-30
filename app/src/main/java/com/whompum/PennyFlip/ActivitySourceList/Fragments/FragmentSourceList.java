@@ -468,7 +468,7 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        cursorAdapter.setCursor(data);
+        cursorAdapter.setData(data);
         swapDataSet(cursorAdapter.fromCursor());
     }
 
@@ -580,6 +580,7 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
 
     /**
      * Tightly coupled to the positions of R.arrays.sortOrderItems
+     * Returns a sort order from the SortOrder Dialog
      * @return The sort order (Given from the selected item)
      */
     private SourceSortOrder getSortOrderFromArray(final int pos){

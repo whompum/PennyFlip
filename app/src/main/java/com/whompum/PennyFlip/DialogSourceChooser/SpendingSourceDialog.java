@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Source.SourceWrapper;
+import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 
 /**
  * Created by bryan on 12/21/2017.
@@ -15,6 +16,7 @@ public class SpendingSourceDialog extends SourceDialog {
     {
         HEADER_COLOR = R.color.light_red;
         FAB_SRC = R.drawable.ic_shape_minus_red;
+        transactionType = TransactionType.SPEND;
     }
 
 
@@ -35,10 +37,6 @@ public class SpendingSourceDialog extends SourceDialog {
         return sourceListAdapter;
     }
 
-    @Override
-    protected void populate(@Nullable CharSequence popData) {
-        //Populate RECYCLER VIEW
-    }
 
     @Override
     protected void onDone() {

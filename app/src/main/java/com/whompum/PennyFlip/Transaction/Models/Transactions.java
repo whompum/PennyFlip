@@ -3,13 +3,9 @@ package com.whompum.PennyFlip.Transaction.Models;
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;
 
-/**
- * Created by bryan on 12/23/2017.
- */
+
 
 public class Transactions {
-
-    public static final String TAG = "TIME";
 
     private Timestamp timestamp;
 
@@ -17,16 +13,18 @@ public class Transactions {
 
     private String sourceName; //Maybe a reference to a source too?
 
+    private long sourceId;
+
     private int transactionType = Integer.MIN_VALUE;
 
 
 
-    public Transactions(final int type, final long pennyAmount, final String sourceName){
-        this(type, Long.MIN_VALUE, pennyAmount, sourceName);
+    public Transactions(final int type, final long pennyAmount, final String sourceName, final long sourceId){
+        this(type, Long.MIN_VALUE, pennyAmount, sourceName, sourceId);
     }
 
 
-    public Transactions(final int type, final long millis, final long pennyAmount, final String sourceName){
+    public Transactions(final int type, final long millis, final long pennyAmount, final String sourceName, final long sourceId){
         this.pennyAmount = pennyAmount;
         this.sourceName = sourceName;
 
@@ -36,6 +34,8 @@ public class Transactions {
             timestamp = Timestamp.from(millis);
 
         this.transactionType = type;
+
+        this.sourceId = sourceId;
 
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
@@ -24,6 +25,7 @@ import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.Data.Loader.WalletLoader;
 import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.Data.Schemas.WalletSchema;
+import com.whompum.PennyFlip.Data.Services.SaveTransactionsService;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
@@ -33,6 +35,7 @@ import com.whompum.PennyFlip.Source.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transaction.Models.TransactionType;
+import com.whompum.PennyFlip.Transaction.Models.Transactions;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
@@ -213,7 +216,10 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
         final SlidePennyDialog pennyDialog = (SlidePennyDialog) SlidePennyDialog.newInstance(cashListener, style);
         launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
+
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
+
+
     public void onMinusFabClicked(){
         final Bundle style = new Bundle();
         style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
@@ -242,7 +248,7 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
     private final PennyDialog.CashChangeListener cashListener = new PennyDialog.CashChangeListener() {
         @Override
-        public void onPenniesChange(long l) {
+        public void onPenniesChange(final long pennies) {
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -252,7 +258,7 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
                     addSourceDialog.registerItemSelectedListener(new SourceDialog.OnSourceItemSelected() {
                         @Override
                         public void onSourceItemSelected(SourceWrapper wrapper) {
-                            Toast.makeText(getBaseContext(), wrapper.getTitle(), Toast.LENGTH_SHORT).show();
+                            saveTransaction(wrapper, pennies);
                         }
                     });
                 }
@@ -265,14 +271,21 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
         }
     };
+
     private final PennyDialog.CashChangeListener minusListener = new PennyDialog.CashChangeListener() {
         @Override
-        public void onPenniesChange(long l) {
+        public void onPenniesChange(final long pennies) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     SourceDialog dialog = SpendingSourceDialog.newInstance(null);
                     launchPennyDialog(dialog, SpendingSourceDialog.TAG);
+                    dialog.registerItemSelectedListener(new SourceDialog.OnSourceItemSelected() {
+                        @Override
+                        public void onSourceItemSelected(SourceWrapper wrapper) {
+                            saveTransaction(wrapper, pennies);
+                        }
+                    });
                 }
             }, 500L);
 
@@ -283,6 +296,17 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
         }
     };
+
+
+    private void saveTransaction(final SourceWrapper wrapper, final long pennies){
+
+        final Intent saveIntent = new Intent(this, SaveTransactionsService.class);
+
+        saveIntent.putExtra(SaveTransactionsService.SOURCE_KEY, wrapper);
+        saveIntent.putExtra(SaveTransactionsService.TRANS_AMOUNT_KEY, pennies);
+
+        startService(saveIntent);
+    }
 
 
 

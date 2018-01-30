@@ -26,6 +26,4 @@ public class AdapterSelecteable<E> extends ArrayList<E> {
     public boolean isSelected(final E e){
         return e.equals(selecteable);
     }
-
-
 }
