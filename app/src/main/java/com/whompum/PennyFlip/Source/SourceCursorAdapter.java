@@ -17,7 +17,7 @@ import java.util.List;
 public class SourceCursorAdapter extends PennyFlipCursorAdapterImpl<SourceMetaData> {
 
     protected static final String TITLE = SourceSchema.SourceTable.COL_TITLE;
-    protected static final String TOTAL = SourceSchema.SourceTable.COL_TITLE;
+    protected static final String TOTAL = SourceSchema.SourceTable.COL_TOTAL;
     protected static final String CREATION_DATE = SourceSchema.SourceTable.COL_CREATION_DATE;
     protected static final String LAST_UPDATE = SourceSchema.SourceTable.COL_LAST_UPDATE;
     protected static final String ID = SourceSchema.SourceTable._ID;
