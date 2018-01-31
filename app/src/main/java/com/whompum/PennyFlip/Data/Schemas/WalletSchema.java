@@ -32,7 +32,7 @@ public class WalletSchema {
 
         public static final String DEF_VALUE_CONSTRAINT = " 0";
 
-        public static final String[] COLUMNS_WITH_ID = {_ID, COL_CURR_TOTAL};
+        public static final String[] COLUMNS_WITH_ID = {_ID, COL_CURR_TOTAL, COL_TOTAL_ADDED, COL_TOTAL_SPENT};
         public static final String[] COLUMNS_NO_ID = {COL_CURR_TOTAL};
 
 

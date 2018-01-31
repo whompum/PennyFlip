@@ -33,11 +33,8 @@ public class SaveTransactionsService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.i("SaveTransaction", "onHandleIntent()#SaveTransactionService.class");
-
         if(intent == null)
             return;
-
 
         final SourceWrapper source = (SourceWrapper) intent.getSerializableExtra(SOURCE_KEY);
         final long amount = intent.getLongExtra(TRANS_AMOUNT_KEY, 0L);
@@ -45,9 +42,7 @@ public class SaveTransactionsService extends IntentService {
         if(amount == 0L)
             return;
 
-
         final boolean isNew = source.getTagType() == SourceWrapper.TAG.NEW;
-
 
         /**
          * If the sourceWrapper is new (Meaning we're creating a new source object)
@@ -59,6 +54,8 @@ public class SaveTransactionsService extends IntentService {
             source.setSourceId(resolveIdFromUri(createNewSource(source)));
 
         insertTransaction(source, amount);
+
+        updateWalletTotal(source.getSourceType(), amount);
     }
 
    private Uri createNewSource(final SourceWrapper wrapper){
@@ -90,6 +87,7 @@ public class SaveTransactionsService extends IntentService {
 
         getContentResolver().insert(TransactionsSchema.TransactionTable.URI, values);
         updateSource(sourceWrapper, amount, now);
+
     }
 
     /**
@@ -108,6 +106,16 @@ public class SaveTransactionsService extends IntentService {
         getContentResolver().update(SourceSchema.SourceTable.URI, values, SourceSchema.SourceTable._ID + "=?", new String[]{String.valueOf(sourceWrapper.getSourceId())});
 
     }
+
+    private void updateWalletTotal(final int transactionType, final long amount){
+
+        final Intent intent = new Intent(this, UpdateWalletService.class);
+        intent.putExtra(UpdateWalletService.TRANSACTION_TYPE_KEY, transactionType);
+        intent.putExtra(UpdateWalletService.TRANSACTION_AMOUNT_KEY, amount);
+
+        startService(intent);
+    }
+
 
     /**
      * Static utility method to return a row index marker value from the

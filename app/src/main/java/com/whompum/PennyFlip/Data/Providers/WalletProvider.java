@@ -58,7 +58,7 @@ public class WalletProvider extends ContentProvider{
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
         final Cursor queryCursor = helper.getReadableDatabase().query(WalletSchema.Wallet.TABLE_NAME,
-                new String[]{WalletSchema.Wallet.COL_CURR_TOTAL}, WHERE, WHERE_ARGS, null, null, null);
+                projection, WHERE, WHERE_ARGS, null, null, null);
 
         if(queryCursor.getColumnCount() > 0)
             if(getContext().getContentResolver() != null);

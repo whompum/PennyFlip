@@ -52,6 +52,7 @@ public class WalletHelper extends SQLiteOpenHelper {
         try {
             database.insertOrThrow(WalletSchema.Wallet.TABLE_NAME, null, values);
         }catch (SQLException e){
+            Log.i("WALLET", "HERE COMES THE ERROR");
             Log.i("WALLET", e.getMessage());
             e.printStackTrace();
         }finally {
