@@ -89,6 +89,9 @@ public class WalletProvider extends ContentProvider{
 
        sqlite.update(WalletSchema.Wallet.TABLE_NAME, values, WHERE, WHERE_ARGS);
 
+       if(getContext().getContentResolver()!=null)
+           getContext().getContentResolver().notifyChange(uri, null);
+
     return 1;
     }
 }

@@ -22,8 +22,6 @@ public class SourceCursorAdapter extends PennyFlipCursorAdapterImpl<SourceMetaDa
     protected static final String LAST_UPDATE = SourceSchema.SourceTable.COL_LAST_UPDATE;
     protected static final String ID = SourceSchema.SourceTable._ID;
 
-
-
     public SourceCursorAdapter(@Nullable final Cursor cursor){
         super(cursor);
     }

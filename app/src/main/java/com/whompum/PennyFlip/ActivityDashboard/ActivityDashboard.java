@@ -100,8 +100,6 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
         initWalletLoader();
 
-
-
     }
 
     private void initWalletLoader(){
