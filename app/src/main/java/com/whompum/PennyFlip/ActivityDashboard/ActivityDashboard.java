@@ -26,6 +26,7 @@ import com.whompum.PennyFlip.Data.Loader.WalletLoader;
 import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.Data.Schemas.WalletSchema;
 import com.whompum.PennyFlip.Data.Services.SaveTransactionsService;
+import com.whompum.PennyFlip.Data.UserStartDate;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
@@ -65,6 +66,8 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
+
+        UserStartDate.set(this); //Sets the user start date. If already set then it will skip
 
         //View whose background will change color as the ViewPager is swiped :)
         colorBackground = findViewById(R.id.dashboard_colored_background);
