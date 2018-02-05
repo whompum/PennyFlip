@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 
 public class TransactionsItem implements HeaderItem {
 
-
     private Transactions transactions;
 
     public TransactionsItem(@NonNull Transactions transactions){

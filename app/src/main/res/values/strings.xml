@@ -67,7 +67,15 @@
     </string-array>
 
 
+    <!--TODO add messages for other services -->
     <string name="string_service_save_transaction_description">Saving your recent transaction</string>
+
+    <string-array name="timeRanges">
+        <item name="string_timerange_today">Today</item>
+        <item name="string_timerange_this_week">This Week</item>
+        <item name="string_timerange_this_month">This Month</item>
+        <item name="string_timerange_custom">Custom</item>
+    </string-array>
 
 
 </resources>

@@ -26,12 +26,16 @@ public class Timestamp {
 
     private DateTime timestamp;
 
+    private Timestamp(final DateTime dateTime){
+        this.timestamp = dateTime;
+    }
+
     private Timestamp(){
-        this.timestamp = DateTime.now();
+        this(DateTime.now());
     }
 
     private Timestamp(final long millis){
-        this.timestamp = new DateTime(millis);
+        this(new DateTime(millis));
     }
 
     public static Timestamp now(){
@@ -42,6 +46,9 @@ public class Timestamp {
         return new Timestamp(millis);
     }
 
+    public static Timestamp from(final DateTime dateTime){
+        return new Timestamp(dateTime);
+    }
 
     public DateTime getTimestamp(){
         return timestamp;

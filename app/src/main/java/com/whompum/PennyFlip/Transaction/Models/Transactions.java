@@ -19,28 +19,32 @@ public class Transactions {
 
 
 
-    public Transactions(final int type, final long pennyAmount, final String sourceName, final long sourceId){
-        this(type, Long.MIN_VALUE, pennyAmount, sourceName, sourceId);
+    private Transactions(){
     }
 
 
-    public Transactions(final int type, final long millis, final long pennyAmount, final String sourceName, final long sourceId){
-        this.pennyAmount = pennyAmount;
-        this.sourceName = sourceName;
+    public static Transactions now(final int type, final long pennyAmount, final String sourceName, final long sourceId){
+        return from(type, Long.MIN_VALUE, pennyAmount, sourceName, sourceId);
+    }
 
-        if(millis == Long.MIN_VALUE)
-            timestamp = Timestamp.now();
+    public static Transactions from(final int type, final long millis, final long pennyAmount, final String sourceName, final long sourceId){
+
+        final Transactions transactions =  new Transactions();
+
+        transactions.transactionType = type;
+
+        if(millis != Long.MIN_VALUE)
+            transactions.timestamp = Timestamp.from(millis);
         else
-            timestamp = Timestamp.from(millis);
+            transactions.timestamp = Timestamp.now();
 
-        this.transactionType = type;
+        transactions.pennyAmount = pennyAmount;
 
-        this.sourceId = sourceId;
+        transactions.sourceName = sourceName;
+        transactions.sourceId = sourceId;
 
+    return transactions;
     }
-
-
-
 
     public Timestamp getTimestamp(){
         return timestamp;

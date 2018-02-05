@@ -61,7 +61,7 @@ public class TransactionsCursorAdapter extends PennyFlipCursorAdapterImpl<Transa
                 sourceId = data.getLong(sourceIdIndex());
                 sourceType = data.getInt(sourceTypeIndex());
 
-                final Transactions transactions = new Transactions(sourceType, transactionDate, transactionPennies, sourceName, sourceId);
+                final Transactions transactions = Transactions.from(sourceType, transactionDate, transactionPennies, sourceName, sourceId);
 
                 transactionsList.add(transactions);
 

@@ -189,7 +189,7 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
 
     private Bundle getloaderArguments(){
         //Init the where args with a long value representing todays beginning, and the type we are which is ADD
-        final String[] whereArgs = {String.valueOf(new MidnightTimestamp().getTodayMidnightMillis()), String.valueOf(sourceType)};
+        final String[] whereArgs = {String.valueOf(MidnightTimestamp.today().getTodayMidnightMillis()), String.valueOf(sourceType)};
 
         final Bundle searchArgs = new Bundle();
 

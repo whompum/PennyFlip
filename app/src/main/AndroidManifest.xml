@@ -50,6 +50,7 @@
 
 
         <activity android:name=".ActivityHistory.ActivityHistory"
+                  android:parentActivityName=".ActivityDashboard.ActivityDashboard"
                   android:theme="@style/AppTheme"
                   android:windowSoftInputMode="stateHidden"/>
 

@@ -1,6 +1,7 @@
 package com.whompum.PennyFlip.Transaction;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
 import com.whompum.PennyFlip.Transaction.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transaction.Models.Transactions;
 import com.whompum.PennyFlip.Transaction.Models.TransactionsItem;
 import com.whompum.PennyFlip.Transaction.ViewHolder.TransactionHeaderHolder;
 import com.whompum.PennyFlip.Transaction.ViewHolder.TransactionHolder;
@@ -48,15 +50,11 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
         if(Build.VERSION.SDK_INT >= 23){
-
             addColor = context.getColor(R.color.light_green);
             spendColor = context.getColor(R.color.light_red);
-
         }else{
-
             addColor = context.getResources().getColor(R.color.light_green);
             spendColor = context.getResources().getColor(R.color.light_red);
-
         }
 
 
@@ -69,6 +67,23 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return dataSet.get(position);
     }
 
+    public TransactionHeaderItem getFirstHeader(){
+
+        if(dataSet != null)
+            for (int a = 0; a < dataSet.size(); a++)
+                if (dataSet.get(a) instanceof TransactionHeaderItem)
+                    return (TransactionHeaderItem) dataSet.get(a);
+
+        return null;
+    }
+
+
+
+
+    public void swapDataset(final List<HeaderItem> transactions){
+        this.dataSet = new ArrayList<>(transactions);
+        notifyDataSetChanged();
+    }
 
     /**
      * VERY IMPORTANT NOTICE! the position parameter is a dataset index, not a Recyclerview layout index;
@@ -81,8 +96,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         /**
          * If a position zero, then most likely the item is a header. If not
          */
-
-        Log.i("HEADER", "POSITION: " + String.valueOf(pos));
 
         if(pos == 0){
             HeaderItem item = dataSet.get(pos);
@@ -160,7 +173,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getItemCount() {
         return dataSet.size();
     }
-
 
 
     public interface DataBind<T>{

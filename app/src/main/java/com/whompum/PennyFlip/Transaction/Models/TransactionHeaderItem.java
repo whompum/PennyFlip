@@ -17,6 +17,10 @@ public class TransactionHeaderItem implements HeaderItem {
         this.numTransactions = numTransactions;
     }
 
+    public void setNumTransactions(final int numTransactions){
+        this.numTransactions = numTransactions;
+    }
+
     public CharSequence getDate() {
         return PennyFlipTimeFormatter.simpleDate(timestamp);
     }

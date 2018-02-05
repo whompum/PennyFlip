@@ -17,7 +17,6 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
     private View header;
     private Rect headerRect = new Rect();
 
-
     private StickyData stickyData;
 
     public TransactionStickyHeaders(final StickyData stickyData){
@@ -29,10 +28,14 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
 
+        if(parent.getChildCount() < 2) //We can't use headers if there's no data to head...
+            return;
+
         if(header == null)
             makeHeader(parent);
 
         bind(parent.getChildAt(0));
+
 
         int deltaY;
 
@@ -47,8 +50,6 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
         }else{
             deltaY = header.getHeight(); //Will draw @ zero REF drawHeader
         }
-
-
 
         drawHeader(c, deltaY);
     }
