@@ -1,129 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!--The half squares.-->
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    <android.support.constraint.Guideline
+        app:layout_constraintGuide_percent="0.5"
+        android:id="@+id/local_guide_dashboard_half"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
 
     <View
+        app:layout_constraintBottom_toBottomOf="@id/local_guide_dashboard_half"
         android:id="@+id/dashboard_colored_background"
         android:background="@color/light_green"
-        android:layout_weight="5"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"/>
 
-    <View
-        android:layout_weight="5"
-        android:background="@color/milk_white"
+    <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+        style="@style/StyleCurrentEditTextLarge"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@id/id_dashboard_value"
+        android:textStyle="normal"
+        android:layout_margin="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.AppCompatImageButton
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@id/id_dashboard_callibrate"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/drawable_shape_callibrate"
+        android:scaleType="centerCrop"
+        android:padding="12dp"
+        android:layout_margin="@dimen/dimen_padding_hor_base"
+        android:layout_gravity="top|end"
+        android:layout_width="@dimen/dashboard_icon_size"
+        android:layout_height="@dimen/dashboard_icon_size" />
+
+    <com.whompum.PennyFlip.Widgets.StickyViewPager
+        tools:layout_height="300dp"
+        tools:background="#94000000"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias=".5"
+        android:id="@id/id_fragment_container"
+        android:minHeight="185dp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
-
-
-</LinearLayout>
-
+        android:layout_height="@dimen/dimen_today_transaction_height"/>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:weightSum="10"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        tools:layout_width="175dp"
+        tools:layout_height="45dp"
+        app:layout_constraintBottom_toTopOf="@id/id_fragment_container"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@id/id_strips_indicator"
+        android:orientation="horizontal"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="@dimen/dimen_padding_ver_base"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-        <FrameLayout
-            android:layout_weight="2.75"
-            android:layout_width="match_parent"
-            android:background="@android:color/transparent"
-            android:layout_height="0dp">
+    <TextView
+        android:id="@+id/textView"
+        style="@style/StyleDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_padding_ver_base"
+        android:text="@string/string_today"
+        android:textColor="@color/dark_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_fragment_container" />
 
-            <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-                style="@style/StyleCurrentEditTextLarge"
-                android:id="@id/id_dashboard_value"
-                android:textStyle="normal"
-                android:layout_margin="24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+    <View
+        app:layout_constraintTop_toTopOf="@id/id_fragment_container"
+        android:id="@+id/id_local_add_fab_align_view"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <android.support.design.widget.FloatingActionButton style="@style/StyleDashboardAddFab"
+        app:layout_constraintTop_toTopOf="@id/id_local_add_fab_align_view"
+        app:layout_constraintBottom_toBottomOf="@id/id_local_add_fab_align_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dimen_padding_hor_large"/>
 
-            <android.support.v7.widget.AppCompatImageButton
-                android:id="@id/id_dashboard_callibrate"
-                android:onClick="onCallibrateClicked"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/drawable_shape_callibrate"
-                android:padding="12dp"
-                android:scaleType="centerCrop"
-                android:layout_margin="4dp"
-                android:layout_gravity="top|end"
-                android:layout_width="@dimen/dashboard_icon_size"
-                android:layout_height="@dimen/dashboard_icon_size" />
-
-            <LinearLayout
-                android:id="@id/id_strips_indicator"
-                android:orientation="horizontal"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="64dp"
-                android:layout_marginBottom="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
-        </FrameLayout>
-
-        <com.whompum.PennyFlip.Widgets.StickyViewPager
-                android:id="@id/id_fragment_container"
-                android:layout_weight="4.5"
-
-                android:layout_width="match_parent"
-                android:layout_height="0dp"/>
-
-        <FrameLayout
-            android:layout_weight="2.75"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-
-            <TextView
-                style="@style/StyleDateLabel"
-                android:text="@string/string_today"
-                android:layout_marginTop="16dp"
-                android:textColor="@color/dark_grey"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <include layout="@layout/new_nav_buttons"
-                android:layout_marginBottom="@dimen/dimen_screen_padding"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-
-
-
-        </FrameLayout>
-
-
-
-    </LinearLayout>
-
-
-    <!--Layout for the fab-->
     <FrameLayout
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dimen_padding_ver_large"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/add_fab"
-                 android:layout_gravity="end"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginEnd="32dp"/>
-
+        android:layout_height="0dp">
+        <include layout="@layout/new_nav_buttons"/>
     </FrameLayout>
 
+</android.support.constraint.ConstraintLayout>
 
 
-</FrameLayout>
+
+
+
+
+
+
+
+

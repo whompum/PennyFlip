@@ -21,7 +21,6 @@
             app:srcCompat="@drawable/ic_history"
             android:id="@id/id_nav_menu_history"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:onClick="onHistoryFabClicked"
             android:padding="6dp"
             android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal"
@@ -47,7 +46,6 @@
             app:srcCompat="@drawable/ic_graph_with_balls"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:id="@id/id_nav_menu_statistics"
-            android:onClick="onStatisticsFabClicked"
             android:padding="6dp"
             android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal"
@@ -73,7 +71,6 @@
         <android.support.v7.widget.AppCompatImageButton
             app:srcCompat="@drawable/ic_svg_money"
             android:id="@id/id_nav_menu_source"
-            android:onClick="onSourceFabClicked"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
             android:scaleType="centerCrop"

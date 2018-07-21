@@ -1,8 +1,6 @@
 package com.whompum.PennyFlip.ActivityDashboard;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Transaction.Models.TransactionType;
@@ -28,8 +26,6 @@ public class TodaySpendFragment extends TodayFragment {
 
         return fragment;
     }
-
-
 
 
     @Override

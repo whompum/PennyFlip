@@ -1,12 +1,9 @@
 package com.whompum.PennyFlip.ActivityDashboard;
 
 import android.animation.ArgbEvaluator;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
@@ -15,7 +12,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -23,7 +19,6 @@ import android.widget.Toast;
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.Data.Loader.WalletLoader;
-import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.Data.Schemas.WalletSchema;
 import com.whompum.PennyFlip.Data.Services.SaveTransactionsService;
 import com.whompum.PennyFlip.Data.UserStartDate;
@@ -34,75 +29,58 @@ import com.whompum.PennyFlip.DialogSourceChooser.AddSourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
 import com.whompum.PennyFlip.Source.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
-import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transaction.Models.TransactionType;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
+import butterknife.BindColor;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnPageChange;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public class ActivityDashboard extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int WALLET_LOADING_ID = 1;
 
-    private View colorBackground;
     private ArgbEvaluator argb = new ArgbEvaluator();
-    private int sClr;
-    private int eClr;
-
-    private CurrencyEditText value;
-
-    private ViewPager addSpendContainer;
-    private ViewGroup stripsLayout;
 
     private PageTitleStrips strips;
 
-    private FloatingActionButton addFab;
-
     private Vibrator vibrator;
+
+    @BindColor(R.color.light_green)
+    protected int sClr;
+
+    @BindColor(R.color.light_red)
+    protected int eClr;
+
+    @BindView(R.id.dashboard_colored_background)
+    protected View colorBackground;
+
+    @BindView(R.id.id_dashboard_value)
+    protected CurrencyEditText value;
+
+    @BindView(R.id.id_fragment_container)
+    protected ViewPager addSpendContainer;
+
+    @BindView(R.id.id_strips_indicator)
+    protected ViewGroup stripsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
+        ButterKnife.bind(this);
 
         UserStartDate.set(this); //Sets the user start date. If already set then it will skip
-
-        //View whose background will change color as the ViewPager is swiped :)
-        colorBackground = findViewById(R.id.dashboard_colored_background);
-
-        if(Build.VERSION.SDK_INT >= 23) {
-            sClr = getColor(R.color.light_green);
-            eClr = getColor(R.color.light_red);
-        }
-        else {
-            sClr = getResources().getColor(R.color.light_green);
-            eClr = getResources().getColor(R.color.light_red);
-        }
-
-        this.addFab = findViewById(R.id.id_fab );
-             addFab.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                    choreographFabClick();
-                 }
-             });
-
-        value = findViewById(R.id.id_dashboard_value);
-
-        addSpendContainer = findViewById(R.id.id_fragment_container);
-
-        stripsLayout = findViewById(R.id.id_strips_indicator);
 
         initTodayFragments();
 
         this.vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         //TODO Add Purse/MessageSchema
-
         initWalletLoader();
-
     }
 
     private void initWalletLoader(){
@@ -140,15 +118,7 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
         strips.bindTitle(this, getString(R.string.string_adding));
         strips.bindTitle(this, getString(R.string.string_spending));
 
-        addSpendContainer.addOnPageChangeListener(pageChangeListener);
         addSpendContainer.setPageTransformer(true, pageTransformer);
-
-        addSpendContainer.addOnLayoutChangeListener(new SimpleLayoutChange(){
-            @Override
-            public void onLayoutChange(int top) {
-                viewCenterYToTop(addFab, addSpendContainer, top);
-            }
-        });
 
     }
 
@@ -164,25 +134,22 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
         }
     };
 
-    ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener(){
-        @Override
-        public void onPageSelected(int position) {
-            strips.setPosition(position);
-            if(position == 0)
-               addFab.setImageResource(R.drawable.ic_shape_plus_green);
+    @OnPageChange(R.id.id_fragment_container)
+    public void onPageSelected(final int p){
+        strips.setPosition(p);
 
-            else if(position == 1)
-                addFab.setImageResource(R.drawable.ic_shape_minus_red);
+        if(p == 0)
+            ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(R.drawable.ic_shape_plus_green);
 
-        }
-    };
+        else if(p == 1)
+            ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(R.drawable.ic_shape_minus_red);
 
+    }
 
 
     ViewPager.PageTransformer pageTransformer = new ViewPager.PageTransformer() {
         @Override
         public void transformPage(View page, float position) {
-
             if(  !((StickyViewPager)addSpendContainer).isDragging() ) {
                 final int color = (Integer) argb.evaluate((position), eClr, sClr);
                 colorBackground.setBackgroundColor(color);
@@ -192,55 +159,47 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
 
 
 
-
-
-    public void onCallibrateClicked(final View view){
+    @OnClick(R.id.id_dashboard_callibrate)
+    public void callibrate(final View view){
         vibrator.vibrate(100L);
     }
 
 
-    private void choreographFabClick(){
+    @OnClick(R.id.id_fab)
+    void onFabClicked() {
 
-        if(addSpendContainer.getCurrentItem() == 0)
-            onPlusFabClicked();
-        else
-            onMinusFabClicked();
-    }
+        int styleRes;
 
-    /*
-     * Add/Spend Dialog Fab onClick references
-     */
-    public void onPlusFabClicked(){
+        PennyDialog.CashChangeListener ccL;
 
-        final Bundle style = new Bundle();
-        style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogAdd);
+        if (addSpendContainer.getCurrentItem() == 0) { //Is adding transaction
+            styleRes = R.style.StylePennyDialogAdd;
+            ccL = cashListener;
+        } else { //Is probably a spending transaction
+            styleRes = R.style.StylePennyDialogMinus;
+            ccL = minusListener;
+        }
 
-        final SlidePennyDialog pennyDialog = (SlidePennyDialog) SlidePennyDialog.newInstance(cashListener, style);
-        launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
+        final Bundle args = new Bundle();
 
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //hi
+        args.putInt(PennyDialog.STYLE_KEY, styleRes);
 
-
-    public void onMinusFabClicked(){
-        final Bundle style = new Bundle();
-        style.putInt(PennyDialog.STYLE_KEY, R.style.StylePennyDialogMinus);
-        final PennyDialog dialog = SlidePennyDialog.newInstance(minusListener, style);
-        launchPennyDialog(dialog, SlidePennyDialog.TAG);
+        launchPennyDialog(SlidePennyDialog.newInstance(ccL, args), SlidePennyDialog.TAG);
     }
 
 
-    /*
-     * Navigation Fab onClick references
-     */
+    @OnClick(R.id.id_nav_menu_statistics)
     public void onStatisticsFabClicked(final View view){
-        vibrate(100L);
+        vibrate(100L); }
 
-    }
+    @OnClick(R.id.id_nav_menu_history)
     public void onHistoryFabClicked(final View view){
         vibrate(100L);
         Toast.makeText(this, "fuck", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, ActivityHistory.class));
     }
+
+    @OnClick(R.id.id_nav_menu_source)
     public void onSourceFabClicked(final View view){
         vibrate(100L);
         startActivity(new Intent(this, ActivitySourceList.class));
@@ -318,14 +277,6 @@ public class ActivityDashboard extends AppCompatActivity implements LoaderManage
      */
     private void launchPennyDialog(final DialogFragment dialog, final String tag){
         dialog.show(getSupportFragmentManager(), tag);
-    }
-
-
-    //Helper method that will position a views center Y to the top of another View.
-    private static void viewCenterYToTop(final View subject, final View object, final int top){
-        subject.setTranslationY( (top  +  object.getPaddingTop()) //Top + padding
-                - (subject.getHeight()  /  2));
-
     }
 
     private void vibrate(final long ms){

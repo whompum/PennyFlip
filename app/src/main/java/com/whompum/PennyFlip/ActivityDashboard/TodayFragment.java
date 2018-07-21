@@ -36,29 +36,6 @@ import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public abstract class TodayFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-
-    /**
-     * STATE DECLARATIONS
-     *
-     * LAYOUT: The layout resource File for this fragment
-     * VALUE_TEXT_COLOR: The text color for todays Value (Set by children)
-     * WHERE_ARGS_KEY: Key for the loader arguments 'Where arguments' args
-     * WHERE_KEY: Key for the loader arguments 'Where' args
-     * SORT_KEY: Key for the Loader arguments "sort order" args
-     *
-     * WHERE: Literal 'where' argument: Fetches arguments where timestamp is >= todays beginning timestamp (12:00 AM),
-     *        And source type of the transaction equals the Fragments source type (Either spend/add/callibrate)
-     *
-     * sourceType: The type of source this fragments transactions represent (Spend / Add / Callibrabate)
-     *
-     * value: Displays the total amount for the day, added/spended
-     *
-     * transactionsList: RecyclerView container for todays transactions
-     *
-     * transactionsAdapter: RecView adapter; Converts Transactions objects into RecyclerView views
-     *
-     */
-
     @LayoutRes
     public static final int LAYOUT = R.layout.layout_dasbhoard_summary;
 
@@ -84,6 +61,8 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
 
     protected TransactionsCursorAdapter cursorAdapter = new TransactionsCursorAdapter(null);
 
+    //Touch delegate for the TransactionsList
+    final Rect delegateBoundary = new Rect();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,42 +94,36 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
         transactionsAdapter.registerAdapterDataObserver(listObserver);
 
         //TRIFECTA of touch handling!
-
-        layout.post(delegate);
-        layout.setOnTouchListener(listener);
+        layout.post(delegate); //Post a runnable for to be ran AFTER the the layout passes.
+        layout.setOnTouchListener(delegateListener);
 
         transactionsList.requestDisallowInterceptTouchEvent(true);
 
     return layout;
     }
 
-    final Rect delegateBoundary = new Rect();
-
     private final Runnable delegate = new Runnable() {
         @Override
         public void run() {
-
             if(getView() == null)
                 return;
 
             delegateBoundary.set(getView().getLeft(), transactionsList.getTop(), getView().getRight(), getView().getBottom());
-
         }
     };
 
 
 
-    View.OnTouchListener listener = new View.OnTouchListener() {
+    View.OnTouchListener delegateListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
+            boolean consume = delegateBoundary.contains((int)event.getX(), (int)event.getY());
 
-            if(delegateBoundary.contains((int)event.getX(), (int)event.getY())){
+            if(consume)
                 transactionsList.onTouchEvent(event);
-                return true;
-            }
 
-            return false;
+            return consume;
         }
     };
 
@@ -159,9 +132,7 @@ public abstract class TodayFragment extends Fragment implements LoaderManager.Lo
         public void onChanged() {
 
             final int itemCount = transactionsAdapter.getItemCount();
-
-            //Use itemCount to change things
-            //WTF IS THIS CLASS FOR AGAIN?
+            //Antiquated instance; Refractor out.
         }
     };
 
