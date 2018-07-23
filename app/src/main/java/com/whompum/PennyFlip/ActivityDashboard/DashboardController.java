@@ -3,11 +3,13 @@ package com.whompum.PennyFlip.ActivityDashboard;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.Wallet;
 import com.whompum.PennyFlip.ActivityDashboard.Wallet.WalletRepo;
+import com.whompum.PennyFlip.Data.Services.SaveTransactionsService;
 import com.whompum.PennyFlip.Data.UserStartDate;
 import com.whompum.PennyFlip.Source.SourceWrapper;
 
@@ -20,6 +22,8 @@ public class DashboardController implements ActivityDashboardConsumer{
 
     private DashboardClient client;
 
+    private Context c;
+
     private DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
 
@@ -27,6 +31,8 @@ public class DashboardController implements ActivityDashboardConsumer{
 
         if(o != null)
             repo.getData().observe(o, walletObserver);
+
+        this.c = context;
     }
 
     public static DashboardController create(@NonNull final Context context, @Nullable LifecycleOwner o){
@@ -44,9 +50,14 @@ public class DashboardController implements ActivityDashboardConsumer{
 
     public void saveTransaction(final int transType, final long amt, final SourceWrapper wrapper){
         repo.updateWallet(transType, amt);
-        //Update WrapperRepo too.
-    }
 
+        final Intent intent = new Intent(c, SaveTransactionsService.class);
+
+        intent.putExtra(SaveTransactionsService.SOURCE_KEY, wrapper);
+        intent.putExtra(SaveTransactionsService.TRANS_AMOUNT_KEY, amt);
+
+        c.startService(intent);
+    }
 
     private Observer<Wallet> walletObserver = new Observer<Wallet>() {
         @Override
