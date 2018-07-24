@@ -5,15 +5,12 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
-import com.whompum.PennyFlip.Source.SourceWrapper;
+import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
 import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
 
 /**
  * Created by bryan on 1/29/2018.

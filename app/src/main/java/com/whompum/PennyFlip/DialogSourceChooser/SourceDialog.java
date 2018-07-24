@@ -18,7 +18,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,17 +25,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 
 import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.Data.Loader.SourceLoader;
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Source.SourceWrapper;
-import com.whompum.PennyFlip.Source.SourceWrapperCursorAdapter;
-
-import java.util.List;
+import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
+import com.whompum.PennyFlip.Money.Sources.SourceWrapperCursorAdapter;
 
 
 public abstract class SourceDialog extends DialogFragment implements OnSourceListItemChange, LoaderManager.LoaderCallbacks<Cursor> {

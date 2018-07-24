@@ -50,8 +50,8 @@ import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceData;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListClickListener;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapterBase;
 import com.whompum.PennyFlip.ActivitySourceList.IntentReciever;
-import com.whompum.PennyFlip.Source.SourceCursorAdapter;
-import com.whompum.PennyFlip.Source.SourceMetaData;
+import com.whompum.PennyFlip.Money.Sources.SourceCursorAdapter;
+import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
 import com.whompum.PennyFlip.Time.Timestamp;
 
 import java.util.List;

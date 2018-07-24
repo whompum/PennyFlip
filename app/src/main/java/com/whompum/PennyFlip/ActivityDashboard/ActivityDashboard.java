@@ -1,25 +1,20 @@
 package com.whompum.PennyFlip.ActivityDashboard;
 
 import android.animation.ArgbEvaluator;
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.Wallet;
-import com.whompum.PennyFlip.ActivityDashboard.Wallet.WalletRepo;
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.R;
@@ -27,9 +22,9 @@ import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
 import com.whompum.PennyFlip.DialogSourceChooser.AddSourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
-import com.whompum.PennyFlip.Source.SourceWrapper;
+import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
-import com.whompum.PennyFlip.Transaction.Models.TransactionType;
+import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
 

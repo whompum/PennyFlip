@@ -23,8 +23,8 @@ import com.whompum.PennyFlip.Data.Loader.TransactionsLoader;
 import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.MidnightTimestamp;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
-import com.whompum.PennyFlip.Transaction.TransactionsCursorAdapter;
+import com.whompum.PennyFlip.Money.Transactions.Models.Transactions;
+import com.whompum.PennyFlip.Money.Transactions.TransactionsCursorAdapter;
 
 import java.util.List;
 

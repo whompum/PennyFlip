@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
+import com.whompum.PennyFlip.Money.Transactions.Models.Transactions;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Transaction.Models;
+package com.whompum.PennyFlip.Money.Transactions.Models;
 
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;

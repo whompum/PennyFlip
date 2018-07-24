@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Source.SourceStatistic;
+import com.whompum.PennyFlip.Money.Sources.SourceStatistic;
 import com.whompum.PennyFlip.Time.TimeRange;
 import com.whompum.PennyFlip.Widgets.TotalView;
 

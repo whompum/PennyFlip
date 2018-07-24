@@ -1,14 +1,14 @@
-package com.whompum.PennyFlip.Transaction.ViewHolder;
+package com.whompum.PennyFlip.Money.Transactions.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.Transaction.Models.TransactionType;
-import com.whompum.PennyFlip.Transaction.TransactionListAdapter;
-import com.whompum.PennyFlip.Transaction.Models.TransactionsItem;
+import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Money.Transactions.TransactionListAdapter;
+import com.whompum.PennyFlip.Money.Transactions.Models.TransactionsItem;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
+import com.whompum.PennyFlip.Money.Transactions.Models.Transactions;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 

@@ -2,22 +2,18 @@ package com.whompum.PennyFlip.ActivitySourceData;
 
 
 
-import android.content.ContentValues;
 import android.content.Intent;
 
-import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.ListPopulator;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
-import com.whompum.PennyFlip.Source.SourceMetaData;
+import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
 import com.whompum.PennyFlip.Statistics.Populator;
-import com.whompum.PennyFlip.Source.SourceStatistic;
+import com.whompum.PennyFlip.Money.Sources.SourceStatistic;
 import com.whompum.PennyFlip.Statistics.StatisticsFragment;
 import com.whompum.PennyFlip.Time.TimeRange;
-import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
-import com.whompum.PennyFlip.Transaction.Models.TransactionType;
-import com.whompum.PennyFlip.Transaction.TransactionFragment;
+import com.whompum.PennyFlip.Money.Transactions.Models.HeaderItem;
+import com.whompum.PennyFlip.Money.Transactions.TransactionFragment;
 
 public class ActivitySourceDataAdded extends ActivitySourceData implements StatisticsFragment.StatisticsServer<TimeRange>{
 

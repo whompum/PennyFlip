@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.content.CursorLoader;
 
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
-import com.whompum.PennyFlip.Transaction.Models.TransactionType;
 
 
 /**

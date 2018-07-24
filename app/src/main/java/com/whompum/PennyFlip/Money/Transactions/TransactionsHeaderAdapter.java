@@ -1,13 +1,13 @@
-package com.whompum.PennyFlip.Transaction;
+package com.whompum.PennyFlip.Money.Transactions;
 
 import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.Time.MidnightTimestamp;
 import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
-import com.whompum.PennyFlip.Transaction.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
-import com.whompum.PennyFlip.Transaction.Models.TransactionsItem;
+import com.whompum.PennyFlip.Money.Transactions.Models.HeaderItem;
+import com.whompum.PennyFlip.Money.Transactions.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Money.Transactions.Models.Transactions;
+import com.whompum.PennyFlip.Money.Transactions.Models.TransactionsItem;
 
 import java.util.ArrayList;
 import java.util.List;

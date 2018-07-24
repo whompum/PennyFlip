@@ -1,19 +1,16 @@
-package com.whompum.PennyFlip.Transaction;
+package com.whompum.PennyFlip.Money.Transactions;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Transaction.Models.HeaderItem;
-import com.whompum.PennyFlip.Transaction.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Transaction.Models.Transactions;
-import com.whompum.PennyFlip.Transaction.Models.TransactionsItem;
-import com.whompum.PennyFlip.Transaction.ViewHolder.TransactionHeaderHolder;
-import com.whompum.PennyFlip.Transaction.ViewHolder.TransactionHolder;
+import com.whompum.PennyFlip.Money.Transactions.Models.HeaderItem;
+import com.whompum.PennyFlip.Money.Transactions.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Money.Transactions.Models.TransactionsItem;
+import com.whompum.PennyFlip.Money.Transactions.ViewHolder.TransactionHeaderHolder;
+import com.whompum.PennyFlip.Money.Transactions.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
 
 import java.util.ArrayList;

@@ -14,13 +14,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
-import com.whompum.PennyFlip.Source.SourceMetaData;
+import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 

@@ -11,9 +11,8 @@ import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceDataSpent;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapterBase;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceSpendListAdapter;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Source.SourceCursorAdapter;
-import com.whompum.PennyFlip.Source.SourceMetaData;
-import com.whompum.PennyFlip.Transaction.Models.TransactionType;
+import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
+import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
 
 /**
  * Created by bryan on 12/27/2017.

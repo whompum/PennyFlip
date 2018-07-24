@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Source;
+package com.whompum.PennyFlip.Money.Sources;
 
 import android.database.Cursor;
 import android.support.annotation.Nullable;

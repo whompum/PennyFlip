@@ -1,9 +1,8 @@
-package com.whompum.PennyFlip.Source;
+package com.whompum.PennyFlip.Money.Sources;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;

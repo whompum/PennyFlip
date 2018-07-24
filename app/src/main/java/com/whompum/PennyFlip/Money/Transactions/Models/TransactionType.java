@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Transaction.Models;
+package com.whompum.PennyFlip.Money.Transactions.Models;
 
 /**
  * Created by bryan on 1/18/2018.

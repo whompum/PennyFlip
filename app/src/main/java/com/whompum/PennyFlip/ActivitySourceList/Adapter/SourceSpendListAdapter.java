@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 
 import com.whompum.PennyFlip.Widgets.PurseTotalView;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Source.SpendSourceMetaData;
-import com.whompum.PennyFlip.Source.SourceMetaData;
+import com.whompum.PennyFlip.Money.Sources.SpendSourceMetaData;
+import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
 
 import java.util.List;
 
