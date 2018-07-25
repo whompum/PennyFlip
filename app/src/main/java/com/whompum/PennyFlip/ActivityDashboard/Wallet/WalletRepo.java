@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.Wallet;
 import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.WalletDao;
 import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.WalletRoom;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
 /**
  * Simple business layer between the

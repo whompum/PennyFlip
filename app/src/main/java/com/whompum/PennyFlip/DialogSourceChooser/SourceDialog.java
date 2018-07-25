@@ -31,8 +31,6 @@ import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.Data.Loader.SourceLoader;
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
-import com.whompum.PennyFlip.Money.Sources.SourceWrapperCursorAdapter;
 
 
 public abstract class SourceDialog extends DialogFragment implements OnSourceListItemChange, LoaderManager.LoaderCallbacks<Cursor> {

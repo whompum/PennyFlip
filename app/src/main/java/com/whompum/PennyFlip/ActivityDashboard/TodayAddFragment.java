@@ -3,7 +3,7 @@ package com.whompum.PennyFlip.ActivityDashboard;
 import android.os.Bundle;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
 /**
  * Created by bryan on 1/12/2018.

@@ -19,7 +19,7 @@ import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
-import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
+import com.whompum.PennyFlip.Sources.SourceMetaData;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 

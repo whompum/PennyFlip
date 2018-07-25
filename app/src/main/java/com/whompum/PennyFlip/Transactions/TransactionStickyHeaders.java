@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Money.Transactions;
+package com.whompum.PennyFlip.Transactions;
 
 
 import android.graphics.Canvas;

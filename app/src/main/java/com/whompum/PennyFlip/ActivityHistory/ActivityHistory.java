@@ -26,14 +26,14 @@ import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.MidnightTimestamp;
 import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Money.Transactions.Models.HeaderItem;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
-import com.whompum.PennyFlip.Money.Transactions.TransactionListAdapter;
-import com.whompum.PennyFlip.Money.Transactions.Models.Transactions;
-import com.whompum.PennyFlip.Money.Transactions.TransactionStickyHeaders;
-import com.whompum.PennyFlip.Money.Transactions.TransactionsCursorAdapter;
-import com.whompum.PennyFlip.Money.Transactions.TransactionsHeaderAdapter;
+import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
+import com.whompum.PennyFlip.Transactions.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Transactions.TransactionListAdapter;
+import com.whompum.PennyFlip.Transactions.Models.Transactions;
+import com.whompum.PennyFlip.Transactions.TransactionStickyHeaders;
+import com.whompum.PennyFlip.Transactions.TransactionsCursorAdapter;
+import com.whompum.PennyFlip.Transactions.TransactionsHeaderAdapter;
 
 import org.joda.time.DateTime;
 

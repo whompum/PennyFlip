@@ -6,14 +6,14 @@ import android.content.Intent;
 import com.whompum.PennyFlip.ListPopulator;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
-import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
-import com.whompum.PennyFlip.Money.Sources.SpendSourceMetaData;
+import com.whompum.PennyFlip.Sources.SourceMetaData;
+import com.whompum.PennyFlip.Sources.SpendSourceMetaData;
 import com.whompum.PennyFlip.Statistics.Populator;
-import com.whompum.PennyFlip.Money.Sources.SourceStatistic;
+import com.whompum.PennyFlip.Sources.SourceStatistic;
 import com.whompum.PennyFlip.Statistics.StatisticsFragment;
 import com.whompum.PennyFlip.Time.TimeRange;
-import com.whompum.PennyFlip.Money.Transactions.Models.HeaderItem;
-import com.whompum.PennyFlip.Money.Transactions.TransactionFragment;
+import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
+import com.whompum.PennyFlip.Transactions.TransactionFragment;
 
 
 public class ActivitySourceDataSpent extends ActivitySourceData implements StatisticsFragment.StatisticsServer<TimeRange> {

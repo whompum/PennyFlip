@@ -1,10 +1,10 @@
-package com.whompum.PennyFlip.Money.Transactions;
+package com.whompum.PennyFlip.Transactions;
 
 import android.database.Cursor;
 
 import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.PennyFlipCursorAdapterImpl;
-import com.whompum.PennyFlip.Money.Transactions.Models.Transactions;
+import com.whompum.PennyFlip.Transactions.Models.Transactions;
 
 import java.util.ArrayList;
 import java.util.List;

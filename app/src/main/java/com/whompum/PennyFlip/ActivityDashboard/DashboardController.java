@@ -11,7 +11,7 @@ import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.Wallet;
 import com.whompum.PennyFlip.ActivityDashboard.Wallet.WalletRepo;
 import com.whompum.PennyFlip.Data.Services.SaveTransactionsService;
 import com.whompum.PennyFlip.Data.UserStartDate;
-import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
+import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 
 public class DashboardController implements ActivityDashboardConsumer{
 

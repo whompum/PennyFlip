@@ -2,7 +2,7 @@ package com.whompum.PennyFlip.ActivitySourceList.Adapter;
 
 import android.support.annotation.NonNull;
 
-import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
+import com.whompum.PennyFlip.Sources.SourceMetaData;
 
 /**
  * Created by bryan on 12/28/2017.

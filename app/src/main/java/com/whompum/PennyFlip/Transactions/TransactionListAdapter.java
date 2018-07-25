@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Money.Transactions;
+package com.whompum.PennyFlip.Transactions;
 
 import android.content.Context;
 import android.os.Build;
@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Money.Transactions.Models.HeaderItem;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionsItem;
-import com.whompum.PennyFlip.Money.Transactions.ViewHolder.TransactionHeaderHolder;
-import com.whompum.PennyFlip.Money.Transactions.ViewHolder.TransactionHolder;
+import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
+import com.whompum.PennyFlip.Transactions.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transactions.Models.TransactionsItem;
+import com.whompum.PennyFlip.Transactions.ViewHolder.TransactionHeaderHolder;
+import com.whompum.PennyFlip.Transactions.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
 
 import java.util.ArrayList;

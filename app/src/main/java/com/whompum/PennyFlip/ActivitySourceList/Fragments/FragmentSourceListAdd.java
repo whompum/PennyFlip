@@ -9,8 +9,8 @@ import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceDataAdded;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceAddListAdapter;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapterBase;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Sources.SourceMetaData;
+import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
 /**
  * Created by bryan on 12/27/2017.

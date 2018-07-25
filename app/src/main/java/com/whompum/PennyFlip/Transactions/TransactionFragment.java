@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Money.Transactions;
+package com.whompum.PennyFlip.Transactions;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ListPopulator;
-import com.whompum.PennyFlip.Money.Transactions.Models.HeaderItem;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
+import com.whompum.PennyFlip.Transactions.Models.TransactionHeaderItem;
 
 import java.util.List;
 

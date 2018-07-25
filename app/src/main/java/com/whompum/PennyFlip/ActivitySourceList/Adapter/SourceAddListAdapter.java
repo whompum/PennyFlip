@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Money.Sources.SourceMetaData;
+import com.whompum.PennyFlip.Sources.SourceMetaData;
 
 import java.util.List;
 

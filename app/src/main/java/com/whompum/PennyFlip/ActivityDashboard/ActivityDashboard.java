@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
@@ -12,21 +13,27 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
+import com.whompum.PennyFlip.Money.Repo.MoneyController;
+import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
 import com.whompum.PennyFlip.DialogSourceChooser.AddSourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
-import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
+import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
+
+import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -72,6 +79,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         initTodayFragments();
+
     }
 
     private void initTodayFragments(){

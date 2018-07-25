@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.whompum.PennyFlip.Data.Schemas.WalletSchema;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
 /**
  * Updates the Wallet total

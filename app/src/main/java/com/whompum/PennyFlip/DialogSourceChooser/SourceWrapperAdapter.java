@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
-
 
 
 public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdapter.SourceViewCache> {

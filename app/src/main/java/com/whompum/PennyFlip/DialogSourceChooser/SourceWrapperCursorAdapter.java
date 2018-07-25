@@ -1,9 +1,10 @@
-package com.whompum.PennyFlip.Money.Sources;
+package com.whompum.PennyFlip.DialogSourceChooser;
 
 import android.database.Cursor;
 
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.DialogSourceChooser.AdapterSelecteable;
+import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.PennyFlipCursorAdapterImpl;
 
 import java.util.List;

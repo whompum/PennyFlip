@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Money.Sources;
+package com.whompum.PennyFlip.DialogSourceChooser;
 
 import java.io.Serializable;
 

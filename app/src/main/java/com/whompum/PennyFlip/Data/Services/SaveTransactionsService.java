@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 
 import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
 import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
-import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
+import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.Time.Timestamp;
 
 /**

@@ -3,8 +3,7 @@ package com.whompum.PennyFlip.DialogSourceChooser;
 import android.os.Bundle;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Money.Sources.SourceWrapper;
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
 /**
  * Created by bryan on 12/21/2017.

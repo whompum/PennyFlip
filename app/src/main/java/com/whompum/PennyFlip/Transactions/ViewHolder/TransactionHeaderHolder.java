@@ -1,11 +1,11 @@
-package com.whompum.PennyFlip.Money.Transactions.ViewHolder;
+package com.whompum.PennyFlip.Transactions.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Money.Transactions.TransactionListAdapter;
+import com.whompum.PennyFlip.Transactions.Models.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transactions.TransactionListAdapter;
 import com.whompum.PennyFlip.R;
 
 /**
