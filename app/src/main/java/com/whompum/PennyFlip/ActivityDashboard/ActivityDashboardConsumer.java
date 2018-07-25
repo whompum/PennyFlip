@@ -1,7 +1,10 @@
 package com.whompum.PennyFlip.ActivityDashboard;
 
+import android.support.annotation.NonNull;
+
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
 public interface ActivityDashboardConsumer{
-    void saveTransaction(final int type, final long amt, final SourceWrapper source);
+    void saveTransaction(@NonNull final SourceWrapper source, @NonNull final Transaction transaction);
 }

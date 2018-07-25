@@ -15,19 +15,22 @@ import java.util.List;
 public abstract class SourceDao {
 
     @Query("SELECT * FROM Source") //ALL
-    public abstract LiveData<List<Source>> fetch(); //LiveData so it can be observed
+    public abstract List<Source> fetch(); //LiveData so it can be observed
 
     @Query("SELECT * FROM Source where title = :title") //By Title
     public abstract Source fetch(@NonNull final String title);
 
-    @Query("SELECT * FROM Source WHERE title like :title") //Similar to Title
+    @Query("SELECT * FROM Source WHERE title like :title AND transactionType = :type") //Similar to Title
+    public abstract List<Source> fetchNonExact(@NonNull final String title, final int type);
+
+    @Query("SELECT * FROM Source WHERE title like :title")
     public abstract List<Source> fetchNonExact(@NonNull final String title);
 
     @Query("SELECT * FROM Source where transactionType = :type") // Similar to Transaction
-    public abstract LiveData<List<Source>> fetch(@IntRange(from = TransactionType.ADD, to = TransactionType.CALLIBRATE) final int type);
+    public abstract List<Source> fetch(@IntRange(from = TransactionType.ADD, to = TransactionType.CALLIBRATE) final int type);
 
     @Query("SELECT  * FROM Source WHERE title = :title AND transactionType = :type")
-    public abstract LiveData<List<Source>> fetch(@NonNull final String title, final int type);
+    public abstract List<Source> fetch(@NonNull final String title, final int type);
 
     //@Query("SELECT * FROM Source where creationDate = :millis")
     //public abstract LiveData<List<Source>> fetchForTime(final long millis);

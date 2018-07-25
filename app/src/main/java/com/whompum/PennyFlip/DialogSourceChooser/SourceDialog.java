@@ -1,10 +1,12 @@
 package com.whompum.PennyFlip.DialogSourceChooser;
 
 import android.app.Dialog;
-import android.database.Cursor;
+import android.arch.lifecycle.LiveData;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -13,11 +15,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,63 +25,84 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-
+import android.widget.TextView;
 
 import com.whompum.PennyFlip.Animations.AnimateScale;
-import com.whompum.PennyFlip.Data.Loader.SourceLoader;
-import com.whompum.PennyFlip.Data.Schemas.SourceSchema;
+import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
+import com.whompum.PennyFlip.Time.Timestamp;
 
+import java.util.List;
 
-public abstract class SourceDialog extends DialogFragment implements OnSourceListItemChange, LoaderManager.LoaderCallbacks<Cursor> {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
+import butterknife.Unbinder;
+import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-    /**
-     * --Is a base SourceDialog that is defines basic behavior for the views.
+public abstract class SourceDialog extends DialogFragment implements OnSourceListItemChange, Handler.Callback{
 
-     --AbstractMethods
-     ---populate(): populates its RecyclerView
-     ---onDone(): Called when their main Fab is clicked
-
-     --Children set their wanted layouts in a static initilization block
-     --Base takes care of changing the first item in a RecyclerView
-
-     */
 
     @ColorRes
     protected int HEADER_COLOR = R.color.light_grey;
+
     @DrawableRes
     protected int FAB_SRC = R.drawable.ic_checkmark;
 
     @LayoutRes
     protected int LAYOUT = R.layout.layout_dialog_source;
 
-    private static final String WHERE_KEY = "where.ky";
-    private static final String WHERE_ARGS_KEY = "whereArgs.ky";
-    private static final String SORT_ORDER_KEY = "sortOrder.ky";
+    public static final String TIMESTAMP_KEY = "timestamp.ky";
+    public static final String TOTAL_KEY = "total.ky";
 
-    private static final int LOADER_ID = 100;
+    private long timestamp;
+    private long pennies;
 
+    @BindView(R.id.id_fab)
     protected FloatingActionButton actionFab;
 
+    @BindView(R.id.id_source_dialog_source_list)
     protected RecyclerView sourceList;
 
-    protected SourceWrapperAdapter sourceListAdapter;
+    @BindView(R.id.id_source_dialog_total_display)
+    protected CurrencyEditText totalDisplay;
 
-    protected SourceWrapper item;
+    @BindView(R.id.id_source_dialog_time_display)
+    protected TextView timeDisplay;
 
-    private AnimateScale animator;
+    @BindView(R.id.id_source_dialog_transaction_name_editor)
+    protected EditText transactionNameEditor;
 
-    protected OnSourceItemSelected sourceItemSelectedListener;
 
     protected int transactionType = -1;
 
-    private Bundle loaderArgs = new Bundle();
+    private Unbinder unbinder;
 
-    private SourceWrapperCursorAdapter wrapperAdapter = new SourceWrapperCursorAdapter(null);
+    private Handler dataReceiver = new Handler(this);
+
+    protected SourceWrapper item;
+
+
+    protected SourceWrapperAdapter sourceListAdapter;
+
+    protected OnSourceItemSelected sourceItemSelectedListener;
+
+    private AnimateScale animator;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(getArguments() != null){
+            timestamp = getArguments().getLong(TIMESTAMP_KEY);
+            pennies = getArguments().getLong(TOTAL_KEY);
+        }
+
         populate(null);
     }
 
@@ -99,13 +120,43 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     return dialog;
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View layout = inflater.inflate(LAYOUT, container, false);
+
+        this.unbinder = ButterKnife.bind(this, layout);
+
+        int headerColor;
+
+        if(Build.VERSION.SDK_INT >= 23)
+            headerColor = getContext().getColor(HEADER_COLOR);
+        else
+            headerColor = getContext().getResources().getColor(HEADER_COLOR);
+
+        layout.findViewById(R.id.id_source_dialog_header).setBackgroundColor(headerColor);
+
+        totalDisplay.setText(String.valueOf(pennies));
+        timeDisplay.setText(String.valueOf(PennyFlipTimeFormatter.simpleTime(Timestamp.from(timestamp))));
+
+        sourceList.addOnScrollListener(scrollListener);
+
+        final SourceWrapperAdapter adapter = manifestAdapter();
+        adapter.registerOnClickListener(this);
+
+        sourceList.setAdapter(adapter);
+
+        actionFab.setImageResource(FAB_SRC);
+        animator = new AnimateScale(actionFab, false);
+
+        return layout;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
         final Rect displaySize = new Rect();
-
-
 
         final WindowManager windowManager = getDialog().getWindow().getWindowManager(); //Kotlin would be nice right here...
         if(windowManager != null)
@@ -123,144 +174,49 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
         getDialog().getWindow().setLayout(displaySize.width()-offsetHor, displaySize.height()-offsetVer);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View layout = inflater.inflate(LAYOUT, container, false);
-
-        int headerColor = 0;
-
-        if(Build.VERSION.SDK_INT >= 23)
-            headerColor = getContext().getColor(HEADER_COLOR);
-        else
-            headerColor = getContext().getResources().getColor(HEADER_COLOR);
-
-        layout.findViewById(R.id.id_source_dialog_header).setBackgroundColor(headerColor);
-
-        sourceList = layout.findViewById(R.id.id_source_dialog_source_list);
-        sourceList.addOnScrollListener(scrollListener);
-
-        final SourceWrapperAdapter adapter = manifestAdapter();
-        adapter.registerOnClickListener(this);
-
-        sourceList.setAdapter(adapter);
-
-        ((EditText)layout.findViewById(R.id.id_source_dialog_search_view)).addTextChangedListener(sherlock);
-
-
-        this.actionFab = layout.findViewById(R.id.id_fab);
-             actionFab.setImageResource(FAB_SRC);
-             actionFab.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     onDone();
-                 }
-             });
-
-        animator = new AnimateScale(actionFab, false);
-
-    return layout;
-    }
-
-
-    private void insertIntoFirst(final CharSequence title){
-        if(title!=null)
-        sourceListAdapter.insertToFirst(new SourceWrapper(title.toString(), SourceWrapper.TAG.NEW, transactionType));
-    }
-
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        final CursorLoader loader = new SourceLoader(getContext());
-
-        final String[] columns = {SourceSchema.SourceTable._ID,
-                                  SourceSchema.SourceTable.COL_TITLE,
-                                  SourceSchema.SourceTable.COL_TYPE,
-                                  SourceSchema.SourceTable.COL_TOTAL};
-
-        loader.setProjection(columns);
-
-        loader.setSelection(args.getString(WHERE_KEY));
-        loader.setSelectionArgs(args.getStringArray(WHERE_ARGS_KEY));
-
-    return loader;
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
 
-        wrapperAdapter.setData(data);
+        if(args.getLong(TIMESTAMP_KEY, -1L) == -1L)
+            throw new IllegalArgumentException("Timestamp must be provided to the Source Dialog");
 
-        final AdapterSelecteable<SourceWrapper> listOData = (AdapterSelecteable<SourceWrapper>) wrapperAdapter.fromCursor();
-
-        for(SourceWrapper w: listOData){
-            Log.i("SourceDialog", "TOTAL: " + w.getOriginalAmount());
-        }
-
-       sourceListAdapter.swapDataSet(listOData);
-
+        if(args.getLong(TOTAL_KEY, -1L) == -1L)
+            throw new IllegalArgumentException("A Total must be provided to the Source Dialog");
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    @Override //Handles the data fromm the backend
+    public boolean handleMessage(Message msg) {
 
-    }
+        //Convert msg.obj to usable data
+        //Check if null
+        //Convert List<Source> to AdapterSelecteable
+        //Swap Data set of sourceListAdapter
 
-    private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener(){
+        final List<Source> data = (List<Source>) msg.obj;
 
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
+        if(data == null) return true;
 
-            //If the item has been set, then we can do animations; Otherwise the fab is already hidden so no animations are needed
-            if(item !=null) {
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING)
-                    hideFab();
+        Log.i("SOURCE_DIALOG", "NUMBER OF RESULTS: " + data.size());
 
-                else if (newState == RecyclerView.SCROLL_STATE_IDLE)
-                    showFab();
-            }
+        final AdapterSelecteable<SourceWrapper> wrappers = new AdapterSelecteable<>();
 
-        }
+        for(Source s: data)
+            wrappers.add(new SourceWrapper(s, SourceWrapper.TAG.REGULAR));
 
-    };
+        sourceListAdapter.swapDataSet(wrappers);
 
-
-    private SearchWatcher sherlock = new SearchWatcher() {
-        @Override
-        public void afterTextChanged(Editable s) {
-            if(s.length() == 0)
-                populate(null);
-            else
-                populate(s.toString());
-
-            /**
-             * FUTURE note to myself:
-             * This code below was causing a bug where i'd insert into the first index
-             * , but it would quickly be overwritten by the dataset fetched from the Database;
-             * The problem was because i'm using concurency to fetch the Source meta data
-             * so insertToFirst() would be called *after* populate (which restarts a loader)
-             * but would run before the data would return; The solution is going to be
-             */
-          insertIntoFirst(s.toString());
-        }
-    };
-
-    private void hideFab() {
-        animator.hide(250L);
-    }
-
-    private void showFab(){
-        animator.show(250L);
+        return true;
     }
 
     @Override
     public void onSourceListItemChange(SourceWrapper sourceWrapper) {
-
-        /**
-         * If the first element is selected, but has been changed, and the fab is showing, hide.
-         * Else if any element has been selected, and the fab isn't show, show.
-         */
 
         if(sourceWrapper == null & animator.isShowing())
             animator.hide(250L);
@@ -271,74 +227,99 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
         this.item = sourceWrapper;
     }
 
-    @CallSuper
+    private void insertIntoFirst(final Source source){
+        if(source != null)
+            sourceListAdapter.insertToFirst(new SourceWrapper(source, SourceWrapper.TAG.NEW));
+    }
+
+    private void hideFab() {
+        animator.hide(250L);
+    }
+
+    private void showFab(){
+        animator.show(250L);
+    }
+
+    @OnClick(R.id.id_fab)
     protected void onDone(){
         dismiss();
         notifyListener();
     }
 
     private void populate(@Nullable final CharSequence popData){
+        //Fetch Source data that matches the popData like clause
 
-        generateLoaderArgs(popData);
+        //Null by default. If popData is null, we want everything for our transaction type
+        String query = null;
+        boolean searchLike = false;
 
-        getLoaderManager().restartLoader(LOADER_ID, loaderArgs, this);
-    }
-
-    private void generateDefaultLoaderArgs(){
-        loaderArgs.putString(WHERE_KEY, SourceSchema.SourceTable.COL_TYPE + "=?");
-        loaderArgs.putStringArray(WHERE_ARGS_KEY, new String[]{String.valueOf(transactionType)});
-        loaderArgs.putString(SORT_ORDER_KEY, SourceSchema.SourceTable.COL_TITLE + " ASC");
-    }
-
-    /**
-     * Fetches Sources where the Title is LIKE the query, and the type is our type
-     *
-     * SELECT * FROM 'SourceTable'
-     * WHERE 'title' LIKE 'query'
-     * AND 'sourceType' = 'transactionType'
-     *
-     * @param query The name query to search for with da' loader
-     */
-    private void generateLoaderArgs(@Nullable final CharSequence query){
-
-        if(query == null){
-            generateDefaultLoaderArgs();
-            return;
-        }
-        else if(query.length() == 0){
-            generateDefaultLoaderArgs();
-            return;
+        if(popData != null && popData.length() > 0) {
+            query = "%" + popData.toString() + "%";
+            searchLike = true;
         }
 
-        final String queryArgs = "%"+query+"%";
+        if(query == null)
+            Log.i("SOURCE_DIALOG", "QUERY IS NULL");
+        else
+            Log.i("SOURCE_DIALOG", "QUERY: " + query);
 
-        loaderArgs.putString(WHERE_KEY, SourceSchema.SourceTable.COL_TITLE + " LIKE? AND " +
-                                        SourceSchema.SourceTable.COL_TYPE + " =? ");
-        loaderArgs.putStringArray(WHERE_ARGS_KEY, new String[]{queryArgs, String.valueOf(transactionType)});
+        //Will resolve either a list of Sources of our TransactionType only, or our TransactionType plus similar namings.
+        MoneyController.obtain(getContext()).fetchSources(dataReceiver, query, transactionType, searchLike);
     }
-
 
 
     @CallSuper
     protected void notifyListener(){
+
+        final Transaction transaction = new Transaction(item.getSourceId(), transactionType, pennies);
+
+        final String transName = transactionNameEditor.getText().toString();
+
+        if( !TextUtils.isEmpty(transName) )
+            transaction.setTitle(transName);
+
+        transaction.setTimestamp(timestamp);
+
+        if(item.getTag().equals(SourceWrapper.TAG.NEW))
+            item.getSource().setPennies(transaction.getAmount()); //Setting the initial amount
+
         if(sourceItemSelectedListener != null)
-            sourceItemSelectedListener.onSourceItemSelected(item);
+            sourceItemSelectedListener.onSourceItemSelected(item, transaction);
     }
 
     public void registerItemSelectedListener(final OnSourceItemSelected l){
         this.sourceItemSelectedListener = l;
     }
 
+    @OnTextChanged(value = R.id.id_source_dialog_search_view, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onSearchEntered(final Editable editable){
+
+        final String s = editable.toString();
+
+        if(s.length() == 0)
+            populate(null);
+        else
+            populate(s);
+
+        //Make sure that insertIntoFirst isn't being overwritten by the loaded data from the backend.
+        insertIntoFirst(new Source(s, transactionType));
+    }
+
+    private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener(){
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+
+            //If the item has been set, then we can do animations; Otherwise the fab is already hidden so no animations are needed
+            if(item !=null)
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) hideFab();
+                else if (newState == RecyclerView.SCROLL_STATE_IDLE) showFab();
+        }
+    };
+
 
     @NonNull
     protected abstract SourceWrapperAdapter manifestAdapter();
-
-
-    public interface OnSourceItemSelected{
-        void onSourceItemSelected(final SourceWrapper wrapper);
-    }
-
-
-
 
 }

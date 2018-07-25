@@ -27,6 +27,7 @@
     <string name="string_source_tag_new">NEW</string>
     <string name="string_source_dialog_search">Enter source name here</string>
     <string name="title_activity_source_master">ActivitySourceMaster</string>
+    <string name="string_enter_transaction_name">Enter Transaction Name</string>
 
 
     <!--SOURCE MASTER STRING-->

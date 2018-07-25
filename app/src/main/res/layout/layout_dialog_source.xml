@@ -7,50 +7,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/drawable_shape_background_rounded_right"
 
+<LinearLayout
+    android:background="@color/white"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-
-    <FrameLayout
-        android:padding="@dimen/dimen_screen_padding"
+    <RelativeLayout
+        android:paddingTop="@dimen/dimen_padding_ver_small"
+        android:paddingBottom="@dimen/dimen_padding_ver_small"
+        android:paddingStart="@dimen/dimen_padding_hor_base"
+        android:paddingEnd="@dimen/dimen_padding_hor_base"
         android:id="@id/id_source_dialog_header"
         android:background="@drawable/drawable_shape_background_flat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+            style="@style/StyleCurrentEditText"
+            tools:text="$27.82"
+            android:textSize="@dimen/dimen_text_bigboi"
+            android:id="@id/id_source_dialog_total_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <EditText
-            tools:text="Enter Source Name Here"
-            android:drawableStart="@drawable/ic_svg_search"
-            android:drawableLeft="@drawable/ic_svg_search"
-            android:backgroundTint="@color/white"
-            android:drawablePadding="8dp"
-            android:hint="@string/string_source_dialog_search"
+            android:layout_alignParentEnd="true"
+            android:maxEms="20"
+            android:hint="@string/string_enter_transaction_name"
+            android:paddingStart="@dimen/dimen_padding_hor_base"
+            android:paddingEnd="@dimen/dimen_padding_hor_base"
             android:textColorHint="@color/white"
-            android:id="@id/id_source_dialog_search_view"
+            android:backgroundTint="@color/white"
+            android:id="@id/id_source_dialog_transaction_name_editor"
             android:textSize="@dimen/dimen_text_normal"
             android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            tools:text="12:00 AM"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_text_normal"
+            android:layout_below="@id/id_source_dialog_total_display"
+            android:id="@id/id_source_dialog_time_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_marginTop="@dimen/dimen_padding_ver_large"
+            android:layout_below="@id/id_source_dialog_time_display"
+            android:drawableStart="@drawable/ic_svg_search_dark"
+            android:background="@drawable/shape_oval_white"
+            android:drawablePadding="8dp"
+            android:paddingTop="@dimen/dimen_padding_ver_base"
+            android:paddingBottom="@dimen/dimen_padding_ver_base"
+            android:paddingStart="@dimen/dimen_padding_hor_base"
+            android:paddingEnd="@dimen/dimen_padding_hor_base"
+            android:maxLines="1"
+            android:hint="@string/string_source_dialog_search"
+            android:textColorHint="@color/dark_grey"
+            android:id="@id/id_source_dialog_search_view"
+            android:textSize="@dimen/dimen_text_normal"
+            android:textColor="@color/dark_grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </FrameLayout>
 
+
+    </RelativeLayout>
     <android.support.v7.widget.RecyclerView
-        xmlns:tools="http://schemas.android.com/tools"
         tools:listitem="@layout/layout_list_item_dialog_source"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:padding="@dimen/dimen_screen_padding"
         android:id="@id/id_source_dialog_source_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+
 </LinearLayout>
 
 <android.support.design.widget.FloatingActionButton
@@ -62,5 +97,7 @@
     android:layout_margin="@dimen/dimen_screen_padding"
     android:layout_gravity="bottom|end" />
 
-</FrameLayout>
+
+
+
 </com.whompum.pennydialog.dialog.ShadowLayout>

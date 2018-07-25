@@ -18,9 +18,10 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
                                   childColumns = "sourceId",
                                   onDelete = CASCADE,
                                   deferred = true))
+//TODO expose a Builder design pattern to this object
 public class Transaction {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
     @Nullable
@@ -46,7 +47,6 @@ public class Transaction {
     public Transaction(@NonNull final String sourceId, final int transactionType, final long amount){
         this(sourceId, transactionType, null, amount);
     }
-
 
     @Ignore
     public Transaction(@NonNull final String sourceId, final int transactionType, @Nullable final String title, long amount){

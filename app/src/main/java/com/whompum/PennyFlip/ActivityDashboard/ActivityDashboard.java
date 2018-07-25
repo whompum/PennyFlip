@@ -1,22 +1,32 @@
 package com.whompum.PennyFlip.ActivityDashboard;
 
 import android.animation.ArgbEvaluator;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
+import com.whompum.PennyFlip.DialogSourceChooser.OnSourceItemSelected;
+import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
@@ -27,6 +37,8 @@ import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
 import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
+
+import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -176,12 +188,12 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    final SourceDialog addSourceDialog = AddSourceDialog.newInstance(null);
+                    final SourceDialog addSourceDialog = AddSourceDialog.newInstance(generateTransactionDialogArgs(pennies));
                     launchPennyDialog( addSourceDialog, AddSourceDialog.TAG);
-                    addSourceDialog.registerItemSelectedListener(new SourceDialog.OnSourceItemSelected() {
+                    addSourceDialog.registerItemSelectedListener(new OnSourceItemSelected() {
                         @Override
-                        public void onSourceItemSelected(SourceWrapper wrapper) {
-                            consumer.saveTransaction(TransactionType.ADD, pennies, wrapper);
+                        public void onSourceItemSelected(@NonNull SourceWrapper wrapper, @NonNull Transaction transaction) {
+                            consumer.saveTransaction(wrapper, transaction);
                         }
                     });
                 }
@@ -201,12 +213,12 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    SourceDialog dialog = SpendingSourceDialog.newInstance(null);
+                    SourceDialog dialog = SpendingSourceDialog.newInstance(generateTransactionDialogArgs(pennies));
                     launchPennyDialog(dialog, SpendingSourceDialog.TAG);
-                    dialog.registerItemSelectedListener(new SourceDialog.OnSourceItemSelected() {
+                    dialog.registerItemSelectedListener(new OnSourceItemSelected() {
                         @Override
-                        public void onSourceItemSelected(SourceWrapper wrapper) {
-                            consumer.saveTransaction(TransactionType.SPEND, pennies, wrapper);
+                        public void onSourceItemSelected(@NonNull SourceWrapper wrapper, @NonNull Transaction transaction) {
+                            consumer.saveTransaction(wrapper, transaction);
                         }
                     });
                 }
@@ -219,6 +231,12 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
         }
     };
+
+    private Bundle generateTransactionDialogArgs(final long pennies){
+        final Bundle bundle = new Bundle();
+        bundle.putLong(SourceDialog.TOTAL_KEY, pennies);
+        return bundle;
+    }
 
     /**
      * @param dialog Dialog to show

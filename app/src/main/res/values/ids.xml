@@ -27,6 +27,9 @@
     <item name="id_source_dialog_source_list" type="id"/>
     <item name="id_source_dialog_search_view" type="id"/>
     <item name="id_source_dialog_header" type="id"/>
+    <item name="id_source_dialog_total_display" type="id"/>
+    <item name="id_source_dialog_time_display" type="id"/>
+    <item name="id_source_dialog_transaction_name_editor" type="id"/>
 
 
     <!--Source Dialog IDS handled by the RecyclerView Adapter-->

@@ -68,8 +68,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
 
         if(wrappers.size() != 0){
 
-
-            if(wrappers.get(0).getTagType() == SourceWrapper.TAG.NEW)
+            if(wrappers.get(0).getTag() == SourceWrapper.TAG.NEW)
                 isOldSelected = wrappers.isSelected(wrappers.remove(0));
 
             if(isOldSelected)
@@ -83,10 +82,10 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
             if(isSearchedSourceInList(wrapper))
                 return;
 
-            if(!wrapper.getTitle().equals(SourceWrapper.EMPTY)) {
+            if(!wrapper.getSourceId().equals(SourceWrapper.EMPTY)) {
                 wrappers.add(0, wrapper);
                 Log.i("SourceWrapperAdapter", "insertToFirst()#SourceWrapperAdapter" + " Inserting " +
-                " SOURCE NAMED: " + wrappers.get(0).getTitle() + " Into the first index");
+                " SOURCE NAMED: " + wrappers.get(0).getTag() + " Into the first index");
             }
         }else
             wrappers.add(wrapper);
@@ -98,7 +97,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
     private boolean isSearchedSourceInList(final SourceWrapper wrapper){
 
         for(SourceWrapper theWrapper : this.wrappers)
-            if(theWrapper.getTitle().equals(wrapper.getTitle()))
+            if(theWrapper.getSourceId().equals(wrapper.getSourceId()))
                 return true;
 
         return false;
@@ -122,7 +121,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
 
             if(this.wrappers.size() != 0)//avoiding an index outta' bounds hissy fit
                 //Only carry over if the first index is a new wrapper
-                carryOverFirstIndex = this.wrappers.get(0).getTagType() == SourceWrapper.TAG.NEW;
+                carryOverFirstIndex = this.wrappers.get(0).getTag() == SourceWrapper.TAG.NEW;
 
             if(carryOverFirstIndex){ //If first index is a new wrapper, cache it, and insert it to the first index
                 final SourceWrapper cache = this.wrappers.get(0);
@@ -169,7 +168,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
 
     @Override
     public int getItemViewType(int position) {
-        final SourceWrapper.TAG tag = wrappers.get(position).getTagType();
+        final SourceWrapper.TAG tag = wrappers.get(position).getTag();
 
         if(tag.equals(SourceWrapper.TAG.NEW))
             return TYPE_NEW;
@@ -201,7 +200,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
         else
             holder.turnOff();
 
-        holder.wrapperTitle.setText(data.getTitle());
+        holder.wrapperTitle.setText(data.getSourceId());
     }
 
     @Override
@@ -277,10 +276,5 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
 
             layout.setBackgroundColor(color);
         }
-
-
-
     }
-
-
 }

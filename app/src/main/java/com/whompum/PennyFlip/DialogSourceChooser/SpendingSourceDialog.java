@@ -1,6 +1,7 @@
 package com.whompum.PennyFlip.DialogSourceChooser;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Transactions.Models.TransactionType;
@@ -20,8 +21,11 @@ public class SpendingSourceDialog extends SourceDialog {
 
     public static final String TAG = "SpendingSourceDialog";
 
-    public static SourceDialog newInstance(final Bundle args){
+    public static SourceDialog newInstance(@NonNull final Bundle args){
         final SourceDialog dialog = new SpendingSourceDialog();
+
+        args.putLong(TIMESTAMP_KEY, System.currentTimeMillis());
+
         dialog.setArguments(args);
 
     return dialog;
@@ -31,14 +35,7 @@ public class SpendingSourceDialog extends SourceDialog {
     @Override
     protected SourceWrapperAdapter manifestAdapter() {
         this.sourceListAdapter = new SourceWrapperAdapter(getContext(), HEADER_COLOR, new AdapterSelecteable<SourceWrapper>());
-
         return sourceListAdapter;
     }
 
-
-    @Override
-    protected void onDone() {
-        super.onDone();
-        //Puts the final Pieces on the TransactionBuilder object, and then sends it on its way to storage.
-    }
 }
