@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Money;
+package com.whompum.PennyFlip.Money.Source;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
@@ -7,7 +7,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.whompum.PennyFlip.Money.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
 @Entity
 public class Source {
@@ -35,15 +35,13 @@ public class Source {
     }
 
     @Ignore //Used to create a new Barebones Source Object
-    public Source(@NonNull final String title) {
-        this(title, System.currentTimeMillis(), 0L);
+    public Source(@NonNull final String title, final int transactionType) {
+        this(title, System.currentTimeMillis(), 0L, transactionType);
     }
 
     @Ignore
-    public Source(@NonNull final String title, final long creationDate, final long pennies){
-        this.title = title;
-        this.pennies = pennies;
-        this.creationDate = creationDate;
+    public Source(@NonNull final String title, final long creationDate, final long pennies, final int transactionType){
+        this(title, transactionType, null, pennies, creationDate);
     }
 
     public void setTitle(@NonNull String title) {
