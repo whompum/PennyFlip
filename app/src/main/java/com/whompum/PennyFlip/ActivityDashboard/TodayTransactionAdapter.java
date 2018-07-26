@@ -75,7 +75,7 @@ public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransacti
 
         public void bind(final Transaction item){
             timeStamp.setText(PennyFlipTimeFormatter.simpleTime(Timestamp.from(item.getTimestamp())));
-            sourceName.setText(item.getTitle());
+            sourceName.setText(item.getSourceId());
             transactionAmount.setText(String.valueOf(item.getAmount()));
         }
 
