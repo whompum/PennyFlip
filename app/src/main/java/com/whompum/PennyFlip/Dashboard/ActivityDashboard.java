@@ -1,31 +1,25 @@
-package com.whompum.PennyFlip.ActivityDashboard;
+package com.whompum.PennyFlip.Dashboard;
 
 import android.animation.ArgbEvaluator;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.DialogSourceChooser.OnSourceItemSelected;
-import com.whompum.PennyFlip.Money.MoneyController;
-import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
@@ -34,11 +28,10 @@ import com.whompum.PennyFlip.DialogSourceChooser.AddSourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
-import com.whompum.PennyFlip.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
+import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
-
-import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -85,6 +78,8 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
         initTodayFragments();
 
+        setTodayTimeLabel();
+
     }
 
     private void initTodayFragments(){
@@ -95,6 +90,11 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         strips.bindTitle(this, getString(R.string.string_spending));
 
         addSpendContainer.setPageTransformer(true, pageTransformer);
+    }
+
+    private void setTodayTimeLabel(){
+        ((TextView)findViewById(R.id.today_date_label))
+                .setText(PennyFlipTimeFormatter.simpleDate(Timestamp.from(System.currentTimeMillis())));
     }
 
     PageTitleStrips.StripClick stripClick = new PageTitleStrips.StripClick() {
@@ -141,7 +141,6 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     public void callibrate(){
         vibrate(500L);
     }
-
 
     @OnClick(R.id.id_fab)
     void onFabClicked() {
