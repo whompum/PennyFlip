@@ -14,7 +14,7 @@ public class TodaySpendFragment extends TodayFragment {
 
     {
         super.VALUE_TEXT_COLOR = R.color.light_red;
-        super.sourceType = TransactionType.SPEND;
+        super.transactionType = TransactionType.SPEND;
     }
 
 
@@ -26,12 +26,5 @@ public class TodaySpendFragment extends TodayFragment {
 
         return fragment;
     }
-
-
-    @Override
-    protected int getLoaderId() {
-        return SPEND_LOADER_ID;
-    }
-
 
 }

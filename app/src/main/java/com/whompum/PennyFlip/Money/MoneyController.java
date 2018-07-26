@@ -1,8 +1,6 @@
 package com.whompum.PennyFlip.Money;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.Handler;
@@ -11,15 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.Wallet;
-import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.WalletDao;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionDao;
 import com.whompum.PennyFlip.Transactions.Models.TransactionType;
-
-import java.util.List;
 
 
 public class MoneyController {
@@ -27,6 +21,8 @@ public class MoneyController {
     private static MoneyController instance;
 
     private WalletDao walletAccessor;
+
+    private LiveData<Wallet> data;
 
     private SourceDao sourceAccessor;
 
@@ -39,6 +35,8 @@ public class MoneyController {
 
         walletAccessor = database.getWalletAccessor();
 
+        data = walletAccessor.fetch();
+
         sourceAccessor = database.getSourceAccessor();
         transactionAccessor = database.getTransactionAccessor();
     }
@@ -49,57 +47,55 @@ public class MoneyController {
         return instance;
     }
 
-    public void observeTotal(@NonNull final LifecycleOwner owner, @NonNull final WalletListener l){
-
-        walletAccessor.get()
-                .observe(owner, new Observer<Wallet>() {
-                    @Override
-                    public void onChanged(@Nullable Wallet wallet) {
-                        if(wallet != null)
-                            l.onNewTotal(wallet.getValue());
-                    }
-                });
+    public LiveData<Wallet> getWallet() {
+        return data;
     }
 
-    public void unObserveTotal(@NonNull final LifecycleOwner owner){
-        if(walletAccessor.get().hasActiveObservers())
-            walletAccessor.get().removeObservers(owner);
+    private long walletValue(){
+        if(data.getValue() != null)
+            return data.getValue().getValue();
+
+        return 0L;
     }
 
-    public void updateWallet(final int type, final long amt){
 
-        synchronized (this) {
-            long newValue = -1;
+    public synchronized void updateWallet(final int type, final long amt){
 
-            final Wallet w = walletAccessor.get().getValue();
+        long newValue = -1;
 
-            if (type == TransactionType.ADD && w != null)
-                newValue = w.getValue() + amt;
+        if(type == TransactionType.ADD)
+            newValue = walletValue()+amt;
 
-            if (type == TransactionType.SPEND && w != null) {
+        if(type == TransactionType.SPEND){
 
-                newValue = w.getValue() - amt;
+            newValue = walletValue() - amt;
 
-                if (newValue < 0)
-                    newValue = 0L;
-            }
+            if(newValue < 0)
+                newValue = 0L;
 
-            if (newValue == -1)
-                return;
-
-            final Wallet temp = new Wallet();
-
-            temp.setValue(newValue);
-
-            updateWallet(temp);
         }
+
+        if(newValue == -1)
+            return;
+
+        updateWallet(new Wallet(newValue));
     }
 
-    private void updateWallet(@NonNull final Wallet wallet){
+    private void updateWallet(@NonNull final Wallet w){
         new Thread(){
             @Override
             public void run() {
-                walletAccessor.update(wallet);
+                walletAccessor.update(w);
+            }
+        }.start();
+    }
+
+    public void insertNew(@NonNull final Source s, @NonNull final Transaction t){
+        new Thread(){
+            @Override
+            public void run() {
+                sourceAccessor.insert(s); //To avoid foreign key constraint violations, the new source should be inserted first
+                transactionAccessor.insert(t);
             }
         }.start();
     }
@@ -251,24 +247,4 @@ public class MoneyController {
 
     }
 
-    public List<Source> toSourceList(@NonNull final LiveData<List<Source>> data){
-        return data.getValue();
-    }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

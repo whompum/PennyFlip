@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence;
+package com.whompum.PennyFlip.Money;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 public interface WalletDao {
 
     @Query("SELECT * From Wallet")
-    LiveData<Wallet> get();
+    LiveData<Wallet> fetch();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void update(@NonNull final Wallet wallet);

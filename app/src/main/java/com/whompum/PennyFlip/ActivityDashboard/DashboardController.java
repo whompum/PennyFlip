@@ -5,39 +5,29 @@ import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.Wallet;
-import com.whompum.PennyFlip.ActivityDashboard.Wallet.WalletRepo;
 import com.whompum.PennyFlip.Data.UserStartDate;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
-import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Money.Wallet;
 
-public class DashboardController implements ActivityDashboardConsumer{
+public class DashboardController implements ActivityDashboardConsumer, Observer<Wallet>{
 
     private static DashboardController instance;
 
-    private WalletRepo repo;
-
-    private MoneyController moneyRepo;
+    private MoneyController repo;
 
     private DashboardClient client;
 
-    private Context c;
-
     private DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
+        repo = MoneyController.obtain(context);
 
-        repo = WalletRepo.obtain(context);
-        moneyRepo = MoneyController.obtain(context);
         if(o != null)
-            repo.getData().observe(o, walletObserver);
+            repo.getWallet().observe(o, this);
 
-        this.c = context;
     }
 
     public static DashboardController create(@NonNull final Context context, @Nullable LifecycleOwner o){
@@ -54,34 +44,22 @@ public class DashboardController implements ActivityDashboardConsumer{
     }
 
     public void saveTransaction(@NonNull final SourceWrapper w, @NonNull final Transaction t){
+        //Update Wallet
         repo.updateWallet(t.getTransactionType(), t.getAmount());
-
-
-        Log.i("TRANSACTIONS", "TRANSACTION TITLE: " + t.getTitle());
-        Log.i("TRANSACTIONS", "TRANSACTION TIME: " + PennyFlipTimeFormatter.simpleTime(Timestamp.from(t.getTimestamp())));
-        Log.i("TRANSACTIONS", "TRANSACTION PARENT SOURCE: " + t.getSourceId());
-        Log.i("TRANSACTIONS", "TRANSACTION TYPE: " + t.getTransactionType());
-        Log.i("TRANSACTIONS", "TRANSACTION ID: " + t.getId());
-
-
 
         final Source source = w.getSource();
 
         if(w.getTag().equals(SourceWrapper.TAG.NEW)) //If is a new SourceObject insert.
-            MoneyController.obtain(c).insert(source);
-        else //If isn't a new source object, simply update the Source total
-            MoneyController.obtain(c).updateSourceAmount(t.getSourceId(), t.getAmount());
-
-        MoneyController.obtain(c).insert(t);
+            repo.insertNew(source, t);
+        else { //If isn't a new source object, simply update the Source total
+                repo.updateSourceAmount(t.getSourceId(), t.getAmount());
+                repo.insert(t);
+        }
     }
 
-    private Observer<Wallet> walletObserver = new Observer<Wallet>() {
-        @Override
-        public void onChanged(@Nullable Wallet wallet) {
-            if(wallet != null)
-                client.onWalletChanged(wallet.getValue());
-        }
-    };
-
-
+    @Override
+    public void onChanged(@Nullable Wallet wallet) {
+        if(wallet != null)
+            client.onWalletChanged(wallet.getValue());
+    }
 }

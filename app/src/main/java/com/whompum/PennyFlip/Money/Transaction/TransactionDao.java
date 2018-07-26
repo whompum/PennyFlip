@@ -21,7 +21,7 @@ public interface  TransactionDao {
 
     //TransactionType
     @Query("SELECT * From `Transaction` WHERE transactionType = :transactionType")
-    List<Transaction> fetch(final int transactionType);
+    LiveData<List<Transaction>> fetch(final int transactionType);
 
     //Timestamp
     @Query("SELECT * From `Transaction` WHERE timestamp <= :floor AND timestamp >= :ciel")

@@ -3,8 +3,6 @@ package com.whompum.PennyFlip.Money;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
-import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.Wallet;
-import com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence.WalletDao;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;

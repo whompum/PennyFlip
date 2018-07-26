@@ -2,14 +2,15 @@ package com.whompum.PennyFlip.ActivityDashboard;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transactions.Models.Transactions;
+import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
+import com.whompum.PennyFlip.Time.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransactionAdapter.TodayHolder> {
 
-    private List<Transactions> dataSet = new ArrayList<>();
+    private List<Transaction> dataSet = new ArrayList<>();
 
     private LayoutInflater inflater;
 
@@ -30,17 +31,15 @@ public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransacti
         this(context, null);
     }
 
-    public TodayTransactionAdapter(final Context context, final List<Transactions> data){
+    public TodayTransactionAdapter(final Context context, final List<Transaction> data){
         this.inflater = LayoutInflater.from(context);
         if(data != null)
             this.dataSet = data;
     }
 
-    public void setDataSet(final List<Transactions> data){
+    public void swapDataset(final List<Transaction> data){
         if(data != null)
             this.dataSet = data;
-
-        Log.i("TESTING", "DATA SIZE: " + String.valueOf(dataSet.size()));
 
         notifyDataSetChanged();
     }
@@ -72,13 +71,12 @@ public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransacti
             timeStamp = layout.findViewById(R.id.id_transaction_timestamp);
             sourceName = layout.findViewById(R.id.id_transaction_source);
             transactionAmount = layout.findViewById(R.id.id_transaction_value);
-
         }
 
-        public void bind(final Transactions item){
-            timeStamp.setText(item.simpleTime());
-            sourceName.setText(item.getSourceName());
-            transactionAmount.setText(String.valueOf(item.getTransactionAmount()));
+        public void bind(final Transaction item){
+            timeStamp.setText(PennyFlipTimeFormatter.simpleTime(Timestamp.from(item.getTimestamp())));
+            sourceName.setText(item.getTitle());
+            transactionAmount.setText(String.valueOf(item.getAmount()));
         }
 
     }

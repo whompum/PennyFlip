@@ -1,6 +1,7 @@
-package com.whompum.PennyFlip.ActivityDashboard.Wallet.Persistence;
+package com.whompum.PennyFlip.Money;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
@@ -10,6 +11,16 @@ public class Wallet {
     private int id = 1; //Only one record of this value.
 
     private long value; //A single unit of currency
+
+    public Wallet(int id, long value) {
+        this.id = id;
+        this.value = value;
+    }
+
+    @Ignore
+    public Wallet(final long value){
+        setValue(value);
+    }
 
     public int getId() {
         return id;

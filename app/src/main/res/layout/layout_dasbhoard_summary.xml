@@ -17,7 +17,7 @@
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
         style="@style/StyleCurrentEditTextLarge"
-        android:id="@+id/tempValue"
+        android:id="@+id/total_transaction_value_display"
         android:textColor="@color/darkest_grey"
         android:layout_marginTop="24dp"
         android:layout_centerHorizontal="true"

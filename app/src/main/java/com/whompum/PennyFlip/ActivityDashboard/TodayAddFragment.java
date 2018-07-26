@@ -14,7 +14,7 @@ public class TodayAddFragment extends TodayFragment {
 
     {
         super.VALUE_TEXT_COLOR = R.color.light_green;
-        super.sourceType = TransactionType.ADD;
+        super.transactionType = TransactionType.ADD;
     }
 
     public static final int ADD_LOADER_ID = 15;
@@ -26,13 +26,5 @@ public class TodayAddFragment extends TodayFragment {
 
         return fragment;
     }
-
-    @Override
-    protected int getLoaderId() {
-        return ADD_LOADER_ID;
-    }
-
-
-
 
 }

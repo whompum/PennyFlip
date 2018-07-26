@@ -74,7 +74,7 @@ public abstract class FragmentSourceList extends Fragment implements SourceListC
      * @state DIALOG_LAYOUT: The layout resource file for the Add Source Dialog
      * @state sourceNameLimit: The limit for the SourceName length
      * @state loaderId: The id of the loader; Set by children in an instance block initializer
-     * @state sourceType: sourceType; Used as a whereArg for the loader; Set by children via initialization block
+     * @state transactionType: transactionType; Used as a whereArg for the loader; Set by children via initialization block
      * @state newSourceDialogImage: Image reference set by children, to say which drawable item to use for the new source dialog
      * @state WHERE: Where key for the loader bundle query arguments
      * @state WHERE_ARGS_KEY: WhereArgs key for the loader bundle query arguments
