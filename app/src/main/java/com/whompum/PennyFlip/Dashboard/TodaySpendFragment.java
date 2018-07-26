@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.ActivityDashboard;
+package com.whompum.PennyFlip.Dashboard;
 
 import android.os.Bundle;
 
@@ -17,8 +17,6 @@ public class TodaySpendFragment extends TodayFragment {
         super.transactionType = TransactionType.SPEND;
     }
 
-
-    public static final int SPEND_LOADER_ID = 16;
 
     public static TodayFragment newInstance(final Bundle args){
         final TodaySpendFragment fragment = new TodaySpendFragment();

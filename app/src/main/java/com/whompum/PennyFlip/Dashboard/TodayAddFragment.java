@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.ActivityDashboard;
+package com.whompum.PennyFlip.Dashboard;
 
 import android.os.Bundle;
 
@@ -16,9 +16,6 @@ public class TodayAddFragment extends TodayFragment {
         super.VALUE_TEXT_COLOR = R.color.light_green;
         super.transactionType = TransactionType.ADD;
     }
-
-    public static final int ADD_LOADER_ID = 15;
-
 
     public static TodayFragment newInstance(final Bundle args){
         final TodayAddFragment fragment = new TodayAddFragment();
