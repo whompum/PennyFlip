@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ActivityDashboard.ActivityDashboard"
-            android:windowSoftInputMode="stateHidden">
+            android:name=".Dashboard.ActivityDashboard"
+            android:windowSoftInputMode="stateHidden|adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,36 +21,36 @@
         <activity
             android:name=".ActivitySourceList.ActivitySourceList"
             android:label="@string/title_activity_source_master"
-            android:parentActivityName=".ActivityDashboard.ActivityDashboard"
+            android:parentActivityName=".Dashboard.ActivityDashboard"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityDashboard.ActivityDashboard" />
+                android:value=".Dashboard.ActivityDashboard" />
         </activity>
 
 
         <activity android:name=".ActivitySourceData.ActivitySourceDataAdded"
                   android:theme="@style/StyleSourceDataAdded"
                   android:windowSoftInputMode="stateHidden"
-                  android:parentActivityName=".ActivityDashboard.ActivityDashboard">
+                  android:parentActivityName=".Dashboard.ActivityDashboard">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityDashboard.ActivityDashboard" />
+                android:value=".Dashboard.ActivityDashboard" />
         </activity>
 
         <activity android:name=".ActivitySourceData.ActivitySourceDataSpent"
                   android:theme="@style/StyleSourceDataSpent"
                   android:windowSoftInputMode="stateHidden"
-                  android:parentActivityName=".ActivityDashboard.ActivityDashboard">
+                  android:parentActivityName=".Dashboard.ActivityDashboard">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityDashboard.ActivityDashboard" />
+                android:value=".Dashboard.ActivityDashboard" />
         </activity>
 
 
         <activity android:name=".ActivityHistory.ActivityHistory"
-                  android:parentActivityName=".ActivityDashboard.ActivityDashboard"
+                  android:parentActivityName=".Dashboard.ActivityDashboard"
                   android:theme="@style/AppTheme"
                   android:windowSoftInputMode="stateHidden"/>
 
