@@ -88,7 +88,7 @@
 
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
-        tools:listitem="@layout/layout_list_item_dialog_source"
+        tools:listitem="@layout/dashboard_save_transaction_list_item"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:padding="@dimen/dimen_screen_padding"
         android:id="@id/id_source_dialog_source_list"

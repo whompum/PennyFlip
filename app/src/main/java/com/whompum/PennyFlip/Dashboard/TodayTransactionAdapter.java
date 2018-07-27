@@ -46,7 +46,7 @@ public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransacti
 
     @Override
     public TodayHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TodayHolder(inflater.inflate(R.layout.layout_dashboard_transaction_item, parent, false));
+        return new TodayHolder(inflater.inflate(R.layout.dashboard_today_list_item, parent, false));
     }
 
     @Override

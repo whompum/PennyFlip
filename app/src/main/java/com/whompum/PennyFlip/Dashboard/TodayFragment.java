@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,11 +25,8 @@ import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Ts;
 import com.whompum.PennyFlip.Transactions.Models.DescendingSort;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.function.Consumer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +40,7 @@ import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 public class TodayFragment extends Fragment implements Handler.Callback, Observer<List<Transaction>>{
 
     @LayoutRes
-    public static final int LAYOUT = R.layout.layout_dasbhoard_summary;
+    public static final int LAYOUT = R.layout.dashboard_today_layout;
 
     @ColorRes
     protected int VALUE_TEXT_COLOR = R.color.dark_grey;

@@ -1,7 +1,6 @@
 package com.whompum.PennyFlip.DialogSourceChooser;
 
 import android.app.Dialog;
-import android.arch.lifecycle.LiveData;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,7 +54,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     protected int FAB_SRC = R.drawable.ic_checkmark;
 
     @LayoutRes
-    protected int LAYOUT = R.layout.layout_dialog_source;
+    protected int LAYOUT = R.layout.dashboard_save_transaction_layout;
 
     public static final String TIMESTAMP_KEY = "timestamp.ky";
     public static final String TOTAL_KEY = "total.ky";

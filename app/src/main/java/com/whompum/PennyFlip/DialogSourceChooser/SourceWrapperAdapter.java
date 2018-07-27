@@ -21,7 +21,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
     private static final int TYPE_REGULAR = 20;
 
     @LayoutRes
-    private static final int LAYOUT = R.layout.layout_list_item_dialog_source;
+    private static final int LAYOUT = R.layout.dashboard_save_transaction_list_item;
 
     private AdapterSelecteable<SourceWrapper> wrappers;
 
