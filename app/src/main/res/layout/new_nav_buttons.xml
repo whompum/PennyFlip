@@ -6,7 +6,7 @@
     android:paddingTop="@dimen/dimen_nav_buttons_top_padding"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ActivityDashboard.ActivityDashboard">
+    tools:context=".Dashboard.ActivityDashboard">
 
     <LinearLayout
         android:id="@+id/navTempPosHistory"
