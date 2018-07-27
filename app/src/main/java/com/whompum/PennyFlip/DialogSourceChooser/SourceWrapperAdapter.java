@@ -60,16 +60,14 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
          * Else, if the old wrapper is "NEW" then remove it from index zero, and pass it to AdapterSelectable wrappers object
          * to check if that one has been selected. (In this case we are going to tell the client a sourceItem was clicked, but
          * we'll hand it a null value, since that wrapper was clicked but is removed from the list.
-         * After this logic is ran, we are going to check IF the new wrapper is EMPTY or not.
+         * After this logic is ran, we are going to check IF the new wrapper is UGLY or not.
          * E.G. the user backspaced until the value for SourceWrapper#title is "". In that case we add nothing
          */
-
-
 
         if(wrappers.size() != 0){
 
             if(wrappers.get(0).getTag() == SourceWrapper.TAG.NEW)
-                isOldSelected = wrappers.isSelected(wrappers.remove(0));
+                isOldSelected = wrappers.isSelected(wrappers.remove(0)); //Removing element zero.
 
             if(isOldSelected)
                notifyListener(null);
@@ -82,7 +80,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
             if(isSearchedSourceInList(wrapper))
                 return;
 
-            if(!wrapper.getSourceId().equals(SourceWrapper.EMPTY)) {
+            if(!wrapper.getSourceId().equals(SourceWrapper.FLAG_NON_USABLE)) {
                 wrappers.add(0, wrapper);
                 Log.i("SourceWrapperAdapter", "insertToFirst()#SourceWrapperAdapter" + " Inserting " +
                 " SOURCE NAMED: " + wrappers.get(0).getTag() + " Into the first index");

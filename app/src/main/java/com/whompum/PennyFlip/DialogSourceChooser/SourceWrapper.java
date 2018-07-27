@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class SourceWrapper implements Serializable{
 
-    public static final String EMPTY = "EMPTY";
+    public static final String FLAG_NON_USABLE = "UGLY";
 
     private TAG tag;
     private Source source;
@@ -23,9 +23,6 @@ public class SourceWrapper implements Serializable{
     }
 
     public String getSourceId() {
-        if(source.getTitle().equals(""))
-            return EMPTY;
-
         return source.getTitle();
     }
 
