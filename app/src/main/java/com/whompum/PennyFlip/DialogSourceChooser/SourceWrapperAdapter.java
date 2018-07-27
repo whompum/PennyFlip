@@ -85,7 +85,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
                 Log.i("SourceWrapperAdapter", "insertToFirst()#SourceWrapperAdapter" + " Inserting " +
                 " SOURCE NAMED: " + wrappers.get(0).getTag() + " Into the first index");
             }
-        }else
+        }else if( !wrapper.getSourceId().equals(SourceWrapper.FLAG_NON_USABLE))
             wrappers.add(wrapper);
 
 
