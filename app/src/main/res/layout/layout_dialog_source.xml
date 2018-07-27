@@ -24,12 +24,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:id="@+id/header_container"
+            android:weightSum="10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
             style="@style/StyleCurrentEditText"
             tools:text="$27.82"
             android:textSize="@dimen/dimen_text_bigboi"
             android:id="@id/id_source_dialog_total_display"
-            android:layout_width="wrap_content"
+            android:layout_weight="4.5"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
         <EditText
@@ -43,14 +50,17 @@
             android:id="@id/id_source_dialog_transaction_name_editor"
             android:textSize="@dimen/dimen_text_normal"
             android:textColor="@color/white"
-            android:layout_width="wrap_content"
+            android:layout_weight="5.5"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <TextView
             tools:text="12:00 AM"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_text_normal"
-            android:layout_below="@id/id_source_dialog_total_display"
+            android:layout_below="@id/header_container"
             android:id="@id/id_source_dialog_time_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
