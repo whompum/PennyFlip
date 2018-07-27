@@ -26,6 +26,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.Money.MoneyController;
@@ -84,8 +85,28 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
 
     private Handler dataReceiver = new Handler(this);
 
-    protected SourceWrapper item;
 
+    /**
+     * Is passed into the MoneyController fetchSources method
+     * to recieve a message containing a single Source. We use this source
+     * to see if the source the user wants to make, is already in use.
+     */
+    private Handler sourceChecker = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+
+            if(msg.obj == null) {
+                dismiss();
+                notifyListener();
+            }else{
+                Toast.makeText(getContext(), R.string.string_create_new_source_resolution_msg, Toast.LENGTH_SHORT)
+                .show();
+            }
+            return true;
+        }
+    });
+
+    protected SourceWrapper item;
 
     protected SourceWrapperAdapter sourceListAdapter;
 
@@ -242,8 +263,14 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
 
     @OnClick(R.id.id_fab)
     protected void onDone(){
+
+        if(item.getTag().equals(SourceWrapper.TAG.NEW))
+             MoneyController.obtain(getContext()) //Attemp to fetch this source object to see if it exists
+            .fetchSources(sourceChecker, item.getSourceId(), null, false);
+
         dismiss();
         notifyListener();
+
     }
 
     private void populate(@Nullable final CharSequence popData){
@@ -257,11 +284,6 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
             query = "%" + popData.toString() + "%";
             searchLike = true;
         }
-
-        if(query == null)
-            Log.i("SOURCE_DIALOG", "QUERY IS NULL");
-        else
-            Log.i("SOURCE_DIALOG", "QUERY: " + query);
 
         //Will resolve either a list of Sources of our TransactionType only, or our TransactionType plus similar namings.
         MoneyController.obtain(getContext()).fetchSources(dataReceiver, query, transactionType, searchLike);
@@ -294,12 +316,17 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     @OnTextChanged(value = R.id.id_source_dialog_search_view, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onSearchEntered(final Editable editable){
 
-        final String s = editable.toString();
+        String s = editable.toString();
 
-        if(s.length() == 0)
+        if (s.length() == 0)
             populate(null);
         else
             populate(s);
+
+        //Check if text is usable. If not, set S to equal ugly.
+
+        if( s.replaceAll("\\s", "").length() == 0 || s.contains("%") )
+            s = SourceWrapper.FLAG_NON_USABLE; //We don't allow sources to be identified by whitespaces, or %.
 
         //Make sure that insertIntoFirst isn't being overwritten by the loaded data from the backend.
         insertIntoFirst(new Source(s, transactionType));
