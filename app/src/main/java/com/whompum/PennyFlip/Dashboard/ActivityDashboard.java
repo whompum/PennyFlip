@@ -48,6 +48,8 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
     private Vibrator vibrator;
 
+    private PennyDialog pennyDialog; //Reference is stored so we can prevent accidental instantiation overload
+
     @BindColor(R.color.light_green)
     protected int sClr;
 
@@ -144,6 +146,11 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
     @OnClick(R.id.id_fab)
     void onFabClicked() {
+
+        if(pennyDialog != null)  //Done to block double tapping; Avoids creating multiple instances.
+            if(pennyDialog.isAdded()) return;
+
+
         vibrate(500L);
         int styleRes;
 
@@ -159,9 +166,11 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
         final Bundle args = new Bundle();
         args.putInt(PennyDialog.STYLE_KEY, styleRes);
-        launchPennyDialog(SlidePennyDialog.newInstance(ccL, args), SlidePennyDialog.TAG);
-    }
 
+        this.pennyDialog = SlidePennyDialog.newInstance(ccL, args);
+
+        launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
+    }
 
     @OnClick(R.id.id_nav_menu_statistics)
     public void onStatisticsFabClicked(){
@@ -187,8 +196,10 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
                     final SourceDialog addSourceDialog = AddSourceDialog.newInstance(generateTransactionDialogArgs(pennies));
                     launchPennyDialog( addSourceDialog, AddSourceDialog.TAG);
+
                     addSourceDialog.registerItemSelectedListener(new OnSourceItemSelected() {
                         @Override
                         public void onSourceItemSelected(@NonNull SourceWrapper wrapper, @NonNull Transaction transaction) {
@@ -209,11 +220,14 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     private final PennyDialog.CashChangeListener minusListener = new PennyDialog.CashChangeListener() {
         @Override
         public void onPenniesChange(final long pennies) {
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
                     SourceDialog dialog = SpendingSourceDialog.newInstance(generateTransactionDialogArgs(pennies));
                     launchPennyDialog(dialog, SpendingSourceDialog.TAG);
+
                     dialog.registerItemSelectedListener(new OnSourceItemSelected() {
                         @Override
                         public void onSourceItemSelected(@NonNull SourceWrapper wrapper, @NonNull Transaction transaction) {
