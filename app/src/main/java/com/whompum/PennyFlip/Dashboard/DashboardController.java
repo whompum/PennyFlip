@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.ActivityDashboard;
+package com.whompum.PennyFlip.Dashboard;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
@@ -21,13 +21,17 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
 
     private DashboardClient client;
 
+    /**
+     *
+     * @param context used to instantiate a Repo object
+     * @param o Used to track changes occuring to the Wallet
+     */
     private DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
         repo = MoneyController.obtain(context);
 
         if(o != null)
             repo.getWallet().observe(o, this);
-
     }
 
     public static DashboardController create(@NonNull final Context context, @Nullable LifecycleOwner o){
@@ -37,7 +41,7 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
         return instance;
     }
 
-    public DashboardController bindClient(@Nullable DashboardClient c) {
+    public DashboardController bindClient(@NonNull DashboardClient c) {
         this.client = c;
 
      return this;
@@ -47,19 +51,18 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
         //Update Wallet
         repo.updateWallet(t.getTransactionType(), t.getAmount());
 
-        final Source source = w.getSource();
+        //Insert a new Source object; Implicity saves the Transaction
+        if(w.getTag().equals(SourceWrapper.TAG.NEW)) repo.insertNew(w.getSource(), t);
 
-        if(w.getTag().equals(SourceWrapper.TAG.NEW)) //If is a new SourceObject insert.
-            repo.insertNew(source, t);
-        else { //If isn't a new source object, simply update the Source total
-                repo.updateSourceAmount(t.getSourceId(), t.getAmount());
-                repo.insert(t);
-        }
+        //Update sourceAmount. Implicity saves the transaction
+        else repo.updateSourceAmount(t);
+
     }
 
     @Override
     public void onChanged(@Nullable Wallet wallet) {
         if(wallet != null)
-            client.onWalletChanged(wallet.getValue());
+            if(client != null)
+                client.onWalletChanged(wallet.getValue());
     }
 }

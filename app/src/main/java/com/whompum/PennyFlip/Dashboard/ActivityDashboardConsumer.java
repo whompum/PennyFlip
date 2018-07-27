@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.ActivityDashboard;
+package com.whompum.PennyFlip.Dashboard;
 
 import android.support.annotation.NonNull;
 
