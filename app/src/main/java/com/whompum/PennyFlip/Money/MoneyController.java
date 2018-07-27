@@ -127,11 +127,12 @@ public class MoneyController {
         }.start();
     }
 
-    public void updateSourceAmount(@NonNull final String sourceId, final long pennies){
+    public void updateSourceAmount(@NonNull final Transaction transaction){
         new Thread(){
             @Override
             public void run() {
-                sourceAccessor.addAmount(sourceId, pennies);
+                sourceAccessor.addAmount(transaction.getSourceId(), transaction.getAmount());
+                transactionAccessor.insert(transaction);
             }
         }.start();
     }
@@ -214,7 +215,6 @@ public class MoneyController {
                 if(useTitle){ //We're querying in some way based on a String query for sources id
                     if(searchLike){ //We want all similar sources to :title
                         if(useType){ //Similar Source titles OF transactionType
-                            Log.i("SOURCE_DIALOG", "FETCHING FOR LIKE: " + sourceId);
                             m.obj = sourceAccessor.fetchNonExact(sourceId, transactionType);
                             client.sendMessage(m);
                             return;
@@ -246,5 +246,7 @@ public class MoneyController {
         }.start();
 
     }
+
+
 
 }
