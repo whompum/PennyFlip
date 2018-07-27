@@ -43,6 +43,18 @@ public class SlidePennyDialog extends PennyDialog {
         return pennyDialog;
     }
 
+    private boolean tapped = false;
+
+
+    @Override
+    public void onClick(View view) {
+
+        if(tapped) return;
+        tapped = true;
+
+        super.onClick(view);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
