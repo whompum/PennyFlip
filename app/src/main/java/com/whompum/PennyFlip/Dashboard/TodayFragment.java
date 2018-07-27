@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.ActivityDashboard;
+package com.whompum.PennyFlip.Dashboard;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
@@ -13,16 +13,24 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.TimeRange;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Transactions.Models.DescendingSort;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -102,17 +110,34 @@ public class TodayFragment extends Fragment implements Handler.Callback, Observe
 
     @Override
     public void onChanged(@Nullable List<Transaction> transactions) {
-        if(transactionsAdapter != null)
-            ((TodayTransactionAdapter)transactionsAdapter).swapDataset(transactions);
 
+        if(transactions == null || transactionsAdapter == null) return;
+
+       Collections.sort(transactions, new DescendingSort());
+
+        /**
+         * set anchor at 0, check if any index has a larger value than index 0.
+         * If yes, then anchor represents that index. Else, nothing.
+         * After one full iteration where we found the best anchor to use.
+         */
+
+        ((TodayTransactionAdapter)transactionsAdapter).swapDataset(transactions);
         updateValue(transactions);
     }
 
     private void observeTransactions(){
         MoneyController.obtain(getContext())
-                .fetchTransactions(resultReceiver, null, transactionType, null);
+                .fetchTransactions(resultReceiver, null, transactionType, fetchRange());
     }
 
+    //Creates a TimeRange at our floor and ciel for the day
+    private TimeRange fetchRange(){
+
+        final long today = Ts.now().getStartOfDay();
+        final long tomorrow = Ts.fromProjection(1).getStartOfDay(); //Manana
+
+        return new TimeRange(today, tomorrow);
+    }
 
     /**
      * Updates the Total Display value for Today's Transactions
