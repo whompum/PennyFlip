@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Sources.SourceMetaData;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public abstract class SourceListAdapterBase extends RecyclerView.Adapter<SourceL
     protected int LAYOUT = Integer.MIN_VALUE;
 
 
-    protected List<SourceMetaData> dataSet;
+    protected List<Source> dataSet;
     protected LayoutInflater inflater;
     protected SourceListClickListener selectedListener; //Client impl of this interface
 
@@ -31,7 +32,7 @@ public abstract class SourceListAdapterBase extends RecyclerView.Adapter<SourceL
         this(context, null);
     }
 
-    public SourceListAdapterBase(final Context context, @Nullable final List<SourceMetaData> dataSet){
+    public SourceListAdapterBase(final Context context, @Nullable final List<Source> dataSet){
         this.dataSet = dataSet;
         this.inflater = LayoutInflater.from(context);
         this.LAYOUT = setLayout();
@@ -40,7 +41,7 @@ public abstract class SourceListAdapterBase extends RecyclerView.Adapter<SourceL
 
     protected abstract int setLayout();
 
-    public void swapDataset(final List<SourceMetaData> dataSet){
+    public void swapDataset(final List<Source> dataSet){
         this.dataSet = dataSet;
         notifyDataSetChanged();
     }
@@ -75,7 +76,7 @@ public abstract class SourceListAdapterBase extends RecyclerView.Adapter<SourceL
         notifyListener(dataSet.get(listPosition));
     }
 
-    private void notifyListener(final SourceMetaData data){
+    private void notifyListener(final Source data){
         if(selectedListener != null)
             selectedListener.onItemSelected(data);
     }
@@ -92,7 +93,7 @@ public abstract class SourceListAdapterBase extends RecyclerView.Adapter<SourceL
             super(layout);
         }
 
-        public abstract void bind(final SourceMetaData data);
+        public abstract void bind(final Source data);
 
 
         protected void registerViewsToClick(final View... views){
