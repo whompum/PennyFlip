@@ -9,8 +9,10 @@ import android.support.annotation.Nullable;
 
 import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
+import java.io.Serializable;
+
 @Entity
-public class Source {
+public class Source implements Serializable{
 
     @NonNull
     @PrimaryKey
