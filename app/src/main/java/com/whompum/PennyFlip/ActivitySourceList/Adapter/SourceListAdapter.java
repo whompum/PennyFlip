@@ -7,51 +7,51 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.whompum.PennyFlip.Money.Source.Source;
-import com.whompum.PennyFlip.Sources.SourceMetaData;
+import com.whompum.PennyFlip.OnItemSelected;
+import com.whompum.PennyFlip.R;
 
 import java.util.List;
+
+import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 /**
  * Created by bryan on 12/28/2017.
  */
 
-public abstract class SourceListAdapterBase extends RecyclerView.Adapter<SourceListAdapterBase.Holder> implements AdapterItemClickListener{
+public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Holder> implements AdapterItemClickListener{
 
 
-    protected int LAYOUT = Integer.MIN_VALUE;
-
+    protected int LAYOUT = R.layout.layout_source_list_item;
+    protected int highlight;
 
     protected List<Source> dataSet;
     protected LayoutInflater inflater;
-    protected SourceListClickListener selectedListener; //Client impl of this interface
+    protected OnItemSelected<Source> selectedListener; //Client impl of this interface
 
 
-    public SourceListAdapterBase(final Context context){
-        this(context, null);
+    public SourceListAdapter(final Context context, final int highlight){
+        this(context, null, highlight);
     }
 
-    public SourceListAdapterBase(final Context context, @Nullable final List<Source> dataSet){
+    public SourceListAdapter(final Context context, @Nullable final List<Source> dataSet, final int highlight){
         this.dataSet = dataSet;
         this.inflater = LayoutInflater.from(context);
-        this.LAYOUT = setLayout();
+        this.highlight = highlight;
     }
-
-
-    protected abstract int setLayout();
 
     public void swapDataset(final List<Source> dataSet){
         this.dataSet = dataSet;
         notifyDataSetChanged();
     }
 
-    protected View getLayout(final ViewGroup parent, boolean attatch){
-        return inflater.inflate(LAYOUT, parent, attatch);
-    }
 
     @Override
-    public abstract Holder onCreateViewHolder(ViewGroup parent, int viewType);
+    public Holder onCreateViewHolder(ViewGroup parent, int viewType){
+        return new Holder(inflater.inflate(LAYOUT, parent, false), highlight);
+    }
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
@@ -65,6 +65,11 @@ public abstract class SourceListAdapterBase extends RecyclerView.Adapter<SourceL
         return dataSet.size();
 
     return 0;
+    }
+
+    @Nullable
+    public List<Source> getDataSet(){
+        return dataSet;
     }
 
     private final void registerHolderClickListener(final Holder holder){
@@ -81,22 +86,39 @@ public abstract class SourceListAdapterBase extends RecyclerView.Adapter<SourceL
             selectedListener.onItemSelected(data);
     }
 
-    public void registerSouceListClickListener(@NonNull SourceListClickListener selectedListener){
+    public void registerSouceListClickListener(@NonNull OnItemSelected<Source> selectedListener){
         this.selectedListener = selectedListener;
     }
 
-    public abstract static class Holder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class Holder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         protected AdapterItemClickListener itemClickListener;
 
-        public Holder(final View layout){
+        protected TextView sourceName, lastUpdate, viewButton;
+        protected CurrencyEditText statistics;
+
+        public Holder(final View layout, final int highlighting){
             super(layout);
+
+            this.sourceName = layout.findViewById(R.id.id_source_master_list_source_label);
+            this.lastUpdate = layout.findViewById(R.id.id_source_master_list_source_last_update);
+            this.viewButton = layout.findViewById(R.id.id_source_master_list_source_view);
+            this.statistics = layout.findViewById(R.id.id_source_master_list_source_statistics);
+
+            if(highlighting != -1)
+                statistics.setTextColor(highlighting);
+
+            registerClickables(viewButton);
+
         }
 
-        public abstract void bind(final Source data);
+        public void bind(final Source data){
+            this.sourceName.setText(data.getTitle());
+            this.lastUpdate.setText("UNDEFINED");
+            this.statistics.setText(String.valueOf(data.getPennies()));
+        }
 
-
-        protected void registerViewsToClick(final View... views){
+        protected void registerClickables(final View... views){
             for(View a : views)
                 a.setOnClickListener(this);
         }

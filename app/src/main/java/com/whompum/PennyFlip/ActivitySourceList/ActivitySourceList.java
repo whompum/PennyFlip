@@ -29,109 +29,66 @@ import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceListSpen
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.R;
 
+import butterknife.BindColor;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnPageChange;
 
-public class  ActivitySourceList extends AppCompatActivity implements View.OnClickListener, IntentReciever {
 
-    /**
-     *
-     *****************STATE DECLARATIONS**********************************************************
-     *
-     * @state SEARCH_EDIT_TEXT_ID: The id of the SearchViews search edit text (Used to customize)
-     *
-     * @state toolyBary: The main toolbar of our Activity (contains up arrow, search button, sort button)
-     *
-     * @state searchToolbar: The search Toolbar that animates ontop of toolyBary
-     *
-     * @state searchView: The searchView action view of the searchToolbar: onQueryChange is implemented by container fragments
-     *
-     * @state container: The ViewPager of our sourcelist fragments
-     *
-     * @state argb: used sClr / eClr to change toolbary color as user swipes pages
-     *
-     * @state strips: Title indicator of which page we're on; Bounded to R.id.source_list_strips in method bindFragmentTitles()
-     *
-     * @state sClr: starting color (R.color.light_green) of Toolybary (for ADDING fragment)
-     *
-     * @state eClr: ending color (R.color.light_red) of ToolyBary (for the SPENDING fragment)
-     *
-     * @state toolyBaryBottomExpanded: When displaying searchToolbar, we hide toolbary by animating it so its Y is
-     *        0 - toolyBary.getHeight(); In order to restore it to its correct position, that is to translate it to its real-Y
-     *        we cache its value, and fetch it in a posted runnable. toolyBaryBottomExpanded is the real-Y of toolyBary
-     *        NOTE: This value is also the botto for toolbarContainer
-     *
-     * @state toolbarContainer: The entire container for toolybary and the strips; We use this object to animate toolyBary and the title strips
-     *
-     * @state searchBarContainer: we do the searchToolbar circular reveal on this reference
-     *
-     * @state searchFragmentContainer: The Container for the Fragment launched to handle the user Queries
-     *
-     */
-
+public class  ActivitySourceList extends AppCompatActivity implements IntentReciever {
 
     public static final int SEARCH_EDIT_TEXT_ID = android.support.v7.appcompat.R.id.search_src_text;
 
-    private Toolbar toolyBary;
-    private Toolbar searchToolbar;
-    private SearchView searchView;
-    private ViewPager container;
+
     private ArgbEvaluator argb = new ArgbEvaluator();
+
     private PageTitleStrips strips;
-    private int sClr;
-    private int eClr;
+
     private int toolyBaryBottomExpanded;
-    private ViewGroup toolbarContainer;
-    private ViewGroup searchBarContainer;
-    private FrameLayout searchFragmentContainer;
+
+    private SearchView searchView;
+
+    @BindColor(R.color.light_green) protected int sClr;
+
+    @BindColor(R.color.light_red) protected int eClr;
+
+    @BindView(R.id.id_toolbar) protected Toolbar toolyBary;
+
+    @BindView(R.id.id_search_toolbar) protected Toolbar searchToolbar;
+
+    @BindView(R.id.id_source_list_container) protected ViewPager container;
+
+    @BindView(R.id.id_toolbar_container) protected ViewGroup toolbarContainer;
+
+    @BindView(R.id.searchBarContainer) protected ViewGroup searchBarContainer;
+
+    @BindView(R.id.id_fragment_container) protected FrameLayout searchFragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_source_list);
 
-        toolyBary = findViewById(R.id.id_toolbar);
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolyBary); //Do we even really need?
 
-        //Registers the Toolbar Up action
-        findViewById(R.id.id_up_navigation).setOnClickListener(this);
-
-        //Initialize the ViewPager, set its adapter, and the pageTransformer / pageChangeListener
-        container = findViewById(R.id.id_source_list_container);
         container.setAdapter(new SourceListFragmentAdapter(getSupportFragmentManager()));
         container.setPageTransformer(false, pageTransformer);
-        container.addOnPageChangeListener(pageChangeListener);
-
 
         //Binds the ViewPager fragments, with the title indicator
         bindFragmentTitles();
 
-
-        //Fetches toolybary colors in a backwards-compatible fashion
-        if(Build.VERSION.SDK_INT >= 23) {
-            sClr = getColor(R.color.light_green);
-            eClr = getColor(R.color.light_red);
-        }
-        else {
-            sClr = getResources().getColor(R.color.light_green);
-            eClr = getResources().getColor(R.color.light_red);
-        }
-
-
-        // reegister the search icon click listener
-        findViewById(R.id.id_source_master_toolbar_search).setOnClickListener(this);
-        findViewById(R.id.id_source_list_toolbar_sort).setOnClickListener(this);
-
-
-        searchToolbar = findViewById(R.id.id_search_toolbar);
         searchToolbar.inflateMenu(R.menu.menu_search);
 
-        //SearchView
         searchView = (SearchView) searchToolbar.getMenu().findItem(R.id.id_action_search).getActionView();
 
         //Sets the SearchView expansion/collapsing listener
         searchToolbar.getMenu().findItem(R.id.id_action_search).setOnActionExpandListener(searchExpansionListener);
 
 
-        //Fetch the bottom for a translation animation when search toolbar is shown
+        //Fetch the bottom X of Toolybary (used for translation purposes)
         toolyBary.post(new Runnable() {
             @Override
             public void run() {
@@ -139,25 +96,18 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
             }
         });
 
-        //Init the containers for Animation purposes
-        toolbarContainer = findViewById(R.id.id_toolbar_container);
-        searchBarContainer = findViewById(R.id.searchBarContainer);
+        customizeSearchEditor();
+    }
 
-
-        //Customize the Search Edit Text
+    private void customizeSearchEditor(){
         EditText txtSearch = searchView.findViewById(SEARCH_EDIT_TEXT_ID);
         txtSearch.setHint(getString(R.string.string_search_loading));
         txtSearch.setHintTextColor(Color.DKGRAY);
         txtSearch.setTextColor(getResources().getColor(R.color.light_green));
-
-        searchFragmentContainer = findViewById(R.id.id_fragment_container);
-
     }
 
-
-
-
     private void bindFragmentTitles(){
+
         strips = new PageTitleStrips((ViewGroup) (findViewById(R.id.source_list_strips)), new PageTitleStrips.StripClick() {
             @Override
             public void onStripClicked(int position) {
@@ -166,48 +116,50 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
         });
         strips.bindTitle(this, getString(R.string.string_adding));
         strips.bindTitle(this, getString(R.string.string_spending));
-
-
-
     }
 
-
-    ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener(){
-
-        @Override
-        public void onPageSelected(int position) {
-            strips.setPosition(position);
-        }
-    };
-
+    /**
+     * Called by the fragments to launch the appropriate Activity
+     *
+     * @param intent An intent containing SourceMetaData, and a Activity.class to launch
+     */
     @Override
-    public void onClick(View v) {
-
-        //Navigate to parent activity
-        if(v.getId() == R.id.id_up_navigation)
-            NavUtils.navigateUpFromSameTask(this);
-
-        //Show the search git add
-        else if(v.getId() == R.id.id_source_master_toolbar_search)
-            searchToolbar.getMenu().findItem(R.id.id_action_search).expandActionView();
-
-        else if(v.getId() == R.id.id_source_list_toolbar_sort)
-            ((OnSortButtonClicked)((SourceListFragmentAdapter)container.getAdapter()).getItem(container.getCurrentItem())).onSortClicked(); //Only a pro can chain so smoothly ;)
-
+    public void onDeliverIntent(Intent intent) {
+        startActivity(intent);
     }
 
-    private void showSearchBar(){
+    @OnPageChange(R.id.id_source_list_container)
+    public void onPageChange(final int position){
+        strips.setPosition(position);
+    }
+
+    @OnClick(R.id.id_up_navigation)
+    public void navigateUp(){
+        NavUtils.navigateUpFromSameTask(this);
+    }
+
+    @OnClick(R.id.id_source_master_toolbar_search)
+    public void expandSearchbar(){
+        searchToolbar.getMenu().findItem(R.id.id_action_search).expandActionView();
+    }
+
+    @OnClick(R.id.id_source_list_toolbar_sort)
+    public void launchSortDialog(){
+        ((OnSortButtonClicked)((SourceListFragmentAdapter)container.getAdapter()).getItem(container.getCurrentItem())).onSortClicked();
+    }
+
+    private void enterAnimateSearchBar(){
 
         if(Build.VERSION.SDK_INT >= 21)
-            showSearchBarPostLollipop();
+            enterAnimateSearchBarPostApi21();
 
         else
-            showSearchBarPreLollipop();
+            enterAnimateSearchBarPreApi21();
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void showSearchBarPostLollipop(){
+    private void enterAnimateSearchBarPostApi21(){
 
         final int x = toolyBary.getWidth();
         final int y = toolyBary.getHeight() - (toolyBary.getHeight()/2);
@@ -221,23 +173,22 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void showSearchBarPreLollipop(){
-        //Fade?
+    private void enterAnimateSearchBarPreApi21(){
+        //TODO: Implement a fade maybe?
     }
 
-
-    private void hideSearchBar(){
+    private void exitAnimateSearchBar(){
 
         if(Build.VERSION.SDK_INT >= 21)
-            hideSearchBarPostLollipop();
+            exitAnimateSearchBarPostApi21();
 
         else
-            hideSearchBarPreLollipop();
+            exitAnimateSearchBarPreApi21();
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void hideSearchBarPostLollipop(){
+    private void exitAnimateSearchBarPostApi21(){
 
         final int x = toolyBary.getWidth();
         final int y = 0;
@@ -258,17 +209,16 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void hideSearchBarPreLollipop(){
-        //fade
+    private void exitAnimateSearchBarPreApi21(){
+        //TODO implement a fade or somethign
     }
-
 
     /**
      * Launches a new instance of the same fragment that is already being used;
      * The benefits of launching a new fragment to handle the Search Queries
      * is better decoupling from the UI
      */
-    private void launchQueryFragment(){
+    private void launchSearchFragment(){
 
         final FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
 
@@ -282,11 +232,7 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
         else if(currFragmentType instanceof FragmentSourceListSpend)
             fragmentSourceList = FragmentSourceListSpend.newInstance(null);
 
-        fragTrans.add(
-                R.id.id_fragment_container,
-                fragmentSourceList,
-                "backstackTag"
-        );
+        fragTrans.add(R.id.id_fragment_container, fragmentSourceList, "backstackTag");
 
         searchFragmentContainer.setVisibility(View.VISIBLE);
 
@@ -301,19 +247,20 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
     }
 
 
+
     //Expand/collapse listener for the SearchView
     private MenuItem.OnActionExpandListener searchExpansionListener = new MenuItem.OnActionExpandListener() {
         @Override
         public boolean onMenuItemActionExpand(MenuItem item) {
-            showSearchBar();
+            enterAnimateSearchBar();
             toolbarContainer.animate().y(-toolyBaryBottomExpanded).setDuration(350L).start();
-            launchQueryFragment();
+            launchSearchFragment();
             return true;
         }
 
         @Override
         public boolean onMenuItemActionCollapse(MenuItem item) {
-            hideSearchBar();
+            exitAnimateSearchBar();
             toolbarContainer.animate().y(0).setDuration(350L).start();
             removeQueryFragment();
             return true;
@@ -334,17 +281,5 @@ public class  ActivitySourceList extends AppCompatActivity implements View.OnCli
 
         }
     };
-
-    /**
-     * Called by the fragments to launch the appropriate Activity
-     *
-     * @param intent An intent containing SourceMetaData, and a Activity.class to launch
-     */
-    @Override
-    public void onDeliverIntent(Intent intent) {
-        startActivity(intent);
-    }
-
-
 
 }
