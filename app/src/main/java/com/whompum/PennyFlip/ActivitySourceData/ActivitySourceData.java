@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
+import com.whompum.PennyFlip.Dashboard.ActivityDashboard;
+import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
@@ -66,11 +68,9 @@ public abstract class ActivitySourceData extends AppCompatActivity{
         sourceNameLabel.setText(data.getTitle());
         value.setText(String.valueOf(data.getPennies()));
 
-        final Ts s = Ts.from(data.getCreationDate());
+        final String lastUpdate = getString(R.string.string_last_update) + " " + Ts.getPreferentialDate(Ts.from(data.getLastUpdate()));
 
-        final String cD = s.getMonth() + "/" + s.getYear();
-
-        sourceUpdateTimestamp.setText(cD);
+        sourceUpdateTimestamp.setText(lastUpdate);
 
         strips = new PageTitleStrips(titleIndicator, new PageTitleStrips.StripClick() {
             @Override
@@ -140,7 +140,8 @@ public abstract class ActivitySourceData extends AppCompatActivity{
     }
 
     private void deleteSource(){
-
+        MoneyController.obtain(this).deleteSource(data.getTitle());
+        finish();
     }
 
     protected void bindStrip(final String title){

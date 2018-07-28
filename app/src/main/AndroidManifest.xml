@@ -33,7 +33,8 @@
         <activity android:name=".ActivitySourceData.ActivitySourceDataAdded"
                   android:theme="@style/StyleSourceDataAdded"
                   android:windowSoftInputMode="stateHidden"
-                  android:parentActivityName=".Dashboard.ActivityDashboard">
+                  android:parentActivityName=".Dashboard.ActivityDashboard"
+                  android:noHistory="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Dashboard.ActivityDashboard" />
