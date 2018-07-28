@@ -50,21 +50,22 @@
     <string name="string_title">Title</string>
     <string name="string_done">Done</string>
     <string name="string_title_error_in_use">That title is taken!</string>
-    <string name="string_title_error_null">The title cannot be empty!</string>
+    <string name="string_title_error_empty">The title cannot be empty!</string>
+    <string name="string_title_error_poor_format">We can\'t use that title!</string>
     <string name="string_some_wrong_error">Something went wrong :/</string>
     <string name="string_successfully_saved">New source saved!</string>
 
     <!--SORTING DIALOG ITEMS-->
     <string name="string_sort_title">Sort Order</string>
     <string-array name="sortOrderItems">
-        <item name="title_high_low">Title (A-z)</item>
-        <item name="title_low_high">Title (Z-a)</item>
-        <item name="recently_updated">Recently Updated</item>
-        <item name="least_recently_updated">Least Updated</item>
-        <item name="oldest_sources_added">Oldest</item>
-        <item name="newest_source_added">Newest</item>
-        <item name="total_high_low">Total (high to low)</item>
-        <item name="total_low_high">Total (low to high)</item>
+        <item name="sort_title_desc">Title (Z-a)</item>
+        <item name="sort_title_asc">Title (a-Z)</item>
+        <item name="sort_last_update_desc">Recently Updated</item>
+        <item name="sort_last_update_asc">Least Updated</item>
+        <item name="sort_creation_date_desc">Newest</item>
+        <item name="sort_creation_date_asc">Oldest</item>
+        <item name="sort_total_desc">Total (high to low)</item>
+        <item name="sort_title_asc">Total (low to high)</item>
     </string-array>
 
 
@@ -77,6 +78,5 @@
         <item name="string_timerange_this_month">This Month</item>
         <item name="string_timerange_custom">Custom</item>
     </string-array>
-
 
 </resources>
