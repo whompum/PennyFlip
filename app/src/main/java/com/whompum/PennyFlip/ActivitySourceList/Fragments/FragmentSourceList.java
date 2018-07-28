@@ -56,7 +56,7 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
         OnSortButtonClicked, Handler.Callback, Observer<List<Source>>, OnSourceCreated {
 
     @LayoutRes
-    protected static final int LAYOUT = R.layout.layout_source_list_container;
+    protected static final int LAYOUT = R.layout.source_list_content;
 
     protected int highlight = -1;
 

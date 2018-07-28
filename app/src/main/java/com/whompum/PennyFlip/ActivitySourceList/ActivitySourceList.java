@@ -68,7 +68,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_source_list);
+        setContentView(R.layout.source_list);
 
         ButterKnife.bind(this);
 

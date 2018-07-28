@@ -24,7 +24,7 @@ import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Holder> implements AdapterItemClickListener{
 
 
-    protected int LAYOUT = R.layout.layout_source_list_item;
+    protected int LAYOUT = R.layout.source_list_content_item;
     protected int highlight;
 
     protected List<Source> dataSet;
