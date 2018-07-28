@@ -98,7 +98,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
                 dismiss();
                 notifyListener();
             }else{
-                Toast.makeText(getContext(), R.string.string_create_new_source_resolution_msg, Toast.LENGTH_SHORT)
+                Toast.makeText(getContext(), R.string.string_title_error_in_use, Toast.LENGTH_SHORT)
                 .show();
             }
             return true;
@@ -264,12 +264,12 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     protected void onDone(){
 
         if(item.getTag().equals(SourceWrapper.TAG.NEW))
-             MoneyController.obtain(getContext()) //Attemp to fetch this source object to see if it exists
+             MoneyController.obtain(getContext()) //Attempt to fetch this source object to see if it exists
             .fetchSources(sourceChecker, item.getSourceId(), null, false);
-
-        dismiss();
-        notifyListener();
-
+        else {
+            dismiss();
+            notifyListener();
+        }
     }
 
     private void populate(@Nullable final CharSequence popData){
