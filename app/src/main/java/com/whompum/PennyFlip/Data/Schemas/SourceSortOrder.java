@@ -1,6 +1,17 @@
 package com.whompum.PennyFlip.Data.Schemas;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.whompum.PennyFlip.Money.Source.Sorting.CreationDateAscendingComparator;
+import com.whompum.PennyFlip.Money.Source.Sorting.CreationDateDescendingComparator;
+import com.whompum.PennyFlip.Money.Source.Sorting.TitleAscendingComparator;
+import com.whompum.PennyFlip.Money.Source.Sorting.TotalAscendingComparator;
+import com.whompum.PennyFlip.Money.Source.Sorting.TotalDescendingComparator;
+import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Source.Sorting.TitleDescendingComparator;
+
+import java.util.Comparator;
 
 /**
  * Created by bryan on 1/25/2018.
@@ -8,59 +19,42 @@ import android.support.annotation.NonNull;
 
 public class SourceSortOrder {
 
-     //[columnName] + "ASC|DESC"
+    public static final int SORT_TITLE_DESC = 0;
+    public static final int SORT_TITLE_ASC = 1;
 
-    private static final String TITLE = SourceSchema.SourceTable.COL_TITLE;
-    private static final String LAST_UPDATE = SourceSchema.SourceTable.COL_LAST_UPDATE;
-    private static final  String CREATION_DATE = SourceSchema.SourceTable.COL_CREATION_DATE;
-    private static final String TOTAL = SourceSchema.SourceTable.COL_TOTAL;
+    public static final int SORT_LAST_UPDATE_DESC = 2;
+    public static final int SORT_LAST_UPDATE_ASC = 3;
 
-    private static final String ASC = " ASC";
-    private static final String DESC = " DESC";
+    public static final int SORT_CREATION_DATE_DESC = 4;
+    public static final int SORT_CREATION_DATE_ASC = 5;
 
+    public static final int SORT_TOTAL_DESC = 6;
+    public static final int SORT_TOTAL_ASC = 7;
 
-    public static final SourceSortOrder TITLE_HIGH_TO_LOW = new SourceSortOrder(TITLE + DESC); //CHECK
-    public static final SourceSortOrder TITLE_LOW_TO_HIGH = new SourceSortOrder(TITLE + ASC); //CHECK
+    private int sortOrder;
 
-    public static final SourceSortOrder LAST_UPDATE_HIGH_TO_LOW = new SourceSortOrder(LAST_UPDATE + DESC); // CHECK
-    public static final SourceSortOrder LAST_UPDATE_LOW_TO_HIGH = new SourceSortOrder(LAST_UPDATE + ASC); // CHECK
-
-    public static final SourceSortOrder CREATION_DATE_HIGH_TO_LOW = new SourceSortOrder(CREATION_DATE + DESC); // CHECK
-    public static final SourceSortOrder CREATION_DATE_LOW_TO_HIGH = new SourceSortOrder(CREATION_DATE + ASC); // CHECK
-
-    public static final SourceSortOrder TOTAL_HIGH_TO_LOW = new SourceSortOrder(TOTAL + DESC); //WHY DOESN"T THIS WORKEKFDFDSFSD!!
-    public static final SourceSortOrder TOTAL_LOW_TO_HIGH = new SourceSortOrder(TOTAL + ASC); //WHY WONT THIS WORK!
-
-
-
-    private String sortOrder;
-
-    private SourceSortOrder(@NonNull String sortOrder){
+    public SourceSortOrder(@NonNull int sortOrder){
         this.sortOrder = sortOrder;
     }
 
-    public String getSortOrder(){
+    public int getSortOrder(){
         return sortOrder;
     }
 
-/**
- * -Title [a-z]
- --High to Low
- --Low to High
+    public Comparator<Source> resolveSorter(){
 
- -Last Update [millis] (DEFAULT)
- --Most Recent to Least Recent (DEFAULT)
- --Least Recent to Most Recent
+        Log.i("SORTING", "SORT ORDER NUM: " + sortOrder);
 
- -Creation Date [millis]
- --Oldest to Newest
- --Newest to Oldest
-
- -Total [pennies]
- --Most Total to Least Total
- --Least Total to Most Total
-
- */
+        switch(sortOrder){
+            case SORT_TITLE_DESC: return new TitleDescendingComparator();
+            case SORT_TITLE_ASC: return new TitleAscendingComparator();
+            case SORT_CREATION_DATE_DESC: return new CreationDateDescendingComparator();
+            case SORT_CREATION_DATE_ASC: return new CreationDateAscendingComparator();
+            case SORT_TOTAL_DESC: return new TotalDescendingComparator();
+            case SORT_TOTAL_ASC: return new TotalAscendingComparator();
+        }
+        return new CreationDateDescendingComparator();
+    }
 }
 
 
