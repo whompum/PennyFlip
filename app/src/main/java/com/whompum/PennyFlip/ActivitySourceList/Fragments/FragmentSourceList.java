@@ -204,7 +204,7 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
      */
     @CallSuper
     protected void initIntentArgs(@NonNull final Source data){
-        intent.putExtra(ActivitySourceData.SOURCE_KEY, data);
+        intent.putExtra(ActivitySourceData.DATA, data);
     }
 
 
