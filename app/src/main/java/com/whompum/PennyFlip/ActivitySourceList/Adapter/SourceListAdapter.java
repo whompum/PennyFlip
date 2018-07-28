@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.OnItemSelected;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Time.Ts;
 
 import java.util.List;
 
@@ -114,7 +115,7 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
 
         public void bind(final Source data){
             this.sourceName.setText(data.getTitle());
-            this.lastUpdate.setText("UNDEFINED");
+            this.lastUpdate.setText(Ts.getPreferentialDate(Ts.from(data.getLastUpdate())));
             this.statistics.setText(String.valueOf(data.getPennies()));
         }
 
