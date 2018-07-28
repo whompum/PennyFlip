@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.whompum.PennyFlip.Money.Source.ObservableSourceAccessor;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
@@ -28,10 +29,11 @@ public class MoneyController {
 
     private TransactionDao transactionAccessor;
 
+    private MoneyDatabase database;
+
     private MoneyController(@NonNull final Context context){
 
-        MoneyDatabase database =
-                Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME).build();
+       database = Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME).build();
 
         walletAccessor = database.getWalletAccessor();
 
@@ -193,9 +195,9 @@ public class MoneyController {
 
 
     public synchronized void fetchSources(@NonNull final Handler client,
-                             @Nullable final String sourceId,
-                             @Nullable final Integer transactionType,
-                             final boolean searchLike){
+                                          @Nullable final String sourceId,
+                                          @Nullable final Integer transactionType,
+                                          final boolean searchLike){
 
         new Thread(){
             @Override
@@ -212,41 +214,101 @@ public class MoneyController {
                 //Use searchLike, and type
                 //else use Title
 
+
+                SourceDao a = sourceAccessor;
+
                 if(useTitle){ //We're querying in some way based on a String query for sources id
                     if(searchLike){ //We want all similar sources to :title
                         if(useType){ //Similar Source titles OF transactionType
-                            m.obj = sourceAccessor.fetchNonExact(sourceId, transactionType);
+                            m.obj = a.fetchNonExact(sourceId, transactionType);
                             client.sendMessage(m);
                             return;
                         }else{//WE WANT TO SEARCH EVERY SOURCE BASED ON LIKE NAME
-                            m.obj = sourceAccessor.fetchNonExact(sourceId);
+                            m.obj = a.fetchNonExact(sourceId);
                             client.sendMessage(m);
                             return;
                         }
                     }else if(useType){//We only want the source by the Title name
-                        m.obj = sourceAccessor.fetch(sourceId, transactionType);
+                        m.obj = a.fetch(sourceId, transactionType);
                         client.sendMessage(m);
                         return;
                     }else{
-                        m.obj = sourceAccessor.fetch(sourceId);
+                        m.obj = a.fetch(sourceId);
                         client.sendMessage(m);
                         return;
                     }
                 }
 
                 if(useType){ //If we get this far, we only want Sources of this transaction type
-                    m.obj = sourceAccessor.fetch(transactionType);
+                    m.obj = a.fetch(transactionType);
                     client.sendMessage(m);
                     return;
                 }
 
-                m.obj = sourceAccessor.fetch(); //If we get this far, we want EVERY SOURCE
+                m.obj = a.fetch(); //If we get this far, we want EVERY SOURCE
                 client.sendMessage(m);
             }
         }.start();
 
     }
 
+    public synchronized void fetchObservableSources(@NonNull final Handler client,
+                                          @Nullable final String sourceId,
+                                          @Nullable final Integer transactionType,
+                                          final boolean searchLike){
+
+        new Thread(){
+            @Override
+            public void run() {
+
+                final Message m = Message.obtain(client);
+
+                final boolean useTitle = sourceId != null;
+                final boolean useType = transactionType != null;
+
+                //If we have a title
+                //If we want to use a searchLike
+                //If we want to use a Type
+                //Use searchLike, and type
+                //else use Title
+
+
+                ObservableSourceAccessor a = database.getObservableSourceAccessor();
+
+                if(useTitle){ //We're querying in some way based on a String query for sources id
+                    if(searchLike){ //We want all similar sources to :title
+                        if(useType){ //Similar Source titles OF transactionType
+                            m.obj = a.fetchNonExact(sourceId, transactionType);
+                            client.sendMessage(m);
+                            return;
+                        }else{//WE WANT TO SEARCH EVERY SOURCE BASED ON LIKE NAME
+                            m.obj = a.fetchNonExact(sourceId);
+                            client.sendMessage(m);
+                            return;
+                        }
+                    }else if(useType){//We only want the source by the Title name
+                        m.obj = a.fetch(sourceId, transactionType);
+                        client.sendMessage(m);
+                        return;
+                    }else{
+                        m.obj = a.fetch(sourceId);
+                        client.sendMessage(m);
+                        return;
+                    }
+                }
+
+                if(useType){ //If we get this far, we only want Sources of this transaction type
+                    m.obj = a.fetch(transactionType);
+                    client.sendMessage(m);
+                    return;
+                }
+
+                m.obj = a.fetch(); //If we get this far, we want EVERY SOURCE
+                client.sendMessage(m);
+            }
+        }.start();
+
+    }
 
 
 }
