@@ -107,6 +107,6 @@ public class TransactionsProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-            throw new UnsupportedOperationException(WalletProvider.UOE);
+            throw new UnsupportedOperationException("");
     }
 }

@@ -7,12 +7,9 @@ import com.whompum.PennyFlip.ListPopulator;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
-import com.whompum.PennyFlip.Sources.SourceMetaData;
-import com.whompum.PennyFlip.Sources.SpendSourceMetaData;
 import com.whompum.PennyFlip.Statistics.Populator;
-import com.whompum.PennyFlip.Sources.SourceStatistic;
+import com.whompum.PennyFlip.Statistics.SourceStatistic;
 import com.whompum.PennyFlip.Statistics.StatisticsFragment;
-import com.whompum.PennyFlip.Time.TimeRange;
 import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
 import com.whompum.PennyFlip.Transactions.TransactionFragment;
 

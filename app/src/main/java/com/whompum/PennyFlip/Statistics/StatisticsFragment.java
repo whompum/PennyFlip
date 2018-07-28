@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Sources.SourceStatistic;
 import com.whompum.PennyFlip.Time.TimeRange;
 import com.whompum.PennyFlip.Widgets.TotalView;
 

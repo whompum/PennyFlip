@@ -6,13 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceDataSpent;
-import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapter;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Sources.SourceMetaData;
 import com.whompum.PennyFlip.Transactions.Models.TransactionType;
-
-import butterknife.BindColor;
 
 /**
  * Created by bryan on 12/27/2017.

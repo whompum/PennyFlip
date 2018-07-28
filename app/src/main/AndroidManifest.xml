@@ -57,26 +57,12 @@
 
 
         <!--Wallet Provider Information-->
-        <provider
-            android:exported="false"
-            android:authorities="com.whompum.PennyFlip.Data.Providers.WalletProvider"
-            android:name=".Data.Providers.WalletProvider"/>
 
 
         <provider
             android:exported="false"
             android:authorities="com.whompum.PennyFlip.Data.Providers.TransactionsProvider"
             android:name=".Data.Providers.TransactionsProvider"/>
-
-
-        <provider
-            android:exported="false"
-            android:authorities="com.whompum.PennyFlip.Data.Providers.SourceProvider"
-            android:name=".Data.Providers.SourceProvider"/>
-
-        <service android:name=".Data.Services.UpdateWalletService"
-                 android:exported="false"
-                 android:icon="@drawable/ic_svg_money"/>
 
     </application>
 
