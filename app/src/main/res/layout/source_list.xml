@@ -29,7 +29,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <include layout="@layout/layout_source_list_toolbar" />
+    <include layout="@layout/source_list_toolbar" />
     <include layout="@layout/page_title_strip_layout"/>
     </LinearLayout>
 
