@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Data.Schemas;
+package com.whompum.PennyFlip.Money.Source;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

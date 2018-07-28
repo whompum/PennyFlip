@@ -30,7 +30,7 @@ import com.whompum.PennyFlip.ActivitySourceList.Dialog.NewSourceDialog;
 import com.whompum.PennyFlip.ActivitySourceList.Dialog.OnSourceCreated;
 import com.whompum.PennyFlip.ActivitySourceList.OnSortButtonClicked;
 import com.whompum.PennyFlip.Animations.AnimateScale;
-import com.whompum.PennyFlip.Data.Schemas.SourceSortOrder;
+import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
 import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.OnItemSelected;
