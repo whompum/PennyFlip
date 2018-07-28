@@ -1,10 +1,9 @@
 package com.whompum.PennyFlip.ActivitySourceData;
 
-
-
 import android.content.Intent;
 
 import com.whompum.PennyFlip.ListPopulator;
+import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
 import com.whompum.PennyFlip.Sources.SourceMetaData;
@@ -15,7 +14,7 @@ import com.whompum.PennyFlip.Time.TimeRange;
 import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
 import com.whompum.PennyFlip.Transactions.TransactionFragment;
 
-public class ActivitySourceDataAdded extends ActivitySourceData implements StatisticsFragment.StatisticsServer<TimeRange>{
+public class ActivitySourceDataAdded extends ActivitySourceData{
 
 
     private ListPopulator<HeaderItem> transactionFragment;
@@ -34,7 +33,6 @@ public class ActivitySourceDataAdded extends ActivitySourceData implements Stati
 
         bindStrip(getString(R.string.string_transaction));
         bindStrip(getString(R.string.string_statistics));
-
     }
 
     @Override
@@ -43,15 +41,8 @@ public class ActivitySourceDataAdded extends ActivitySourceData implements Stati
     }
 
     @Override
-    protected SourceMetaData initMetaData(final Intent intent) {
-        return (SourceMetaData) intent.getParcelableExtra(SOURCE_KEY);
+    protected Source initMetaData(final Intent intent) {
+        return (Source) intent.getSerializableExtra(DATA);
     }
-
-    @Override
-    public void onDataRequested(TimeRange o) {
-        //Requests data from server, or database for the specified time range
-    }
-
-  
 
 }

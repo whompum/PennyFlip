@@ -4,6 +4,7 @@ package com.whompum.PennyFlip.ActivitySourceData;
 import android.content.Intent;
 
 import com.whompum.PennyFlip.ListPopulator;
+import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
 import com.whompum.PennyFlip.Sources.SourceMetaData;
@@ -16,7 +17,7 @@ import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
 import com.whompum.PennyFlip.Transactions.TransactionFragment;
 
 
-public class ActivitySourceDataSpent extends ActivitySourceData implements StatisticsFragment.StatisticsServer<TimeRange> {
+public class ActivitySourceDataSpent extends ActivitySourceData {
 
 
     private ListPopulator<HeaderItem> transactionFragment;
@@ -28,7 +29,7 @@ public class ActivitySourceDataSpent extends ActivitySourceData implements Stati
         final TransactionFragment transFragment = (TransactionFragment) TransactionFragment.newInstance();
         this.transactionFragment = transFragment;
 
-        final StatisticsFragment statsFragment = (StatisticsFragment) StatisticsFragment.newInstance(data.getPennies(), this);
+        final StatisticsFragment statsFragment = (StatisticsFragment) StatisticsFragment.newInstance(data.getPennies());
         this.sourceStatisticPopulator = statsFragment;
 
 
@@ -45,15 +46,8 @@ public class ActivitySourceDataSpent extends ActivitySourceData implements Stati
     }
 
     @Override
-    protected SourceMetaData initMetaData(final Intent intent) {
-        //Implement Serizalizable on Spend
-        return (SpendSourceMetaData) intent.getParcelableExtra(SOURCE_KEY);
+    protected Source initMetaData(final Intent intent) {
+        return (Source) intent.getSerializableExtra(DATA);
     }
-
-    @Override
-    public void onDataRequested(TimeRange o) {
-
-    }
-
 
 }
