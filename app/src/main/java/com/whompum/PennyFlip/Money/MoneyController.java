@@ -133,7 +133,7 @@ public class MoneyController {
         new Thread(){
             @Override
             public void run() {
-                sourceAccessor.addAmount(transaction.getSourceId(), transaction.getAmount());
+                sourceAccessor.addAmount(transaction);
                 transactionAccessor.insert(transaction);
             }
         }.start();

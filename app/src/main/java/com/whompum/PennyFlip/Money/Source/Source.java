@@ -28,22 +28,35 @@ public class Source implements Serializable{
 
     private long creationDate;
 
-    public Source(@NonNull String title, int transactionType, @Nullable String notes, final long pennies, final long creationDate) {
+    private long lastUpdate;
+
+    public Source(@NonNull String title,
+                  int transactionType,
+                  @Nullable String notes,
+                  final long pennies,
+                  final long creationDate,
+                  final long lastUpdate) {
+
         this.title = title;
         this.transactionType = transactionType;
         this.notes = notes;
         this.pennies = pennies;
         this.creationDate = creationDate;
+        this.lastUpdate = lastUpdate;
     }
 
     @Ignore //Used to create a new Barebones Source Object
     public Source(@NonNull final String title, final int transactionType) {
-        this(title, System.currentTimeMillis(), 0L, transactionType);
+        this(title, System.currentTimeMillis(), 0L, transactionType, System.currentTimeMillis());
     }
 
     @Ignore
-    public Source(@NonNull final String title, final long creationDate, final long pennies, final int transactionType){
-        this(title, transactionType, null, pennies, creationDate);
+    public Source(@NonNull final String title, final long creationDate, final long pennies, final int transactionType, final long lastUpdate){
+        this(title, transactionType, null, pennies, creationDate, lastUpdate);
+    }
+
+    public void setLastUpdate(long lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     public void setTitle(@NonNull String title) {
@@ -64,6 +77,10 @@ public class Source implements Serializable{
 
     public void setCreationDate(long creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public long getLastUpdate() {
+        return lastUpdate;
     }
 
     @NonNull

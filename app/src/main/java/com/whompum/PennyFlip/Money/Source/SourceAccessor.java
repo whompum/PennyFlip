@@ -5,6 +5,7 @@ import android.arch.persistence.room.Query;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
 import java.util.List;
@@ -29,15 +30,23 @@ public abstract class SourceAccessor{
     @Query("UPDATE Source SET pennies = :pennies WHERE title = :title")
     protected abstract void updateAmount(@NonNull final String title, final long pennies);
 
-    public void addAmount(@NonNull final String title, final long pennies){
+    @Query("UPDATE Source SET lastUpdate = :lastUpdate where TITLE = :title")
+    protected abstract void updateTimestamp(@NonNull final String title, final long lastUpdate);
 
-        final Source source = fetch(title);
+    public void addAmount(@NonNull final Transaction transaction){
 
-        if(source == null || pennies < 0) return;
+        final String id = transaction.getSourceId();
+        final long amt = transaction.getAmount();
+        final long timestamp = transaction.getTimestamp();
 
-        final long newAmt = source.getPennies() + pennies;
+        final Source source = fetch(id);
 
-        updateAmount(title, newAmt);
+        if(source == null || amt < 0) return;
+
+        final long newAmt = source.getPennies() + amt;
+
+        updateAmount(id, newAmt);
+        updateTimestamp(id, timestamp);
     }
 
 }
