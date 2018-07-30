@@ -7,7 +7,7 @@
     <!--Wrapped in a FrameLayout so we can later add graphics if no transactions are available-->
 <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
     tools:listitem="@layout/history_list_item"
-    android:id="@id/id_source_data_transaction_container"
+    android:id="@id/id_transaction_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

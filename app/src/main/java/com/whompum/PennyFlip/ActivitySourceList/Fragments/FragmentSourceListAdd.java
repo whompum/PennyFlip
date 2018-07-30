@@ -1,12 +1,8 @@
 package com.whompum.PennyFlip.ActivitySourceList.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceDataAdded;
-import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
@@ -27,12 +23,6 @@ public class FragmentSourceListAdd extends FragmentSourceList {
         FragmentSourceList fragment = new FragmentSourceListAdd();
         fragment.setArguments(args);
         return fragment;
-    }
-
-
-    @Override
-    protected void createIntent(@NonNull Source data) {
-        this.intent = new Intent(getActivity(), ActivitySourceDataAdded.class);
     }
 
 }

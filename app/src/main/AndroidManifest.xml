@@ -29,26 +29,9 @@
                 android:value=".Dashboard.ActivityDashboard" />
         </activity>
 
-
-        <activity android:name=".ActivitySourceData.ActivitySourceDataAdded"
-                  android:theme="@style/StyleSourceDataAdded"
-                  android:windowSoftInputMode="stateHidden"
+        <activity android:name=".ActivitySourceData.ActivitySourceData"
                   android:parentActivityName=".Dashboard.ActivityDashboard"
-                  android:noHistory="true">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Dashboard.ActivityDashboard" />
-        </activity>
-
-        <activity android:name=".ActivitySourceData.ActivitySourceDataSpent"
-                  android:theme="@style/StyleSourceDataSpent"
-                  android:windowSoftInputMode="stateHidden"
-                  android:parentActivityName=".Dashboard.ActivityDashboard">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Dashboard.ActivityDashboard" />
-        </activity>
-
+                  android:theme="@style/AppTheme"/>
 
         <activity android:name=".ActivityHistory.ActivityHistory"
                   android:parentActivityName=".Dashboard.ActivityDashboard"

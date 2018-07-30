@@ -73,7 +73,7 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
         final View header = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.history_list_item_header, parent, false);
+                .inflate(R.layout.transaction_item_header, parent, false);
 
 
         final int parentPaddingHor = parent.getPaddingStart() + parent.getPaddingRight();

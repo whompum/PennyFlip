@@ -45,7 +45,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         inflater = LayoutInflater.from(context);
 
-
         if(Build.VERSION.SDK_INT >= 23){
             addColor = context.getColor(R.color.light_green);
             spendColor = context.getColor(R.color.light_red);
@@ -140,9 +139,9 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         RecyclerView.ViewHolder holder = null;
 
         if(viewType == DATA)
-            holder = new TransactionHolder(inflater.inflate(R.layout.history_list_item, parent, false), addColor, spendColor);
+            holder = new TransactionHolder(inflater.inflate(R.layout.transaction_list_item, parent, false), addColor, spendColor);
         else if(viewType == HEADER)
-            holder = new TransactionHeaderHolder(inflater.inflate(R.layout.history_list_item_header, parent, false));
+            holder = new TransactionHeaderHolder(inflater.inflate(R.layout.transaction_item_header, parent, false));
 
     return holder;
     }
