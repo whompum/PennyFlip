@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,9 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
         this.transactionsList.setAdapter(adapter);
         this.transactionsList.addItemDecoration(new TransactionStickyHeaders(this, highlightDark));
 
+
+
+
     return layout;
     }
 
@@ -106,11 +110,17 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
     @Override
     public void onChanged(@Nullable List<Transaction> transactions) {
 
-        if(transactions != null && transactions.size() > 0)
+        if(transactions != null && transactions.size() > 0) {
             this.dataSet = TransactionsHeaderAdapter.fromList(transactions);
 
-        if(this.dataSet != null)
-            adapter.swapDataset(dataSet);
+            if (this.dataSet != null)
+                adapter.swapDataset(dataSet);
+
+            toggleNoTransactionsDisplay(false);
+
+        }else{
+            toggleNoTransactionsDisplay(true);
+        }
     }
 
     @Override
@@ -133,6 +143,15 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
             ((TextView)header.findViewById(R.id.id_history_transaction_header_date)).setText(headerItem.getDate());
             ((TextView)header.findViewById(R.id.id_history_transaction_header_cuantos)).setText(headerItem.getNumTransactions());
         }
+    }
+
+    private void toggleNoTransactionsDisplay(final boolean toggle){
+
+        if(getView() != null && !toggle)
+            getView().findViewById(R.id.no_transactions_container).setVisibility(View.INVISIBLE);
+
+        if(getView() != null && toggle)
+            getView().findViewById(R.id.no_transactions_container).setVisibility(View.VISIBLE);
     }
 
 }

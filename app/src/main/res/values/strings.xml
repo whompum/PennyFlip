@@ -83,4 +83,6 @@
 
     <string name="string_default_transaction_name">Unnamed</string>
 
+    <string name="string_no_added_transactions_msg">Where\'s all your money?</string>
+
 </resources>
