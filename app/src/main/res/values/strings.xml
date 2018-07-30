@@ -85,4 +85,6 @@
 
     <string name="string_no_added_transactions_msg">Where\'s all your money?</string>
 
+    <string name="string_notes">Notes</string>
+
 </resources>

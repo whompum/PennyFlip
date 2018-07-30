@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -13,11 +12,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
@@ -40,6 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import butterknife.OnPageChange;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public class ActivitySourceData extends AppCompatActivity{
@@ -69,6 +67,8 @@ public class ActivitySourceData extends AppCompatActivity{
         container.setAdapter(adapter);
 
         applyColoring(getHighlight());
+
+        setPageIndicator(0); //Setting Displaying the layout for the first tab
     }
 
     //Initializes the core UI (title displya, value display, lastUpdate)
@@ -104,8 +104,32 @@ public class ActivitySourceData extends AppCompatActivity{
         bundle.putInt(TransactionFragment.HIGHLIGHT_DARK_KEY, colorDark);
 
         fragments.add(TransactionFragment.newInstance(bundle));
+        fragments.add(new tempStatisticsFragment());
+        fragments.add(new tempNotesFrag());
 
      return fragments;
+    }
+
+    @OnPageChange(R.id.id_source_data_container)
+    public void setPageIndicator(final int pos){
+
+        if(adapter.getItem(pos) instanceof TransactionFragment) {
+            findViewById(R.id.id_transactions_label).setVisibility(View.VISIBLE);
+            findViewById(R.id.id_notes_label).setVisibility(View.GONE);
+            findViewById(R.id.id_statistics_label).setVisibility(View.GONE);
+        }
+        else if(adapter.getItem(pos) instanceof tempStatisticsFragment) {
+            findViewById(R.id.id_transactions_label).setVisibility(View.GONE);
+            findViewById(R.id.id_statistics_label).setVisibility(View.VISIBLE);
+            findViewById(R.id.id_notes_label ).setVisibility(View.GONE);
+        }
+
+        else if(adapter.getItem(pos) instanceof tempNotesFrag) {
+            findViewById(R.id.id_notes_label).setVisibility(View.VISIBLE);
+            findViewById(R.id.id_statistics_label).setVisibility(View.GONE);
+            findViewById(R.id.id_transactions_label).setVisibility(View.GONE);
+        }
+
     }
 
     @OnClick(R.id.id_up_navigation)
@@ -123,7 +147,6 @@ public class ActivitySourceData extends AppCompatActivity{
         if(pennyDialog != null)  //Done to block double tapping; Avoids creating multiple instances.
             if(pennyDialog.isAdded()) return;
 
-
         //vibrate(500L);
         int styleRes;
 
@@ -131,7 +154,6 @@ public class ActivitySourceData extends AppCompatActivity{
             styleRes = R.style.StylePennyDialogAdd;
         else  //Is probably a spending transaction
             styleRes = R.style.StylePennyDialogMinus;
-
 
         final Bundle args = new Bundle();
         args.putInt(PennyDialog.STYLE_KEY, styleRes);
@@ -143,17 +165,17 @@ public class ActivitySourceData extends AppCompatActivity{
 
     @OnClick(R.id.id_nav_transactions)
     public void launchTransactions(){
-
+        container.setCurrentItem(0);
     }
 
     @OnClick(R.id.id_nav_statistics)
     public void launchStatistics(){
-
+        container.setCurrentItem(1);
     }
 
     @OnClick(R.id.id_nav_notes)
     public void launchNotes(){
-
+        container.setCurrentItem(2);
     }
 
     private void launchDeleteConfDialog(){
@@ -219,7 +241,6 @@ public class ActivitySourceData extends AppCompatActivity{
         });
 
     }
-
 
     @ColorRes
     private int getHighlight(){
