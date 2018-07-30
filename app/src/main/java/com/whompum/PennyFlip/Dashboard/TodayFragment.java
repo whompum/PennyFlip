@@ -23,7 +23,7 @@ import com.whompum.PennyFlip.Money.TimeRange;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Ts;
-import com.whompum.PennyFlip.Transactions.Models.DescendingSort;
+import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 
 import java.util.Collections;
 import java.util.List;

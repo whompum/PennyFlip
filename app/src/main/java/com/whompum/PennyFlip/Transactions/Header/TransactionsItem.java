@@ -1,6 +1,8 @@
-package com.whompum.PennyFlip.Transactions.Models;
+package com.whompum.PennyFlip.Transactions.Header;
 
 import android.support.annotation.NonNull;
+
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
 /**
  * Created by bryan on 1/7/2018.
@@ -8,14 +10,14 @@ import android.support.annotation.NonNull;
 
 public class TransactionsItem implements HeaderItem {
 
-    private Transactions transactions;
+    private Transaction transaction;
 
-    public TransactionsItem(@NonNull Transactions transactions){
-        this.transactions = transactions;
+    public TransactionsItem(@NonNull Transaction transaction){
+        this.transaction = transaction;
     }
 
-    public Transactions getTransactions(){
-        return transactions;
+    public Transaction getTransactions(){
+        return transaction;
     }
 
 

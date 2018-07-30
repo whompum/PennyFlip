@@ -26,14 +26,14 @@ import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.MidnightTimestamp;
 import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
-import com.whompum.PennyFlip.Transactions.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Transactions.Models.TransactionType;
-import com.whompum.PennyFlip.Transactions.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Models.Transactions;
-import com.whompum.PennyFlip.Transactions.TransactionStickyHeaders;
-import com.whompum.PennyFlip.Transactions.TransactionsCursorAdapter;
-import com.whompum.PennyFlip.Transactions.TransactionsHeaderAdapter;
+import com.whompum.PennyFlip.Transactions.Header.HeaderItem;
+import com.whompum.PennyFlip.Transactions.Header.TransactionHeaderItem;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
+import com.whompum.PennyFlip.Transactions.Transactions;
+import com.whompum.PennyFlip.Transactions.Header.TransactionStickyHeaders;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionsCursorAdapter;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionsHeaderAdapter;
 
 import org.joda.time.DateTime;
 
@@ -182,17 +182,17 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
 
     @Override
     public void onLoadFinished(Loader loader, Cursor data) {
-        final List<Transactions> transactionsList = new TransactionsCursorAdapter(data).fromCursor();
-        final List<HeaderItem> headerItems = TransactionsHeaderAdapter.fromList(transactionsList);
+//        final List<Transactions> transactionsList = new TransactionsCursorAdapter(data).fromCursor();
+        //final List<HeaderItem> headerItems = TransactionsHeaderAdapter.fromList(transactionsList);
 
-        adapter.swapDataset(headerItems);
+        //adapter.swapDataset(headerItems);
 
-        final TransactionHeaderItem item = adapter.getFirstHeader();
+        //final TransactionHeaderItem item = adapter.getFirstHeader();
 
-        if(item != null) { //Will be null if the adapter has no data
-            final Timestamp firstDate = item.getTimestamp();
-            pickerTimeline.setSelectedDate(firstDate.year(), firstDate.month() - 1, firstDate.day());
-        }
+        //if(item != null) { //Will be null if the adapter has no data
+          //  final Timestamp firstDate = item.getTimestamp();
+            //pickerTimeline.setSelectedDate(firstDate.year(), firstDate.month() - 1, firstDate.day());
+        //}
     }
 
     @Override
@@ -424,13 +424,12 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
      * @param item The current header item with the Date associated to it.
      */
     private void bindTimelineDate(final TransactionHeaderItem item){
-        final int year = item.getTimestamp().year();
-        final int month = item.getTimestamp().month()-1;
-        final int day = item.getTimestamp().day();
+      //  final int year = item.getTimestamp().year();
+       // final int month = item.getTimestamp().month()-1;
+        //final int day = item.getTimestamp().day();
 
-        pickerTimeline.setSelectedDate(year, month, day);
+   //     pickerTimeline.setSelectedDate(year, month, day);
     }
-
 
     /**
      * Boolean value on whether an item is a Header; Used for StickyHeader

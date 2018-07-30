@@ -1,13 +1,12 @@
-package com.whompum.PennyFlip.Transactions;
+package com.whompum.PennyFlip.Transactions.Adapter;
 
 import android.support.annotation.NonNull;
 
-import com.whompum.PennyFlip.Time.MidnightTimestamp;
-import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
-import com.whompum.PennyFlip.Transactions.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Transactions.Models.Transactions;
-import com.whompum.PennyFlip.Transactions.Models.TransactionsItem;
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Transactions.Header.HeaderItem;
+import com.whompum.PennyFlip.Transactions.Header.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transactions.Header.TransactionsItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +19,16 @@ import java.util.List;
 public class TransactionsHeaderAdapter {
 
 
-    public static List<HeaderItem> fromList(@NonNull final List<Transactions> t){
+    public static List<HeaderItem> fromList(@NonNull final List<Transaction> t){
         /**
-         * Converting The transactions into Transaction items is relatively straight-forward
-         * First, every transaction can automatically be wrapped into a TransactionsItem object
-         * So that part is done.  Whats next is to check the day of each transactions object, and convert it
-         * to a day
+         * This guy is the major brains of the Header/Transaction flow.
+         * In order for a RecyclerView to use Headers, it must assume that both a header and a list item
+         * are each considered items within i'ts adapter. Thus the two needs to be merged via a common interface
+         * into the same data structure
          *
-         *
+         * WHAT IT DOES
+         * Takes a List of Transaction objects, and for each new date, create a new header item
+         * and store it in the list, along with all subsequent Transaction objects for that date.
          *
          */
 
@@ -37,20 +38,18 @@ public class TransactionsHeaderAdapter {
 
         int headerCount = 1;
 
-        long currMidnight = Long.MIN_VALUE;
+        long currMidnight = -1;
 
+        for(Transaction tran : t){
 
+            final Ts timestamp = Ts.from(tran.getTimestamp());
 
-        for(Transactions transactions : t){
+            if(currMidnight != timestamp.getStartOfDay()){
+                currMidnight = timestamp.getStartOfDay();
 
-            final long midnightMillis = getDayMillis(transactions);
-
-            if(currMidnight != midnightMillis){
-                currMidnight = midnightMillis;
-
-                header = new TransactionHeaderItem(Timestamp.from(currMidnight), -1);
+                header = new TransactionHeaderItem(timestamp, -1);
                 headerCount=1;
-                final TransactionsItem transItem = new TransactionsItem(transactions);
+                final TransactionsItem transItem = new TransactionsItem(tran);
 
                 items.add(header);
                 items.add(transItem);
@@ -58,26 +57,12 @@ public class TransactionsHeaderAdapter {
             }else{
                 headerCount++;
                 header.setNumTransactions(headerCount);
-                items.add(new TransactionsItem(transactions));
+                items.add(new TransactionsItem(tran));
             }
-
 
         }
 
-
-
     return items;
     }
-
-
-
-    private static long getDayMillis(final Transactions transactions){
-        final long transactionMillis = transactions.getTimestamp().millis();
-
-        return MidnightTimestamp.from(transactionMillis).getTodayMidnightMillis();
-
-    }
-
-
 
 }

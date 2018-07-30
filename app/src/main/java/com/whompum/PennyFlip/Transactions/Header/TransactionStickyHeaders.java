@@ -1,7 +1,8 @@
-package com.whompum.PennyFlip.Transactions;
+package com.whompum.PennyFlip.Transactions.Header;
 
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +17,18 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
     private View header;
     private Rect headerRect = new Rect();
 
+    private int bgColor = -1;
+
     private StickyData stickyData;
 
     public TransactionStickyHeaders(final StickyData stickyData){
         this.stickyData = stickyData;
     }
+    public TransactionStickyHeaders(final StickyData stickyData, final int bgColor){
+        this.stickyData = stickyData;
+        this.bgColor = bgColor;
+    }
+
 
 
     @Override
@@ -40,6 +48,8 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
         if(isHeader(parent, 1)){
 
+            parent.getChildAt(1).setBackgroundColor(Color.BLACK);
+
             if(parent.getChildAt(1).getTop() <= headerRect.bottom){
                 deltaY = parent.getChildAt(1).getTop();
             }else {
@@ -49,7 +59,6 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
         }else{
             deltaY = header.getHeight(); //Will draw @ zero REF drawHeader
         }
-
         drawHeader(c, deltaY);
     }
 
@@ -93,6 +102,8 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
         header.layout(headerRect.left, headerRect.top,
                       headerRect.right, headerRect.bottom);
 
+        if(bgColor != -1)
+            header.setBackgroundColor(bgColor);
 
     this.header = header;
     }

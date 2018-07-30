@@ -68,7 +68,6 @@
         <item name="sort_title_asc">Total (low to high)</item>
     </string-array>
 
-
     <!--TODO add messages for other services -->
     <string name="string_service_save_transaction_description">Saving your recent transaction</string>
 
@@ -78,5 +77,10 @@
         <item name="string_timerange_this_month">This Month</item>
         <item name="string_timerange_custom">Custom</item>
     </string-array>
+
+    <string name="string_transaction_name">Enter Transaction Name</string>
+    <string name="string_skip">Skip</string>
+
+    <string name="string_default_transaction_name">Unnamed</string>
 
 </resources>

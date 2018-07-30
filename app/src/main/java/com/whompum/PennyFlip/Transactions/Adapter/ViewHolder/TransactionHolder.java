@@ -1,14 +1,16 @@
-package com.whompum.PennyFlip.Transactions.ViewHolder;
+package com.whompum.PennyFlip.Transactions.Adapter.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.Transactions.Models.TransactionType;
-import com.whompum.PennyFlip.Transactions.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Models.TransactionsItem;
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
+import com.whompum.PennyFlip.Transactions.Header.TransactionsItem;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transactions.Models.Transactions;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
@@ -24,6 +26,7 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
 
     private int addColor;
     private int spendColor;
+    private int callibrateColor;
 
 
     public TransactionHolder(final View layout, final int addClr, final int spendClr){
@@ -34,22 +37,27 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
 
         this.addColor = addClr;
         this.spendColor = spendClr;
+
+        Log.i("TRANSACTION_FRAG", "Creating new TransactionHolder object");
+
     }
 
     @Override
     public void bind(TransactionsItem headerItem) {
 
-        final Transactions transactions = headerItem.getTransactions();
+        Log.i("TRANSACTION_FRAG", "Binding TransactionsItem to TransactionHolder");
 
-        transactionLastUpdate.setText(transactions.simpleTime());
-        transactionSource.setText(transactions.getSourceName());
-        transactionAmount.setText(String.valueOf(transactions.getTransactionAmount()));
+        final Transaction t = headerItem.getTransactions();
 
-        if(transactions.getTransactionType() == TransactionType.ADD){
+        transactionLastUpdate.setText(Ts.getPreferentialDate(Ts.from(t.getTimestamp())));
+        transactionSource.setText(t.getTitle());
+        transactionAmount.setText(String.valueOf(t.getAmount()));
+
+        if(t.getTransactionType() == TransactionType.ADD){
             transactionSource.setTextColor(addColor);
             transactionAmount.setTextColor(addColor);
             transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.drawable_shape_circle_green,0,0,0);
-        }else if(transactions.getTransactionType() == TransactionType.SPEND){
+        }else if(t.getTransactionType() == TransactionType.SPEND){
             transactionSource.setTextColor(spendColor);
             transactionAmount.setTextColor(spendColor);
             transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.drawable_shape_circle_red,0,0,0);

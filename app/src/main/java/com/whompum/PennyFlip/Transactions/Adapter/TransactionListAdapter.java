@@ -1,16 +1,18 @@
-package com.whompum.PennyFlip.Transactions;
+package com.whompum.PennyFlip.Transactions.Adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Transactions.Models.HeaderItem;
-import com.whompum.PennyFlip.Transactions.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Transactions.Models.TransactionsItem;
-import com.whompum.PennyFlip.Transactions.ViewHolder.TransactionHeaderHolder;
-import com.whompum.PennyFlip.Transactions.ViewHolder.TransactionHolder;
+import com.whompum.PennyFlip.Transactions.Header.HeaderItem;
+import com.whompum.PennyFlip.Transactions.Header.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transactions.Header.TransactionsItem;
+import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHeaderHolder;
+import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
 
 import java.util.ArrayList;
@@ -25,8 +27,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public static final int DATA = 0;
     public static final int HEADER = 1;
 
-
-    private List<HeaderItem> dataSet = new ArrayList<>();
+    private List<HeaderItem> dataSet;
 
     private LayoutInflater inflater;
 
@@ -41,7 +42,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public TransactionListAdapter(final Context context, final List<HeaderItem> list){
 
         if(list != null)
-            this.dataSet.addAll(list);
+            this.dataSet = list;
 
         inflater = LayoutInflater.from(context);
 
@@ -73,11 +74,10 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return null;
     }
 
+    public void swapDataset(@Nullable final List<HeaderItem> transactions){
+          if(transactions == null) return;
 
-
-
-    public void swapDataset(final List<HeaderItem> transactions){
-        this.dataSet = new ArrayList<>(transactions);
+        this.dataSet = transactions;
         notifyDataSetChanged();
     }
 
@@ -112,8 +112,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     return null;
     }
-
-
 
 
     @Override
@@ -154,6 +152,9 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
          * Then cast and pass.
          */
 
+        Log.i("TRANSACTION_FRAG", "OnBindViewHolder()# TransactionListAdapter");
+
+
         final int viewType = getItemViewType(position);
 
         final HeaderItem item = dataSet.get(position);
@@ -167,7 +168,9 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        if(dataSet == null) return 0;
+
+     return dataSet.size();
     }
 
 

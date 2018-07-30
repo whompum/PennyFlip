@@ -1,11 +1,11 @@
-package com.whompum.PennyFlip.Transactions.ViewHolder;
+package com.whompum.PennyFlip.Transactions.Adapter.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.Transactions.Models.TransactionHeaderItem;
-import com.whompum.PennyFlip.Transactions.TransactionListAdapter;
+import com.whompum.PennyFlip.Transactions.Header.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
 import com.whompum.PennyFlip.R;
 
 /**
@@ -14,8 +14,8 @@ import com.whompum.PennyFlip.R;
 
 public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements TransactionListAdapter.DataBind<TransactionHeaderItem> {
 
-    private TextView dateTextView;
-    private TextView cuantos;
+    protected TextView dateTextView;
+    protected TextView cuantos;
 
     public TransactionHeaderHolder(final View layout){
         super(layout);

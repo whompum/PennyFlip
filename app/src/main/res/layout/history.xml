@@ -67,7 +67,7 @@
 
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
-        tools:listitem="@layout/history_list_item"
+        tools:listitem="@layout/transaction_list_item"
         android:id="@id/id_history_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

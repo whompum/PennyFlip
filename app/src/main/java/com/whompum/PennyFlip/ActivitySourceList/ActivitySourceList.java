@@ -214,9 +214,8 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     }
 
     /**
-     * Launches a new instance of the same fragment that is already being used;
-     * The benefits of launching a new fragment to handle the Search Queries
-     * is better decoupling from the UI
+     * Launches a new instance of the same fragment that is already being used
+     * to handle the search queries
      */
     private void launchSearchFragment(){
 

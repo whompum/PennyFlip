@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 
 /**
  * Created by bryan on 12/21/2017.

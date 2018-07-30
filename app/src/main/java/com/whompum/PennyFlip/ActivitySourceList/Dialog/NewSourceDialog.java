@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 
 public class NewSourceDialog extends Dialog implements View.OnClickListener {
 

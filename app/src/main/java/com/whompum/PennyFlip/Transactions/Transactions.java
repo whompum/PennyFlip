@@ -1,10 +1,10 @@
-package com.whompum.PennyFlip.Transactions.Models;
+package com.whompum.PennyFlip.Transactions;
 
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;
 
 
-
+@Deprecated
 public class Transactions {
 
     private Timestamp timestamp;

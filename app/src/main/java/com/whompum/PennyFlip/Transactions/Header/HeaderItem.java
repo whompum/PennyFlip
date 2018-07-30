@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Transactions.Models;
+package com.whompum.PennyFlip.Transactions.Header;
 
 /**
  * Just used for the abstractio

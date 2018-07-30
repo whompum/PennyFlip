@@ -1,7 +1,7 @@
-package com.whompum.PennyFlip.Transactions.Models;
+package com.whompum.PennyFlip.Transactions.Header;
 
-import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
-import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Transactions.Header.HeaderItem;
 
 /**
  * Created by bryan on 1/7/2018.
@@ -9,10 +9,10 @@ import com.whompum.PennyFlip.Time.Timestamp;
 
 public class TransactionHeaderItem implements HeaderItem {
 
-    private Timestamp timestamp;
+    private Ts timestamp;
     private int numTransactions;
 
-    public TransactionHeaderItem(Timestamp timestamp, final int numTransactions){
+    public TransactionHeaderItem(Ts timestamp, final int numTransactions){
         this.timestamp = timestamp;
         this.numTransactions = numTransactions;
     }
@@ -22,10 +22,10 @@ public class TransactionHeaderItem implements HeaderItem {
     }
 
     public CharSequence getDate() {
-        return PennyFlipTimeFormatter.simpleDate(timestamp);
+        return Ts.simpleDate(timestamp);
     }
 
-    public Timestamp getTimestamp(){
+    public Ts getTimestamp(){
         return timestamp;
     }
 

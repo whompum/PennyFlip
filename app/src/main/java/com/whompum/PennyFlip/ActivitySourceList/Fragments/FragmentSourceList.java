@@ -176,11 +176,10 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
             listAdapter.swapDataset(sources);
     }
 
-    /**
-     * Each implementation will want to launch a separate Activity to handle its data
-     * @param data SourceMetaData is data to give the the SourceData Activity.
-     */
-    protected abstract void createIntent(@NonNull Source data);
+
+    protected void createIntent(@NonNull Source data){
+        this.intent = new Intent(getActivity(), ActivitySourceData.class);
+    }
 
     @OnClick(R.id.id_fab)
     public void launchNewSourceDialog(){

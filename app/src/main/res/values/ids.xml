@@ -62,7 +62,7 @@
     <item name="id_source_data_title_indicator" type="id"/>
 
     <item name="id_toolbar_container" type="id"/>
-    <item name="id_source_data_transaction_container" type="id"/>
+    <item name="id_transaction_container" type="id"/>
 
     <!--TRANSACTIONS LIST ITEM IDS
         REPLACE WITH BELOW HISTORY IDS

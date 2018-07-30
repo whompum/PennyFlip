@@ -11,6 +11,7 @@
     <dimen name="dimen_padding_ver_small">8dp</dimen>
     <dimen name="dimen_padding_ver_base">16dp</dimen>
     <dimen name="dimen_padding_ver_large">24dp</dimen>
+    <dimen name="dimen_padding_ver_x_large">48dp</dimen>
 
 
     <!--CIRCULAR REVEAL OFFSET-->

@@ -63,7 +63,7 @@ public class Ts {
     }
 
     public int getDay(){
-        return date.getDayOfYear();
+        return date.getDayOfMonth();
     }
 
     public int getMilitaryHour(){
@@ -126,7 +126,7 @@ public class Ts {
 
         final String year = y.substring(y.length()-2, y.length());
 
-        return month+DATE_SEP+year;
+        return month+DATE_SEP+t.getDay()+DATE_SEP+year;
     }
 
 }
