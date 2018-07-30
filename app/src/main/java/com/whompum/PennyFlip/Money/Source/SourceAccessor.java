@@ -2,13 +2,9 @@ package com.whompum.PennyFlip.Money.Source;
 
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Transactions.Models.TransactionType;
-
-import java.util.List;
 
 public abstract class SourceAccessor{
 

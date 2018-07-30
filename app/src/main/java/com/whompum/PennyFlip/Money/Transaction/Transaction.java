@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.whompum.PennyFlip.Money.Source.Source;
-import com.whompum.PennyFlip.Transactions.Models.TransactionType;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 

@@ -7,14 +7,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.whompum.PennyFlip.Money.Source.ObservableSourceAccessor;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionDao;
-import com.whompum.PennyFlip.Transactions.Models.TransactionType;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 
 
 public class MoneyController {
@@ -107,15 +106,6 @@ public class MoneyController {
             @Override
             public void run() {
                 sourceAccessor.insert(source);
-            }
-        }.start();
-    }
-
-    public void insert(@NonNull final Transaction transaction){
-        new Thread(){
-            @Override
-            public void run() {
-                transactionAccessor.insert(transaction);
             }
         }.start();
     }
