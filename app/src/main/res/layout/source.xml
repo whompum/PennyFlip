@@ -3,8 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:weightSum="10"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ActivitySourceData.ActivitySourceData">
@@ -17,11 +15,9 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.AppCompatImageButton
+            style="@style/StyleIcon"
             android:id="@id/id_up_navigation"
-            app:srcCompat="@drawable/ic_svg_chevron"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_width="@dimen/dimen_icon_size"
-            android:layout_height="@dimen/dimen_icon_size" />
+            app:srcCompat="@drawable/ic_svg_chevron"/>
 
         <TextView
             tools:text="Source Name"
@@ -34,12 +30,10 @@
             android:layout_height="wrap_content" />
 
         <android.support.v7.widget.AppCompatImageButton
+            style="@style/StyleIcon"
             android:id="@+id/ic_delete_source"
             app:srcCompat="@drawable/ic_material_trash_icon"
-            android:layout_alignParentEnd="true"
-            android:background="@null"
-            android:layout_width="@dimen/dimen_icon_size"
-            android:layout_height="@dimen/dimen_icon_size" />
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
     <LinearLayout
@@ -108,38 +102,25 @@
             android:layout_height="wrap_content" />
 
         <android.support.v7.widget.AppCompatImageButton
+            style="@style/StyleIcon"
             app:layout_constraintEnd_toStartOf="@id/local_transactions_guide"
             app:srcCompat="@drawable/ic_purse"
-            app:backgroundTint="@color/white"
-            android:id="@+id/id_nav_transactions"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            android:background="@null"
-            android:layout_width="@dimen/dimen_icon_size"
-            android:layout_height="@dimen/dimen_icon_size" />
+            android:padding="10dp"
+            android:id="@+id/id_nav_transactions" />
 
         <android.support.v7.widget.AppCompatImageButton
+            style="@style/StyleIcon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_graph_with_balls_white"
-            app:backgroundTint="@color/white"
-            android:id="@+id/id_nav_statistics"
-            android:background="@null"
-            android:padding="0dp"
-            android:scaleType="centerCrop"
-            android:layout_width="@dimen/dimen_icon_size"
-            android:layout_height="@dimen/dimen_icon_size" />
+            android:padding="6dp"
+            android:id="@+id/id_nav_statistics" />
 
         <android.support.v7.widget.AppCompatImageButton
+            style="@style/StyleIcon"
             app:layout_constraintStart_toStartOf="@id/local_edit_guide"
             app:srcCompat="@drawable/ic_pencil"
-            app:backgroundTint="@color/white"
-            android:id="@+id/id_nav_notes"
-            android:background="@null"
-            android:padding="10dp"
-            android:scaleType="centerCrop"
-            android:layout_width="@dimen/dimen_icon_size"
-            android:layout_height="@dimen/dimen_icon_size" />
+            android:id="@+id/id_nav_notes" />
 
     </android.support.constraint.ConstraintLayout>
 

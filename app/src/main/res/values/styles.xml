@@ -93,11 +93,6 @@
 
 
 
-
-
-
-
-
     <!--MENU STYLES-->
     <style name="StyleMenuCardView">
         <item name="contentPadding">@dimen/dimen_nav_title_padding</item>
@@ -141,5 +136,14 @@
     <style name="StyleSourceMasterAddToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/darkest_grey</item>
     </style>
+
+    <style name="StyleIcon">
+        <item name="android:padding">12dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:layout_width">@dimen/dimen_icon_size</item>
+        <item name="android:layout_height">@dimen/dimen_icon_size</item>
+    </style>
+
 
 </resources>
