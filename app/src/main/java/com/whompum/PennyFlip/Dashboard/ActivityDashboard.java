@@ -30,6 +30,7 @@ import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Time.Ts;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
@@ -96,7 +97,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
     private void setTodayTimeLabel(){
         ((TextView)findViewById(R.id.today_date_label))
-                .setText(PennyFlipTimeFormatter.simpleDate(Timestamp.from(System.currentTimeMillis())));
+                .setText(Ts.now().simpleDate());
     }
 
     PageTitleStrips.StripClick stripClick = new PageTitleStrips.StripClick() {

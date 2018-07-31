@@ -115,7 +115,7 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
 
         public void bind(final Source data){
             this.sourceName.setText(data.getTitle());
-            this.lastUpdate.setText(Ts.getPreferentialDate(Ts.from(data.getLastUpdate())));
+            this.lastUpdate.setText(Ts.from(data.getLastUpdate()).getPreferentialDate());
             this.statistics.setText(String.valueOf(data.getPennies()));
         }
 

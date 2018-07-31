@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.format.DateTimeFormat;
 
 import java.util.concurrent.TimeUnit;
 
@@ -78,55 +79,33 @@ public class Ts {
         return date.getMinuteOfHour();
     }
 
+    public DateTime getDate() {
+        return date;
+    }
+
     public boolean isMorning(){
         return date.get(DateTimeFieldType.halfdayOfDay()) == AM;
     }
 
-    public static String getPreferentialDate(@NonNull final Ts t){
+    public String simpleTime(){
+        return DateTimeFormat.shortTime().print(getMillis());
+    }
+
+    public String simpleDate(){
+        return DateTimeFormat.mediumDate().print(getMillis());
+    }
+
+    public String getPreferentialDate(){
 
         //Returns either simpleTime, or simpleDate depending on now.
 
-        final long floor = Ts.now().getStartOfDay();
+        final long floor = getStartOfDay();
         final long ciel = floor + DAY_MILLIS;
 
-        if(t.getMillis() >= floor && t.getMillis() < ciel)
-            return simpleTime(t);
+        if(getMillis() >= floor && getMillis() < ciel)
+            return simpleTime();
 
-        return simpleDate(t);
-    }
-
-    public static String complexDate(@NonNull final Ts t){
-        return simpleDate(t) + " " + simpleTime(t);
-    }
-
-    public static String simpleTime(@NonNull final Ts t){
-
-        int h = t.getStandardHour();
-        int m = t.getMinute();
-
-        if(h == 0) h = 12;
-
-        String hour;
-        String min;
-
-        hour = (h < 10) ? "0"+h : String.valueOf(h);
-        min  =  (m < 10)  ? "0"+m  : String.valueOf(m);
-
-        return hour + ":" + min + ((t.isMorning()) ? MORNING : AFTERNOON);
-    }
-
-    public static String simpleDate(@NonNull final Ts t){
-        final int monthNum = t.getMonth();
-
-        final String month = (monthNum < 10) ? "0"+String.valueOf(monthNum) : String.valueOf(monthNum);
-
-        final int yearNum = t.getYear();
-
-        final String y = String.valueOf(yearNum);
-
-        final String year = y.substring(y.length()-2, y.length());
-
-        return month+DATE_SEP+t.getDay()+DATE_SEP+year;
+        return simpleDate();
     }
 
 }

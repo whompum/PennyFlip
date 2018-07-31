@@ -76,7 +76,7 @@ public class ActivitySourceData extends AppCompatActivity{
         ((TextView)findViewById(R.id.id_source_data_sourcename)).setText(data.getTitle());
         ((CurrencyEditText)findViewById(R.id.id_source_data_value)).setText(String.valueOf(data.getPennies()));
 
-        final String lastUpdate = getString(R.string.string_last_update) + " " + Ts.getPreferentialDate(Ts.from(data.getLastUpdate()));
+        final String lastUpdate = getString(R.string.string_last_update) + " " + Ts.from(data.getLastUpdate()).getPreferentialDate();
 
         ((TextView)findViewById(R.id.id_source_data_value_timestamp)).setText(lastUpdate);
 

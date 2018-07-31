@@ -49,7 +49,7 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
 
         final Transaction t = headerItem.getTransactions();
 
-        transactionLastUpdate.setText(Ts.getPreferentialDate(Ts.from(t.getTimestamp())));
+        transactionLastUpdate.setText(Ts.from(t.getTimestamp()).getPreferentialDate());
         transactionSource.setText(t.getTitle());
         transactionAmount.setText(String.valueOf(t.getAmount()));
 

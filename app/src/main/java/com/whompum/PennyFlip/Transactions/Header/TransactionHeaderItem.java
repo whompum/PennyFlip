@@ -22,7 +22,7 @@ public class TransactionHeaderItem implements HeaderItem {
     }
 
     public CharSequence getDate() {
-        return Ts.simpleDate(timestamp);
+        return timestamp.simpleDate();
     }
 
     public Ts getTimestamp(){
