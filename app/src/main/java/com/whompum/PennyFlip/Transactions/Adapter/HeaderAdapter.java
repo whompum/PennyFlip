@@ -16,7 +16,7 @@ import java.util.List;
  * along with day timestamps
  */
 
-public class TransactionsHeaderAdapter {
+public class HeaderAdapter {
 
 
     public static List<HeaderItem> fromList(@NonNull final List<Transaction> t){

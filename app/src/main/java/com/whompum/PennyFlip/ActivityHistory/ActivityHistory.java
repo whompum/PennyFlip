@@ -26,18 +26,13 @@ import com.whompum.PennyFlip.Data.Schemas.TransactionsSchema;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.MidnightTimestamp;
 import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transactions.Header.HeaderItem;
 import com.whompum.PennyFlip.Transactions.Header.TransactionHeaderItem;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Transactions;
 import com.whompum.PennyFlip.Transactions.Header.TransactionStickyHeaders;
-import com.whompum.PennyFlip.Transactions.Adapter.TransactionsCursorAdapter;
-import com.whompum.PennyFlip.Transactions.Adapter.TransactionsHeaderAdapter;
 
 import org.joda.time.DateTime;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -183,7 +178,7 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
     @Override
     public void onLoadFinished(Loader loader, Cursor data) {
 //        final List<Transactions> transactionsList = new TransactionsCursorAdapter(data).fromCursor();
-        //final List<HeaderItem> headerItems = TransactionsHeaderAdapter.fromList(transactionsList);
+        //final List<HeaderItem> headerItems = HeaderAdapter.fromList(transactionsList);
 
         //adapter.swapDataset(headerItems);
 
@@ -506,8 +501,6 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
 
 
     }
-
-
 
 }
 
