@@ -47,7 +47,7 @@ public class SourceDataController  implements SourceDataConsumer, Observer<Sourc
 
     @Override
     public void saveTransaction(@NonNull Transaction transaction) {
-        repo.updateSourceAmount(transaction);
+        repo.insertTransaction(transaction);
     }
 
     @Override

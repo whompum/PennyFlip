@@ -188,7 +188,7 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
     @Override
     public void onSourceCreated(@NonNull Source source) {
-        MoneyController.obtain(getContext()).insert(source);
+        MoneyController.obtain(getContext()).insertNewSource(source);
     }
 
     public void onItemSelected(@NonNull Source data){

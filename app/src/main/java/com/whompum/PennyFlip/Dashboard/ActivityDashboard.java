@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -75,15 +76,25 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         setContentView(R.layout.dashboard);
         ButterKnife.bind(this);
 
-        consumer = DashboardController.create(this, this).bindClient(this);
-
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        consumer = DashboardController.create(this).bindClient(this);
 
         initTodayFragments();
 
         setTodayTimeLabel();
 
+        Log.i("FLOW_TRACE", "onCreate()");
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("FLOW_TRACE", "onStart()");
+        consumer.bindWalletObserver(this);
+    }
+
 
     private void initTodayFragments(){
         addSpendContainer.setAdapter(new TodayFragmentAdapter(getSupportFragmentManager()));
@@ -137,6 +148,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
     @Override
     public void onWalletChanged(long pennies) {
+        Log.i("WALLET_FIX", "onWalletChanged(long)#ActivityDashboard new wallet value: " + pennies);
         value.setText(String.valueOf(pennies));
     }
 

@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
+import android.util.Log;
 
 import com.whompum.PennyFlip.Money.Source.ObservableSourceAccessor;
 import com.whompum.PennyFlip.Money.Source.Source;
@@ -14,6 +16,7 @@ import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionDao;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
+import com.whompum.PennyFlip.Time.Ts;
 
 
 public class MoneyController {
@@ -53,62 +56,64 @@ public class MoneyController {
     }
 
     private long walletValue(){
-        if(data.getValue() != null)
+
+        Log.i("WALLET_FIX", "walletValue()#MoneyController Wallet value is null: " + (data.getValue() == null) );
+
+
+        if(data.getValue() != null) {
+            Log.i("WALLET_FIX", "onChanged(Wallet)#DashboardController Wallet value: " + (data.getValue().getValue()) );
             return data.getValue().getValue();
+        }
+
+        Log.i("WALLET_FIX", "walletValue()#MoneyController Wallet value is null. Returning 0L: ");
 
         return 0L;
     }
 
 
-    public synchronized void updateWallet(final int type, final long amt){
+    public void insertNewSource(@NonNull final Source source){
 
-        long newValue = -1;
-
-        if(type == TransactionType.ADD)
-            newValue = walletValue()+amt;
-
-        if(type == TransactionType.SPEND){
-
-            newValue = walletValue() - amt;
-
-            if(newValue < 0)
-                newValue = 0L;
-
-        }
-
-        if(newValue == -1)
-            return;
-
-        updateWallet(new Wallet(newValue));
-    }
-
-    private void updateWallet(@NonNull final Wallet w){
-        new Thread(){
-            @Override
-            public void run() {
-                walletAccessor.update(w);
-            }
-        }.start();
-    }
-
-    public void insertNew(@NonNull final Source s, @NonNull final Transaction t){
-        new Thread(){
-            @Override
-            public void run() {
-                sourceAccessor.insert(s); //To avoid foreign key constraint violations, the new source should be inserted first
-                transactionAccessor.insert(t);
-            }
-        }.start();
-    }
-
-    public void insert(@NonNull final Source source){
         new Thread(){
             @Override
             public void run() {
                 sourceAccessor.insert(source);
             }
         }.start();
+
     }
+
+    public void insertNewSource(@NonNull final Source s, @NonNull final Transaction t){
+
+        new Thread(){
+            @Override
+            public void run() {
+
+                s.setPennies(t.getAmount());
+                sourceAccessor.insert(s);
+                transactionAccessor.insert(t);
+
+                updateWallet(t);
+            }
+        }.start();
+
+    }
+
+    public void insertTransaction(@NonNull final Transaction t){
+
+        new Thread(){
+            @Override
+            public void run() {
+
+                sourceAccessor.addAmount(t);
+                transactionAccessor.insert(t);
+
+                updateWallet(t);
+
+            }
+        }.start();
+
+    }
+
 
     public void deleteSource(@NonNull final String sourceId){
         new Thread(){
@@ -119,17 +124,29 @@ public class MoneyController {
         }.start();
     }
 
-    public void updateSourceAmount(@NonNull final Transaction transaction){
-        new Thread(){
-            @Override
-            public void run() {
-                sourceAccessor.addAmount(transaction);
-                transactionAccessor.insert(transaction);
-            }
-        }.start();
+    @WorkerThread
+    private synchronized void updateWallet(@NonNull final Transaction transaction){
+
+
+        long value = -1;
+
+        if(transaction.getTransactionType() == TransactionType.ADD)
+            value = walletValue()+transaction.getAmount();
+
+        else if(transaction.getTransactionType() == TransactionType.SPEND) {
+            final long newValue = walletValue() - transaction.getAmount();
+            value = (newValue < 0L) ? 0L: newValue;
+        }
+
+        if(value == -1)
+            return;
+
+        final Wallet wallet = new Wallet(value);
+
+        walletAccessor.update(wallet);
     }
 
-    public synchronized void fetchTransactions(@NonNull final Handler client,
+    public void fetchTransactions(@NonNull final Handler client,
                                                @Nullable final String sourceTitle,
                                                @Nullable final Integer transactionType,
                                                @Nullable final TimeRange range){
@@ -184,7 +201,7 @@ public class MoneyController {
     }
 
 
-    public synchronized void fetchSources(@NonNull final Handler client,
+    public void fetchSources(@NonNull final Handler client,
                                           @Nullable final String sourceId,
                                           @Nullable final Integer transactionType,
                                           final boolean searchLike){

@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.whompum.PennyFlip.Data.UserStartDate;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
@@ -21,6 +22,11 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
 
     private DashboardClient client;
 
+
+    private DashboardController(@NonNull final Context context){
+        this(context, null);
+    }
+
     /**
      *
      * @param context used to instantiate a Repo object
@@ -32,6 +38,13 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
 
         if(o != null)
             repo.getWallet().observe(o, this);
+    }
+
+    public static DashboardController create(@NonNull final Context context){
+        if(instance == null)
+            instance = new DashboardController(context);
+
+        return instance;
     }
 
     public static DashboardController create(@NonNull final Context context, @Nullable LifecycleOwner o){
@@ -47,7 +60,16 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
      return this;
     }
 
+    @Override
+    public void bindWalletObserver(@NonNull final LifecycleOwner o){
+        if(repo.getWallet().hasActiveObservers())
+            repo.getWallet().removeObservers(o);
+
+        repo.getWallet().observe(o, this);
+    }
+
     public void saveTransaction(@NonNull final SourceWrapper w, @NonNull final Transaction t){
+        /**
         //Update Wallet
         repo.updateWallet(t.getTransactionType(), t.getAmount());
 
@@ -56,11 +78,21 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
 
         //Update sourceAmount. Implicity saves the transaction
         else repo.updateSourceAmount(t);
+       **/
+
+        if(w.getTag().equals(SourceWrapper.TAG.NEW))
+            repo.insertNewSource(w.getSource(), t);
+        else
+            repo.insertTransaction(t);
+
 
     }
 
     @Override
     public void onChanged(@Nullable Wallet wallet) {
+
+        Log.i("WALLET_FIX", "onChanged(Wallet)#DashboardController Wallet is null: " + (wallet==null) );
+
         if(wallet != null)
             if(client != null)
                 client.onWalletChanged(wallet.getValue());
