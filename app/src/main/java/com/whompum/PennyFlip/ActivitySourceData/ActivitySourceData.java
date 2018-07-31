@@ -40,11 +40,13 @@ import butterknife.OnClick;
 import butterknife.OnPageChange;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-public class ActivitySourceData extends AppCompatActivity{
+public class ActivitySourceData extends AppCompatActivity implements SourceDataClient{
 
     public static final String DATA = "source.ky";
 
-    protected Source data;
+    private Source data;
+    private SourceDataConsumer server;
+
     private SourceFragmentAdapter adapter;
 
     @BindView(R.id.id_source_data_container)
@@ -61,6 +63,9 @@ public class ActivitySourceData extends AppCompatActivity{
 
         this.data = (Source) getIntent().getSerializableExtra(DATA);
 
+        server = new SourceDataController(this, this);
+        server.observeSource(data.getTitle(), this);
+
         initialize(data);
 
         adapter = new SourceFragmentAdapter(getSupportFragmentManager(), getFragments());
@@ -71,12 +76,18 @@ public class ActivitySourceData extends AppCompatActivity{
         setPageIndicator(0); //Setting Displaying the layout for the first tab
     }
 
-    //Initializes the core UI (title displya, value display, lastUpdate)
+    @Override
+    public void onSourceChanged(@NonNull Source source) {
+        this.data = source; //Will cause temporary data inconsistency issue on configuration change.
+        initialize(data);
+    }
+
+    //Initializes the core UI (title displays, value display, lastUpdate)
     private void initialize(@NonNull final Source data){
         ((TextView)findViewById(R.id.id_source_data_sourcename)).setText(data.getTitle());
         ((CurrencyEditText)findViewById(R.id.id_source_data_value)).setText(String.valueOf(data.getPennies()));
 
-        final String lastUpdate = getString(R.string.string_last_update) + " " + Ts.from(data.getLastUpdate()).getPreferentialDate();
+        final String lastUpdate = getString(R.string.string_last_update) + " " + Ts .from(data.getLastUpdate()).getPreferentialDate();
 
         ((TextView)findViewById(R.id.id_source_data_value_timestamp)).setText(lastUpdate);
 
@@ -114,20 +125,20 @@ public class ActivitySourceData extends AppCompatActivity{
     public void setPageIndicator(final int pos){
 
         if(adapter.getItem(pos) instanceof TransactionFragment) {
-            findViewById(R.id.id_transactions_label).setVisibility(View.VISIBLE);
-            findViewById(R.id.id_notes_label).setVisibility(View.GONE);
-            findViewById(R.id.id_statistics_label).setVisibility(View.GONE);
+            showIndicator(R.id.id_transactions_label, true);
+            showIndicator(R.id.id_notes_label, false);
+            showIndicator(R.id.id_statistics_label, false);
         }
         else if(adapter.getItem(pos) instanceof tempStatisticsFragment) {
-            findViewById(R.id.id_transactions_label).setVisibility(View.GONE);
-            findViewById(R.id.id_statistics_label).setVisibility(View.VISIBLE);
-            findViewById(R.id.id_notes_label ).setVisibility(View.GONE);
+            showIndicator(R.id.id_statistics_label, true);
+            showIndicator(R.id.id_transactions_label, false);
+            showIndicator(R.id.id_notes_label, false);
         }
 
         else if(adapter.getItem(pos) instanceof tempNotesFrag) {
-            findViewById(R.id.id_notes_label).setVisibility(View.VISIBLE);
-            findViewById(R.id.id_statistics_label).setVisibility(View.GONE);
-            findViewById(R.id.id_transactions_label).setVisibility(View.GONE);
+            showIndicator(R.id.id_notes_label, true);
+            showIndicator(R.id.id_statistics_label, false);
+            showIndicator(R.id.id_transactions_label, false);
         }
 
     }
@@ -205,38 +216,28 @@ public class ActivitySourceData extends AppCompatActivity{
         dialog.show();
     }
 
+    private void showIndicator(final int id, boolean show){
+        if(show)
+            findViewById(id).setVisibility(View.VISIBLE);
+        else
+            findViewById(id).setVisibility(View.INVISIBLE);
+    }
+
     private void deleteSource(){
-        MoneyController.obtain(this).deleteSource(data.getTitle());
+        server.deleteSource(data.getTitle());
+        server.unObserve(this);
         finish();
     }
 
-    private PennyListener pennyListener = new PennyListener() {
-        @Override
-        public void onPenniesChange(final long l) {
-            new Handler().postDelayed(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            launchTransactionNameDialog(l);
-                        }
-                    }
-            , 500L);
-        }
-    };
 
     private void launchTransactionNameDialog(@NonNull final long pennies){
 
         new TransactionTitleDialog(this, new OnTitleListener() {
             @Override
             public void onTitleSet(@NonNull String title) {
-
-                final Transaction transaction = new Transaction(data.getTitle()
-                ,data.getTransactionType(), pennies);
-
+                final Transaction transaction = new Transaction(data.getTitle() ,data.getTransactionType(), pennies);
                 transaction.setTitle(title);
-
-                MoneyController.obtain(ActivitySourceData.this)
-                        .updateSourceAmount(transaction);
+                server.saveTransaction(transaction);
             }
         });
 
@@ -262,8 +263,22 @@ public class ActivitySourceData extends AppCompatActivity{
         findViewById(R.id.source_data_nav_container).setBackgroundColor(color);
 
         ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(
-                (data.getTransactionType() == TransactionType.ADD) ? R.drawable.ic_shape_plus_green :
+                (data.getTransactionType() == TransactionType.ADD) ? R.drawable.ic_shape_plus_green:
                 R.drawable.ic_shape_minus_red);
     }
+
+    private PennyListener pennyListener = new PennyListener() {
+        @Override
+        public void onPenniesChange(final long l) {
+            new Handler().postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            launchTransactionNameDialog(l);
+                        }
+                    }
+                    , 500L);
+        }
+    };
 
 }
