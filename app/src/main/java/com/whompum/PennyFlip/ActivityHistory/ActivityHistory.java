@@ -103,7 +103,7 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
          * to the TimePicker, the month of Dec is 11, and January is 0
          */
 
-        final RecyclerView.ItemDecoration decoration = new TransactionStickyHeaders(this);
+        final RecyclerView.ItemDecoration decoration = new TransactionStickyHeaders(this, 0, 0);
         transactionList.addItemDecoration(decoration);
 
         initializeTimeRange(); //Initializes the TimeRange Spinner

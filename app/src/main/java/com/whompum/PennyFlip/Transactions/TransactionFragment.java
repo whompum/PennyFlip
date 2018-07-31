@@ -94,7 +94,7 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
         this.transactionsList = layout.findViewById(R.id.id_transaction_container);
         this.transactionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         this.transactionsList.setAdapter(adapter);
-        this.transactionsList.addItemDecoration(new TransactionStickyHeaders(this, highlightDark));
+        this.transactionsList.addItemDecoration(new TransactionStickyHeaders(this, highlightDark, highlight));
 
     return layout;
     }

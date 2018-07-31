@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,25 +22,27 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
     private View header;
     private Rect headerRect = new Rect();
 
-    private int bgColor = -1;
-    private int sColor = Color.GRAY;
+    private int bgColor;
+    private int sColor;
 
     private ArgbEvaluator evaluator = new ArgbEvaluator();
 
     private StickyData stickyData;
 
-    public TransactionStickyHeaders(final StickyData stickyData){
-        this.stickyData = stickyData;
-    }
-    public TransactionStickyHeaders(final StickyData stickyData, final int bgColor){
+    public TransactionStickyHeaders(final StickyData stickyData, final int bgColor, final int sColor){
         this.stickyData = stickyData;
         this.bgColor = bgColor;
+        this.sColor = sColor;
     }
 
 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
+
+        final RecyclerView.ViewHolder recycled = parent.getRecycledViewPool().getRecycledView(TransactionListAdapter.HEADER);
+        if(recycled != null)
+            recycled.itemView.setBackgroundColor(sColor);
 
         if(parent.getChildCount() < 2) //We can't use headers if there's no data to head...
             return;
@@ -81,33 +84,63 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
         stickyData.bindHeader(header, child);
     }
 
+    private View nextHeader;
+    private View lastHeader;
+
+    private float nextHeaderStartY;
+    private float lastHeaderStartY;
 
     private void animateColor(final RecyclerView v){
 
-        final TransactionListAdapter adapter = (TransactionListAdapter) v.getAdapter();
+        initNextHeader(v);
 
+        if(nextHeader == null) return;
+
+        //0F - 1F percentage of track distanceTraveled
+        float colorDelta = 1;
+
+        if(nextHeaderStartY != 0)
+            colorDelta = nextHeader.getTop() / nextHeaderStartY;
+
+        final int color = (Integer) evaluator.evaluate(colorDelta, bgColor, sColor);
+        nextHeader.setBackgroundColor(color);
+    }
+
+    private void initNextHeader(@NonNull final RecyclerView v){
         /**
          * Ask the layout manager which view is at the position,
          * relative to the current first visible item, of the next visibly displaying
          * Header item.
          */
-        final View localHeader = v.getLayoutManager().findViewByPosition(
-            adapter.getNextHeaderItemPos(
-                v.getChildAdapterPosition(
-                    v.getChildAt(0)
-                )
-            )
-        );
 
-        if(localHeader == null) return;
+        View newHeader = null; //Newly found Header. May already be the one we want.
 
-        final int colorDelta = localHeader.getBottom() - v.getScrollY();
+        try {
+            newHeader = v.getLayoutManager().findViewByPosition(
+                    ((TransactionListAdapter) v.getAdapter()).getNextHeaderItemPos(
+                            v.getChildAdapterPosition(
+                                    v.getChildAt(0)
+                            )
+                    )
+            );
+        }catch (ClassCastException e){
+            Log.e("TransactionStickyHeader", "The adapter of the recycler view isn't an instance of TransactionListAdapter :o");
+        }
 
-        final int color = (Integer) evaluator.evaluate(colorDelta, bgColor, sColor);
-        localHeader.setBackgroundColor(color);
+        if(isNewheader(newHeader))
+            if((nextHeader = newHeader) != null)
+                nextHeaderStartY = nextHeader.getTop();
+
     }
 
+    private boolean isNewheader(@Nullable final View h){
+        /**
+         * A header is new IF, one hasn't already been set,
+         * or if the one that is currently set is different then the new one.
+         */
 
+        return (nextHeader != h);
+    }
 
     /**
      *
