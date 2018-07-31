@@ -83,15 +83,11 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         initTodayFragments();
 
         setTodayTimeLabel();
-
-        Log.i("FLOW_TRACE", "onCreate()");
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("FLOW_TRACE", "onStart()");
         consumer.bindWalletObserver(this);
     }
 
