@@ -1,15 +1,19 @@
 package com.whompum.PennyFlip.Transactions.Header;
 
 
+import android.animation.ArgbEvaluator;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
 
 
 public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
@@ -18,6 +22,9 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
     private Rect headerRect = new Rect();
 
     private int bgColor = -1;
+    private int sColor = Color.GRAY;
+
+    private ArgbEvaluator evaluator = new ArgbEvaluator();
 
     private StickyData stickyData;
 
@@ -30,7 +37,6 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
     }
 
 
-
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
@@ -40,15 +46,16 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
         if(header == null)
             makeHeader(parent);
+        else
+            animateColor(parent);
 
         bind(parent.getChildAt(0));
 
-
         int deltaY;
 
-        if(isHeader(parent, 1)){
+        sColor = parent.getContext().getResources().getColor(R.color.milk_white);
 
-            parent.getChildAt(1).setBackgroundColor(Color.BLACK);
+        if(isHeader(parent, 1)){
 
             if(parent.getChildAt(1).getTop() <= headerRect.bottom){
                 deltaY = parent.getChildAt(1).getTop();
@@ -74,6 +81,34 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
         stickyData.bindHeader(header, child);
     }
 
+
+    private void animateColor(final RecyclerView v){
+
+        final TransactionListAdapter adapter = (TransactionListAdapter) v.getAdapter();
+
+        /**
+         * Ask the layout manager which view is at the position,
+         * relative to the current first visible item, of the next visibly displaying
+         * Header item.
+         */
+        final View localHeader = v.getLayoutManager().findViewByPosition(
+            adapter.getNextHeaderItemPos(
+                v.getChildAdapterPosition(
+                    v.getChildAt(0)
+                )
+            )
+        );
+
+        if(localHeader == null) return;
+
+        final int colorDelta = localHeader.getBottom() - v.getScrollY();
+
+        final int color = (Integer) evaluator.evaluate(colorDelta, bgColor, sColor);
+        localHeader.setBackgroundColor(color);
+    }
+
+
+
     /**
      *
      * @param parent
@@ -83,7 +118,6 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
         final View header = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.transaction_item_header, parent, false);
-
 
         final int parentPaddingHor = parent.getPaddingStart() + parent.getPaddingRight();
         final int parentPaddingVer = parent.getPaddingTop() + parent.getPaddingBottom();

@@ -2,7 +2,6 @@ package com.whompum.PennyFlip.Transactions;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,22 +12,27 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
+import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Adapter.TransactionsHeaderAdapter;
+import com.whompum.PennyFlip.Transactions.Adapter.HeaderAdapter;
 import com.whompum.PennyFlip.Transactions.Header.HeaderItem;
 import com.whompum.PennyFlip.Transactions.Header.TransactionHeaderItem;
 import com.whompum.PennyFlip.Transactions.Header.TransactionStickyHeaders;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bryan on 12/30/2017.
@@ -79,6 +83,7 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
         this.adapter = new TransactionListAdapter(getContext());
         MoneyController.obtain(getContext())
                 .fetchTransactions(resultReceiver, sourceId, null, null);
+
     }
 
     @Nullable
@@ -90,9 +95,6 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
         this.transactionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         this.transactionsList.setAdapter(adapter);
         this.transactionsList.addItemDecoration(new TransactionStickyHeaders(this, highlightDark));
-
-
-
 
     return layout;
     }
@@ -111,10 +113,10 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
     public void onChanged(@Nullable List<Transaction> transactions) {
 
         if(transactions != null && transactions.size() > 0) {
-            this.dataSet = TransactionsHeaderAdapter.fromList(transactions);
 
-            if (this.dataSet != null)
-                adapter.swapDataset(dataSet);
+            Collections.sort(transactions, new DescendingSort());
+
+            adapter.swapDataset(HeaderAdapter.fromList(transactions));
 
             toggleNoTransactionsDisplay(false);
 

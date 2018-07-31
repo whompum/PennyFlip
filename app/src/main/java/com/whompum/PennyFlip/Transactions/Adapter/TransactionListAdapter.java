@@ -74,6 +74,17 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return null;
     }
 
+    public int getNextHeaderItemPos(final int pos){
+        //Return the display position of the next Header compared to the current pos, or NO_POS
+
+        if(dataSet != null && pos < dataSet.size() - 1)
+            for(int a = pos+1; a < dataSet.size(); a++)
+                if(dataSet.get(a) instanceof TransactionHeaderItem)
+                    return a;
+
+        return -1;
+    }
+
     public void swapDataset(@Nullable final List<HeaderItem> transactions){
           if(transactions == null) return;
 

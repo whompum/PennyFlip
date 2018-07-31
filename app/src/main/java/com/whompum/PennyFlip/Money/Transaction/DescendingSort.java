@@ -1,9 +1,5 @@
 package com.whompum.PennyFlip.Money.Transaction;
 
-
-
-import com.whompum.PennyFlip.Money.Transaction.Transaction;
-
 import java.util.Comparator;
 
 public class DescendingSort implements Comparator<Transaction> {

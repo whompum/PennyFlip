@@ -2,11 +2,11 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="@dimen/dimen_padding_ver_base"
-    android:paddingBottom="@dimen/dimen_padding_ver_base"
+    android:paddingTop="@dimen/dimen_padding_ver_small"
+    android:paddingBottom="@dimen/dimen_padding_ver_small"
     android:paddingStart="@dimen/dimen_padding_hor_base"
     android:paddingEnd="@dimen/dimen_padding_hor_base"
-    android:background="@color/milk_white"
+    android:background="@color/dark_grey"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
