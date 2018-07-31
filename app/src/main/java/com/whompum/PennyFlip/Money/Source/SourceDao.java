@@ -24,7 +24,7 @@ public abstract class SourceDao extends SourceAccessor{
     @Query("SELECT * FROM Source where transactionType = :type") // Similar to Transaction
     public abstract List<Source> fetch(@IntRange(from = TransactionType.ADD, to = TransactionType.CALLIBRATE) final int type);
 
-    @Query("SELECT  * FROM Source WHERE title = :title AND transactionType = :type")
+    @Query("SELECT  * FROM Source WHERE title LIKE :title AND transactionType = :type")
     public abstract List<Source> fetch(@NonNull final String title, final int type);
 
 

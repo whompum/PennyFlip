@@ -16,6 +16,9 @@ public abstract class ObservableSourceAccessor extends SourceAccessor {
     @Query("SELECT * FROM Source") //ALL
     public abstract LiveData<List<Source>> fetch(); //LiveData so it can be observed
 
+    @Query("SELECT * FROM SOURCE WHERE title = :title")
+    public abstract LiveData<Source> fetchExact(@NonNull final String title);
+
     @Query("SELECT * FROM Source WHERE title like :title AND transactionType = :type") //Similar to Title
     public abstract LiveData<List<Source>> fetchNonExact(@NonNull final String title, final int type);
 

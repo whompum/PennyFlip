@@ -281,7 +281,7 @@ public class MoneyController {
                         client.sendMessage(m);
                         return;
                     }else{
-                        m.obj = a.fetch(sourceId);
+                        m.obj = a.fetchExact(sourceId);
                         client.sendMessage(m);
                         return;
                     }
