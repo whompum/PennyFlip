@@ -294,10 +294,12 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
 
         final Transaction transaction = new Transaction(item.getSourceId(), transactionType, pennies);
 
-        final String transName = transactionNameEditor.getText().toString();
+        String transName = transactionNameEditor.getText().toString();
 
-        if( !TextUtils.isEmpty(transName) )
-            transaction.setTitle(transName);
+        if( TextUtils.isEmpty(transName) )
+            transName = getString(R.string.string_default_transaction_name);
+
+        transaction.setTitle(transName);
 
         transaction.setTimestamp(timestamp);
 
