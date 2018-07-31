@@ -220,7 +220,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         if(show)
             findViewById(id).setVisibility(View.VISIBLE);
         else
-            findViewById(id).setVisibility(View.INVISIBLE);
+            findViewById(id).setVisibility(View.GONE);
     }
 
     private void deleteSource(){
