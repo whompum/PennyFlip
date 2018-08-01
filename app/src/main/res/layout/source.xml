@@ -43,7 +43,7 @@
         android:background="@color/light_green"
         android:layout_below="@id/source_data_header"
         android:paddingStart="@dimen/dimen_padding_hor_base"
-        android:paddingBottom="@dimen/dimen_padding_ver_x_large"
+        android:paddingBottom="@dimen/dimen_padding_ver_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
