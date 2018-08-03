@@ -25,7 +25,7 @@
 
 
     <android.support.v7.widget.AppCompatImageButton
-        app:srcCompat="@drawable/blub"
+        app:srcCompat="@drawable/icon_calendar_grey_small"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
