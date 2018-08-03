@@ -17,7 +17,7 @@
         <android.support.v7.widget.AppCompatImageButton
             style="@style/StyleIcon"
             android:id="@id/id_up_navigation"
-            app:srcCompat="@drawable/ic_svg_chevron"/>
+            app:srcCompat="@drawable/icon_arrow_left"/>
 
         <TextView
             tools:text="Source Name"
@@ -32,7 +32,7 @@
         <android.support.v7.widget.AppCompatImageButton
             style="@style/StyleIcon"
             android:id="@+id/ic_delete_source"
-            app:srcCompat="@drawable/ic_material_trash_icon"
+            app:srcCompat="@drawable/icon_trash"
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
@@ -89,7 +89,7 @@
             android:id="@+id/id_nav_transactions">
         <android.support.v7.widget.AppCompatImageView
             style="@style/StyleSourceDataTabIcon"
-            app:srcCompat="@drawable/ic_purse"/>
+            app:srcCompat="@drawable/icon_purse"/>
             <TextView
                 style="@style/StyleSourceDataTabLabel"
                 android:text="@string/string_transaction"
@@ -101,7 +101,7 @@
             android:id="@+id/id_nav_statistics">
         <android.support.v7.widget.AppCompatImageView
             style="@style/StyleSourceDataTabIcon"
-            app:srcCompat="@drawable/ic_graph_with_balls_white"/>
+            app:srcCompat="@drawable/icon_statistics"/>
             <TextView
                 style="@style/StyleSourceDataTabLabel"
                 android:text="@string/string_statistics"
@@ -113,7 +113,7 @@
             android:id="@+id/id_nav_notes">
         <android.support.v7.widget.AppCompatImageView
             style="@style/StyleSourceDataTabIcon"
-            app:srcCompat="@drawable/ic_pencil"/>
+            app:srcCompat="@drawable/icon_pencil"/>
             <TextView
                 style="@style/StyleSourceDataTabLabel"
                 android:text="@string/string_notes"

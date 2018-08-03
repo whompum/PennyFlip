@@ -21,12 +21,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Notes.Model.Note;
 import com.whompum.PennyFlip.Notes.NotesListFragment;
-import com.whompum.PennyFlip.Notes.Persistence.NotesController;
 import com.whompum.PennyFlip.OnItemSelected;
 import com.whompum.PennyFlip.PennyListener;
 import com.whompum.PennyFlip.R;
@@ -310,8 +308,8 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         color(highlight);
 
         ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(
-                (data.getTransactionType() == TransactionType.ADD) ? R.drawable.ic_shape_plus_green:
-                R.drawable.ic_shape_minus_red);
+                (data.getTransactionType() == TransactionType.ADD) ? R.drawable.graphic_plus_green :
+                R.drawable.graphic_minus_red);
     }
 
     private void color(final int clr/**Resolved Color*/){

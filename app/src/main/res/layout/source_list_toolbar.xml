@@ -16,7 +16,7 @@
     <android.support.v7.widget.AppCompatImageButton
         style="@style/StyleIcon"
         android:id="@id/id_up_navigation"
-        app:srcCompat="@drawable/ic_svg_chevron" />
+        app:srcCompat="@drawable/icon_arrow_left" />
 
     <TextView
         android:id="@+id/positioning_dummy_source_label"
@@ -32,7 +32,7 @@
     <android.support.v7.widget.AppCompatImageButton
         style="@style/StyleIcon"
         android:id="@id/id_source_master_toolbar_search"
-        app:srcCompat="@drawable/ic_svg_search"
+        app:srcCompat="@drawable/icon_search"
         android:layout_alignParentEnd="true" />
 
     <android.support.v7.widget.AppCompatImageButton

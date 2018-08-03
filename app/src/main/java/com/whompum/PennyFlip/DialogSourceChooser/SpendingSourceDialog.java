@@ -14,7 +14,7 @@ public class SpendingSourceDialog extends SourceDialog {
 
     {
         HEADER_COLOR = R.color.light_red;
-        FAB_SRC = R.drawable.ic_shape_minus_red;
+        FAB_SRC = R.drawable.graphic_minus_red;
         transactionType = TransactionType.SPEND;
     }
 

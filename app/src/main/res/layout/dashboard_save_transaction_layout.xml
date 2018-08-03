@@ -68,7 +68,7 @@
         <EditText
             android:layout_marginTop="@dimen/dimen_padding_ver_large"
             android:layout_below="@id/id_source_dialog_time_display"
-            android:drawableStart="@drawable/ic_svg_search_dark"
+            android:drawableStart="@drawable/icon_search_grey"
             android:background="@drawable/shape_oval_white"
             android:drawablePadding="8dp"
             android:paddingTop="@dimen/dimen_padding_ver_base"

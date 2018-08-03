@@ -16,7 +16,8 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.AppCompatImageButton
-            app:srcCompat="@drawable/ic_history"
+            app:srcCompat="@drawable/icon_calendar"
+            android:tint="@color/dark_grey"
             android:id="@id/id_nav_menu_history"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="6dp"
@@ -41,7 +42,7 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.AppCompatImageButton
-            app:srcCompat="@drawable/ic_graph_with_balls"
+            app:srcCompat="@drawable/icon_statistics_dark"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:id="@id/id_nav_menu_statistics"
             android:padding="6dp"
@@ -67,9 +68,10 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.AppCompatImageButton
-            app:srcCompat="@drawable/ic_svg_money"
+            app:srcCompat="@drawable/icon_source"
             android:id="@id/id_nav_menu_source"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@color/dark_grey"
             android:padding="12dp"
             android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal"

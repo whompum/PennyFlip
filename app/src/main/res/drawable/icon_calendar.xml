@@ -1,18 +1,21 @@
-<vector android:height="24dp" android:viewportHeight="177.16534"
-    android:viewportWidth="177.16534" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillAlpha="1" android:fillColor="#666666"
+<vector android:height="@dimen/dimen_icon_content_size"
+    android:viewportHeight="177.16534"
+    android:viewportWidth="177.16534"
+    android:width="@dimen/dimen_icon_content_size"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillAlpha="1" android:fillColor="@color/white"
         android:pathData="m61.59,61.21c-5.01,0 -9.05,4.04 -9.05,9.05l0,60.33c0,5.01 4.03,9.05 9.05,9.05l62.69,0c5.01,0 9.05,-4.04 9.05,-9.05l0,-60.33c0,-5.01 -4.04,-9.05 -9.05,-9.05l-62.69,0zM62.96,79.59 L122.9,79.59 122.9,130.24 62.96,130.24 62.96,79.59z"
         android:strokeAlpha="1" android:strokeColor="#00000000"
         android:strokeLineCap="butt" android:strokeLineJoin="round" android:strokeWidth="10"/>
-    <path android:fillAlpha="1" android:fillColor="#666666"
+    <path android:fillAlpha="1" android:fillColor="@color/white"
         android:pathData="M116.17,102.41l-21.22,0l0,21.22l21.22,0z"
         android:strokeAlpha="1" android:strokeColor="#00000000"
         android:strokeLineCap="butt" android:strokeLineJoin="round" android:strokeWidth="10"/>
-    <path android:fillAlpha="1" android:fillColor="#666666"
+    <path android:fillAlpha="1" android:fillColor="@color/white"
         android:pathData="M81.04,53.06l-11.02,0l0,21.22l11.02,0z"
         android:strokeAlpha="1" android:strokeColor="#00000000"
         android:strokeLineCap="butt" android:strokeLineJoin="round" android:strokeWidth="10"/>
-    <path android:fillAlpha="1" android:fillColor="#666666"
+    <path android:fillAlpha="1" android:fillColor="@color/white"
         android:pathData="M116.94,53.06l-11.02,0l0,21.22l11.02,0z"
         android:strokeAlpha="1" android:strokeColor="#00000000"
         android:strokeLineCap="butt" android:strokeLineJoin="round" android:strokeWidth="10"/>

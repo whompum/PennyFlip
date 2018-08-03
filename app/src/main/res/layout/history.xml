@@ -22,7 +22,7 @@
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@id/id_up_navigation"
-            app:srcCompat="@drawable/ic_svg_chevron"
+            app:srcCompat="@drawable/icon_arrow_left"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_width="48dp"
             android:layout_height="48dp" />

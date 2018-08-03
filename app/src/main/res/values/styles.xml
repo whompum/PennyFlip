@@ -27,7 +27,7 @@
 
     <!--PennyDialog styles-->
     <style name="StylePennyDialogAdd" parent="PennyDialog">
-        <item name="pennyFabSource">@drawable/ic_shape_plus_green</item>
+        <item name="pennyFabSource">@drawable/graphic_plus_green</item>
         <item name="pennyTitleText">@string/string_add_dialog</item>
         <item name="pennyTitleTextColor">@color/white</item>
         <item name="pennyValueCardColor">@color/light_green</item>
@@ -35,7 +35,7 @@
     </style>
 
     <style name="StylePennyDialogMinus" parent="PennyDialog">
-        <item name="pennyFabSource">@drawable/ic_shape_minus_red</item>
+        <item name="pennyFabSource">@drawable/graphic_minus_red</item>
         <item name="pennyTitleText">@string/string_minus_dialog</item>
         <item name="pennyValueCardColor">@color/light_red</item>
         <item name="pennyNumbersCardColor">@color/darkest_grey</item>
@@ -46,7 +46,7 @@
         <item name="fabSize">normal</item>
         <item name="backgroundTint">@color/white</item>
         <item name="android:scaleType">center</item>
-        <item name="android:src">@drawable/ic_shape_plus_green</item>
+        <item name="android:src">@drawable/graphic_plus_green</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:id">@id/id_fab</item>
@@ -54,7 +54,7 @@
 
     <style name="StyleDashboardMinusFab" parent="StyleDashboardAddFab">
         <item name="fabSize">mini</item>
-        <item name="android:src">@drawable/ic_shape_minus_red</item>
+        <item name="android:src">@drawable/graphic_minus_red</item>
     </style>
 
 

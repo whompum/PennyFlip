@@ -26,7 +26,7 @@
 
     <android.support.v7.widget.AppCompatImageButton
         style="@style/StyleIcon"
-        app:srcCompat="@drawable/ic_arrow_down"
+        app:srcCompat="@drawable/icon_arrow_down"
         android:id="@+id/note_list_expand"
         android:tint="@color/dark_grey"
         app:layout_constraintEnd_toEndOf="parent"

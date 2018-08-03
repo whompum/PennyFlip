@@ -29,8 +29,6 @@ import com.whompum.PennyFlip.DialogSourceChooser.AddSourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
-import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
-import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Time.Ts;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
@@ -124,10 +122,10 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         strips.setPosition(p);
 
         if(p == 0)
-            ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(R.drawable.ic_shape_plus_green);
+            ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(R.drawable.graphic_plus_green);
 
         else if(p == 1)
-            ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(R.drawable.ic_shape_minus_red);
+            ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(R.drawable.graphic_minus_red);
 
     }
 

@@ -1,6 +1,5 @@
 package com.whompum.PennyFlip.Notes.Adapter;
 
-import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -126,11 +125,11 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
 
                             if(wrapper.isExpanded()) {
                                 view.setVisibility(View.GONE);
-                                toggle.setImageResource(R.drawable.ic_arrow_down);
+                                toggle.setImageResource(R.drawable.icon_arrow_down);
                             }
                             else {
                                 view.setVisibility(View.VISIBLE);
-                                toggle.setImageResource(R.drawable.ic_arrow_up);
+                                toggle.setImageResource(R.drawable.icon_arrow_up);
                             }
                             wrapper.toggle();
 
@@ -172,7 +171,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
             //If the content is expanded, but we don't need it to, then close.
             if(!wrapper.isExpanded() && content.getVisibility() == View.VISIBLE) {
                 ((ImageButton)itemView.findViewById(R.id.note_list_expand))
-                        .setImageResource(R.drawable.ic_arrow_down);
+                        .setImageResource(R.drawable.icon_arrow_down);
 
                 content.setVisibility(View.GONE);
             }

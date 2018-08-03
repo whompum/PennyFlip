@@ -14,7 +14,7 @@ public class AddSourceDialog extends SourceDialog {
 
     {
         HEADER_COLOR = R.color.light_green;
-        FAB_SRC = R.drawable.ic_shape_plus_green;
+        FAB_SRC = R.drawable.graphic_plus_green;
         transactionType = TransactionType.ADD;
     }
 

@@ -119,7 +119,7 @@
 
     <ImageView
         android:id="@+id/id_source_type_display"
-        android:src="@drawable/ic_source_plus"
+        android:src="@drawable/graphic_source_plus"
         android:layout_width="56dp"
         android:layout_height="56dp" />
 

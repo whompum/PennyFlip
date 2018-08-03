@@ -62,8 +62,8 @@ public class NewSourceDialog extends Dialog implements View.OnClickListener {
 
         int icon = -1;
 
-        if(transactionType == TransactionType.ADD) icon = R.drawable.ic_source_plus;
-        if(transactionType == TransactionType.SPEND) icon = R.drawable.ic_source_minus;
+        if(transactionType == TransactionType.ADD) icon = R.drawable.graphic_source_plus;
+        if(transactionType == TransactionType.SPEND) icon = R.drawable.graphic_source_minus;
 
         ((ImageView) content.findViewById(R.id.id_source_type_display)).setImageResource(icon);
 
