@@ -56,11 +56,11 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
         if(t.getTransactionType() == TransactionType.ADD){
             transactionSource.setTextColor(addColor);
             transactionAmount.setTextColor(addColor);
-            transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.drawable_shape_circle_green,0,0,0);
+            transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graphic_transaction_add,0,0,0);
         }else if(t.getTransactionType() == TransactionType.SPEND){
             transactionSource.setTextColor(spendColor);
             transactionAmount.setTextColor(spendColor);
-            transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.drawable_shape_circle_red,0,0,0);
+            transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graphic_transaction_spend,0,0,0);
         }
     }
 }
