@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@id/id_dashboard_callibrate"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/drawable_shape_callibrate"
+        app:srcCompat="@drawable/icon_callibrate"
         android:scaleType="centerCrop"
         android:padding="12dp"
         android:layout_margin="@dimen/dimen_padding_hor_base"
