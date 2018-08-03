@@ -37,7 +37,7 @@
 
     <android.support.v7.widget.AppCompatImageButton
         style="@style/StyleIcon"
-        app:srcCompat="@drawable/drawable_shape_grid"
+        app:srcCompat="@drawable/icon_sort"
         android:padding="14dp"
         android:id="@id/id_source_list_toolbar_sort"
         android:layout_toStartOf="@id/id_source_master_toolbar_search" />

@@ -20,7 +20,7 @@
         android:paddingStart="@dimen/dimen_padding_hor_base"
         android:paddingEnd="@dimen/dimen_padding_hor_base"
         android:id="@id/id_source_dialog_header"
-        android:background="@drawable/drawable_shape_background_flat"
+        android:background="@drawable/background_rounded_rect_green"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -21,7 +21,8 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:background="@drawable/drawable_shape_oval"
+        android:background="@drawable/background_oval_blue"
+
         android:orientation="horizontal"
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
