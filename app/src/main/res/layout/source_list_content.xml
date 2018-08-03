@@ -9,20 +9,15 @@
 <android.support.v7.widget.RecyclerView
 
     tools:listitem="@layout/source_list_content_item"
-    android:id="@id/id_list"
+    android:id="@id/id_global_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 
 
     <android.support.design.widget.FloatingActionButton
         style="@style/StyleDashboardAddFab"
-        android:id="@id/id_fab"
         android:src="@drawable/graphic_plus_orange"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/dimen_screen_padding"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_margin="@dimen/dimen_screen_padding"/>
 
 </FrameLayout>

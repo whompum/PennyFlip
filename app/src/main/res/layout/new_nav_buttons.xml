@@ -44,7 +44,7 @@
         <android.support.v7.widget.AppCompatImageButton
             app:srcCompat="@drawable/icon_statistics_dark"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:id="@id/id_nav_menu_statistics"
+            android:id="@id/id_nav_statistics"
             android:padding="6dp"
             android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal"
@@ -69,7 +69,7 @@
 
         <android.support.v7.widget.AppCompatImageButton
             app:srcCompat="@drawable/icon_source"
-            android:id="@id/id_nav_menu_source"
+            android:id="@id/id_nav_source"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="@color/dark_grey"
             android:padding="12dp"

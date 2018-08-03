@@ -16,7 +16,7 @@
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
         style="@style/StyleCurrentEditTextLarge"
-        android:id="@+id/total_transaction_value_display"
+        android:id="@id/id_global_total_display"
         android:textColor="@color/darkest_grey"
         android:layout_marginTop="24dp"
         android:layout_marginStart="@dimen/dimen_padding_hor_large"
@@ -28,7 +28,7 @@
     <TextView
         android:text="@string/string_transaction"
         android:textSize="@dimen/dimen_text_mediano"
-        android:layout_above="@id/id_today_transaction_list"
+        android:layout_above="@id/id_global_list"
         android:layout_marginBottom="16dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_alignParentBottom="true"
-        android:id="@id/id_today_transaction_list"
+        android:id="@id/id_global_list"
         android:paddingBottom="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

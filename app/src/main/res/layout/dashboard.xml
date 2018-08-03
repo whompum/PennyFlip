@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <android.support.constraint.Guideline
         app:layout_constraintGuide_percent="0.5"
-        android:id="@+id/local_guide_dashboard_half"
+        android:id="@+id/dashboard_local_guide_half"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"/>
 
     <View
-        app:layout_constraintBottom_toBottomOf="@id/local_guide_dashboard_half"
+        app:layout_constraintBottom_toBottomOf="@id/dashboard_local_guide_half"
         android:id="@+id/dashboard_colored_background"
         android:background="@color/light_green"
         android:layout_width="wrap_content"
@@ -23,7 +24,7 @@
         style="@style/StyleCurrentEditTextLarge"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@id/id_dashboard_value"
+        android:id="@id/id_global_total_display"
         android:textStyle="normal"
         android:layout_margin="24dp"
         android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
     <android.support.v7.widget.AppCompatImageButton
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@id/id_dashboard_callibrate"
+        android:id="@+id/dashboard_local_calibrate"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/icon_callibrate"
         android:scaleType="centerCrop"
@@ -48,7 +49,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias=".5"
-        android:id="@id/id_fragment_container"
+        android:id="@id/id_global_pager"
         android:minHeight="185dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_today_transaction_height"/>
@@ -56,9 +57,9 @@
     <LinearLayout
         tools:layout_width="175dp"
         tools:layout_height="45dp"
-        app:layout_constraintBottom_toTopOf="@id/id_fragment_container"
+        app:layout_constraintBottom_toTopOf="@id/id_global_pager"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@id/id_strips_indicator"
+        android:id="@id/id_global_strips_indicator"
         android:orientation="horizontal"
         android:layout_marginStart="64dp"
         android:layout_marginBottom="@dimen/dimen_padding_ver_base"
@@ -66,7 +67,7 @@
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/dashboard_local_today_display"
         style="@style/StyleDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,30 +77,31 @@
         android:textSize="@dimen/dimen_text_bigboi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/id_fragment_container" />
+        app:layout_constraintTop_toBottomOf="@id/id_global_pager" />
 
     <TextView
-        android:id="@+id/today_date_label"
+        tools:text="Thursday, 26th"
         style="@style/StyleDateLabel"
+        android:id="@id/id_global_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_padding_ver_base"
-        android:text="Thursday, 26th"
         android:textSize="@dimen/dimen_text_normal"
         android:textColor="@color/dark_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
+        app:layout_constraintTop_toBottomOf="@id/dashboard_local_today_display" />
 
     <View
-        app:layout_constraintTop_toTopOf="@id/id_fragment_container"
-        android:id="@+id/id_local_add_fab_align_view"
+        app:layout_constraintTop_toTopOf="@id/id_global_pager"
+        android:id="@+id/dashboard_local_fab_align_view"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <android.support.design.widget.FloatingActionButton style="@style/StyleDashboardAddFab"
-        app:layout_constraintTop_toTopOf="@id/id_local_add_fab_align_view"
-        app:layout_constraintBottom_toBottomOf="@id/id_local_add_fab_align_view"
+    <android.support.design.widget.FloatingActionButton
+        style="@style/StyleDashboardAddFab"
+        app:layout_constraintTop_toTopOf="@id/dashboard_local_fab_align_view"
+        app:layout_constraintBottom_toBottomOf="@id/dashboard_local_fab_align_view"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/dimen_padding_hor_large"/>
 

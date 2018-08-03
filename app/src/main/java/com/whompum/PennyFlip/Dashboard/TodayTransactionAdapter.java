@@ -68,9 +68,9 @@ public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransacti
         public TodayHolder(final View layout){
             super(layout);
 
-            timeStamp = layout.findViewById(R.id.id_transaction_timestamp);
-            sourceName = layout.findViewById(R.id.id_transaction_source);
-            transactionAmount = layout.findViewById(R.id.id_transaction_value);
+            timeStamp = layout.findViewById(R.id.id_global_timestamp);
+            sourceName = layout.findViewById(R.id.id_global_title);
+            transactionAmount = layout.findViewById(R.id.id_global_total_display);
         }
 
         public void bind(final Transaction item){

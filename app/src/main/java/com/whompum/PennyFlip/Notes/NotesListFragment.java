@@ -33,7 +33,7 @@ public class NotesListFragment extends Fragment implements NotesListAdapterClien
 
     public static final int LAYOUT = R.layout.notes_list;
 
-    @BindView(R.id.notes_list_container) protected RecyclerView container;
+    @BindView(R.id.id_global_list) protected RecyclerView container;
 
     private OnItemSelected<Note> client;
 

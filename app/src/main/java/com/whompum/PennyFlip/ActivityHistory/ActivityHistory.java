@@ -81,21 +81,21 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
 
-        transactionList = findViewById(R.id.id_history_recycler);
+        transactionList = findViewById(R.id.id_global_list);
         transactionList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         adapter = new TransactionListAdapter(this);
 
         transactionList.setAdapter(adapter);
 
-        findViewById(R.id.id_up_navigation).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.id_global_nav).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavUtils.navigateUpFromSameTask(ActivityHistory.this);
             }
         });
 
-        pickerTimeline = findViewById(R.id.id_history_time_picker);
+        pickerTimeline = findViewById(R.id.local_history_date_selector);
         pickerTimeline.setFollowScroll(false);
 
         /**
@@ -130,9 +130,9 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
         timeranges.setDropDownViewResource(R.layout.layout_timerange_item);
 
 
-        ((Spinner)findViewById(R.id.id_history_time_range)).setAdapter(timeranges);
-        ((Spinner)findViewById(R.id.id_history_time_range)).setSelection(THIS_WEEK);
-        ((Spinner)findViewById(R.id.id_history_time_range)).setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+        ((Spinner)findViewById(R.id.local_history_time_range_selector)).setAdapter(timeranges);
+        ((Spinner)findViewById(R.id.local_history_time_range_selector)).setSelection(THIS_WEEK);
+        ((Spinner)findViewById(R.id.local_history_time_range_selector)).setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -464,8 +464,8 @@ public class ActivityHistory extends AppCompatActivity implements TransactionSti
         final TransactionHeaderItem headerItem = adapter.getLastHeader(fromPos);
 
         if(headerItem != null){
-            ((TextView)header.findViewById(R.id.id_history_transaction_header_date)).setText(headerItem.getDate());
-            ((TextView)header.findViewById(R.id.id_history_transaction_header_cuantos)).setText(headerItem.getNumTransactions());
+            ((TextView)header.findViewById(R.id.id_global_timestamp)).setText(headerItem.getDate());
+            ((TextView)header.findViewById(R.id.local_transaction_count_header)).setText(headerItem.getNumTransactions());
             bindTimelineDate(headerItem);
         }
 

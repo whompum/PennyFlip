@@ -62,19 +62,19 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     private long timestamp;
     private long pennies;
 
-    @BindView(R.id.id_fab)
+    @BindView(R.id.id_global_fab)
     protected FloatingActionButton actionFab;
 
-    @BindView(R.id.id_source_dialog_source_list)
+    @BindView(R.id.id_global_list)
     protected RecyclerView sourceList;
 
-    @BindView(R.id.id_source_dialog_total_display)
+    @BindView(R.id.id_global_total_display)
     protected CurrencyEditText totalDisplay;
 
-    @BindView(R.id.id_source_dialog_time_display)
+    @BindView(R.id.id_global_timestamp)
     protected TextView timeDisplay;
 
-    @BindView(R.id.id_source_dialog_transaction_name_editor)
+    @BindView(R.id.id_global_editor)
     protected EditText transactionNameEditor;
 
 
@@ -154,7 +154,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
         else
             headerColor = getContext().getResources().getColor(HEADER_COLOR);
 
-        layout.findViewById(R.id.id_source_dialog_header).setBackgroundColor(headerColor);
+        layout.findViewById(R.id.id_local_source_header).setBackgroundColor(headerColor);
 
         totalDisplay.setText(String.valueOf(pennies));
         timeDisplay.setText(String.valueOf(PennyFlipTimeFormatter.simpleTime(Timestamp.from(timestamp))));
@@ -260,7 +260,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
         animator.show(250L);
     }
 
-    @OnClick(R.id.id_fab)
+    @OnClick(R.id.id_global_fab)
     protected void onDone(){
 
         if(item.getTag().equals(SourceWrapper.TAG.NEW))
@@ -314,7 +314,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
         this.sourceItemSelectedListener = l;
     }
 
-    @OnTextChanged(value = R.id.id_source_dialog_search_view, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    @OnTextChanged(value = R.id.id_global_search, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onSearchEntered(final Editable editable){
 
         String s = editable.toString();

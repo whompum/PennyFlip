@@ -74,9 +74,9 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
     private Unbinder unbinder;
 
-    @BindView(R.id.id_list) protected RecyclerView list;
+    @BindView(R.id.id_global_list) protected RecyclerView list;
 
-    @BindView(R.id.id_fab) protected FloatingActionButton addFab;
+    @BindView(R.id.id_global_fab) protected FloatingActionButton addFab;
 
 
     @Override
@@ -181,7 +181,7 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
         this.intent = new Intent(getActivity(), ActivitySourceData.class);
     }
 
-    @OnClick(R.id.id_fab)
+    @OnClick(R.id.id_global_fab)
     public void launchNewSourceDialog(){
         new NewSourceDialog(getContext(), this, transactionType).show();
     }

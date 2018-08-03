@@ -101,10 +101,10 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
         public Holder(final View layout, final int highlighting){
             super(layout);
 
-            this.sourceName = layout.findViewById(R.id.id_source_master_list_source_label);
-            this.lastUpdate = layout.findViewById(R.id.id_source_master_list_source_last_update);
-            this.viewButton = layout.findViewById(R.id.id_source_master_list_source_view);
-            this.statistics = layout.findViewById(R.id.id_source_master_list_source_statistics);
+            this.sourceName = layout.findViewById(R.id.id_global_title);
+            this.lastUpdate = layout.findViewById(R.id.id_global_timestamp);
+            this.viewButton = layout.findViewById(R.id.source_list_local_select);
+            this.statistics = layout.findViewById(R.id.id_global_total_display);
 
             if(highlighting != -1)
                 statistics.setTextColor(highlighting);

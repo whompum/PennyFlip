@@ -14,14 +14,14 @@
         tools:text="@string/string_today_cap"
         style="@style/StyleDateLabel"
         android:textColor="@color/white"
-        android:id="@id/id_history_transaction_header_date"
+        android:id="@id/id_global_timestamp"
         android:gravity="center|start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         tools:text="No Transactions"
-        android:id="@id/id_history_transaction_header_cuantos"
+        android:id="@+id/local_transaction_count_header"
         android:layout_gravity="center|end"
         android:textSize="@dimen/dimen_text_mediano"
         android:visibility="gone"

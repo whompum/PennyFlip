@@ -56,10 +56,10 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     private SourceFragmentAdapter adapter;
 
-    @BindView(R.id.id_source_data_container)
+    @BindView(R.id.id_global_pager)
     protected ViewPager container;
 
-    @BindView(R.id.id_fab)
+    @BindView(R.id.id_global_fab)
     protected FloatingActionButton fab;
 
     private PennyDialog pennyDialog;
@@ -110,12 +110,12 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     //Initializes the core UI (title displays, value display, lastUpdate)
     private void initialize(@NonNull final Source data){
-        ((TextView)findViewById(R.id.id_source_data_sourcename)).setText(data.getTitle());
-        ((CurrencyEditText)findViewById(R.id.id_source_data_value)).setText(String.valueOf(data.getPennies()));
+        ((TextView)findViewById(R.id.id_global_title)).setText(data.getTitle());
+        ((CurrencyEditText)findViewById(R.id.id_global_total_display)).setText(String.valueOf(data.getPennies()));
 
         final String lastUpdate = getString(R.string.string_last_update) + " " + Ts .from(data.getLastUpdate()).getPreferentialDate();
 
-        ((TextView)findViewById(R.id.id_source_data_value_timestamp)).setText(lastUpdate);
+        ((TextView)findViewById(R.id.id_global_timestamp)).setText(lastUpdate);
 
     }
 
@@ -147,7 +147,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
      return fragments;
     }
 
-    @OnPageChange(R.id.id_source_data_container)
+    @OnPageChange(R.id.id_global_pager)
     public void setPageIndicator(final int pos){
 
         if(adapter.getItem(pos) instanceof TransactionFragment) {
@@ -190,7 +190,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     }
 
-    @OnClick(R.id.id_up_navigation)
+    @OnClick(R.id.id_global_nav)
     public void navigate(){
         NavUtils.navigateUpFromSameTask(this);
     }
@@ -200,7 +200,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         launchDeleteConfDialog();
     }
 
-    @OnClick(R.id.id_fab)
+    @OnClick(R.id.id_global_fab)
     public void onFabClicked(){
         if(pennyDialog != null)  //Done to block double tapping; Avoids creating multiple instances.
             if(pennyDialog.isAdded()) return;
@@ -307,7 +307,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         }
         color(highlight);
 
-        ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(
+        ((FloatingActionButton)findViewById(R.id.id_global_fab)).setImageResource(
                 (data.getTransactionType() == TransactionType.ADD) ? R.drawable.graphic_plus_green :
                 R.drawable.graphic_minus_red);
     }

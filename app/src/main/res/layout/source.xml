@@ -16,13 +16,13 @@
 
         <android.support.v7.widget.AppCompatImageButton
             style="@style/StyleIcon"
-            android:id="@id/id_up_navigation"
+            android:id="@id/id_global_nav"
             app:srcCompat="@drawable/icon_arrow_left"/>
 
         <TextView
             tools:text="Source Name"
-            android:id="@+id/id_source_data_sourcename"
-            android:layout_toEndOf="@id/id_up_navigation"
+            android:id="@id/id_global_title"
+            android:layout_toEndOf="@id/id_global_nav"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:textSize="@dimen/dimen_text_mediano"
@@ -48,30 +48,30 @@
 
         <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
             style="@style/StyleCurrentEditTextLarge"
-            android:id="@id/id_source_data_value"
+            android:id="@id/id_global_total_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             style="@style/StyleLastUpdate"
             android:text="@string/string_null_transactions"
-            android:id="@id/id_source_data_value_timestamp"
-            android:layout_below="@id/id_source_data_value"
+            android:id="@id/id_global_timestamp"
+            android:layout_below="@id/id_global_total_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <View
         app:layout_constraintBottom_toBottomOf="@id/source_data_value_container"
-        android:id="@+id/id_local_add_fab_align_view"
+        android:id="@+id/dashboard_local_fab_align_view"
         android:background="@color/light_grey"
         android:visibility="gone"
         android:layout_width="1dp"
         android:layout_height="1dp"/>
     <android.support.design.widget.FloatingActionButton
         style="@style/StyleDashboardAddFab"
-        app:layout_constraintTop_toTopOf="@id/id_local_add_fab_align_view"
-        app:layout_constraintBottom_toBottomOf="@id/id_local_add_fab_align_view"
+        app:layout_constraintTop_toTopOf="@id/dashboard_local_fab_align_view"
+        app:layout_constraintBottom_toBottomOf="@id/dashboard_local_fab_align_view"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/dimen_padding_hor_base"
         android:layout_width="wrap_content"
@@ -126,7 +126,7 @@
         app:layout_constraintTop_toBottomOf="@id/source_data_value_container"
         app:layout_constraintBottom_toTopOf="@id/source_data_nav_container"
         android:background="@color/white"
-        android:id="@id/id_source_data_container"
+        android:id="@id/id_global_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
 

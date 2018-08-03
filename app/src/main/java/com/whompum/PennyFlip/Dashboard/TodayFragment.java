@@ -47,9 +47,9 @@ public class TodayFragment extends Fragment implements Handler.Callback, Observe
 
     protected int transactionType = Integer.MIN_VALUE;
 
-    @BindView(R.id.total_transaction_value_display) protected CurrencyEditText value;
+    @BindView(R.id.id_global_total_display) protected CurrencyEditText value;
 
-    @BindView(R.id.id_today_transaction_list)
+    @BindView(R.id.id_global_list)
     protected RecyclerView transactionsList;
 
     private RecyclerView.Adapter transactionsAdapter;

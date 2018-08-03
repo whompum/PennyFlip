@@ -20,8 +20,8 @@ public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements 
     public TransactionHeaderHolder(final View layout){
         super(layout);
 
-        this.dateTextView = layout.findViewById(R.id.id_history_transaction_header_date);
-        this.cuantos = layout.findViewById(R.id.id_history_transaction_header_cuantos);
+        this.dateTextView = layout.findViewById(R.id.id_global_timestamp);
+        this.cuantos = layout.findViewById(R.id.local_transaction_count_header);
 
     }
 

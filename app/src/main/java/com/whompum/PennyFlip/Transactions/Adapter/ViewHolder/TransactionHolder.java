@@ -31,9 +31,9 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
 
     public TransactionHolder(final View layout, final int addClr, final int spendClr){
         super(layout);
-        transactionLastUpdate = layout.findViewById(R.id.id_history_date_label);
-        transactionSource = layout.findViewById(R.id.id_history_source_name);
-        transactionAmount = layout.findViewById(R.id.id_history_transaction_amount);
+        transactionLastUpdate = layout.findViewById(R.id.id_global_timestamp);
+        transactionSource = layout.findViewById(R.id.id_global_title);
+        transactionAmount = layout.findViewById(R.id.id_global_total_display);
 
         this.addColor = addClr;
         this.spendColor = spendClr;

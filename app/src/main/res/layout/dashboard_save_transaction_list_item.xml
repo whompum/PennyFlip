@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@id/id_source_dialog_source_item_container"
     android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -12,7 +11,7 @@
         android:textSize="@dimen/dimen_text_normal"
         android:layout_centerVertical="true"
         android:textColor="@color/light_green"
-        android:id="@id/id_source_dialog_source_title"
+        android:id="@id/id_global_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -26,7 +25,7 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:background="@drawable/background_oval_orange"
-        android:id="@id/id_source_dialog_source_tag"
+        android:id="@+id/local_new_source_tag"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

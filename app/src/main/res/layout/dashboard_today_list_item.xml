@@ -11,7 +11,7 @@
 
     <TextView
         tools:text="11:29 PM"
-        android:id="@id/id_transaction_timestamp"
+        android:id="@id/id_global_timestamp"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="8dp"
         android:textSize="@dimen/dimen_text_small"
@@ -33,7 +33,7 @@
 
         <TextView
             tools:text="Car-Wash"
-            android:id="@id/id_transaction_source"
+            android:id="@id/id_global_title"
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_text_normal"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content" />
         <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
             style="@style/StyleCurrentEditText"
-            android:id="@id/id_transaction_value"
+            android:id="@id/id_global_total_display"
             android:textSize="@dimen/dimen_text_mediano"
             android:textStyle="normal"
             android:layout_width="wrap_content"

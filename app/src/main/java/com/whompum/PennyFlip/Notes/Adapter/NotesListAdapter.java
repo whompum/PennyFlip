@@ -117,7 +117,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
                         public void onClick(View v) {
                             final View content = provider.getChildAtAdapterPosition(getAdapterPosition());
 
-                            final View view = content.findViewById(R.id.note_list_content);
+                            final View view = content.findViewById(R.id.id_global_timestamp);
 
                             final ImageButton toggle = content.findViewById(R.id.note_list_expand);
 
@@ -149,7 +149,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
 
         void bind(@NonNull final NoteWrapper wrapper){
 
-            final View content = itemView.findViewById(R.id.note_list_content);
+            final View content = itemView.findViewById(R.id.id_global_timestamp);
 
             final Note n = wrapper.getNote();
 
@@ -165,7 +165,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
                     .setText(timestamp);
 
             if(n.getContent() != null)
-            ((TextView)itemView.findViewById(R.id.note_list_content))
+            ((TextView)itemView.findViewById(R.id.id_global_timestamp))
                     .setText(n.getContent());
 
             //If the content is expanded, but we don't need it to, then close.

@@ -18,11 +18,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.Money.MoneyController;
-import com.whompum.PennyFlip.Money.Source.Source;
-import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
 import com.whompum.PennyFlip.Transactions.Adapter.HeaderAdapter;
@@ -32,7 +29,6 @@ import com.whompum.PennyFlip.Transactions.Header.TransactionStickyHeaders;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by bryan on 12/30/2017.
@@ -91,7 +87,7 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View layout = inflater.inflate(LAYOUT_RES, container, false);
 
-        this.transactionsList = layout.findViewById(R.id.id_transaction_container);
+        this.transactionsList = layout.findViewById(R.id.id_global_list);
         this.transactionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         this.transactionsList.setAdapter(adapter);
         this.transactionsList.addItemDecoration(new TransactionStickyHeaders(this, highlightDark, highlight));
@@ -142,8 +138,8 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
         final TransactionHeaderItem headerItem = adapter.getLastHeader(fromPos);
 
         if(headerItem != null){
-            ((TextView)header.findViewById(R.id.id_history_transaction_header_date)).setText(headerItem.getDate());
-            ((TextView)header.findViewById(R.id.id_history_transaction_header_cuantos)).setText(headerItem.getNumTransactions());
+            ((TextView)header.findViewById(R.id.id_global_timestamp)).setText(headerItem.getDate());
+            ((TextView)header.findViewById(R.id.local_transaction_count_header)).setText(headerItem.getNumTransactions());
         }
     }
 

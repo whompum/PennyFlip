@@ -53,17 +53,17 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     @BindColor(R.color.light_red) protected int eClr;
 
-    @BindView(R.id.id_toolbar) protected Toolbar toolyBary;
+    @BindView(R.id.id_global_toolbar) protected Toolbar toolyBary;
 
-    @BindView(R.id.id_search_toolbar) protected Toolbar searchToolbar;
+    @BindView(R.id.id_source_list_search_toolbar) protected Toolbar searchToolbar;
 
-    @BindView(R.id.id_source_list_container) protected ViewPager container;
+    @BindView(R.id.id_global_pager) protected ViewPager container;
 
-    @BindView(R.id.id_toolbar_container) protected ViewGroup toolbarContainer;
+    @BindView(R.id.local_source_list_toolbar_container) protected ViewGroup toolbarContainer;
 
     @BindView(R.id.searchBarContainer) protected ViewGroup searchBarContainer;
 
-    @BindView(R.id.id_fragment_container) protected FrameLayout searchFragmentContainer;
+    @BindView(R.id.t) protected FrameLayout searchFragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +82,10 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
         searchToolbar.inflateMenu(R.menu.menu_search);
 
-        searchView = (SearchView) searchToolbar.getMenu().findItem(R.id.id_action_search).getActionView();
+        searchView = (SearchView) searchToolbar.getMenu().findItem(R.id.id_global_search).getActionView();
 
         //Sets the SearchView expansion/collapsing listener
-        searchToolbar.getMenu().findItem(R.id.id_action_search).setOnActionExpandListener(searchExpansionListener);
+        searchToolbar.getMenu().findItem(R.id.id_global_search).setOnActionExpandListener(searchExpansionListener);
 
 
         //Fetch the bottom X of Toolybary (used for translation purposes)
@@ -108,7 +108,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     private void bindFragmentTitles(){
 
-        strips = new PageTitleStrips((ViewGroup) (findViewById(R.id.source_list_strips)), new PageTitleStrips.StripClick() {
+        strips = new PageTitleStrips((ViewGroup) (findViewById(R.id.id_global_strips_indicator)), new PageTitleStrips.StripClick() {
             @Override
             public void onStripClicked(int position) {
                 container.setCurrentItem(position);
@@ -128,22 +128,22 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
         startActivity(intent);
     }
 
-    @OnPageChange(R.id.id_source_list_container)
+    @OnPageChange(R.id.id_global_pager)
     public void onPageChange(final int position){
         strips.setPosition(position);
     }
 
-    @OnClick(R.id.id_up_navigation)
+    @OnClick(R.id.id_global_nav)
     public void navigateUp(){
         NavUtils.navigateUpFromSameTask(this);
     }
 
-    @OnClick(R.id.id_source_master_toolbar_search)
+    @OnClick(R.id.id_global_search)
     public void expandSearchbar(){
-        searchToolbar.getMenu().findItem(R.id.id_action_search).expandActionView();
+        searchToolbar.getMenu().findItem(R.id.id_global_search).expandActionView();
     }
 
-    @OnClick(R.id.id_source_list_toolbar_sort)
+    @OnClick(R.id.id_global_sort)
     public void launchSortDialog(){
         ((OnSortButtonClicked)((SourceListFragmentAdapter)container.getAdapter()).getItem(container.getCurrentItem())).onSortClicked();
     }
@@ -231,7 +231,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
         else if(currFragmentType instanceof FragmentSourceListSpend)
             fragmentSourceList = FragmentSourceListSpend.newInstance(null);
 
-        fragTrans.add(R.id.id_fragment_container, fragmentSourceList, "backstackTag");
+        fragTrans.add(R.id.id_global_pager, fragmentSourceList, "backstackTag");
 
         searchFragmentContainer.setVisibility(View.VISIBLE);
 

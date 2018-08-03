@@ -32,7 +32,7 @@
 <android.support.v7.widget.RecyclerView
     xmlns:tools="http://schemas.android.com/tools"
     tools:listitem="@layout/transaction_list_item"
-    android:id="@id/id_transaction_container"
+    android:id="@id/id_global_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

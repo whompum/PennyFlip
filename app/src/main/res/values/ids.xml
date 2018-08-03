@@ -1,99 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Recycler Views -->
+    <item name="id_global_list" type="id"/>
 
-    <item name="id_strips_indicator" type="id"/>
-    <item name="id_fragment_container" type="id"/>
-    <item name="id_today_transaction_list" type="id"/>
-    <item name="id_fab" type="id"/>
-    <item name="id_toolbar" type="id"/>
-    <item name="id_action_search" type="id"/>
-    <item name="id_search_toolbar" type="id"/>
-    <item name="id_up_navigation" type="id"/>
-    <item name="id_list" type="id"/>
+    <!-- View Pagers -->
+    <item name="id_global_pager" type="id"/>
+
+    <!-- Floating Action Buttons -->
+    <item name="id_global_fab" type="id"/>
+
+    <!-- CurrencyEditTexts (big) -->
+    <item name="id_global_total_display" type="id"/>
+
+    <!-- Up button navigation -->
+    <item name="id_global_nav" type="id"/>
+
+    <!-- Timestamps -->
+    <item name="id_global_timestamp" type="id"/>
+
+    <!-- Toolbars -->
+    <item name="id_global_toolbar" type="id"/>
+
+    <!-- Generic Title id -->
+    <item name="id_global_title" type="id"/>
+
+    <!-- Strips Pager Titles-->
+    <item name="id_global_strips_indicator" type="id"/>
+
+    <!-- Search action buttons -->
+    <item name="id_global_search" type="id"/>
+
+    <!-- Text Editors -->
+    <item name="id_global_editor" type="id"/>
+
+    <!-- Sort action -->
+    <item name="id_global_sort" type="id"/>
 
 
-    <!--Dashboard icons-->
-    <item name="id_dashboard_callibrate" type="id"/>
-    <item name="id_dashboard_value" type="id"/>
+    <!-- The white search bar of the SourceList activity -->
+    <item name="id_source_list_search_toolbar" type="id"/>
 
-
-    <!--Menu IDS-->
-    <item name="id_nav_menu_source" type="id"/>
-    <item name="id_nav_menu_statistics" type="id"/>
+    <!-- Navigation icons in Dashboard -->
+    <item name="id_nav_source" type="id"/>
+    <item name="id_nav_statistics" type="id"/>
     <item name="id_nav_menu_history" type="id"/>
-
-    <!--Source Dialog IDS-->
-    <item name="id_source_dialog_source_list" type="id"/>
-    <item name="id_source_dialog_search_view" type="id"/>
-    <item name="id_source_dialog_header" type="id"/>
-    <item name="id_source_dialog_total_display" type="id"/>
-    <item name="id_source_dialog_time_display" type="id"/>
-    <item name="id_source_dialog_transaction_name_editor" type="id"/>
-
-
-    <!--Source Dialog IDS handled by the RecyclerView Adapter-->
-    <item name="id_source_dialog_source_title" type="id"/>
-    <item name="id_source_dialog_source_tag" type="id"/>
-    <item name="id_source_dialog_source_item_container" type="id"/>
-
-
-    <!--SOURCE MASTER IDS -->
-    <item name="id_source_list_container" type="id"/>
-
-
-    <item name="id_source_master_list_source_label" type="id"/>
-    <item name="id_source_master_list_source_last_update" type="id"/>
-    <item name="id_source_master_list_source_statistics" type="id"/>
-    <item name="id_source_master_list_source_view" type="id"/>
-    <item name="id_source_master_list_source_purse" type="id"/>
-
-
-    <item name="id_source_master_toolbar_search" type="id"/>
-    <item name="id_source_list_toolbar_sort" type="id"/>
-
-
-    <!--SOURCE DATA IDS-->
-    <item name="id_source_data_sourcename" type="id"/>
-    <item name="id_source_data_value_label" type="id"/>
-    <item name="id_source_data_value" type="id"/>
-    <item name="id_source_data_value_timestamp" type="id"/>
-    <item name="id_source_data_container" type="id"/>
-    <item name="id_source_data_title_indicator" type="id"/>
-
-    <item name="id_toolbar_container" type="id"/>
-    <item name="id_transaction_container" type="id"/>
-
-    <!--TRANSACTIONS LIST ITEM IDS
-        REPLACE WITH BELOW HISTORY IDS
-    -->
-    <item name="id_transaction_timestamp" type="id"/>
-    <item name="id_transaction_value" type="id"/>
-    <item name="id_transaction_source" type="id"/>
-    <item name="id_transactions_list_item_original_value" type="id"/>
-
-
-    <!--Statistics Data-->
-    <item name="id_source_stats_value" type="id"/>
-    <item name="id_source_stats_time_period_label" type="id"/>
-    <item name="id_source_stats_time_period_icon" type="id"/>
-    <item name="id_source_stats_source_total" type="id"/>
-    <item name="id_source_stats_time_period_total" type="id"/>
-    <item name="id_source_stats_summary" type="id"/>
-
-
-    <!--HISTORY LABEL-->
-    <item name="id_history_time_range" type="id"/>
-    <item name="id_history_time_picker" type="id"/>
-    <item name="id_history_today_label" type="id"/>
-    <item name="id_history_recycler" type="id"/>
-    <item name="id_history_transactions_amount_label" type="id"/>
-    <item name="id_history_date_label" type="id"/>
-    <item name="id_history_source_name" type="id"/>
-    <item name="id_history_transaction_amount" type="id"/>
-    <item name="id_history_transaction_header_date" type="id"/>
-    <item name="id_history_transaction_header_cuantos" type="id"/>
-
 
 </resources>
 

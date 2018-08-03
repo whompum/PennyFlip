@@ -19,7 +19,7 @@
         android:paddingBottom="@dimen/dimen_padding_ver_small"
         android:paddingStart="@dimen/dimen_padding_hor_base"
         android:paddingEnd="@dimen/dimen_padding_hor_base"
-        android:id="@id/id_source_dialog_header"
+        android:id="@+id/id_local_source_header"
         android:background="@drawable/background_rounded_rect_green"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -34,7 +34,7 @@
             style="@style/StyleCurrentEditText"
             tools:text="$27.82"
             android:textSize="@dimen/dimen_text_bigboi"
-            android:id="@id/id_source_dialog_total_display"
+            android:id="@id/id_global_total_display"
             android:layout_weight="4.5"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
@@ -47,7 +47,7 @@
             android:paddingEnd="@dimen/dimen_padding_hor_base"
             android:textColorHint="@color/white"
             android:backgroundTint="@color/white"
-            android:id="@id/id_source_dialog_transaction_name_editor"
+            android:id="@id/id_global_editor"
             android:textSize="@dimen/dimen_text_normal"
             android:textColor="@color/white"
             android:layout_weight="5.5"
@@ -61,13 +61,13 @@
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_text_normal"
             android:layout_below="@id/header_container"
-            android:id="@id/id_source_dialog_time_display"
+            android:id="@id/id_global_timestamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <EditText
             android:layout_marginTop="@dimen/dimen_padding_ver_large"
-            android:layout_below="@id/id_source_dialog_time_display"
+            android:layout_below="@id/id_global_timestamp"
             android:drawableStart="@drawable/icon_search_grey"
             android:background="@drawable/background_oval_white"
             android:drawablePadding="8dp"
@@ -78,20 +78,19 @@
             android:maxLines="1"
             android:hint="@string/string_source_dialog_search"
             android:textColorHint="@color/dark_grey"
-            android:id="@id/id_source_dialog_search_view"
+            android:id="@id/id_global_search"
             android:textSize="@dimen/dimen_text_normal"
             android:textColor="@color/dark_grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
-
     </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         tools:listitem="@layout/dashboard_save_transaction_list_item"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:padding="@dimen/dimen_screen_padding"
-        android:id="@id/id_source_dialog_source_list"
+        android:id="@id/id_global_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -100,7 +99,6 @@
 
 <android.support.design.widget.FloatingActionButton
     style="@style/StyleDashboardAddFab"
-    android:id="@id/id_fab"
     android:scaleY="0"
     android:scaleX="0"
     android:visibility="invisible"

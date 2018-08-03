@@ -59,13 +59,13 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     @BindView(R.id.dashboard_colored_background)
     protected View colorBackground;
 
-    @BindView(R.id.id_dashboard_value)
+    @BindView(R.id.id_global_total_display)
     protected CurrencyEditText value;
 
-    @BindView(R.id.id_fragment_container)
+    @BindView(R.id.id_global_pager)
     protected ViewPager addSpendContainer;
 
-    @BindView(R.id.id_strips_indicator)
+    @BindView(R.id.id_global_strips_indicator)
     protected ViewGroup stripsLayout;
 
     @Override
@@ -101,7 +101,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     }
 
     private void setTodayTimeLabel(){
-        ((TextView)findViewById(R.id.today_date_label))
+        ((TextView)findViewById(R.id.id_global_timestamp))
                 .setText(Ts.now().simpleDate());
     }
 
@@ -117,15 +117,15 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         }
     };
 
-    @OnPageChange(R.id.id_fragment_container)
+    @OnPageChange(R.id.id_global_pager)
     public void onPageSelected(final int p){
         strips.setPosition(p);
 
         if(p == 0)
-            ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(R.drawable.graphic_plus_green);
+            ((FloatingActionButton)findViewById(R.id.id_global_fab)).setImageResource(R.drawable.graphic_plus_green);
 
         else if(p == 1)
-            ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(R.drawable.graphic_minus_red);
+            ((FloatingActionButton)findViewById(R.id.id_global_fab)).setImageResource(R.drawable.graphic_minus_red);
 
     }
 
@@ -146,12 +146,12 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         value.setText(String.valueOf(pennies));
     }
 
-    @OnClick(R.id.id_dashboard_callibrate)
+    @OnClick(R.id.dashboard_local_calibrate)
     public void callibrate(){
         vibrate(500L);
     }
 
-    @OnClick(R.id.id_fab)
+    @OnClick(R.id.id_global_fab)
     void onFabClicked() {
 
         if(pennyDialog != null)  //Done to block double tapping; Avoids creating multiple instances.
@@ -179,7 +179,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         launchPennyDialog(pennyDialog, SlidePennyDialog.TAG);
     }
 
-    @OnClick(R.id.id_nav_menu_statistics)
+    @OnClick(R.id.id_nav_statistics)
     public void onStatisticsFabClicked(){
         vibrate(500L);
     }
@@ -190,7 +190,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         startActivity(new Intent(this, ActivityHistory.class));
     }
 
-    @OnClick(R.id.id_nav_menu_source)
+    @OnClick(R.id.id_nav_source)
     public void onSourceFabClicked(){
         vibrate(500L);
         startActivity(new Intent(this, ActivitySourceList.class));

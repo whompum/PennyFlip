@@ -227,9 +227,9 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
         public SourceViewCache(final View layout, final int titleColor, final SourceWrapper.TAG tag, final SourceWrapperAdapter instance){
             super(layout);
 
-            wrapperTitle = layout.findViewById(R.id.id_source_dialog_source_title);
+            wrapperTitle = layout.findViewById(R.id.id_global_title);
             wrapperTitle.setTextColor(titleColor);
-            wrapperTag = layout.findViewById(R.id.id_source_dialog_source_tag);
+            wrapperTag = layout.findViewById(R.id.local_new_source_tag);
 
             if(tag == SourceWrapper.TAG.REGULAR)
                 wrapperTag.setVisibility(View.GONE);
