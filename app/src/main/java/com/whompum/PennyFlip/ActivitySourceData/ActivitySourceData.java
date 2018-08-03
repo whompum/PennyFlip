@@ -1,5 +1,8 @@
 package com.whompum.PennyFlip.ActivitySourceData;
 
+import android.animation.ArgbEvaluator;
+import android.animation.FloatEvaluator;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Handler;
@@ -14,11 +17,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Notes.Model.Note;
+import com.whompum.PennyFlip.Notes.NotesListFragment;
+import com.whompum.PennyFlip.Notes.Persistence.NotesController;
+import com.whompum.PennyFlip.OnItemSelected;
 import com.whompum.PennyFlip.PennyListener;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
@@ -40,7 +49,7 @@ import butterknife.OnClick;
 import butterknife.OnPageChange;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-public class ActivitySourceData extends AppCompatActivity implements SourceDataClient{
+public class ActivitySourceData extends AppCompatActivity implements SourceDataClient, OnItemSelected<Note>{
 
     public static final String DATA = "source.ky";
 
@@ -52,7 +61,20 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     @BindView(R.id.id_source_data_container)
     protected ViewPager container;
 
+    @BindView(R.id.id_fab)
+    protected FloatingActionButton fab;
+
     private PennyDialog pennyDialog;
+
+    private ValueAnimator noteAnimator = ValueAnimator.ofFloat(0F, 1F);
+
+    private ArgbEvaluator clrEvaluator = new ArgbEvaluator();
+    private FloatEvaluator evaluator = new FloatEvaluator();
+
+    private int highlight;
+    private int notesHighlight;
+
+    private boolean onNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +96,18 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         applyColoring(getHighlight());
 
         setPageIndicator(0); //Setting Displaying the layout for the first tab
+
     }
 
     @Override
     public void onSourceChanged(@NonNull Source source) {
         this.data = source; //Will cause temporary data inconsistency issue on configuration change.
         initialize(data);
+    }
+
+    @Override
+    public void onItemSelected(Note note) {
+        Toast.makeText(this, note.getSourceId(), Toast.LENGTH_SHORT).show();
     }
 
     //Initializes the core UI (title displays, value display, lastUpdate)
@@ -116,7 +144,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
         fragments.add(TransactionFragment.newInstance(bundle));
         fragments.add(new tempStatisticsFragment());
-        fragments.add(new tempNotesFrag());
+        fragments.add(NotesListFragment.obtain(this, data.getTransactionType(), data.getTitle()));
 
      return fragments;
     }
@@ -128,17 +156,38 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
             showIndicator(R.id.id_transactions_label, true);
             showIndicator(R.id.id_notes_label, false);
             showIndicator(R.id.id_statistics_label, false);
+
+            if(onNotes) {
+                animateForNotes(notesHighlight, highlight, 0F, 1F);
+                onNotes = false;
+                fab.setClickable(true);
+                fab.setFocusable(true);
+            }
+
         }
         else if(adapter.getItem(pos) instanceof tempStatisticsFragment) {
             showIndicator(R.id.id_statistics_label, true);
             showIndicator(R.id.id_transactions_label, false);
             showIndicator(R.id.id_notes_label, false);
+
+            if(onNotes) {
+                animateForNotes(notesHighlight, highlight, 0F, 1F);
+                onNotes = false;
+                fab.setClickable(true);
+                fab.setFocusable(true);
+            }
+
         }
 
-        else if(adapter.getItem(pos) instanceof tempNotesFrag) {
+        else if(adapter.getItem(pos) instanceof NotesListFragment) {
             showIndicator(R.id.id_notes_label, true);
             showIndicator(R.id.id_statistics_label, false);
             showIndicator(R.id.id_transactions_label, false);
+            animateForNotes(highlight, notesHighlight, 1F, 0F);
+            onNotes = true;
+            fab.setClickable(false);
+            fab.setFocusable(false);
+
         }
 
     }
@@ -248,23 +297,27 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         return (data.getTransactionType() == TransactionType.ADD ) ? R.color.light_green : R.color.light_red;
     }
 
-    private void applyColoring(final int highlight){
+    private void applyColoring(final int clr){
         //Applies the highlight color
 
-        int color;
-
-        if(Build.VERSION.SDK_INT >= 24)
-            color = getColor(highlight);
-        else
-            color = getResources().getColor(highlight);
-
-        findViewById(R.id.source_data_header).setBackgroundColor(color);
-        findViewById(R.id.source_data_value_container).setBackgroundColor(color);
-        findViewById(R.id.source_data_nav_container).setBackgroundColor(color);
+        if(Build.VERSION.SDK_INT >= 24) {
+            highlight = getColor(clr);
+            notesHighlight = getColor(R.color.light_blue);
+        }else {
+            highlight = getResources().getColor(clr);
+            notesHighlight = getResources().getColor(R.color.light_blue);
+        }
+        color(highlight);
 
         ((FloatingActionButton)findViewById(R.id.id_fab)).setImageResource(
                 (data.getTransactionType() == TransactionType.ADD) ? R.drawable.ic_shape_plus_green:
                 R.drawable.ic_shape_minus_red);
+    }
+
+    private void color(final int clr/**Resolved Color*/){
+        findViewById(R.id.source_data_header).setBackgroundColor(clr);
+        findViewById(R.id.source_data_value_container).setBackgroundColor(clr);
+        findViewById(R.id.source_data_nav_container).setBackgroundColor(clr);
     }
 
     private PennyListener pennyListener = new PennyListener() {
@@ -280,5 +333,27 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
                     , 500L);
         }
     };
+
+
+    private void animateForNotes(final int clrFrom, final int clrTo, final float scaleFrom, final float scaleTo){
+
+        noteAnimator.setInterpolator(new DecelerateInterpolator());
+
+        noteAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                final int color = (Integer)
+                        clrEvaluator.evaluate(animation.getAnimatedFraction(), clrFrom, clrTo);
+                color(color);
+
+                final Float fabScale = evaluator.evaluate(animation.getAnimatedFraction(), scaleFrom, scaleTo);
+
+                fab.setScaleX(fabScale);
+                fab.setScaleY(fabScale);
+
+            }
+        });
+        noteAnimator.start();
+    }
 
 }
