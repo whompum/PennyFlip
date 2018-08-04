@@ -63,7 +63,8 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     @BindView(R.id.searchBarContainer) protected ViewGroup searchBarContainer;
 
-    @BindView(R.id.t) protected FrameLayout searchFragmentContainer;
+    @BindView(R.id.id_fragment_container
+    ) protected FrameLayout searchFragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,7 +232,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
         else if(currFragmentType instanceof FragmentSourceListSpend)
             fragmentSourceList = FragmentSourceListSpend.newInstance(null);
 
-        fragTrans.add(R.id.id_global_pager, fragmentSourceList, "backstackTag");
+        fragTrans.add(R.id.id_fragment_container, fragmentSourceList, "backstackTag");
 
         searchFragmentContainer.setVisibility(View.VISIBLE);
 
