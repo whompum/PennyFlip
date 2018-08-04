@@ -104,37 +104,25 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
 
 
 
-    public static class Holder extends RecyclerView.ViewHolder{
+    public static class Holder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private ImageButton expand;
+
+        private TextView header;
+        private TextView timestamp;
+        private TextView content;
+
+        private HolderProvider provider;
 
         public Holder(@NonNull final View itemView,
                       @NonNull final HolderProvider provider,
                       final int highlight) {
             super(itemView);
 
-            itemView.findViewById(R.id.note_list_expand)
-                    .setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View v) {
-                            final View content = provider.getChildAtAdapterPosition(getAdapterPosition());
+            expand = itemView.findViewById(R.id.note_list_expand);
+            expand.setOnClickListener(this);
 
-                            final View view = content.findViewById(R.id.id_global_timestamp);
-
-                            final ImageButton toggle = content.findViewById(R.id.note_list_expand);
-
-                            final NoteWrapper wrapper = provider.getDataAt(getAdapterPosition());
-
-                            if(wrapper.isExpanded()) {
-                                view.setVisibility(View.GONE);
-                                toggle.setImageResource(R.drawable.icon_arrow_down);
-                            }
-                            else {
-                                view.setVisibility(View.VISIBLE);
-                                toggle.setImageResource(R.drawable.icon_arrow_up);
-                            }
-                            wrapper.toggle();
-
-                        }
-                    });
+            this.provider = provider;
 
             itemView.setOnClickListener(new View.OnClickListener(){
                         @Override
@@ -143,13 +131,38 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
                         }
                     });
 
-            ((TextView)itemView.findViewById(R.id.note_list_header))
-                    .setTextColor(highlight);
+
+            header = itemView.findViewById(R.id.note_list_header);
+            timestamp = itemView.findViewById(R.id.id_global_timestamp);
+            content = itemView.findViewById(R.id.note_local_content);
+
+            header.setTextColor(highlight);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            final View content = provider.getChildAtAdapterPosition(getAdapterPosition());
+
+            final View view = content.findViewById(R.id.note_local_content);
+
+            final ImageButton toggle = content.findViewById(R.id.note_list_expand);
+
+            final NoteWrapper wrapper = provider.getDataAt(getAdapterPosition());
+
+            if(wrapper.isExpanded()) {
+                view.setVisibility(View.GONE);
+                toggle.setImageResource(R.drawable.icon_arrow_down);
+            }
+            else {
+                view.setVisibility(View.VISIBLE);
+                toggle.setImageResource(R.drawable.icon_arrow_up);
+            }
+            wrapper.toggle();
+
         }
 
         void bind(@NonNull final NoteWrapper wrapper){
-
-            final View content = itemView.findViewById(R.id.id_global_timestamp);
 
             final Note n = wrapper.getNote();
 
@@ -158,15 +171,12 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
             final String timestamp = ts.simpleDate() + " " + ts.simpleTime();
 
             if(n.getNoteTitle() != null)
-            ((TextView)itemView.findViewById(R.id.note_list_header))
-                    .setText(n.getNoteTitle());
+                header.setText(n.getNoteTitle());
 
-            ((TextView)itemView.findViewById(R.id.id_global_timestamp))
-                    .setText(timestamp);
+            this.timestamp.setText(timestamp);
 
             if(n.getContent() != null)
-            ((TextView)itemView.findViewById(R.id.id_global_timestamp))
-                    .setText(n.getContent());
+                content.setText(n.getContent());
 
             //If the content is expanded, but we don't need it to, then close.
             if(!wrapper.isExpanded() && content.getVisibility() == View.VISIBLE) {
