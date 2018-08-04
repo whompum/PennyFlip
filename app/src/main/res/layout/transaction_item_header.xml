@@ -12,9 +12,8 @@
 
     <TextView
         tools:text="@string/string_today_cap"
-        style="@style/StyleDateLabel"
+        style="@style/StyleTimestamp.Medium"
         android:textColor="@color/white"
-        android:id="@id/id_global_timestamp"
         android:gravity="center|start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

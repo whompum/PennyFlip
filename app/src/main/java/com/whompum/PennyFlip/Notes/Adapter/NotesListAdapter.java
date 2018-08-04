@@ -161,7 +161,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Hold
             ((TextView)itemView.findViewById(R.id.note_list_header))
                     .setText(n.getNoteTitle());
 
-            ((TextView)itemView.findViewById(R.id.note_list_stamp))
+            ((TextView)itemView.findViewById(R.id.id_global_timestamp))
                     .setText(timestamp);
 
             if(n.getContent() != null)

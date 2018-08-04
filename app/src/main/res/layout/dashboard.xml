@@ -81,16 +81,12 @@
 
     <TextView
         tools:text="Thursday, 26th"
-        style="@style/StyleDateLabel"
-        android:id="@id/id_global_timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_padding_ver_base"
-        android:textSize="@dimen/dimen_text_normal"
-        android:textColor="@color/dark_grey"
+        style="@style/StyleTimestamp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dashboard_local_today_display" />
+        app:layout_constraintTop_toBottomOf="@id/dashboard_local_today_display"
+        android:layout_marginTop="@dimen/dimen_padding_ver_base"/>
+
 
     <View
         app:layout_constraintTop_toTopOf="@id/id_global_pager"

@@ -58,12 +58,9 @@
 
         <TextView
             tools:text="12:00 AM"
+            style="@style/StyleTimestamp"
             android:textColor="@color/white"
-            android:textSize="@dimen/dimen_text_normal"
-            android:layout_below="@id/header_container"
-            android:id="@id/id_global_timestamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_below="@id/header_container"/>
 
         <EditText
             android:layout_marginTop="@dimen/dimen_padding_ver_large"

@@ -60,6 +60,24 @@
 
 
     <!--TEXT VIEW STYLES-->
+    <style name="StyleTimestamp">
+        <item name="android:textSize">@dimen/dimen_text_normal</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:id">@id/id_global_timestamp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="StyleTimestamp.Small">
+        <item name="android:textSize">@dimen/dimen_text_small</item>
+    </style>
+
+    <style name="StyleTimestamp.Medium">
+        <item name="android:textSize">@dimen/dimen_text_mediano</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+
     <style name="StyleTotalLabel">
         <item name="android:textSize">@dimen/dimen_text_normal</item>
         <item name="android:textColor">@color/white</item>
@@ -128,18 +146,6 @@
         <item name="android:layout_width">@dimen/dimen_icon_size</item>
         <item name="android:layout_height">@dimen/dimen_icon_size</item>
     </style>
-
-    <!--
-    android:layout_weight="3"
-            android:id="@+id/id_nav_statistics"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
-            -->
 
     <style name="StyleSourceDataTabContainer">
         <item name="android:layout_weight">3</item>

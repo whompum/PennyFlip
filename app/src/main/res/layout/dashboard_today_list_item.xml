@@ -11,14 +11,10 @@
 
     <TextView
         tools:text="11:29 PM"
-        android:id="@id/id_global_timestamp"
+        style="@style/StyleTimestamp.Small"
+        android:textColor="@color/dark_grey"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="@dimen/dimen_text_small"
-        style="@style/StyleDateLabel"
-        android:textColor="@color/darkest_grey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginBottom="8dp"/>
 
     <LinearLayout
         android:background="@drawable/background_oval_blue"

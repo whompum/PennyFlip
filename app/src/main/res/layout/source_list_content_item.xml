@@ -16,15 +16,11 @@
 
     <TextView
         tools:text="Updated 10:20 PM"
-        android:id="@id/id_global_timestamp"
-        android:textColor="@color/darkest_grey"
+        style="@style/StyleTimestamp.Small"
         android:layout_below="@id/id_global_title"
         android:layout_marginTop="8dp"
         android:drawablePadding="4dp"
-        android:drawableStart="@drawable/icon_calendar_grey_small"
-        android:textSize="@dimen/dimen_text_small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:drawableStart="@drawable/icon_calendar_grey_small"/>
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
         style="@style/StyleCurrentEditText"

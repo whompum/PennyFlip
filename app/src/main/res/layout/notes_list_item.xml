@@ -35,13 +35,9 @@
 
     <TextView
         tools:text="01/20/1996 11:26 PM"
+        style="@style/StyleTimestamp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/note_list_header"
-        android:textColor="@color/dark_grey"
-        android:id="@+id/note_list_stamp"
-        android:textSize="@dimen/dimen_text_normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintTop_toBottomOf="@id/note_list_header"/>
 
 </android.support.constraint.ConstraintLayout>
 
@@ -49,7 +45,7 @@
         tools:text="Lorem Ipsum Dolar Sit Amet consectitur amet
 por cuanem elios de diablo de la costa en la cocina aqui o asi que paso
 no habla que, todo bien? no bien muy malo bom dia"
-        app:layout_constraintTop_toBottomOf="@id/note_list_stamp"
+        app:layout_constraintTop_toBottomOf="@id/id_global_timestamp"
         android:paddingStart="@dimen/dimen_padding_hor_base"
         android:paddingEnd="@dimen/dimen_padding_hor_base"
         android:paddingTop="@dimen/dimen_padding_ver_base"
