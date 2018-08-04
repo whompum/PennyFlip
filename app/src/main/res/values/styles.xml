@@ -7,7 +7,7 @@
         <item name="colorControlHighlight">@color/light_grey</item>
     </style>
 
-<style name="StyleDialogAnimate" parent="Base.Theme.AppCompat.Light.Dialog">
+     <style name="StyleDialogAnimate" parent="Base.Theme.AppCompat.Light.Dialog">
     <item name="android:windowBackground">@null</item>
     <item name="android:windowEnterAnimation">@anim/slide_up</item>
     <item name="android:windowExitAnimation">@anim/slide_left</item>
@@ -18,7 +18,6 @@
         <item name="sourceDataColorPrimary">@color/light_green</item>
         <item name="sourceDataTotalLabel">@string/string_total_added</item>
     </style>
-
     <style name="StyleSourceDataSpent" parent="AppTheme">
         <item name="sourceDataColorPrimary">@color/light_red</item>
         <item name="sourceDataTotalLabel">@string/string_total_spent</item>
@@ -33,7 +32,6 @@
         <item name="pennyValueCardColor">@color/light_green</item>
         <item name="pennyNumbersCardColor">@color/darkest_grey</item>
     </style>
-
     <style name="StylePennyDialogMinus" parent="PennyDialog">
         <item name="pennyFabSource">@drawable/graphic_minus_red</item>
         <item name="pennyTitleText">@string/string_minus_dialog</item>
@@ -59,7 +57,7 @@
     </style>
 
 
-    <!--TEXT VIEW STYLES-->
+    <!--TIME STAMP STYLES-->
     <style name="StyleTimestamp">
         <item name="android:textSize">@dimen/dimen_text_normal</item>
         <item name="android:textColor">@color/dark_grey</item>
@@ -67,50 +65,35 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
     <style name="StyleTimestamp.Small">
         <item name="android:textSize">@dimen/dimen_text_small</item>
     </style>
-
     <style name="StyleTimestamp.Medium">
         <item name="android:textSize">@dimen/dimen_text_mediano</item>
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 
 
-    <style name="StyleTotalLabel">
-        <item name="android:textSize">@dimen/dimen_text_normal</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="StyleLastUpdate">
-        <item name="android:textSize">@dimen/dimen_text_small</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="StyleDateLabel">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/dimen_text_mediano</item>
-    </style>
-
-    <style name="StyleCurrentEditText">
+    <!-- Money Displays-->
+    <style name="StyleCurrencyEditText">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
+        <item name="android:id">@id/id_global_total_display</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
-
-    <style name="StyleCurrentEditTextLarge" parent="StyleCurrentEditText">
+    <style name="StyleCurrencyEditText.Large">
         <item name="android:textSize">@dimen/dimen_text_OG</item>
     </style>
-
-    <style name="StyleCurrencyEditTextBig" parent="StyleCurrentEditText">
+    <style name="StyleCurrencyEditText.Medium">
         <item name="android:textSize">@dimen/dimen_text_mediano</item>
     </style>
-
-
+    <style name="StyleCurrencyEditText.Big">
+        <item name="android:textSize">@dimen/dimen_text_bigboi</item>
+    </style>
 
     <!--MENU STYLES-->
     <style name="StyleMenuCardView">
@@ -147,6 +130,7 @@
         <item name="android:layout_height">@dimen/dimen_icon_size</item>
     </style>
 
+    <!-- Nav Tabs -->
     <style name="StyleSourceDataTabContainer">
         <item name="android:layout_weight">3</item>
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
@@ -157,7 +141,6 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
     </style>
-
     <style name="StyleSourceDataTabIcon">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:background">@null</item>
@@ -165,7 +148,6 @@
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
     </style>
-
     <style name="StyleSourceDataTabLabel">
         <item name="android:visibility">gone</item>
         <item name="android:layout_gravity">center_horizontal</item>

@@ -23,17 +23,12 @@
         android:drawableStart="@drawable/icon_calendar_grey_small"/>
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-        style="@style/StyleCurrentEditText"
+        style="@style/StyleCurrencyEditText"
         android:textColor="@color/darkest_grey"
         android:layout_alignBaseline="@id/id_global_title"
-        android:id="@id/id_global_total_display"
         android:drawableStart="@drawable/icon_statistics_dark"
-        android:drawableLeft="@drawable/icon_statistics_dark"
         android:drawablePadding="4dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:text="@string/string_view"

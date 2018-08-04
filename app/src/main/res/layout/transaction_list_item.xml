@@ -10,6 +10,7 @@
     android:layout_height="wrap_content">
 
     <TextView
+        tools:text="Title"
         style="@style/StyleTimestamp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"/>
@@ -32,13 +33,9 @@
 
         <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
             tools:text="$44.72"
-            style="@style/StyleCurrentEditText"
-            android:id="@id/id_global_total_display"
+            style="@style/StyleCurrencyEditText.Big"
             android:textColor="@color/light_green"
-            android:layout_gravity="end|center"
-            android:textSize="@dimen/dimen_text_bigboi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_gravity="end|center"/>
     </FrameLayout>
 
 

@@ -15,15 +15,12 @@
 
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-        style="@style/StyleCurrentEditTextLarge"
-        android:id="@id/id_global_total_display"
+        style="@style/StyleCurrencyEditText.Large"
         android:textColor="@color/darkest_grey"
         android:layout_marginTop="24dp"
         android:layout_marginStart="@dimen/dimen_padding_hor_large"
         android:layout_marginEnd="@dimen/dimen_padding_hor_large"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:text="@string/string_transaction"
