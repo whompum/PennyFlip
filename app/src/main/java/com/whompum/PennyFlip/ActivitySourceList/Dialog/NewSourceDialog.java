@@ -100,6 +100,8 @@ public class NewSourceDialog extends Dialog implements View.OnClickListener {
             this.client = client;
 
         this.content = content;
+        this.transactionType = transactionType;
+
     }
 
     @Override
