@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.whompum.PennyFlip.OnItemSelected;
 import com.whompum.PennyFlip.R;
 
 
@@ -28,7 +29,7 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
     private Context context;
     private int titleColor;
 
-    private OnSourceListItemChange onSourceListItemChange;
+    private OnItemSelected<SourceWrapper> onItemSelected;
 
     public SourceWrapperAdapter(final Context context, @ColorRes final int textColor){
         this(context, textColor, null);
@@ -139,13 +140,13 @@ public class SourceWrapperAdapter extends RecyclerView.Adapter<SourceWrapperAdap
 
     protected void notifyListener(@Nullable final SourceWrapper wrapper){
 
-        if(onSourceListItemChange != null)
-            onSourceListItemChange.onSourceListItemChange(wrapper);
+        if(onItemSelected != null)
+            onItemSelected.onItemSelected(wrapper);
 
     }
 
-    public void registerOnClickListener(final OnSourceListItemChange listener){
-        this.onSourceListItemChange = listener;
+    public void registerOnClickListener(final OnItemSelected<SourceWrapper> listener){
+        this.onItemSelected = listener;
     }
 
 

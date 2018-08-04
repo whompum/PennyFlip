@@ -31,6 +31,7 @@ import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.OnItemSelected;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;
@@ -44,7 +45,7 @@ import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-public abstract class SourceDialog extends DialogFragment implements OnSourceListItemChange, Handler.Callback{
+public abstract class SourceDialog extends DialogFragment implements OnItemSelected<SourceWrapper>, Handler.Callback{
 
 
     @ColorRes
@@ -236,8 +237,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
     }
 
     @Override
-    public void onSourceListItemChange(SourceWrapper sourceWrapper) {
-
+    public void onItemSelected(SourceWrapper sourceWrapper) {
         if(sourceWrapper == null & animator.isShowing())
             animator.hide(250L);
 
@@ -247,6 +247,7 @@ public abstract class SourceDialog extends DialogFragment implements OnSourceLis
         this.item = sourceWrapper;
     }
 
+   
     private void insertIntoFirst(final Source source){
         if(source != null)
             sourceListAdapter.insertToFirst(new SourceWrapper(source, SourceWrapper.TAG.NEW));
