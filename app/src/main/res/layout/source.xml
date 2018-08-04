@@ -69,7 +69,7 @@
         android:layout_width="1dp"
         android:layout_height="1dp"/>
     <android.support.design.widget.FloatingActionButton
-        style="@style/StyleDashboardAddFab"
+        style="@style/StyleFab.Add"
         app:layout_constraintTop_toTopOf="@id/dashboard_local_fab_align_view"
         app:layout_constraintBottom_toBottomOf="@id/dashboard_local_fab_align_view"
         app:layout_constraintEnd_toEndOf="parent"

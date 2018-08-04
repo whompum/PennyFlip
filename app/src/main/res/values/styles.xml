@@ -27,7 +27,7 @@
 
     <!--PennyDialog styles-->
     <style name="StylePennyDialogAdd" parent="PennyDialog">
-        <item name="pennyFabSource">@kdrawable/graphic_plus_green</item>
+        <item name="pennyFabSource">@drawable/graphic_plus_green</item>
         <item name="pennyTitleText">@string/string_add_dialog</item>
         <item name="pennyTitleTextColor">@color/white</item>
         <item name="pennyValueCardColor">@color/light_green</item>
@@ -40,18 +40,20 @@
         <item name="pennyValueCardColor">@color/light_red</item>
         <item name="pennyNumbersCardColor">@color/darkest_grey</item>
     </style>
-    
-    <style name="StyleDashboardAddFab">
+
+    <!--Floating Action Buttons-->
+    <style name="StyleFab">
         <item name="fabSize">normal</item>
         <item name="backgroundTint">@color/white</item>
         <item name="android:scaleType">center</item>
-        <item name="android:src">@drawable/graphic_plus_green</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:id">@id/id_global_fab</item>
     </style>
-
-    <style name="StyleDashboardMinusFab" parent="StyleDashboardAddFab">
+    <style name="StyleFab.Add">
+        <item name="android:src">@drawable/graphic_plus_green</item>
+    </style>
+    <style name="StyleFab.Minus">
         <item name="fabSize">mini</item>
         <item name="android:src">@drawable/graphic_minus_red</item>
     </style>
@@ -104,23 +106,6 @@
 
     <style name="StyleMenuTitle">
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="StyleMenuFab">
-        <item name="android:visibility">invisible</item>
-        <item name="fabSize">mini</item>
-        <item name="android:scaleType">center</item>
-        <item name="backgroundTint">@color/white</item>
-        <item name="android:layout_marginRight">@dimen/dimen_nav_fab_margin_hor</item>
-        <item name="android:layout_marginEnd">@dimen/dimen_nav_fab_margin_hor</item>
-        <item name="android:layout_marginLeft">@dimen/dimen_nav_fab_margin_hor</item>
-        <item name="android:layout_marginStart">@dimen/dimen_nav_fab_margin_hor</item>
-
-        <item name="android:layout_marginTop">@dimen/dimen_nav_fab_margin_ver</item>
-        <item name="android:layout_marginBottom">@dimen/dimen_nav_fab_margin_ver</item>
-
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
