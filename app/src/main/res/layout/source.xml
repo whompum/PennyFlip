@@ -54,24 +54,40 @@
                 android:layout_width="1dp"
                 android:layout_height="1dp"/>
 
-            <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-                style="@style/StyleCurrencyEditText.Large"
-                android:layout_marginTop="@dimen/dimen_padding_ver_x_large"
+            <LinearLayout
                 app:layout_constraintTop_toBottomOf="@id/local_guide"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/local_content"
+                android:layout_marginTop="@dimen/dimen_padding_ver_large"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <TextView
-                style="@style/StyleTimestamp"
-                app:layout_constraintTop_toBottomOf="@id/id_global_total_display"
-                app:layout_constraintStart_toStartOf="@id/id_global_total_display"
-                android:text="@string/string_null_transactions"
-                android:textColor="@color/white" />
+                <TextView
+                    android:textColor="@color/white"
+                    tools:text="Total Added"
+                    android:id="@+id/local_transaction_display"
+                    android:textSize="@dimen/dimen_text_mediano"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+                    style="@style/StyleCurrencyEditText.Large"/>
+
+                <TextView
+                    style="@style/StyleTimestamp"
+                    android:text="@string/string_null_transactions"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+
 
             <LinearLayout
                 tools:layout_width="175dp"
                 tools:layout_height="45dp"
-                app:layout_constraintTop_toBottomOf="@id/id_global_timestamp"
+                app:layout_constraintTop_toBottomOf="@id/local_content"
                 app:layout_constraintStart_toStartOf="parent"
                 android:id="@id/id_global_strips_indicator"
                 android:orientation="horizontal"

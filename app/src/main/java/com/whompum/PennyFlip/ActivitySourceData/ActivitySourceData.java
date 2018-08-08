@@ -1,12 +1,8 @@
 package com.whompum.PennyFlip.ActivitySourceData;
 
-import android.animation.ArgbEvaluator;
-import android.animation.FloatEvaluator;
-import android.animation.ValueAnimator;
+
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -15,11 +11,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.Money.Source.Source;
@@ -81,8 +75,6 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         adapter = new SourceFragmentAdapter(getSupportFragmentManager(), getFragments());
         container.setAdapter(adapter);
 
-        setPageIndicator(0); //Setting Displaying the layout for the first tab
-
     }
 
     @Override
@@ -101,6 +93,13 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
         ((TextView)findViewById(R.id.id_global_timestamp)).setText(lastUpdate);
 
+        String transactionDisplay = (data.getTransactionType() == TransactionType.ADD)
+                ? getString(R.string.string_total_added)
+                : getString(R.string.string_total_spent);
+
+        ((TextView)findViewById(R.id.local_transaction_display))
+                .setText(transactionDisplay);
+
     }
 
     private List<Fragment> getFragments(){
@@ -109,28 +108,18 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         final Bundle bundle = new Bundle();
         bundle.putString(TransactionFragment.SOURCE_KEY, data.getTitle());
 
-
-        int color = -1;
-        int colorDark = -1;
-
-        if(data.getTransactionType() == TransactionType.ADD){
-            color = R.color.light_green;
-            colorDark = R.color.dark_green;
-        }else  if(data.getTransactionType() == TransactionType.SPEND){
-            color = R.color.light_red;
-            colorDark = R.color.dark_red;
-        }
-
-        bundle.putInt(TransactionFragment.HIGHLIGHT_KEY, color);
-        bundle.putInt(TransactionFragment.HIGHLIGHT_DARK_KEY, colorDark);
-
         fragments.add(TransactionFragment.newInstance(bundle));
         fragments.add(new tempStatisticsFragment());
 
-        strips = new PageTitleStrips((ViewGroup)findViewById(R.id.id_global_strips_indicator), null);
+        strips = new PageTitleStrips((ViewGroup) findViewById(R.id.id_global_strips_indicator), new PageTitleStrips.StripClick() {
+            @Override
+            public void onStripClicked(int position) {
+                container.setCurrentItem(position);
+            }
+        });
 
-        strips.bindTitle(this, "Transactions");
-        strips.bindTitle(this, "Statistics");
+        strips.bindTitle(this, getString(R.string.string_transaction));
+        strips.bindTitle(this, getString(R.string.string_statistics));
 
      return fragments;
     }

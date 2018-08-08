@@ -37,8 +37,6 @@ import java.util.List;
 public class TransactionFragment extends Fragment implements Handler.Callback, Observer<List<Transaction>> {
 
     public static final String SOURCE_KEY = "source.ky";
-    public static final String HIGHLIGHT_KEY = "highlight.ky";
-    public static final String HIGHLIGHT_DARK_KEY = "highlightDark.ky";
 
     @LayoutRes
     private static final int LAYOUT_RES = R.layout.transaction_list;
@@ -46,9 +44,6 @@ public class TransactionFragment extends Fragment implements Handler.Callback, O
     private TransactionListAdapter adapter;
 
     private Handler resultReceiver = new Handler(this);
-
-    private int highlight;
-    private int highlightDark;
 
     public static Fragment newInstance(@NonNull final Bundle args){
         final TransactionFragment fragment = new TransactionFragment();
@@ -63,14 +58,6 @@ public class TransactionFragment extends Fragment implements Handler.Callback, O
         final String sourceId = getArguments().getString(SOURCE_KEY);
 
         if(sourceId == null) throw new IllegalStateException("We must have a Source ID");
-
-        if(Build.VERSION.SDK_INT >= 23){
-            highlight = getContext().getColor(getArguments().getInt(HIGHLIGHT_KEY));
-            highlightDark = getContext().getColor(getArguments().getInt(HIGHLIGHT_DARK_KEY));
-        }else{
-            highlight = getContext().getResources().getColor(getArguments().getInt(HIGHLIGHT_KEY));
-            highlightDark = getContext().getResources().getColor(getArguments().getInt(HIGHLIGHT_DARK_KEY));
-        }
 
         this.adapter = new TransactionListAdapter(getContext());
 
@@ -87,7 +74,7 @@ public class TransactionFragment extends Fragment implements Handler.Callback, O
        final RecyclerView transactionsList = layout.findViewById(R.id.id_global_list);
            transactionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
            transactionsList.setAdapter(adapter);
-           transactionsList.addItemDecoration(new TransactionStickyHeaders(adapter, highlightDark, highlight));
+           transactionsList.addItemDecoration(new TransactionStickyHeaders(adapter));
            transactionsList.addItemDecoration(new TimeLineDecorator(getContext().getResources()));
 
     return layout;

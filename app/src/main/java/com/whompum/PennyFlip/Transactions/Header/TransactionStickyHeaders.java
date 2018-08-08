@@ -17,7 +17,7 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
     private StickyData stickyData;
 
-    public TransactionStickyHeaders(final StickyData stickyData, final int bgColor, final int sColor){
+    public TransactionStickyHeaders(final StickyData stickyData){
         this.stickyData = stickyData;
     }
 
