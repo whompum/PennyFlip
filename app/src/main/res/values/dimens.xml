@@ -64,4 +64,7 @@
     <dimen name="dimen_add_source_margin">16dp</dimen>
 
     <dimen name="dimen_tab_icon_size">24dp</dimen>
+
+    <dimen name="dimen_min_header_width">200dp</dimen>
+
 </resources>

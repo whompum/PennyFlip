@@ -125,7 +125,7 @@
     <style name="StyleIcon">
         <item name="android:padding">12dp</item>
         <item name="android:scaleType">centerCrop</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:layout_width">@dimen/dimen_icon_size</item>
         <item name="android:layout_height">@dimen/dimen_icon_size</item>
     </style>
@@ -133,7 +133,7 @@
     <!-- Nav Tabs -->
     <style name="StyleSourceDataTabContainer">
         <item name="android:layout_weight">3</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:orientation">vertical</item>
@@ -155,6 +155,13 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="StyleTimestamp.Header">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:minWidth">@dimen/dimen_min_header_width</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:paddingStart">@dimen/dimen_padding_hor_large</item>
     </style>
 
 </resources>

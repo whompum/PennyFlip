@@ -6,12 +6,8 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.AppCompatButton
-        android:minWidth="200dp"
+        style="@style/StyleTimestamp.Header"
         android:background="?android:attr/selectableItemBackground"
-        android:gravity="start|center_vertical"
-        android:paddingStart="@dimen/dimen_padding_hor_large"
-        style="@style/StyleTimestamp"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
