@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -70,24 +71,25 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         server = new SourceDataController(this, this);
         server.observeSource(data.getTitle(), this);
 
-        initialize(data);
+        initializeUi(data);
 
         adapter = new SourceFragmentAdapter(getSupportFragmentManager(), getFragments());
         container.setAdapter(adapter);
-
     }
 
     @Override
     public void onSourceChanged(@NonNull Source source) {
         this.data = source; //Will cause temporary data inconsistency issue on configuration change.
-        initialize(data);
+        initializeUi(data);
     }
 
-
     //Initializes the core UI (title displays, value display, lastUpdate)
-    private void initialize(@NonNull final Source data){
-        ((TextView)findViewById(R.id.id_global_title)).setText(data.getTitle());
-        ((CurrencyEditText)findViewById(R.id.id_global_total_display)).setText(String.valueOf(data.getPennies()));
+    private void initializeUi(@NonNull final Source data){
+        ((TextView)findViewById(R.id.id_global_title))
+                .setText(data.getTitle());
+
+        ((CurrencyEditText)findViewById(R.id.id_global_total_display))
+                .setText(String.valueOf(data.getPennies()));
 
         final String lastUpdate = getString(R.string.string_last_update) + " " + Ts .from(data.getLastUpdate()).getPreferentialDate();
 
@@ -149,8 +151,9 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
         if (data.getTransactionType() == TransactionType.ADD)  //Is adding transaction
             styleRes = R.style.StylePennyDialogAdd;
-        else  //Is probably a spending transaction
+        else //Is probably a spending transaction
             styleRes = R.style.StylePennyDialogMinus;
+        Log.w("CALLIBRATE", "Callibraion issue?");
 
         final Bundle args = new Bundle();
         args.putInt(PennyDialog.STYLE_KEY, styleRes);
@@ -208,7 +211,6 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     }
 
-
     private PennyListener pennyListener = new PennyListener() {
         @Override
         public void onPenniesChange(final long l) {
@@ -222,6 +224,5 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
                     , 500L);
         }
     };
-
 
 }

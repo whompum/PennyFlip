@@ -1,11 +1,12 @@
-package com.whompum.PennyFlip.Transactions.Adapter;
+package com.whompum.PennyFlip.Transactions.Data;
 
 import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Time.Ts;
-import com.whompum.PennyFlip.Transactions.Header.TransactionsGroup;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionsGroup;
 
 import java.util.ArrayList;
 import java.util.List;

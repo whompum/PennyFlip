@@ -4,20 +4,19 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.whompum.PennyFlip.DataBind;
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.Time.Ts;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHeaderHolder;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transactions.Header.TransactionStickyHeaders;
-import com.whompum.PennyFlip.Transactions.Header.TransactionsGroup;
+import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
 
 import java.util.List;
 
@@ -88,32 +87,21 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     /**
-     * VERY IMPORTANT NOTICE! the position parameter is a dataset index, not a Recyclerview layout index;
      *
      * @param pos (N-N) data structure position.
      * @return The previous header that belongs to that position.
      */
-    public TransactionsGroup getLastHeader(final int pos){
+    public TransactionsGroup getLastHeader(/* ADAPTER POSITION */final int pos){
 
-        /**
-         * If a position zero, then most likely the item is a header. If not
-         */
-
-        if(pos == 0){
-            AdapterItem item = dataSet.get(pos);
+        if(pos == 0)
             if((getItemViewType(pos) != HEADER ))
                 return null;
             else
-                return (TransactionsGroup) item;
-        }
+                return (TransactionsGroup)dataSet.get(pos);
 
-
-        for(int i = pos; i >= 0; i--){
-            AdapterItem item = dataSet.get(i);
-
+        for(int i = pos; i >= 0; i--)
             if(getItemViewType(i) == HEADER)
-                return (TransactionsGroup) item;
-        }
+                return (TransactionsGroup) dataSet.get(i);
 
 
     return null;
@@ -157,7 +145,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         final AdapterItem item = dataSet.get(position);
 
-        if(viewType ==  DATA)
+        if(viewType == DATA)
             ((DataBind<TransactionsContent>)holder).bind( ((TransactionsContent)item) );
 
         else if(viewType == HEADER)
@@ -179,15 +167,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if(item instanceof TransactionsGroup) {
 
-
-            //If we're turning ON
-            //Cast item to TransactionsGroup
-            //fetch its children
-            //Insert
-            //Notify
-
-            //Else if we're Turning Off
-
             final List<TransactionsContent> items = ((TransactionsGroup) item).getChildren();
 
             final boolean isExpanded = ((TransactionsGroup)item).isExpanded();
@@ -196,24 +175,20 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (dataSet.addAll(pos + 1, items))
                     notifyItemRangeInserted(pos + 1, items.size());
 
-            if(isExpanded){ //collapsing
-                 Log.i("EXPANDING", "estoy aqui.");
-                    if (dataSet.removeAll(items)) {
-                        Log.i("EXPANDING", "Items removed");
+            if(isExpanded) //collapsing
+                if (dataSet.removeAll(items))
                         notifyDataSetChanged();
-                    }
-                }
 
-                Log.i("EXPANDING", "TRANSACTIONS GROUP IS EXPANDED: " + ((TransactionsGroup)item).isExpanded());
-
-            ((TransactionsGroup)item).toggle();
+            ((TransactionsGroup)item).toggle(); //Change state
         }
+
+
 
     }
 
     @Override
     public boolean isItemAHeader(int position) {
-        if(position == RecyclerView.NO_POSITION)
+        if(position <= RecyclerView.NO_POSITION || position >= dataSet.size())
             return false;
 
         return getItemViewType(position) == TransactionListAdapter.HEADER;
@@ -238,10 +213,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         ? header.getContext().getString(R.string.string_today)
                         : Ts.from(headerDay).simpleDate()) );
 
-    }
-
-    public interface DataBind<T>{
-        void bind(final T headerItem);
     }
 
 }

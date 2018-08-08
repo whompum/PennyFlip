@@ -2,7 +2,6 @@ package com.whompum.PennyFlip.Transactions;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,11 +20,11 @@ import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Ts;
-import com.whompum.PennyFlip.Transactions.Adapter.ExpansionPredicate;
-import com.whompum.PennyFlip.Transactions.Adapter.TimeLineDecorator;
+import com.whompum.PennyFlip.Transactions.Data.ExpansionPredicate;
+import com.whompum.PennyFlip.Transactions.Decoration.TimeLineDecorator;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Adapter.TransactionsGroupConverter;
-import com.whompum.PennyFlip.Transactions.Header.TransactionStickyHeaders;
+import com.whompum.PennyFlip.Transactions.Data.TransactionsGroupConverter;
+import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
 
 import java.util.Collections;
 import java.util.List;

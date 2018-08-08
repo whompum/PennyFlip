@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Transactions;
+package com.whompum.PennyFlip.Transactions.Data;
 
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
 

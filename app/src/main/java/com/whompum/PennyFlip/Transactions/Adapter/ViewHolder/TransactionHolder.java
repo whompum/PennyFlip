@@ -7,16 +7,13 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Time.Ts;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
-import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
+import com.whompum.PennyFlip.DataBind;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
 import com.whompum.PennyFlip.R;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-/**
- * Created by bryan on 1/7/2018.
- */
-public class TransactionHolder extends RecyclerView.ViewHolder implements TransactionListAdapter.DataBind<TransactionsContent> {
+public class TransactionHolder extends RecyclerView.ViewHolder implements DataBind<TransactionsContent> {
 
     private TextView transactionLastUpdate;
     private TextView transactionSource;
@@ -36,23 +33,24 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
     }
 
     @Override
-    public void bind(TransactionsContent headerItem) {
+    public void bind(TransactionsContent item) {
 
-        final Transaction t = headerItem.getTransaction();
+        final Transaction t = item.getTransaction();
 
         transactionLastUpdate.setText(Ts.from(t.getTimestamp()).getPreferentialDate());
         transactionSource.setText(t.getTitle());
         transactionAmount.setText(String.valueOf(t.getAmount()));
 
-        if(t.getTransactionType() == TransactionType.ADD){
-            transactionSource.setTextColor(addColor);
-            transactionAmount.setTextColor(addColor);
-        }else if(t.getTransactionType() == TransactionType.SPEND){
-            transactionSource.setTextColor(spendColor);
-            transactionAmount.setTextColor(spendColor);
-        }
+        if(t.getTransactionType() == TransactionType.ADD)
+            setTextColor(addColor);
+        else if(t.getTransactionType() == TransactionType.SPEND)
+            setTextColor(spendColor);
+
     }
 
-
+    private void setTextColor(final int color){
+        transactionSource.setTextColor(color);
+        transactionAmount.setTextColor(color);
+    }
 
 }

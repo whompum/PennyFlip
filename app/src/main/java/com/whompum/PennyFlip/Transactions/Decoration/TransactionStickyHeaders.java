@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Transactions.Header;
+package com.whompum.PennyFlip.Transactions.Decoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -24,7 +24,6 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        super.onDrawOver(c, parent, state);
 
         if(parent.getChildCount() < 2) //We can't use headers if there's no data to head...
             return;
@@ -36,18 +35,22 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
         int deltaY;
 
-        if(isHeader(parent, 1)){
+        if( isHeader(parent, 1) ){
 
-            if(parent.getChildAt(1).getTop() <= headerRect.bottom){
+            if( collision(parent.getChildAt(1)) ) //If has collisions
                 deltaY = parent.getChildAt(1).getTop();
-            }else {
-                deltaY = header.getHeight(); //Will draw @ zero REF drawHeader
-            }
 
-        }else{
+            else //If no collision happened
+                deltaY = header.getHeight(); //Will draw @ zero REF drawHeader
+
+        }else
             deltaY = header.getHeight(); //Will draw @ zero REF drawHeader
-        }
+
         drawHeader(c, deltaY);
+    }
+
+    private boolean collision(@NonNull final View view){
+        return view.getTop() <= headerRect.bottom;
     }
 
     /**
@@ -61,7 +64,6 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
     private void bind(@NonNull final RecyclerView parent, final View child){
         stickyData.bindHeader(header, getAdapterPosition(parent, child));
     }
-
 
     //Returns the adapter position of the on-screen item
     private int getAdapterPosition(@NonNull final RecyclerView parent, final int layoutIndex){

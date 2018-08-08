@@ -1,14 +1,12 @@
-package com.whompum.PennyFlip.Transactions.Header;
+package com.whompum.PennyFlip.Transactions.Adapter;
 
 import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.ListUtils.ExpandableGroup;
-import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
-import com.whompum.PennyFlip.Transactions.DescendingSort;
+import com.whompum.PennyFlip.Transactions.Data.DescendingSort;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
