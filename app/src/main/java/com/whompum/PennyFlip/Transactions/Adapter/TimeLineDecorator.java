@@ -2,6 +2,7 @@ package com.whompum.PennyFlip.Transactions.Adapter;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
@@ -70,7 +71,8 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
 
         final float halfLineWidth = Math.abs( linePaint.getStrokeWidth() * 0.5F );
 
-        c.drawLine(lineStart+halfLineWidth, 0, lineStart+halfLineWidth, c.getHeight(), linePaint);
+        c.drawLine(lineStart+halfLineWidth, 0, lineStart+halfLineWidth,
+                getLineHeight(parent), linePaint);
 
         //find all title Views
         for(int i =0; i < parent.getChildCount(); i++){
@@ -83,7 +85,8 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
 
             if(dotPositioner == null ||
                     !(dotPositioner instanceof HeaderItemView)  ||
-                    (titleView = dotPositioner.findViewById(R.id.id_global_title)) == null) continue;
+                    (titleView = dotPositioner.findViewById(R.id.id_global_title)) == null ||
+                    titleView.getVisibility() == View.GONE) continue;
 
             final int cY = dotPositioner.getBottom() - (titleView.getHeight()/2);
             final int cX = (int)(lineStart+halfLineWidth);
@@ -94,6 +97,35 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
         }
 
     }
+
+    private int getLineHeight(@NonNull final RecyclerView parent){
+
+        final RecyclerView.Adapter adapter = parent.getAdapter();
+
+            if(adapter.getItemCount() == 0)
+                return 0;
+
+        int height = parent.getHeight();
+
+        //Find last adapter index
+        final int lastAdapterPosition = adapter.getItemCount()-1;
+
+        final int view_type = adapter.getItemViewType(lastAdapterPosition);
+
+        if(view_type != TransactionListAdapter.DATA &&  view_type != TransactionListAdapter.HEADER)
+            return 0;
+
+
+        final View lastChild = parent
+                .getLayoutManager()
+                .findViewByPosition(lastAdapterPosition);
+
+        if(lastChild != null)
+            height = lastChild.getBottom();
+
+        return height;
+    }
+
 }
 
 

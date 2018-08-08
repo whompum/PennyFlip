@@ -7,7 +7,7 @@
     android:id="@+id/local_transaction_header"
     android:background="@android:color/white"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="65dp">
 
     <!--Mimicking the appearance of the header
         in being part of the layout-->
@@ -17,12 +17,12 @@
         style="@style/StyleTimestamp"
         android:background="@drawable/background_rounded_rect_right_blue"
         android:layout_marginStart="@dimen/dimen_padding_hor_large"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dimen_padding_ver_base"
         android:layout_gravity="bottom"
         android:gravity="start|center_vertical"
         android:paddingStart="@dimen/dimen_padding_hor_large"
         android:textColor="@color/white"
-        android:minWidth="190dp"
+        android:minWidth="200dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

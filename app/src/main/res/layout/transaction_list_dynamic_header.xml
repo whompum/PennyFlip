@@ -11,7 +11,6 @@
         android:gravity="start|center_vertical"
         android:paddingStart="@dimen/dimen_padding_hor_large"
         style="@style/StyleTimestamp"
-        android:text="hello"
         android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
