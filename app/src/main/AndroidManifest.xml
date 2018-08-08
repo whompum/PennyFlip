@@ -38,15 +38,6 @@
                   android:theme="@style/AppTheme"
                   android:windowSoftInputMode="stateHidden"/>
 
-
-        <!--Wallet Provider Information-->
-
-
-        <provider
-            android:exported="false"
-            android:authorities="com.whompum.PennyFlip.Data.Providers.TransactionsProvider"
-            android:name=".Data.Providers.TransactionsProvider"/>
-
     </application>
 
 </manifest>

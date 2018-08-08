@@ -1,9 +1,7 @@
-package com.whompum.PennyFlip.Data;
+package com.whompum.PennyFlip.Time;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import com.whompum.PennyFlip.Time.Timestamp;
 
 /**
  * Created by bryan on 2/1/2018.
@@ -21,7 +19,7 @@ public class UserStartDate {
 
 
     {
-        currTime = Timestamp.now().millis();
+        currTime = System.currentTimeMillis();
     }
 
     private UserStartDate(final Context context){

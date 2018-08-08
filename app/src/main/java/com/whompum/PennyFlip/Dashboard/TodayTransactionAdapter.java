@@ -9,8 +9,7 @@ import android.widget.TextView;
 
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
-import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Time.Ts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +73,7 @@ public class TodayTransactionAdapter extends RecyclerView.Adapter<TodayTransacti
         }
 
         public void bind(final Transaction item){
-            timeStamp.setText(PennyFlipTimeFormatter.simpleTime(Timestamp.from(item.getTimestamp())));
+            timeStamp.setText(Ts.from(item.getTimestamp()).simpleTime());
             sourceName.setText(item.getSourceId());
             transactionAmount.setText(String.valueOf(item.getAmount()));
         }

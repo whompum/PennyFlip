@@ -1,6 +1,10 @@
 package com.whompum.PennyFlip.Time;
 
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+
+import com.whompum.PennyFlip.R;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
@@ -109,6 +113,28 @@ public class Ts {
             return simpleTime();
 
         return simpleDate();
+    }
+
+    /**
+     * Returns a String representing the current time. Such as Yesterday
+     * @return
+     */
+    @StringRes
+    public int getStringPreferentialDate(){
+        final long cacheMillis = getMillis(); //Caching millis real quick
+
+        final long tsDay = getStartOfDay(); //Pre-millis change
+
+        set(System.currentTimeMillis()); // Set the Ts to today
+
+        final long nowDay = getStartOfDay(); //Post-Milis change
+
+        set(cacheMillis); //Reseting
+
+        if(tsDay == nowDay)
+            return R.string.string_today;
+
+    return -1;
     }
 
 }

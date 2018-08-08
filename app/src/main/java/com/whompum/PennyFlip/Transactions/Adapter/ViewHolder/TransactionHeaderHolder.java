@@ -31,7 +31,16 @@ public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public void bind(TransactionsGroup headerItem) {
-        dateDisplay.setText(Ts.from(headerItem.getMillis()).simpleDate());
+
+        final Ts timestamp = Ts.from(headerItem.getMillis());
+
+        final int displayRes = timestamp.getStringPreferentialDate();
+
+        if(displayRes == -1)
+            dateDisplay.setText(timestamp.simpleDate());
+
+        else if(displayRes == R.string.string_today)
+            dateDisplay.setText(itemView.getContext().getString(displayRes));
     }
 
     @Override

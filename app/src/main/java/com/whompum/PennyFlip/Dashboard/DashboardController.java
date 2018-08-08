@@ -7,10 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.whompum.PennyFlip.Data.UserStartDate;
+import com.whompum.PennyFlip.Time.UserStartDate;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.Money.MoneyController;
-import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Wallet;
 

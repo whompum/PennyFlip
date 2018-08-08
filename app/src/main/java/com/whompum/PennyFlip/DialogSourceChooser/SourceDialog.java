@@ -33,8 +33,7 @@ import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
-import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Time.Ts;
 
 import java.util.List;
 
@@ -158,7 +157,7 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
         layout.findViewById(R.id.id_local_source_header).setBackgroundColor(headerColor);
 
         totalDisplay.setText(String.valueOf(pennies));
-        timeDisplay.setText(String.valueOf(PennyFlipTimeFormatter.simpleTime(Timestamp.from(timestamp))));
+        timeDisplay.setText(Ts.from(timestamp).simpleTime());
 
         sourceList.addOnScrollListener(scrollListener);
 
