@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.whompum.PennyFlip.Widgets.HeaderItemLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="8dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:paddingStart="32dp"
-    android:paddingEnd="32dp"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        tools:text="Title"
-        style="@style/StyleTimestamp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"/>
-
-    <FrameLayout
-        android:layout_below="@id/id_global_timestamp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            tools:text="Title"
+            style="@style/StyleTimestamp"/>
+
+    <LinearLayout
+            android:layout_below="@id/id_global_timestamp"
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <TextView
         android:textColor="@color/light_green"
         android:text="Car Wash"
         android:id="@id/id_global_title"
-        android:drawableStart="@drawable/graphic_transaction_add"
-        android:drawablePadding="8dp"
         android:layout_gravity="center_vertical"
         android:textSize="@dimen/dimen_text_mediano"
-        android:layout_width="wrap_content"
+        android:paddingEnd="2dp"
+        android:layout_weight="10"
+        android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
-        <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+    <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
             tools:text="$44.72"
             style="@style/StyleCurrencyEditText.Big"
+            android:gravity="end"
+            android:layout_width="wrap_content"
             android:textColor="@color/light_green"
             android:layout_gravity="end|center"/>
-    </FrameLayout>
+    </LinearLayout>
+
+    </RelativeLayout>
 
 
 
 
-</RelativeLayout>
+</com.whompum.PennyFlip.Widgets.HeaderItemLinearLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.whompum.PennyFlip.Widgets.HeaderFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true"
+    android:id="@+id/local_transaction_header"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <!--Mimicking the appearance of the header
+        in being part of the layout-->
+
+    <android.support.v7.widget.AppCompatButton
+        tools:text="@string/string_today_cap"
+        style="@style/StyleTimestamp"
+        android:background="@drawable/background_rounded_rect_right_blue"
+        android:layout_marginStart="@dimen/dimen_padding_hor_large"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="bottom"
+        android:gravity="start|center_vertical"
+        android:paddingStart="@dimen/dimen_padding_hor_large"
+        android:textColor="@color/white"
+        android:minWidth="190dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_marginStart="@dimen/dimen_padding_hor_large"
+        android:background="@color/light_blue"
+        android:id="@+id/i"
+        android:layout_width="@dimen/dimen_timeline_line_width"
+        android:layout_height="match_parent"/>
+
+
+</com.whompum.PennyFlip.Widgets.HeaderFrameLayout>

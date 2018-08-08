@@ -8,38 +8,37 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Transactions.Header.HeaderItem;
-import com.whompum.PennyFlip.Transactions.Header.TransactionHeaderItem;
-import com.whompum.PennyFlip.Transactions.Header.TransactionsItem;
+import com.whompum.PennyFlip.ListUtils.AdapterItem;
+import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHeaderHolder;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Transactions.Header.TransactionsGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by bryan on 1/7/2018.
  */
 
-public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+        OnItemSelected<Integer>{
 
     public static final int DATA = 0;
     public static final int HEADER = 1;
 
-    private List<HeaderItem> dataSet;
+    private List<AdapterItem> dataSet;
 
     private LayoutInflater inflater;
 
     private int addColor;
     private int spendColor;
 
-
     public TransactionListAdapter(final Context context){
         this(context, null);
     }
 
-    public TransactionListAdapter(final Context context, final List<HeaderItem> list){
+    public TransactionListAdapter(final Context context, final List<AdapterItem> list){
 
         if(list != null)
             this.dataSet = list;
@@ -57,35 +56,26 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     }
 
-    public HeaderItem getDataAt(final int position){
+    public AdapterItem getDataAt(final int position){
         if( !(dataSet.size() > position) )
             return null;
 
         return dataSet.get(position);
     }
 
-    public TransactionHeaderItem getFirstHeader(){
-
-        if(dataSet != null)
-            for (int a = 0; a < dataSet.size(); a++)
-                if (dataSet.get(a) instanceof TransactionHeaderItem)
-                    return (TransactionHeaderItem) dataSet.get(a);
-
-        return null;
-    }
 
     public int getNextHeaderItemPos(final int pos){
         //Return the display position of the next Header compared to the current pos, or NO_POS
 
         if(dataSet != null && pos < dataSet.size() - 1)
             for(int a = pos+1; a < dataSet.size(); a++)
-                if(dataSet.get(a) instanceof TransactionHeaderItem)
+                if(dataSet.get(a) instanceof TransactionsGroup)
                     return a;
 
         return -1;
     }
 
-    public void swapDataset(@Nullable final List<HeaderItem> transactions){
+    public void swapDataset(@Nullable final List<AdapterItem> transactions){
           if(transactions == null) return;
 
         this.dataSet = transactions;
@@ -98,26 +88,26 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      * @param pos (N-N) data structure position.
      * @return The previous header that belongs to that position.
      */
-    public TransactionHeaderItem getLastHeader(final int pos){
+    public TransactionsGroup getLastHeader(final int pos){
 
         /**
          * If a position zero, then most likely the item is a header. If not
          */
 
         if(pos == 0){
-            HeaderItem item = dataSet.get(pos);
+            AdapterItem item = dataSet.get(pos);
             if((getItemViewType(pos) != HEADER ))
                 return null;
             else
-                return (TransactionHeaderItem)item;
+                return (TransactionsGroup) item;
         }
 
 
         for(int i = pos; i >= 0; i--){
-            HeaderItem item = dataSet.get(i);
+            AdapterItem item = dataSet.get(i);
 
             if(getItemViewType(i) == HEADER)
-                return (TransactionHeaderItem) item;
+                return (TransactionsGroup) item;
         }
 
 
@@ -129,16 +119,16 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getItemViewType(int position) {
 
 
-        final HeaderItem item = dataSet.get(position);
+        final AdapterItem item = dataSet.get(position);
 
-        if(item instanceof TransactionHeaderItem)
+        if(item instanceof TransactionsGroup)
             return HEADER;
 
-        else if(item instanceof TransactionsItem)
+        else if(item instanceof TransactionsContent)
             return DATA;
 
         else
-            throw new IllegalArgumentException("Wrong HeaderItem Type.");
+            throw new IllegalArgumentException("Wrong Item Type.");
 
     }
 
@@ -150,7 +140,8 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if(viewType == DATA)
             holder = new TransactionHolder(inflater.inflate(R.layout.transaction_list_item, parent, false), addColor, spendColor);
         else if(viewType == HEADER)
-            holder = new TransactionHeaderHolder(inflater.inflate(R.layout.transaction_item_header, parent, false));
+            holder = new TransactionHeaderHolder(inflater.inflate(R.layout.transaction_list_dynamic_header, parent, false)
+            ,this);
 
     return holder;
     }
@@ -158,23 +149,15 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        /**
-         * First check the type of Header Item, then check if the Holder is the right type.
-         * Then cast and pass.
-         */
-
-        Log.i("TRANSACTION_FRAG", "OnBindViewHolder()# TransactionListAdapter");
-
-
         final int viewType = getItemViewType(position);
 
-        final HeaderItem item = dataSet.get(position);
+        final AdapterItem item = dataSet.get(position);
 
         if(viewType ==  DATA)
-            ((DataBind<TransactionsItem>)holder).bind( ((TransactionsItem)item) );
+            ((DataBind<TransactionsContent>)holder).bind( ((TransactionsContent)item) );
 
         else if(viewType == HEADER)
-            ((DataBind<TransactionHeaderItem>)holder).bind((TransactionHeaderItem)item);
+            ((DataBind<TransactionsGroup>)holder).bind((TransactionsGroup) item);
     }
 
     @Override
@@ -184,6 +167,11 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
      return dataSet.size();
     }
 
+
+    @Override
+    public void onItemSelected(Integer pos) {
+        Log.i("EXPANDABLE", "DATA SELECTED: " + pos);
+    }
 
     public interface DataBind<T>{
         void bind(final T headerItem);

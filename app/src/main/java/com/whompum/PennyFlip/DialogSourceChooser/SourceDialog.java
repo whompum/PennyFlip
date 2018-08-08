@@ -31,7 +31,7 @@ import com.whompum.PennyFlip.Animations.AnimateScale;
 import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.OnItemSelected;
+import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.PennyFlipTimeFormatter;
 import com.whompum.PennyFlip.Time.Timestamp;

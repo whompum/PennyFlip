@@ -27,7 +27,7 @@ public class Ts {
     private DateTime date;
 
     private Ts(final long milliseconds){
-        date = new DateTime(milliseconds);
+        set(milliseconds);
     }
 
     public static Ts now(){
@@ -43,6 +43,9 @@ public class Ts {
         return new Ts(System.currentTimeMillis() + (DAY_MILLIS*days));
     }
 
+    public void set(final long millis){
+        date = new DateTime(millis);
+    }
 
     //Returns OUR 12 AM
     public long getStartOfDay(){

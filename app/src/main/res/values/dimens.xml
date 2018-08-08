@@ -13,6 +13,8 @@
     <dimen name="dimen_padding_ver_large">24dp</dimen>
     <dimen name="dimen_padding_ver_x_large">48dp</dimen>
 
+    <dimen name="dimen_timeline_line_width">6dp</dimen>
+    <dimen name="dimen_timeline_circle_width">6dp</dimen>
 
     <!--CIRCULAR REVEAL OFFSET-->
     <dimen name="dimen_circular_reveal_x_offset">76dp</dimen>

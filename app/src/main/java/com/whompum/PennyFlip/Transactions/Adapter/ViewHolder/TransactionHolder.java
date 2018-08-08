@@ -1,7 +1,6 @@
 package com.whompum.PennyFlip.Transactions.Adapter.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,7 +8,7 @@ import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Time.Ts;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Header.TransactionsItem;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
 import com.whompum.PennyFlip.R;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
@@ -17,8 +16,7 @@ import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 /**
  * Created by bryan on 1/7/2018.
  */
-
-public class TransactionHolder extends RecyclerView.ViewHolder implements TransactionListAdapter.DataBind<TransactionsItem> {
+public class TransactionHolder extends RecyclerView.ViewHolder implements TransactionListAdapter.DataBind<TransactionsContent> {
 
     private TextView transactionLastUpdate;
     private TextView transactionSource;
@@ -26,8 +24,6 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
 
     private int addColor;
     private int spendColor;
-    private int callibrateColor;
-
 
     public TransactionHolder(final View layout, final int addClr, final int spendClr){
         super(layout);
@@ -37,17 +33,12 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
 
         this.addColor = addClr;
         this.spendColor = spendClr;
-
-        Log.i("TRANSACTION_FRAG", "Creating new TransactionHolder object");
-
     }
 
     @Override
-    public void bind(TransactionsItem headerItem) {
+    public void bind(TransactionsContent headerItem) {
 
-        Log.i("TRANSACTION_FRAG", "Binding TransactionsItem to TransactionHolder");
-
-        final Transaction t = headerItem.getTransactions();
+        final Transaction t = headerItem.getTransaction();
 
         transactionLastUpdate.setText(Ts.from(t.getTimestamp()).getPreferentialDate());
         transactionSource.setText(t.getTitle());
@@ -56,11 +47,12 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements Transa
         if(t.getTransactionType() == TransactionType.ADD){
             transactionSource.setTextColor(addColor);
             transactionAmount.setTextColor(addColor);
-            transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graphic_transaction_add,0,0,0);
         }else if(t.getTransactionType() == TransactionType.SPEND){
             transactionSource.setTextColor(spendColor);
             transactionAmount.setTextColor(spendColor);
-            transactionSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.graphic_transaction_spend,0,0,0);
         }
     }
+
+
+
 }

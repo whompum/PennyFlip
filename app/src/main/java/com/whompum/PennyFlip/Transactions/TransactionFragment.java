@@ -21,11 +21,12 @@ import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Transactions.Adapter.TimeLineDecorator;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Adapter.HeaderAdapter;
-import com.whompum.PennyFlip.Transactions.Header.HeaderItem;
-import com.whompum.PennyFlip.Transactions.Header.TransactionHeaderItem;
+import com.whompum.PennyFlip.Transactions.Adapter.TransactionsConverter;
 import com.whompum.PennyFlip.Transactions.Header.TransactionStickyHeaders;
+import com.whompum.PennyFlip.Transactions.Header.TransactionsGroup;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,8 +47,6 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
 
     private RecyclerView transactionsList;
     private TransactionListAdapter adapter;
-
-    private List<HeaderItem> dataSet;
 
     private Handler resultReceiver = new Handler(this);
 
@@ -91,6 +90,7 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
         this.transactionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         this.transactionsList.setAdapter(adapter);
         this.transactionsList.addItemDecoration(new TransactionStickyHeaders(this, highlightDark, highlight));
+        this.transactionsList.addItemDecoration(new TimeLineDecorator(getContext().getResources()));
 
     return layout;
     }
@@ -112,7 +112,7 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
 
             Collections.sort(transactions, new DescendingSort());
 
-            adapter.swapDataset(HeaderAdapter.fromList(transactions));
+            adapter.swapDataset(TransactionsConverter.fromTransactions(transactions));
 
             toggleNoTransactionsDisplay(false);
 
@@ -135,12 +135,10 @@ public class TransactionFragment extends Fragment implements TransactionStickyHe
     public void bindHeader(View header, View child) {
         final int fromPos = transactionsList.getChildAdapterPosition(child);
 
-        final TransactionHeaderItem headerItem = adapter.getLastHeader(fromPos);
+        final TransactionsGroup headerItem = adapter.getLastHeader(fromPos);
 
-        if(headerItem != null){
-            ((TextView)header.findViewById(R.id.id_global_timestamp)).setText(headerItem.getDate());
-            ((TextView)header.findViewById(R.id.local_transaction_count_header)).setText(headerItem.getNumTransactions());
-        }
+        if(headerItem != null)
+            ((TextView)header.findViewById(R.id.id_global_timestamp)).setText(Ts.from(headerItem.getMillis()).simpleDate());
     }
 
     private void toggleNoTransactionsDisplay(final boolean toggle){

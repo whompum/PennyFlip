@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.OnItemSelected;
+import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.R;
 
 

@@ -29,6 +29,7 @@
 
     </LinearLayout>
 
+
 <android.support.v7.widget.RecyclerView
     xmlns:tools="http://schemas.android.com/tools"
     tools:listitem="@layout/transaction_list_item"
