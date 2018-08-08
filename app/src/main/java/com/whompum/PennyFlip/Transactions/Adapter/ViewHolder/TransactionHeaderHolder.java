@@ -25,6 +25,7 @@ public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements
         super(layout);
 
         this.dateDisplay = layout.findViewById(R.id.id_global_timestamp);
+        dateDisplay.setOnClickListener(this);
         this.client = selectedListener;
     }
 
