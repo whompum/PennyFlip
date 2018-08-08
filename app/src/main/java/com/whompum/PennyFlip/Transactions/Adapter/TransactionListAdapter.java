@@ -6,13 +6,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
+import com.whompum.PennyFlip.Time.Ts;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHeaderHolder;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Transactions.Header.TransactionStickyHeaders;
 import com.whompum.PennyFlip.Transactions.Header.TransactionsGroup;
 
 import java.util.List;
@@ -22,7 +26,7 @@ import java.util.List;
  */
 
 public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        OnItemSelected<Integer>{
+        OnItemSelected<Integer>, TransactionStickyHeaders.StickyData{
 
     public static final int DATA = 0;
     public static final int HEADER = 1;
@@ -33,6 +37,8 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private int addColor;
     private int spendColor;
+
+    private Ts utility = Ts.now();
 
     public TransactionListAdapter(final Context context){
         this(context, null);
@@ -62,7 +68,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         return dataSet.get(position);
     }
-
 
     public int getNextHeaderItemPos(final int pos){
         //Return the display position of the next Header compared to the current pos, or NO_POS
@@ -118,7 +123,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
 
-
         final AdapterItem item = dataSet.get(position);
 
         if(item instanceof TransactionsGroup)
@@ -170,7 +174,70 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onItemSelected(Integer pos) {
-        Log.i("EXPANDABLE", "DATA SELECTED: " + pos);
+
+        final AdapterItem item = dataSet.get(pos);
+
+        if(item instanceof TransactionsGroup) {
+
+
+            //If we're turning ON
+            //Cast item to TransactionsGroup
+            //fetch its children
+            //Insert
+            //Notify
+
+            //Else if we're Turning Off
+
+            final List<TransactionsContent> items = ((TransactionsGroup) item).getChildren();
+
+            final boolean isExpanded = ((TransactionsGroup)item).isExpanded();
+
+            if (!isExpanded) //We're expanding
+                if (dataSet.addAll(pos + 1, items))
+                    notifyItemRangeInserted(pos + 1, items.size());
+
+            if(isExpanded){ //collapsing
+                 Log.i("EXPANDING", "estoy aqui.");
+                    if (dataSet.removeAll(items)) {
+                        Log.i("EXPANDING", "Items removed");
+                        notifyDataSetChanged();
+                    }
+                }
+
+                Log.i("EXPANDING", "TRANSACTIONS GROUP IS EXPANDED: " + ((TransactionsGroup)item).isExpanded());
+
+            ((TransactionsGroup)item).toggle();
+        }
+
+    }
+
+    @Override
+    public boolean isItemAHeader(int position) {
+        if(position == RecyclerView.NO_POSITION)
+            return false;
+
+        return getItemViewType(position) == TransactionListAdapter.HEADER;
+    }
+
+    @Override
+    public void bindHeader(View header, final int adapterPos) {
+        final TransactionsGroup headerItem = getLastHeader(adapterPos);
+
+        utility.set(System.currentTimeMillis());
+
+        if(headerItem == null) return;
+
+        final long now = utility.getStartOfDay();
+
+        utility.set(headerItem.getMillis());
+
+        final long headerDay = utility.getStartOfDay();
+
+        ((TextView)header.findViewById(R.id.id_global_timestamp))
+                .setText(  ((now == headerDay)
+                        ? header.getContext().getString(R.string.string_today)
+                        : Ts.from(headerDay).simpleDate()) );
+
     }
 
     public interface DataBind<T>{

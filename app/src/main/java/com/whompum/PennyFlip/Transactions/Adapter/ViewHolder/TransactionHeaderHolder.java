@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
+import com.whompum.PennyFlip.Time.Ts;
 import com.whompum.PennyFlip.Transactions.Header.TransactionsGroup;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
 import com.whompum.PennyFlip.R;
@@ -34,6 +35,6 @@ public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements 
 
     @Override
     public void bind(TransactionsGroup headerItem) {
-       // dateDisplay.setText(headerItem.getDate());
+        dateDisplay.setText(Ts.from(headerItem.getMillis()).simpleDate());
     }
 }
