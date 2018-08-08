@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.DataBind;
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
-import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHeaderHolder;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
@@ -37,7 +37,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private int addColor;
     private int spendColor;
 
-    private Ts utility = Ts.now();
+    private Timestamp utility = Timestamp.now();
 
     public TransactionListAdapter(final Context context){
         this(context, null);
@@ -211,7 +211,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ((TextView)header.findViewById(R.id.id_global_timestamp))
                 .setText(  ((now == headerDay)
                         ? header.getContext().getString(R.string.string_today)
-                        : Ts.from(headerDay).simpleDate()) );
+                        : Timestamp.from(headerDay).simpleDate()) );
 
     }
 

@@ -19,7 +19,7 @@ import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transactions.Data.ExpansionPredicate;
 import com.whompum.PennyFlip.Transactions.Decoration.TimeLineDecorator;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
@@ -96,7 +96,7 @@ public class TransactionFragment extends Fragment implements Handler.Callback, O
 
             Collections.sort(transactions, new DescendingSort());
 
-            final long now = Ts.now().getStartOfDay();
+            final long now = Timestamp.now().getStartOfDay();
 
             adapter.swapDataset(TransactionsGroupConverter.fromTransactions(transactions, new ExpansionPredicate() {
                 @Override

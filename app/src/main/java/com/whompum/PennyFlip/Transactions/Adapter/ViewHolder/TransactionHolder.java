@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.DataBind;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
@@ -37,7 +37,7 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
 
         final Transaction t = item.getTransaction();
 
-        transactionLastUpdate.setText(Ts.from(t.getTimestamp()).getPreferentialDate());
+        transactionLastUpdate.setText(Timestamp.from(t.getTimestamp()).getPreferentialDate());
         transactionSource.setText(t.getTitle());
         transactionAmount.setText(String.valueOf(t.getAmount()));
 

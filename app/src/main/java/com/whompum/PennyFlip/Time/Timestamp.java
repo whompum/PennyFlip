@@ -1,7 +1,5 @@
 package com.whompum.PennyFlip.Time;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.whompum.PennyFlip.R;
@@ -16,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * Wraps a Date time object to represent times
  * as well as providing very usefull utility functions like formatting and such
  */
-public class Ts {
+public class Timestamp {
 
     public static final int AM = 0;
     public static final int PM = 1;
@@ -30,21 +28,21 @@ public class Ts {
 
     private DateTime date;
 
-    private Ts(final long milliseconds){
+    private Timestamp(final long milliseconds){
         set(milliseconds);
     }
 
-    public static Ts now(){
-        return new Ts(System.currentTimeMillis());
+    public static Timestamp now(){
+        return new Timestamp(System.currentTimeMillis());
     }
 
-    public static Ts from(final long time){
-        return new Ts(time);
+    public static Timestamp from(final long time){
+        return new Timestamp(time);
     }
 
-    public static Ts fromProjection(final int days){
+    public static Timestamp fromProjection(final int days){
         //creates a DateTime to represent a value X days ahead of right now
-        return new Ts(System.currentTimeMillis() + (DAY_MILLIS*days));
+        return new Timestamp(System.currentTimeMillis() + (DAY_MILLIS*days));
     }
 
     public void set(final long millis){
@@ -125,7 +123,7 @@ public class Ts {
 
         final long tsDay = getStartOfDay(); //Pre-millis change
 
-        set(System.currentTimeMillis()); // Set the Ts to today
+        set(System.currentTimeMillis()); // Set the Timestamp to today
 
         final long nowDay = getStartOfDay(); //Post-Milis change
 

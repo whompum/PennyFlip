@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionsGroup;
 
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class TransactionsGroupConverter {
 
-    private static Ts utility = Ts.now();
+    private static Timestamp utility = Timestamp.now();
 
     /**
      * Converts a list of transaction objects into AdapterItems capable

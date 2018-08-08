@@ -22,7 +22,7 @@ import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.TimeRange;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 
 import java.util.Collections;
@@ -129,8 +129,8 @@ public class TodayFragment extends Fragment implements Handler.Callback, Observe
     //Creates a TimeRange at our floor and ciel for the day
     private TimeRange fetchRange(){
 
-        final long today = Ts.now().getStartOfDay();
-        final long tomorrow = Ts.fromProjection(1).getStartOfDay(); //Manana
+        final long today = Timestamp.now().getStartOfDay();
+        final long tomorrow = Timestamp.fromProjection(1).getStartOfDay(); //Manana
 
         return new TimeRange(today, tomorrow);
     }

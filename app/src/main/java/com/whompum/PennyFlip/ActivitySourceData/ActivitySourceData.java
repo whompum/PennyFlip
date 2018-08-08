@@ -23,7 +23,7 @@ import com.whompum.PennyFlip.PennyListener;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
 import com.whompum.PennyFlip.SlidePennyDialog;
-import com.whompum.PennyFlip.Time.Ts;
+import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.Transactions.OnTitleListener;
 import com.whompum.PennyFlip.Transactions.TransactionFragment;
@@ -91,7 +91,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         ((CurrencyEditText)findViewById(R.id.id_global_total_display))
                 .setText(String.valueOf(data.getPennies()));
 
-        final String lastUpdate = getString(R.string.string_last_update) + " " + Ts .from(data.getLastUpdate()).getPreferentialDate();
+        final String lastUpdate = getString(R.string.string_last_update) + " " + Timestamp.from(data.getLastUpdate()).getPreferentialDate();
 
         ((TextView)findViewById(R.id.id_global_timestamp)).setText(lastUpdate);
 
