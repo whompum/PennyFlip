@@ -76,7 +76,8 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        consumer = DashboardController.create(this).bindClient(this);
+        consumer = new DashboardController(this);
+        consumer.bindClient(this);
 
         initTodayFragments();
 

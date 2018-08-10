@@ -22,7 +22,7 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
     private DashboardClient client;
 
 
-    private DashboardController(@NonNull final Context context){
+    public DashboardController(@NonNull final Context context){
         this(context, null);
     }
 
@@ -31,7 +31,7 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
      * @param context used to instantiate a Repo object
      * @param o Used to track changes occuring to the Wallet
      */
-    private DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
+    public DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
         repo = MoneyController.obtain(context);
 
@@ -39,24 +39,9 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
             repo.getWallet().observe(o, this);
     }
 
-    public static DashboardController create(@NonNull final Context context){
-        if(instance == null)
-            instance = new DashboardController(context);
-
-        return instance;
-    }
-
-    public static DashboardController create(@NonNull final Context context, @Nullable LifecycleOwner o){
-        if(instance == null)
-            instance = new DashboardController(context, o);
-
-        return instance;
-    }
-
-    public DashboardController bindClient(@NonNull DashboardClient c) {
+    @Override
+    public void bindClient(@NonNull DashboardClient c) {
         this.client = c;
-
-     return this;
     }
 
     @Override
