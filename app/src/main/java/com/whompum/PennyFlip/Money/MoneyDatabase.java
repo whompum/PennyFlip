@@ -7,7 +7,7 @@ import com.whompum.PennyFlip.Money.Source.ObservableSourceAccessor;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Money.Transaction.TransactionDao;
+import com.whompum.PennyFlip.Money.Transaction.TransactionsDao;
 
 @Database(entities = {Source.class, Transaction.class, Wallet.class}, version = 1, exportSchema = false)
 public abstract class MoneyDatabase extends RoomDatabase {
@@ -17,6 +17,6 @@ public abstract class MoneyDatabase extends RoomDatabase {
     public abstract SourceDao getSourceAccessor();
     public abstract ObservableSourceAccessor getObservableSourceAccessor();
 
-    public abstract TransactionDao getTransactionAccessor();
+    public abstract TransactionsDao getTransactionAccessor();
     public abstract WalletDao getWalletAccessor();
 }

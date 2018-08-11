@@ -14,7 +14,7 @@ import com.whompum.PennyFlip.Money.Source.ObservableSourceAccessor;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Money.Transaction.TransactionDao;
+import com.whompum.PennyFlip.Money.Transaction.TransactionsDao;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 
 
@@ -28,7 +28,7 @@ public class MoneyController {
 
     private SourceDao sourceAccessor;
 
-    private TransactionDao transactionAccessor;
+    private TransactionsDao transactionAccessor;
 
     private MoneyDatabase database;
 

@@ -2,65 +2,75 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
+        app:cardBackgroundColor="@color/light_blue"
+        app:cardElevation="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:background="@null"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:background="@color/light_blue"
+    <LinearLayout
+        android:weightSum="10"
+        android:background="@null"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.AppCompatImageButton
+            style="@style/StyleIcon"
             android:id="@id/id_global_nav"
-            app:srcCompat="@drawable/icon_arrow_left"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            app:srcCompat="@drawable/icon_arrow_left" />
 
         <TextView
             android:id="@+id/historyTextView"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/id_global_nav"
-            android:layout_toEndOf="@id/id_global_nav"
             android:text="@string/string_history"
             android:textColor="@color/white"
-            android:textSize="@dimen/dimen_text_bigboi"
-            android:layout_width="wrap_content"
+            android:textSize="@dimen/dimen_text_mediano"
+            android:layout_weight="6"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/local_history_time_range_selector"
-            android:layout_marginTop="8dp"
+        <TextView xmlns:tools="http://schemas.android.com/tools"
+            tools:text="08/18/18"
+            android:id="@+id/local_today_date_display"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/white"
+            android:paddingEnd="@dimen/dimen_padding_hor_base"
             android:gravity="end"
-            android:paddingEnd="8dp"
-            app:overlapAnchor="false"
-            android:background="@null"
-            android:layout_alignParentEnd="true"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"/>
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+        <android.support.v7.widget.AppCompatImageButton
+            style="@style/StyleIcon"
+            android:padding="8dp"
+            android:id="@+id/local_date_picker"
+            app:srcCompat="@drawable/icon_calendar"/>
 
+    </LinearLayout>
 
-    <com.github.badoualy.datepicker.DatePickerTimeline
-        app:mti_primaryColor="@color/light_blue"
-        android:id="@+id/local_history_date_selector"
-        app:mti_tabBeforeSelectionColor="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TextView xmlns:tools="http://schemas.android.com/tools"
+            tools:text="123 Days Ago"
+            android:id="@+id/local_day_count"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="@dimen/dimen_padding_ver_small"
+            android:paddingBottom="@dimen/dimen_padding_ver_small"
+            android:textColor="@color/white"
+            android:paddingStart="@dimen/dimen_padding_hor_large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-
-        </LinearLayout>
+    </LinearLayout>
 
 
     </android.support.v7.widget.CardView>
@@ -68,9 +78,10 @@
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
         tools:listitem="@layout/transaction_list_item"
+        android:background="@color/white"
         android:id="@id/id_global_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

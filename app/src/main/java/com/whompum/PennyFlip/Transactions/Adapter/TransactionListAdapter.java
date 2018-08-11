@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public static final int DATA = 0;
     public static final int HEADER = 1;
 
-    private List<AdapterItem> dataSet;
+    private List<AdapterItem> dataSet = new ArrayList<>();
 
     private LayoutInflater inflater;
 
@@ -80,7 +82,9 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void swapDataset(@Nullable final List<AdapterItem> transactions){
-          if(transactions == null) return;
+       if(transactions == null) return;
+
+       Log.i("FUCK", "OBJ: " + this);
 
         this.dataSet = transactions;
         notifyDataSetChanged();
@@ -156,7 +160,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getItemCount() {
         if(dataSet == null) return 0;
 
-     return dataSet.size();
+        return dataSet.size();
     }
 
 
@@ -181,8 +185,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             ((TransactionsGroup)item).toggle(); //Change state
         }
-
-
 
     }
 

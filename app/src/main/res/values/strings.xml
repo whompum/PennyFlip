@@ -78,6 +78,8 @@
         <item name="string_timerange_custom">Custom</item>
     </string-array>
 
+    <string name="string_day_count">Days Ago</string>
+
     <string name="string_transaction_name">Enter Transaction Name</string>
     <string name="string_skip">Skip</string>
 
