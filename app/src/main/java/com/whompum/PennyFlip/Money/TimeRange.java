@@ -14,6 +14,9 @@ public class TimeRange {
         }
     }
 
+    public TimeRange() {
+    }
+
     public long getMillisFloor() {
         return millisFloor;
     }
@@ -22,4 +25,11 @@ public class TimeRange {
         return millisCiel;
     }
 
+    public void setMillisFloor(long millisFloor) {
+        this.millisFloor = millisFloor;
+    }
+
+    public void setMillisCiel(long millisCiel) {
+        this.millisCiel = millisCiel;
+    }
 }

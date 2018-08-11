@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 @Dao
-public interface  TransactionDao {
+public interface TransactionsDao {
 
     //ALL
     @Query("SELECT * FROM `Transaction`")
@@ -25,7 +25,7 @@ public interface  TransactionDao {
 
     //Timestamp
     @Query("SELECT * From `Transaction` WHERE timestamp >= :floor AND timestamp <= :ciel")
-    LiveData<List<Transaction>> fetch(final long floor, final long ciel);
+    List<Transaction> fetch(final long floor, final long ciel);
 
     //TransactionType - Timestamp
     @Query("SELECT * FROM `Transaction` WHERE transactionType = :transactionType AND timestamp >= :floor AND timestamp <= :ciel")
@@ -34,10 +34,6 @@ public interface  TransactionDao {
     //Timestamp - ID
     @Query("SELECT * From `Transaction` WHERE timestamp >= :floor AND timestamp <= :ciel AND sourceId = :sourceId")
     LiveData<List<Transaction>> fetch(@NonNull final String sourceId, final long floor, final long ciel);
-
-
-    @Query("DELETE FROM `Transaction`  WHERE sourceId = :sourceId")
-    void deleteForSource(@NonNull final String sourceId); // May not need to be used.
 
     @Insert//aborts
     void insert(@NonNull final Transaction transaction);

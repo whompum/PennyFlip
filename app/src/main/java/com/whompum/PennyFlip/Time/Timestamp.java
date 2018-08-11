@@ -45,6 +45,10 @@ public class Timestamp {
         return new Timestamp(System.currentTimeMillis() + (DAY_MILLIS*days));
     }
 
+    public static Timestamp fromPastProjection(final int days){
+        return new Timestamp(System.currentTimeMillis() - (DAY_MILLIS*days));
+    }
+
     public void set(final long millis){
         date = new DateTime(millis);
     }
@@ -68,9 +72,11 @@ public class Timestamp {
         return date.getMonthOfYear();
     }
 
-    public int getDay(){
+    public int getMonthDay(){
         return date.getDayOfMonth();
     }
+
+    public int getYearDay(){return date.getDayOfYear();}
 
     public int getMilitaryHour(){
         return date.getHourOfDay();
