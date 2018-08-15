@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        app:layout_constraintGuide_percent=".5"
+        android:orientation="horizontal"
+        android:id="@+id/local_half_guide"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <android.support.constraint.Guideline
+        app:layout_constraintGuide_percent=".3"
+        android:orientation="horizontal"
+        android:id="@+id/local_thirds_guide"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <!-- BACKGROUND SCRIM -->
+    <View
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/local_half_guide"
+        android:background="@color/light_blue"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <android.support.v7.widget.AppCompatImageButton
+        style="@style/StyleIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_arrow_left"
+        android:id="@id/id_global_nav"/>
+    <TextView
+        app:layout_constraintTop_toTopOf="@id/id_global_nav"
+        app:layout_constraintBottom_toBottomOf="@id/id_global_nav"
+        app:layout_constraintStart_toEndOf="@id/id_global_nav"
+        android:textSize="@dimen/dimen_text_mediano"
+        android:text="@string/string_statistics"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        app:layout_constraintTop_toTopOf="@id/id_global_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dimen_padding_hor_base"
+        android:layout_marginTop="@dimen/dimen_padding_ver_base"
+        android:id="@+id/local_wallet_container"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="#"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_text_mediano"
+            android:layout_marginEnd="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+        style="@style/StyleCurrencyEditText.Big"
+        android:id="@id/id_global_total_display"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/local_wallet_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dimen_padding_hor_base"
+        android:id="@+id/local_total_added_container"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="+"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_text_mediano"
+            android:layout_marginEnd="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+            style="@style/StyleCurrencyEditText.Medium"
+            android:id="@+id/local_total_added_display"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/local_total_added_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dimen_padding_hor_base"
+        android:id="@+id/local_total_spent_container"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="-"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_text_mediano"
+            android:layout_marginEnd="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+            style="@style/StyleCurrencyEditText.Medium"
+            android:id="@+id/local_total_spent_display"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/local_thirds_guide"
+        android:layout_marginBottom="@dimen/dimen_padding_ver_large"
+        android:layout_marginStart="@dimen/dimen_padding_hor_large"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <android.support.v7.widget.AppCompatSpinner
+        tools:listitem="@layout/statistics_month_selector_layout"
+        android:id="@+id/local_month_selector"
+        android:layout_gravity="center_horizontal"
+        android:entries="@array/timeRanges"
+        android:paddingStart="@dimen/dimen_padding_hor_large"
+        android:paddingEnd="@dimen/dimen_padding_hor_large"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <View
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <android.support.v7.widget.AppCompatSpinner
+        tools:listitem="@layout/statistics_year_selector_layout"
+        android:id="@+id/local_year_selector"
+        android:layout_gravity="center_horizontal"
+        android:paddingStart="@dimen/dimen_padding_hor_large"
+        android:paddingEnd="@dimen/dimen_padding_hor_large"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+    <android.support.v7.widget.CardView
+        app:layout_constraintTop_toTopOf="@id/local_thirds_guide"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        android:id="@+id/local_container"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="@dimen/dimen_padding_ver_base"
+        android:layout_marginBottom="@dimen/dimen_padding_ver_base"
+        android:layout_marginStart="@dimen/dimen_padding_hor_base"
+        android:layout_marginEnd="@dimen/dimen_padding_hor_base"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -38,6 +38,12 @@
                   android:theme="@style/AppTheme"
                   android:windowSoftInputMode="stateHidden"/>
 
+
+        <activity android:name=".ActivityStatistics.ActivityStatistics"
+                  android:parentActivityName=".Dashboard.ActivityDashboard"
+                  android:theme="@style/AppTheme"/>
+
+
     </application>
 
 </manifest>
