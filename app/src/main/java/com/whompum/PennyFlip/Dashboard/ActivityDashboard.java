@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
+import com.whompum.PennyFlip.ActivityStatistics.ActivityStatistics;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.DialogSourceChooser.OnSourceItemSelected;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
@@ -183,6 +184,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     @OnClick(R.id.id_nav_statistics)
     public void onStatisticsFabClicked(){
         vibrate(500L);
+        startActivity(new Intent(this, ActivityStatistics.class));
     }
 
     @OnClick(R.id.id_nav_menu_history)
