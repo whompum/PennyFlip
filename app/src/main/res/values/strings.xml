@@ -72,10 +72,18 @@
     <string name="string_service_save_transaction_description">Saving your recent transaction</string>
 
     <string-array name="timeRanges">
-        <item name="string_timerange_today">Today</item>
-        <item name="string_timerange_this_week">This Week</item>
-        <item name="string_timerange_this_month">This Month</item>
-        <item name="string_timerange_custom">Custom</item>
+        <item name="string_month_jan">January</item>
+        <item name="string_month_feb">February</item>
+        <item name="string_month_march">March</item>
+        <item name="string_month_april">April</item>
+        <item name="string_month_may">May</item>
+        <item name="string_month_jun">June</item>
+        <item name="string_month_jul">July</item>
+        <item name="string_month_aug">August</item>
+        <item name="string_month_sep">September</item>
+        <item name="string_month_oct">October</item>
+        <item name="string_month_nov">November</item>
+        <item name="string_month_dec">December</item>
     </string-array>
 
     <string name="string_day_count">Days Ago</string>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:text="2018"
+    android:textColor="@color/white"
+    android:paddingStart="@dimen/dimen_padding_hor_small"
+    android:paddingEnd="@dimen/dimen_padding_hor_small"
+    android:textSize="@dimen/dimen_text_mediano"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
