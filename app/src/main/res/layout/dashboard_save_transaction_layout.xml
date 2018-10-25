@@ -30,38 +30,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="4.5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
         <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
             style="@style/StyleCurrencyEditText.Big"
             tools:text="$27.82"
-            android:layout_weight="4.5"
-            android:layout_width="0dp"/>
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+            <!--Has id of id_global_timestamp-->
+            <TextView
+                tools:text="12:00 AM"
+                style="@style/StyleTimestamp"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
 
         <EditText
-            android:layout_alignParentEnd="true"
+            tools:text="@string/string_enter_transaction_name"
             android:maxEms="20"
+            android:gravity="center_vertical"
             android:hint="@string/string_enter_transaction_name"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="@dimen/dimen_padding_ver_base"
+            android:paddingBottom="@dimen/dimen_padding_ver_base"
             android:paddingStart="@dimen/dimen_padding_hor_base"
             android:paddingEnd="@dimen/dimen_padding_hor_base"
-            android:textColorHint="@color/white"
-            android:backgroundTint="@color/white"
+            android:textColorHint="@color/dark_grey"
+            android:textColor="@color/dark_grey"
+            android:background="@drawable/background_oval_white"
             android:id="@id/id_global_editor"
             android:textSize="@dimen/dimen_text_normal"
-            android:textColor="@color/white"
             android:layout_weight="5.5"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
         </LinearLayout>
 
-        <TextView
-            tools:text="12:00 AM"
-            style="@style/StyleTimestamp"
-            android:textColor="@color/white"
-            android:layout_below="@id/header_container"/>
-
         <EditText
             android:layout_marginTop="@dimen/dimen_padding_ver_large"
-            android:layout_below="@id/id_global_timestamp"
+            android:layout_below="@id/header_container"
             android:drawableStart="@drawable/icon_search_grey"
             android:background="@drawable/background_oval_white"
             android:drawablePadding="8dp"
