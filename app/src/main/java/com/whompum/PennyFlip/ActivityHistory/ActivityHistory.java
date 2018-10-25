@@ -42,13 +42,13 @@ import butterknife.OnClick;
 /**
  * @author Bryan
  *
- * Represents all transactions made during a certain Time period
+ * Represents a historical snapshot of all transactions made during adjustable time-periods
  *
  */
 public class ActivityHistory extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         ActivityHistoryClient {
 
-    private static final Timestamp utility = Timestamp.now();
+    //private static final Timestamp utility = Timestamp.now();
 
     @BindView(R.id.id_global_list)
     protected RecyclerView transactionList;
@@ -56,7 +56,10 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
     @BindView(R.id.local_day_count)
     protected TextView dayCount;
 
+    //The controller
     private ActivityHistoryConsumer consumer;
+
+    //Adapter that displays the Transactions
     private TransactionListAdapter adapter;
 
     @Override
@@ -109,13 +112,8 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
             }
         });
         */
-
-        final long now = System.currentTimeMillis();
-
-        final long then = Timestamp.fromPastProjection(6)
-                .getMillis(); //One Week
-
-        fetch(new TimeRange(then, now));
+        //Fetch default value from today and one week ago.
+        fetch(new TimeRange(System.currentTimeMillis(), Timestamp.fromPastProjection(6).getMillis()));
     }
 
     @Override
@@ -138,7 +136,7 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
         floorMillis = Timestamp.from(floorMillis).getStartOfDay();
         cielMillis = Timestamp.from(cielMillis).getStartOfDay()+(    TimeUnit.DAYS.toMillis(1)- 1L);
 
-        fetch(new TimeRange(floorMillis, cielMillis));
+        fetch( new TimeRange(floorMillis, cielMillis) );
     }
 
     @Override
