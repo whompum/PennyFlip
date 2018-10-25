@@ -11,7 +11,10 @@ import android.support.annotation.NonNull;
 public interface WalletDao {
 
     @Query("SELECT * From Wallet")
-    LiveData<Wallet> fetch();
+    LiveData<Wallet> fetchObservable();
+
+    @Query("SELECT * FROM Wallet")
+    Wallet fetch();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void update(@NonNull final Wallet wallet);
