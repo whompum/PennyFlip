@@ -77,6 +77,7 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
         transactionList.setAdapter(adapter);
 
+        /* IS CAUSING TOO MUCH JANK WHEN SCROLLING
         transactionList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -107,6 +108,7 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
             }
         });
+        */
 
         final long now = System.currentTimeMillis();
 
