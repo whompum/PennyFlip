@@ -3,6 +3,7 @@ package com.whompum.PennyFlip.ActivityHistory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -39,10 +40,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by bryan on 1/4/2018.
+ * @author Bryan
+ *
+ * Represents all transactions made during a certain Time period
+ *
  */
-
-public class ActivityHistory extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, Handler.Callback{
+public class ActivityHistory extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
+        ActivityHistoryClient {
 
     private static final Timestamp utility = Timestamp.now();
 
@@ -55,8 +59,6 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
     private ActivityHistoryConsumer consumer;
     private TransactionListAdapter adapter;
 
-    private Handler handler = new Handler(this);
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,7 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
         ButterKnife.bind(this);
 
-        consumer = new HistoryController(this, handler);
+        consumer = new HistoryController(this, this);
 
         adapter = new TransactionListAdapter(this);
 
@@ -116,8 +118,8 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
     @Override
     public void onDateSet(DatePickerDialog dialog, int sY, int sM, int sD, int eY, int eM, int eD) {
-        long floorMillis = 0L;
-        long cielMillis = 0L;
+        long floorMillis;
+        long cielMillis;
 
         final Calendar calendar = Calendar.getInstance();
 
@@ -137,32 +139,16 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
         fetch(new TimeRange(floorMillis, cielMillis));
     }
 
-
-
     @Override
-    public boolean handleMessage(Message msg) {
-
-        Log.i("TRANSACTION_SELECTION", "handleMessage()");
-        Log.i("TRANSACTION_SELECTION", "is msg.obj null: " + (msg.obj == null) );
-
-        if(msg.obj == null || !(msg.obj instanceof List)) return true;
-
-        final List<Transaction> transactions = (List<Transaction>) msg.obj;
-
-        Collections.sort( transactions, new DescendingSort());
-
-        Log.i("TRANSACTION_SELECTION", "Num Transactions Found: " + transactions.size() );
-
+    public void onDataQueried(@NonNull List<Transaction> data) {
         final long today = Timestamp.now().getStartOfDay();
 
-        this.adapter.swapDataset(TransactionsGroupConverter.fromTransactions(transactions, new ExpansionPredicate() {
+        this.adapter.swapDataset(TransactionsGroupConverter.fromTransactions(data, new ExpansionPredicate() {
             @Override
             public boolean expand(long startOfDay, int position) {
                 return today == startOfDay || position  < 2; //If today, or on first/second header.
             }
         }));
-
-        return true;
     }
 
     @OnClick(R.id.id_global_nav)
