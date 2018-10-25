@@ -41,35 +41,11 @@ public class RoomMoneyWriterImpl implements MoneyWriter{
 
     @Override
     public void saveTransaction(@NonNull final Transaction transaction) {
-        //Save the Transaction then update both the Source and Wallet
+        //Save a transaction using an Operation object dedicated to Transaction saving
 
-        new MoneyThreadWriter().doInBackground(new ThreadWriterOperation(){
-            @Override
-            void doOperation() {
-                //After saving, update both the wallet and the Source
-                transactionsDao.insert(transaction);
-                sourceDao.addAmount(transaction);
+        new MoneyThreadWriter()
+                .doInBackground(new SaveTransactionOperation(transaction));
 
-                /*
-                   Fetch the original wallet total, and then determine if the new wallet total
-                   based on the amount and transaction type of the Transaction object.
-                 */
-                long newWalletTotal = fetchWallet().getValue();
-
-                if(transaction.getTransactionType() == TransactionType.ADD)
-                    newWalletTotal += transaction.getAmount();
-                else if(transaction.getTransactionType() == TransactionType.SPEND)
-                    newWalletTotal -= transaction.getAmount();
-
-                walletDao.update(new Wallet(newWalletTotal));
-            }
-        });
-
-    }
-
-    @WorkerThread //TODO move to a read object and reference it.
-    private Wallet fetchWallet(){
-        return walletDao.fetch().getValue();
     }
 
     @Override
@@ -91,4 +67,44 @@ public class RoomMoneyWriterImpl implements MoneyWriter{
     public void updateWalletTotal(long amount) {
 
     }
+
+    /**
+     * Utility operation that aggregates operations during a
+     * {@link Transaction} write
+     */
+    private class SaveTransactionOperation extends ThreadWriterOperation{
+
+        private Transaction transaction;
+
+        private SaveTransactionOperation(@NonNull final Transaction transaction){
+            this.transaction = transaction;
+        }
+
+        @WorkerThread
+        @Override
+        synchronized void doOperation() {
+            //After saving, update both the wallet and the Source
+            transactionsDao.insert(transaction);
+            sourceDao.addAmount(transaction);
+
+                /*
+                   Fetch the original wallet total, and then determine if the new wallet total
+                   based on the amount and transaction type of the Transaction object.
+                 */
+            //TODO move `walletDao.fetch()` to a query object and handle it there
+            long newWalletTotal = walletDao.fetch().getValue();
+
+            if(transaction.getTransactionType() == TransactionType.ADD)
+                newWalletTotal += transaction.getAmount();
+
+            else if(transaction.getTransactionType() == TransactionType.SPEND) {
+                //Check for negative values because we don't use sub-zero values for the wallet.
+                long newValue = newWalletTotal - transaction.getAmount();
+                newWalletTotal = (newValue > 0) ? newValue : 0L;
+            }
+
+            walletDao.update(new Wallet(newWalletTotal));
+        }
+    }
+
 }
