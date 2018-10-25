@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.whompum.PennyFlip.Money.LocalMoneyProvider;
+import com.whompum.PennyFlip.Money.MoneyWriter;
+import com.whompum.PennyFlip.Money.RoomMoneyWriterImpl;
+import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Time.UserStartDate;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
@@ -20,6 +23,8 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
     private LocalMoneyProvider repo;
 
     private DashboardClient client;
+
+    private MoneyWriter writer;
 
 
     public DashboardController(@NonNull final Context context){
@@ -34,9 +39,11 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
     public DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
         repo = LocalMoneyProvider.obtain(context);
+        this.writer = new RoomMoneyWriterImpl(context);
 
-        if(o != null)
+        if(o != null) {
             repo.getWallet().observe(o, this);
+        }
     }
 
     @Override
@@ -64,11 +71,19 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
         else repo.updateSourceAmount(t);
        **/
 
-        if(w.getTag().equals(SourceWrapper.TAG.NEW))
-            repo.insertNewSource(w.getSource(), t);
-        else
-            repo.insertTransaction(t);
 
+        if((w.getTag().equals(SourceWrapper.TAG.NEW))) {
+
+            try{
+                writer.saveSource(w.getSource());
+            }catch (NewSourceTotalConstraintException e){
+                w.getSource().setPennies(0L);
+                writer.saveSource(w.getSource());
+            }
+
+        }
+
+        writer.saveTransaction(t);
 
     }
 
