@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
+import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
@@ -40,7 +41,7 @@ public class RoomMoneyWriterImpl implements MoneyWriter{
 
 
     @Override
-    public void saveTransaction(@NonNull final Transaction transaction) {
+    public synchronized void saveTransaction(@NonNull final Transaction transaction) {
         //Save a transaction using an Operation object dedicated to Transaction saving
 
         new MoneyThreadWriter()
@@ -49,24 +50,29 @@ public class RoomMoneyWriterImpl implements MoneyWriter{
     }
 
     @Override
-    public void saveSource(@NonNull Source source) {
+    public synchronized void saveSource(@NonNull final Source source) {
 
+        if(source.getPennies() > 0)
+            throw new NewSourceTotalConstraintException();
+
+        new MoneyThreadWriter().doInBackground(new ThreadWriterOperation() {
+            @Override
+            void doOperation() {
+                sourceDao.insert(source);
+            }
+        });
     }
 
     @Override
-    public void deleteSource(@NonNull String sourceId) {
-
+    public synchronized void deleteSource(@NonNull final String sourceId) {
+        new MoneyThreadWriter().doInBackground(new ThreadWriterOperation() {
+            @Override
+            void doOperation() {
+                sourceDao.delete(sourceId);
+            }
+        });
     }
 
-    @Override
-    public void updateSourceTotal(@NonNull String sourceId, long amount) {
-
-    }
-
-    @Override
-    public void updateWalletTotal(long amount) {
-
-    }
 
     /**
      * Utility operation that aggregates operations during a
