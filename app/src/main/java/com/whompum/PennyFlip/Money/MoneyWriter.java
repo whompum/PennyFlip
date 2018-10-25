@@ -2,6 +2,7 @@ package com.whompum.PennyFlip.Money;
 
 import android.support.annotation.NonNull;
 
+import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
@@ -18,9 +19,6 @@ public interface MoneyWriter {
      * @param transaction the object to save
      */
     void saveTransaction(@NonNull final Transaction transaction);
-    void saveSource(@NonNull final Source source);
+    void saveSource(@NonNull final Source source) throws NewSourceTotalConstraintException;
     void deleteSource(@NonNull final String sourceId);
-    void updateSourceTotal(@NonNull final String sourceId, final long amount);
-    void updateWalletTotal(final long amount);
-
 }
