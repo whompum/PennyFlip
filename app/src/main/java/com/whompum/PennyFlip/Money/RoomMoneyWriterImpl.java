@@ -12,6 +12,8 @@ import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.Money.Transaction.TransactionsDao;
 import com.whompum.PennyFlip.Money.MoneyThreadWriter.ThreadWriterOperation;
+import com.whompum.PennyFlip.Money.Wallet.Wallet;
+import com.whompum.PennyFlip.Money.Wallet.WalletDao;
 
 /**
  * Writes data to a Room Database

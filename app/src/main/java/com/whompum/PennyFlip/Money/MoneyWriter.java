@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Wallet.Wallet;
 
 /**
  *  Defines the available write operations on {@link Transaction}, {@link Source}, and

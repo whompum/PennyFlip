@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Money;
+package com.whompum.PennyFlip.Money.Wallet;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;

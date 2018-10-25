@@ -16,6 +16,8 @@ import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionsDao;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
+import com.whompum.PennyFlip.Money.Wallet.Wallet;
+import com.whompum.PennyFlip.Money.Wallet.WalletDao;
 
 
 public class LocalMoneyProvider {
@@ -38,7 +40,7 @@ public class LocalMoneyProvider {
 
         walletAccessor = database.getWalletAccessor();
 
-        data = walletAccessor.fetch();
+        data = walletAccessor.fetchObservable();
 
         sourceAccessor = database.getSourceAccessor();
         transactionAccessor = database.getTransactionAccessor();

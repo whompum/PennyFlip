@@ -8,6 +8,8 @@ import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionsDao;
+import com.whompum.PennyFlip.Money.Wallet.Wallet;
+import com.whompum.PennyFlip.Money.Wallet.WalletDao;
 
 @Database(entities = {Source.class, Transaction.class, Wallet.class}, version = 1, exportSchema = false)
 public abstract class MoneyDatabase extends RoomDatabase {

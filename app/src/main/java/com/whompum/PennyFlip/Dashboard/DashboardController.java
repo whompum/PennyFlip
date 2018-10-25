@@ -14,7 +14,7 @@ import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Time.UserStartDate;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Money.Wallet;
+import com.whompum.PennyFlip.Money.Wallet.Wallet;
 
 public class DashboardController implements ActivityDashboardConsumer, Observer<Wallet>{
 
