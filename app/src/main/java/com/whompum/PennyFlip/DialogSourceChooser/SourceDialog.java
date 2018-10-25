@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whompum.PennyFlip.Animations.AnimateScale;
-import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
@@ -86,7 +86,7 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
 
 
     /**
-     * Is passed into the MoneyController fetchSources method
+     * Is passed into the LocalMoneyProvider fetchSources method
      * to recieve a message containing a single Source. We use this source
      * to see if the source the user wants to make, is already in use.
      */
@@ -264,7 +264,7 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
     protected void onDone(){
 
         if(item.getTag().equals(SourceWrapper.TAG.NEW))
-             MoneyController.obtain(getContext()) //Attempt to fetch this source object to see if it exists
+             LocalMoneyProvider.obtain(getContext()) //Attempt to fetch this source object to see if it exists
             .fetchSources(sourceChecker, item.getSourceId(), null, false);
         else {
             dismiss();
@@ -285,7 +285,7 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
         }
 
         //Will resolve either a list of Sources of our TransactionType only, or our TransactionType plus similar namings.
-        MoneyController.obtain(getContext()).fetchSources(dataReceiver, query, transactionType, searchLike);
+        LocalMoneyProvider.obtain(getContext()).fetchSources(dataReceiver, query, transactionType, searchLike);
     }
 
 

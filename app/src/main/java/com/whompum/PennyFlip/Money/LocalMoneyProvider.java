@@ -18,9 +18,9 @@ import com.whompum.PennyFlip.Money.Transaction.TransactionsDao;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 
 
-public class MoneyController {
+public class LocalMoneyProvider {
 
-    private static MoneyController instance;
+    private static LocalMoneyProvider instance;
 
     private WalletDao walletAccessor;
 
@@ -32,7 +32,7 @@ public class MoneyController {
 
     private MoneyDatabase database;
 
-    private MoneyController(@NonNull final Context context){
+    private LocalMoneyProvider(@NonNull final Context context){
 
        database = Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME).build();
 
@@ -44,8 +44,8 @@ public class MoneyController {
         transactionAccessor = database.getTransactionAccessor();
     }
 
-    public synchronized static MoneyController obtain(@NonNull final Context context){
-        if(instance == null) instance = new MoneyController(context.getApplicationContext());
+    public synchronized static LocalMoneyProvider obtain(@NonNull final Context context){
+        if(instance == null) instance = new LocalMoneyProvider(context.getApplicationContext());
 
         return instance;
     }
@@ -56,7 +56,7 @@ public class MoneyController {
 
     private long walletValue(){
 
-        Log.i("WALLET_FIX", "walletValue()#MoneyController Wallet value is null: " + (data.getValue() == null) );
+        Log.i("WALLET_FIX", "walletValue()#LocalMoneyProvider Wallet value is null: " + (data.getValue() == null) );
 
 
         if(data.getValue() != null) {
@@ -64,7 +64,7 @@ public class MoneyController {
             return data.getValue().getValue();
         }
 
-        Log.i("WALLET_FIX", "walletValue()#MoneyController Wallet value is null. Returning 0L: ");
+        Log.i("WALLET_FIX", "walletValue()#LocalMoneyProvider Wallet value is null. Returning 0L: ");
 
         return 0L;
     }

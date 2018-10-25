@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Time.UserStartDate;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
-import com.whompum.PennyFlip.Money.MoneyController;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Wallet;
 
@@ -17,7 +17,7 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
 
     private static DashboardController instance;
 
-    private MoneyController repo;
+    private LocalMoneyProvider repo;
 
     private DashboardClient client;
 
@@ -33,7 +33,7 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
      */
     public DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
-        repo = MoneyController.obtain(context);
+        repo = LocalMoneyProvider.obtain(context);
 
         if(o != null)
             repo.getWallet().observe(o, this);

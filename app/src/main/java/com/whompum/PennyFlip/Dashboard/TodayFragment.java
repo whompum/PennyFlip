@@ -18,7 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.TimeRange;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
@@ -122,7 +122,7 @@ public class TodayFragment extends Fragment implements Handler.Callback, Observe
     }
 
     private void observeTransactions(){
-        MoneyController.obtain(getContext())
+        LocalMoneyProvider.obtain(getContext())
                 .fetchTransactions(resultReceiver, null, transactionType, fetchRange());
     }
 

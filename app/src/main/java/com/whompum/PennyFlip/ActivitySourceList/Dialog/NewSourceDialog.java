@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
@@ -161,7 +161,7 @@ public class NewSourceDialog extends Dialog implements View.OnClickListener {
         });
 
 
-        MoneyController.obtain(content.getContext()).fetchSources(sourceChecker, title, null, false);
+        LocalMoneyProvider.obtain(content.getContext()).fetchSources(sourceChecker, title, null, false);
     }
 
 }

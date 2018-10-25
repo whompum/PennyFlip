@@ -9,20 +9,20 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
 public class SourceDataController  implements SourceDataConsumer, Observer<Source>{
 
-    private MoneyController repo;
+    private LocalMoneyProvider repo;
 
     private SourceDataClient client;
 
     private LiveData<Source> data;
 
     public SourceDataController(@NonNull final Context context, @NonNull final SourceDataClient client){
-        repo = MoneyController.obtain(context);
+        repo = LocalMoneyProvider.obtain(context);
         this.client = client;
     }
 

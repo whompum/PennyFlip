@@ -57,7 +57,7 @@ public class HistoryController implements ActivityHistoryConsumer, Handler.Callb
 
     @Override
     public void fetch(@NonNull final TimeRange range){
-        //Query MoneyController for all Transactions within timerange
+        //Query LocalMoneyProvider for all Transactions within timerange
 
         new Thread(){
             @Override

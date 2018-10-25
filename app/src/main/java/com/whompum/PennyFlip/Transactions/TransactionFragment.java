@@ -15,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Money.MoneyController;
+import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
@@ -60,7 +60,7 @@ public class TransactionFragment extends Fragment implements Handler.Callback, O
 
         this.adapter = new TransactionListAdapter(getContext());
 
-        MoneyController.obtain(getContext())
+        LocalMoneyProvider.obtain(getContext())
                 .fetchTransactions(resultReceiver, sourceId, null, null);
 
     }
