@@ -18,7 +18,7 @@ import com.whompum.PennyFlip.Money.Wallet.WalletDao;
 /**
  * Writes data to a Room Database
  */
-public class RoomMoneyWriterImpl implements MoneyWriter{
+public class RoomMoneyWriter implements MoneyWriter{
 
     //DAO for transaction objects
     private TransactionsDao transactionsDao;
@@ -29,7 +29,7 @@ public class RoomMoneyWriterImpl implements MoneyWriter{
     //DAO for Wallet objects
     private WalletDao walletDao;
 
-    public RoomMoneyWriterImpl(@NonNull final Context context){
+    public RoomMoneyWriter(@NonNull final Context context){
         //Fetch the database containing the DAO's
         final MoneyDatabase database =
                 Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME).build();
