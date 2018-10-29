@@ -14,7 +14,7 @@ import com.whompum.PennyFlip.Money.MoneyThread;
 import com.whompum.PennyFlip.Money.Queries.Query.MoneyQuery;
 import com.whompum.PennyFlip.Money.Queries.Query.QueryParameter;
 import com.whompum.PennyFlip.Money.Queries.Query.QueryResult;
-import com.whompum.PennyFlip.Money.TESTMoneyDatabase;
+import com.whompum.PennyFlip.Money.MoneyDatabase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,7 @@ public abstract class RoomMoneyReader<DATA_TYPE, ID_TYPE/*MAY REMOVE. */> implem
                            @Nullable final QueryReceiver<Collection<DATA_TYPE>> groupReceiver,
                            @Nullable final QueryReceiver<DATA_TYPE> itemReceiver){
         this.dao = getDao(
-                Room.databaseBuilder(context, TESTMoneyDatabase.class, TESTMoneyDatabase.NAME).build()
+                Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME).build()
         );
 
         this.groupReceiver = groupReceiver;
@@ -122,7 +122,7 @@ public abstract class RoomMoneyReader<DATA_TYPE, ID_TYPE/*MAY REMOVE. */> implem
 
     }
 
-    protected abstract MoneyDao<DATA_TYPE, ID_TYPE> getDao(@NonNull final TESTMoneyDatabase database);
+    protected abstract MoneyDao<DATA_TYPE, ID_TYPE> getDao(@NonNull final MoneyDatabase database);
 
 }
 

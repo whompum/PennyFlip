@@ -8,7 +8,7 @@ import com.whompum.PennyFlip.Money.Queries.MoneyDao;
 import com.whompum.PennyFlip.Money.Queries.Query.MoneyQuery;
 import com.whompum.PennyFlip.Money.Queries.QueryReceiver;
 import com.whompum.PennyFlip.Money.Queries.RoomMoneyReader;
-import com.whompum.PennyFlip.Money.TESTMoneyDatabase;
+import com.whompum.PennyFlip.Money.MoneyDatabase;
 
 import java.util.Collection;
 
@@ -26,7 +26,7 @@ public class RoomSourceReader extends RoomMoneyReader<Source, String> {
     }
 
     @Override
-    protected MoneyDao<Source, String> getDao(@NonNull TESTMoneyDatabase database) {
+    protected MoneyDao<Source, String> getDao(@NonNull MoneyDatabase database) {
         return database.getSourceAccessor();
     }
 }
