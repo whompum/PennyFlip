@@ -119,7 +119,7 @@ public final class MoneyQuery {
          *             {@link Set} don't represent all available data, but rather,
          *             describes all possible search parameters. Regardless of data availability.
          */
-        protected QueryBuilder(@NonNull final HashSet<Integer> keys) {
+        public QueryBuilder(@NonNull final HashSet<Integer> keys) {
             queryObject = new MoneyQuery(keys);
         }
 
