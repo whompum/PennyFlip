@@ -7,10 +7,12 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class Wallet {
 
-    @PrimaryKey
-    private int id = 1; //Only one record of this value.
+    public static final int WALLET_ID = 1;
 
-    private long value; //A single unit of currency
+    @PrimaryKey
+    private int id = WALLET_ID; //Only one record of this value.
+
+    private long value; //DaoQueryAdapter single unit of currency
 
     public Wallet(int id, long value) {
         this.id = id;
