@@ -9,8 +9,8 @@ import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Transaction.TransactionDAO;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
-import com.whompum.PennyFlip.Money.Transaction.TransactionsDao;
 import com.whompum.PennyFlip.Money.MoneyThreadWriter.ThreadWriterOperation;
 import com.whompum.PennyFlip.Money.Wallet.Wallet;
 import com.whompum.PennyFlip.Money.Wallet.WalletDao;
@@ -21,7 +21,7 @@ import com.whompum.PennyFlip.Money.Wallet.WalletDao;
 public class RoomMoneyWriter implements MoneyWriter{
 
     //DAO for transaction objects
-    private TransactionsDao transactionsDao;
+    private TransactionDAO transactionsDao;
 
     //DAO for Source objects
     private SourceDao sourceDao;
