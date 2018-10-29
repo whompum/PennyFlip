@@ -18,7 +18,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.TimeRange;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;

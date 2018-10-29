@@ -9,7 +9,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 

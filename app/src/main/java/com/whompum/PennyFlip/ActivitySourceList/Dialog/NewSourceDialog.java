@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;

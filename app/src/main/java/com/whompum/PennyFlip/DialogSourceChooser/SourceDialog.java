@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whompum.PennyFlip.Animations.AnimateScale;
-import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
