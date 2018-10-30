@@ -122,6 +122,10 @@ public abstract class RoomMoneyReader<DATA_TYPE, ID_TYPE/*MAY REMOVE. */> implem
 
     }
 
+    protected boolean isUsableParameter(@NonNull final Integer key, @NonNull final MoneyQuery query){
+        return query.containsNonNullQueryAtKey(key);
+    }
+
     protected abstract MoneyDao<DATA_TYPE, ID_TYPE> getDao(@NonNull final MoneyDatabase database);
 
 }
