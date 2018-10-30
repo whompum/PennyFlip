@@ -6,6 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import com.whompum.PennyFlip.Money.Source.ObservableSourceAccessor;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceDao;
+import com.whompum.PennyFlip.Money.Transaction.ObservableTransactionsDao;
 import com.whompum.PennyFlip.Money.Transaction.TransactionDAO;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Wallet.Wallet;
@@ -19,5 +20,6 @@ public abstract class MoneyDatabase extends RoomDatabase {
     public abstract ObservableSourceAccessor getObservableSourceAccessor();
 
     public abstract TransactionDAO getTransactionAccessor();
+    public abstract ObservableTransactionsDao getObservableTransactionAccessor();
     public abstract WalletDao getWalletAccessor();
 }
