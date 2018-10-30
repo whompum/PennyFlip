@@ -82,7 +82,6 @@ public abstract class RoomMoneyReader<DATA_TYPE, ID_TYPE/*MAY REMOVE. */> implem
      *
      * @param query the wanted data type
      */
-    @CallSuper
     @WorkerThread
     protected void call(@NonNull final MoneyQuery query){
 
