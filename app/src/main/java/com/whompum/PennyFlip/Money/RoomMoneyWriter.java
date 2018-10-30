@@ -11,7 +11,7 @@ import com.whompum.PennyFlip.Money.Source.SourceDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionDAO;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
-import com.whompum.PennyFlip.Money.MoneyThreadWriter.ThreadWriterOperation;
+import com.whompum.PennyFlip.Money.MoneyThread.MoneyThreadOperation;
 import com.whompum.PennyFlip.Money.Wallet.Wallet;
 import com.whompum.PennyFlip.Money.Wallet.WalletDao;
 
@@ -46,7 +46,7 @@ public class RoomMoneyWriter implements MoneyWriter{
     public synchronized void saveTransaction(@NonNull final Transaction transaction) {
         //Save a transaction using an Operation object dedicated to Transaction saving
 
-        new MoneyThreadWriter()
+        new MoneyThread()
                 .doInBackground(new SaveTransactionOperation(transaction));
 
     }
@@ -57,9 +57,9 @@ public class RoomMoneyWriter implements MoneyWriter{
         if(source.getPennies() > 0)
             throw new NewSourceTotalConstraintException();
 
-        new MoneyThreadWriter().doInBackground(new ThreadWriterOperation() {
+        new MoneyThread().doInBackground(new MoneyThreadOperation() {
             @Override
-            void doOperation() {
+            public void doOperation() {
                 sourceDao.insert(source);
             }
         });
@@ -67,9 +67,9 @@ public class RoomMoneyWriter implements MoneyWriter{
 
     @Override
     public synchronized void deleteSource(@NonNull final String sourceId) {
-        new MoneyThreadWriter().doInBackground(new ThreadWriterOperation() {
+        new MoneyThread().doInBackground(new MoneyThreadOperation() {
             @Override
-            void doOperation() {
+            public void doOperation() {
                 sourceDao.delete(sourceId);
             }
         });
@@ -80,7 +80,7 @@ public class RoomMoneyWriter implements MoneyWriter{
      * Utility operation that aggregates operations during a
      * {@link Transaction} write
      */
-    private class SaveTransactionOperation extends ThreadWriterOperation{
+    private class SaveTransactionOperation extends MoneyThreadOperation {
 
         private Transaction transaction;
 
@@ -90,7 +90,7 @@ public class RoomMoneyWriter implements MoneyWriter{
 
         @WorkerThread
         @Override
-        synchronized void doOperation() {
+        public synchronized void doOperation() {
             //After saving, update both the wallet and the Source
             transactionsDao.insert(transaction);
             sourceDao.addAmount(transaction);

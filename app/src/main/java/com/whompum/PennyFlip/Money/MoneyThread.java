@@ -20,7 +20,7 @@ public class MoneyThread extends Thread {
     }
 
     public static abstract class MoneyThreadOperation {
-       public abstract void doOperation();
+        public abstract void doOperation();
     }
 
 }
