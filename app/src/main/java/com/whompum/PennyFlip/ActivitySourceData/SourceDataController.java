@@ -9,49 +9,37 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.whompum.PennyFlip.Money.MoneyWriter;
+import com.whompum.PennyFlip.Money.RoomMoneyWriter;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
 public class SourceDataController  implements SourceDataConsumer, Observer<Source>{
 
-    private LocalMoneyProvider repo;
-
     private SourceDataClient client;
 
     private LiveData<Source> data;
 
+    private MoneyWriter dataWriter;
+
     public SourceDataController(@NonNull final Context context, @NonNull final SourceDataClient client){
-        repo = LocalMoneyProvider.obtain(context);
         this.client = client;
+        this.dataWriter = new RoomMoneyWriter(context);
     }
 
     @Override
     public void observeSource(@NonNull final String sourceId, @NonNull final LifecycleOwner l){
 
-        repo.fetchObservableSources(new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-
-                if( msg.obj instanceof LiveData ) {
-                   data = ((LiveData<Source>) msg.obj);
-
-                    data.observe(l, SourceDataController.this);
-                }
-
-                return true;
-            }
-        }), sourceId, null, false);
-
     }
 
     @Override
     public void saveTransaction(@NonNull Transaction transaction) {
-        repo.insertTransaction(transaction);
+        dataWriter.saveTransaction(transaction);
     }
 
     @Override
     public void deleteSource(@NonNull String sourceId) {
-        repo.deleteSource(sourceId);
+        dataWriter.deleteSource(sourceId);
     }
 
     @Override

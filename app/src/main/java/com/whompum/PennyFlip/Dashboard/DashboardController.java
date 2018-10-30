@@ -7,9 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.whompum.PennyFlip.Money.LocalMoneyProvider;
 import com.whompum.PennyFlip.Money.MoneyWriter;
-import com.whompum.PennyFlip.Money.RoomMoneyWriterImpl;
+import com.whompum.PennyFlip.Money.RoomMoneyWriter;
 import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Time.UserStartDate;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
@@ -18,9 +17,7 @@ import com.whompum.PennyFlip.Money.Wallet.Wallet;
 
 public class DashboardController implements ActivityDashboardConsumer, Observer<Wallet>{
 
-    private static DashboardController instance;
-
-    private LocalMoneyProvider repo;
+    //private LocalMoneyProvider repo;
 
     private DashboardClient client;
 
@@ -38,11 +35,11 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
      */
     public DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
-        repo = LocalMoneyProvider.obtain(context);
-        this.writer = new RoomMoneyWriterImpl(context);
+        //repo = LocalMoneyProvider.obtain(context);
+        this.writer = new RoomMoneyWriter(context);
 
         if(o != null) {
-            repo.getWallet().observe(o, this);
+            bindWalletObserver(o);
         }
     }
 
@@ -53,25 +50,11 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
 
     @Override
     public void bindWalletObserver(@NonNull final LifecycleOwner o){
-        if(repo.getWallet().hasActiveObservers())
-            repo.getWallet().removeObservers(o);
-
-        repo.getWallet().observe(o, this);
+        //Fetch an observable wallet, and register the lifecycle owner on it.
     }
 
     public void saveTransaction(@NonNull final SourceWrapper w, @NonNull final Transaction t){
-        /**
-        //Update Wallet
-        repo.updateWallet(t.getTransactionType(), t.getAmount());
-
-        //Insert a new Source object; Implicity saves the Transaction
-        if(w.getTag().equals(SourceWrapper.TAG.NEW)) repo.insertNew(w.getSource(), t);
-
-        //Update sourceAmount. Implicity saves the transaction
-        else repo.updateSourceAmount(t);
-       **/
-
-
+        //Save the source first, if its new
         if((w.getTag().equals(SourceWrapper.TAG.NEW))) {
 
             try{

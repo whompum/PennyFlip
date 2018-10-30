@@ -30,6 +30,7 @@ import com.whompum.PennyFlip.ActivitySourceList.Dialog.NewSourceDialog;
 import com.whompum.PennyFlip.ActivitySourceList.Dialog.OnSourceCreated;
 import com.whompum.PennyFlip.ActivitySourceList.OnSortButtonClicked;
 import com.whompum.PennyFlip.Animations.AnimateScale;
+import com.whompum.PennyFlip.Money.RoomMoneyWriter;
 import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
@@ -92,8 +93,8 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
         this.listAdapter = new SourceListAdapter(getContext(), color);
 
-        LocalMoneyProvider.obtain(getContext())
-                .fetchObservableSources(new Handler(this), null, transactionType, false);
+        //LocalMoneyProvider.obtain(getContext())
+          //      .fetchObservableSources(new Handler(this), null, transactionType, false);
     }
 
     @Override
@@ -187,7 +188,7 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
     @Override
     public void onSourceCreated(@NonNull Source source) {
-        LocalMoneyProvider.obtain(getContext()).insertNewSource(source);
+        new RoomMoneyWriter(getContext()).saveSource(source);
     }
 
     public void onItemSelected(@NonNull Source data){
@@ -216,7 +217,7 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
             searchLike = true;
         }
 
-        LocalMoneyProvider.obtain(getContext()).fetchSources(new Handler(this), sourceName, transactionType, searchLike);
+        //LocalMoneyProvider.obtain(getContext()).fetchSources(new Handler(this), sourceName, transactionType, searchLike);
     }
 
     @Override
