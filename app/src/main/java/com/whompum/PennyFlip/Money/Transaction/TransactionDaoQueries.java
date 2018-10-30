@@ -11,10 +11,12 @@ public interface TransactionDaoQueries extends MoneyDao<Transaction, Integer>,
         MoneyDao.MoneyDaoId {
 
     @Override
+    @Query("SELECT * FROM `Transaction`")
     List<Transaction> fetchAll();
 
     @Override
-    Transaction fetchById(@NonNull final Integer integer);
+    @Query("SELECT * FROM `Transaction` WHERE id = :id")
+    Transaction fetchById(@NonNull final Integer id);
 
     //TransactionType
     @Query("SELECT * From `Transaction` WHERE transactionType = :transactionType")
