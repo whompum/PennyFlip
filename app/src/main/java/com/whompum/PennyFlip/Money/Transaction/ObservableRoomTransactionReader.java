@@ -45,7 +45,7 @@ public class ObservableRoomTransactionReader extends RoomMoneyReader<LiveData<Li
             );
         }
 
-        else postItemToMainThread( null );
+        else super.call(query);
 
     }
 
