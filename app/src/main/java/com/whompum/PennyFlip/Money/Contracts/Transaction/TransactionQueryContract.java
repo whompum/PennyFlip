@@ -4,12 +4,13 @@ import android.arch.persistence.room.Query;
 import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.Money.Contracts.MoneyDaoId;
+import com.whompum.PennyFlip.Money.Contracts.MoneyQueryBase;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
 import java.util.List;
 
 public interface TransactionQueryContract extends
-        MoneyDaoId<Transaction>, com.whompum.PennyFlip.Money.Contracts.MoneyQueryBase<List<Transaction>> {
+        MoneyDaoId<Transaction>, MoneyQueryBase<List<Transaction>> {
 
     @Override
     @Query("SELECT * FROM `Transaction`")
