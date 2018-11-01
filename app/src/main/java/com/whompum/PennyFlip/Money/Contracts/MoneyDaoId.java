@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 public interface MoneyDaoId<T> {
 
-    <I> T fetchById(@NonNull final I id);
+    <P> T fetchById(@NonNull final P id);
 
     int ID_KEY = 0;
 }
