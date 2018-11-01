@@ -23,6 +23,7 @@ import java.util.Set;
 public final class MoneyRequest {
 
     public static final int RESERVED_KEY_IS_EMPTY = -1; //RESERVED EMPTY-FLAG VALUE
+    public static final int RESERVED_KEY_IS_OBSERVABLE = -2;
 
     private Map<Integer, QueryParameter> queryItems;
     private Set<Integer> keys;
@@ -32,19 +33,26 @@ public final class MoneyRequest {
 
         this.keys = new HashSet<>();
         keys.add(RESERVED_KEY_IS_EMPTY);
+        keys.add(RESERVED_KEY_IS_OBSERVABLE);
 
         //is empty by default
-        queryItems.put(RESERVED_KEY_IS_EMPTY, new QueryParameter<>(true));
+        setIsQueryEmpty(true);
+        //Not observable by default
+        setIsQueryObservable(false);
     }
 
     private MoneyRequest(@NonNull final Set<Integer> keys){
         this();
-        appendQuerykeys(keys);
+        this.keys.addAll(keys);
     }
 
 
     private void setIsQueryEmpty(boolean isQueryEmpty) {
         queryItems.put(RESERVED_KEY_IS_EMPTY, new QueryParameter<>(isQueryEmpty));
+    }
+
+    private void setIsQueryObservable(final boolean isQueryObservable){
+        queryItems.put(RESERVED_KEY_IS_OBSERVABLE, new QueryParameter<>(isQueryObservable));
     }
 
     public int getQueryKeysCount(){
@@ -69,23 +77,9 @@ public final class MoneyRequest {
     }
 
     private void setQueryParameter(@NonNull final Integer key, @NonNull final QueryParameter queryParameter){
-        if(key == RESERVED_KEY_IS_EMPTY) return; //Possibly throw an Exception?
+        if(key == RESERVED_KEY_IS_EMPTY || key == RESERVED_KEY_IS_OBSERVABLE) return; //Possibly throw an Exception?
 
         queryItems.put(key, queryParameter);
-    }
-
-    private void appendQuerykeys(@NonNull final Set<Integer> queryKeys){
-
-        final Iterator<Integer> keysIterator = queryKeys.iterator();
-
-        while(keysIterator.hasNext()) {
-            final Integer key = keysIterator.next();
-
-            if( !hasQueryKey(key) ) {
-                keys.add(key);
-                setQueryParameter(key, new QueryParameter<>(null));
-            }
-        }
     }
 
     @Nullable
@@ -154,10 +148,18 @@ public final class MoneyRequest {
             return true;
         }
 
+        public QueryBuilder toggleObservable(){
+            queryObject.setIsQueryObservable( true );
+
+            return this;
+        }
+
         public <T> QueryBuilder setQueryParameter(@NonNull final Integer key,
                                                   @NonNull final T value){
 
-            if(queryObject.hasQueryKey(key))
+            if(queryObject.hasQueryKey(key) &&
+                    key != RESERVED_KEY_IS_EMPTY &&
+                    key != RESERVED_KEY_IS_OBSERVABLE)
                 queryObject.setQueryParameter(key, new QueryParameter<>(value));
 
             return this;
