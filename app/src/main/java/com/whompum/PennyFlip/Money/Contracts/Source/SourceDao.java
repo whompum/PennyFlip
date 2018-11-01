@@ -6,13 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
 import com.whompum.PennyFlip.Money.Contracts.MoneyDaoWriter;
+import com.whompum.PennyFlip.Money.Contracts.MoneyQueryBase;
 import com.whompum.PennyFlip.Money.Source.Source;
-import com.whompum.PennyFlip.Money.Source.SourceDaoQueries;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
-
 @Dao
-public abstract class SourceDao implements SourceDaoQueries, MoneyDaoWriter<Source>{
+public abstract class SourceDao<T> implements MoneyQueryBase<T>, MoneyDaoWriter<Source>{
+
 
     //Sets the amount of the source @ `title` by `pennies`
     @Query("UPDATE Source SET pennies = :pennies WHERE title = :title")
@@ -35,15 +35,13 @@ public abstract class SourceDao implements SourceDaoQueries, MoneyDaoWriter<Sour
      * @param transaction The newly created transaction object to update the source by
      */
     @WorkerThread
-    public void addAmount(@NonNull final Transaction transaction){
+    public void addAmount(@NonNull final Transaction transaction, @NonNull final Source source){
 
         final String id = transaction.getSourceId();
         final long amt = transaction.getAmount();
         final long timestamp = transaction.getTimestamp();
 
-        final Source source = fetchById(id);
-
-        if(source == null || amt <= 0) return;
+        if( amt <= 0 ) return;
 
         final long newAmt = source.getPennies() + amt;
 
