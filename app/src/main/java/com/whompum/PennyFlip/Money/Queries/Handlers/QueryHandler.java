@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Money.TEMP;
+package com.whompum.PennyFlip.Money.Queries.Handlers;
 
 import android.os.Handler;
 import android.os.Message;
@@ -7,16 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import com.whompum.PennyFlip.Money.MoneyThread;
-import com.whompum.PennyFlip.Money.Queries.MoneyReader;
 import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
 import com.whompum.PennyFlip.Money.Queries.Query.QueryResult;
-import com.whompum.PennyFlip.Money.Queries.QueryReceiver;
+import com.whompum.PennyFlip.Money.Queries.Query.QueryReceiver;
+import com.whompum.PennyFlip.Money.Queries.Resolvers.QueryResolver;
 
 /**
  *
  * @param <T>
  */
-public abstract class QueryHandler<T> implements MoneyReader, Handler.Callback {
+public abstract class QueryHandler<T> implements Handler.Callback {
 
     public static final int QUERY_SUCCESS = 0;
     public static final int QUERY_FAILED = 0;
@@ -25,19 +25,18 @@ public abstract class QueryHandler<T> implements MoneyReader, Handler.Callback {
     public static final int NULL_DATA_QUERY = 2;
 
     private QueryReceiver<T> queryReceiver;
+
     private T data;
+
     private Handler handler = new Handler(this);
 
-    public QueryHandler(){
+    private QueryResolver<T> resolver;
 
+    QueryHandler(@NonNull final QueryResolver<T> resolver){
+        this.resolver = resolver;
     }
 
-    public QueryHandler(QueryReceiver<T> queryReceiver) {
-        this.queryReceiver = queryReceiver;
-    }
-
-    @Override
-    public void query(@NonNull final MoneyRequest query) {
+    void call(@NonNull final MoneyRequest query) {
         new MoneyThread().doInBackground(new MoneyThread.MoneyThreadOperation() {
             @Override
             public void doOperation() {
@@ -59,7 +58,22 @@ public abstract class QueryHandler<T> implements MoneyReader, Handler.Callback {
     }
 
     @WorkerThread
-    protected abstract void internalQuery(@NonNull final MoneyRequest query);
+    protected void internalQuery(@NonNull final MoneyRequest query){
+        if(resolver != null) {
+            resolver.setQueryReceiver(new QueryReceiver<T>() {
+                @Override
+                public void onQueryReceived(@Nullable QueryResult<T> t) {
+                    onDone( t.getT() );
+                }
+
+                @Override
+                public void onQueryFailed(int reason, @Nullable String msg) {
+                    onDone(reason, msg);
+                }
+            });
+            resolver.resolve(query);
+        }
+    }
 
 
     @WorkerThread
@@ -81,13 +95,8 @@ public abstract class QueryHandler<T> implements MoneyReader, Handler.Callback {
         handler.sendMessage(m);
     }
 
-
-    public void setQueryReceiver(@NonNull final QueryReceiver<T> queryReceiver){
+    void setQueryReceiver(@NonNull final QueryReceiver<T> queryReceiver){
         this.queryReceiver = queryReceiver;
-    }
-
-    public void removeQueryReceiver(){
-        this.queryReceiver = null;
     }
 
 }
