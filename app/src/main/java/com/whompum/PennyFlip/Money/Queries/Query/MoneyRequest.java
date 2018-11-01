@@ -2,7 +2,6 @@ package com.whompum.PennyFlip.Money.Queries.Query;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.SparseArray;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,24 +10,24 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * MoneyQuery represents the search params to fetch the persistent data we want.
+ * MoneyRequest represents the search params to fetch the persistent data we want.
  * It maintains a set of Key-Value pairs in a {@link Map}.
  * Which is populated with a pre-defined set of key constants via a {@link java.util.Set} implementation.
- * {@link QueryBuilder} populates the values of the MoneyQuery.
+ * {@link QueryBuilder} populates the values of the MoneyRequest.
  *
  * This class relies on two actors to create a QueryParameter.
  * Firstly it uses a QueryKeys object which states all possible Keys it can have.
  * Then, it relies on its Builder object to populate its keys with values.
  *
  */
-public final class MoneyQuery {
+public final class MoneyRequest {
 
     public static final int RESERVED_KEY_IS_EMPTY = -1; //RESERVED EMPTY-FLAG VALUE
 
     private Map<Integer, QueryParameter> queryItems;
     private Set<Integer> keys;
 
-    private MoneyQuery(){
+    private MoneyRequest(){
         queryItems = new HashMap<>();
 
         this.keys = new HashSet<>();
@@ -38,7 +37,7 @@ public final class MoneyQuery {
         queryItems.put(RESERVED_KEY_IS_EMPTY, new QueryParameter<>(true));
     }
 
-    private MoneyQuery(@NonNull final Set<Integer> keys){
+    private MoneyRequest(@NonNull final Set<Integer> keys){
         this();
         appendQuerykeys(keys);
     }
@@ -103,38 +102,38 @@ public final class MoneyQuery {
     }
 
     /**
-     * Populate the {@link MoneyQuery}'s indices, as provided by {@link Set}
+     * Populate the {@link MoneyRequest}'s indices, as provided by {@link Set}
      * with actual searching values
      */
     public static class QueryBuilder {
 
-        //The MoneyQuery object returned by this actor
-        protected MoneyQuery queryObject;
+        //The MoneyRequest object returned by this actor
+        protected MoneyRequest queryObject;
 
         /**
          * Create a basic QueryBuilder object
-         * that could be used to populate values of the {@link MoneyQuery}
+         * that could be used to populate values of the {@link MoneyRequest}
          *
-         * @param keys All available search parameter for the {@link MoneyQuery}.
+         * @param keys All available search parameter for the {@link MoneyRequest}.
          *             {@link Set} don't represent all available data, but rather,
          *             describes all possible search parameters. Regardless of data availability.
          */
         public QueryBuilder(@NonNull final HashSet<Integer> keys) {
-            queryObject = new MoneyQuery(keys);
+            queryObject = new MoneyRequest(keys);
         }
 
         /**
-         * Determines if the {@link MoneyQuery} is an empty query object.
+         * Determines if the {@link MoneyRequest} is an empty query object.
          * By default it is, so a subclass of this object should override this method
-         * to, use its own algorithm to determine if the {@link MoneyQuery} is a basic minimum
-         * needs query to read from a DAO capable of supporting {@link MoneyQuery}'s.
+         * to, use its own algorithm to determine if the {@link MoneyRequest} is a basic minimum
+         * needs query to read from a DAO capable of supporting {@link MoneyRequest}'s.
          *
          * The default implementation of this object simply checks if the
-         * {@link MoneyQuery} contains at least one non-null fields.
+         * {@link MoneyRequest} contains at least one non-null fields.
          *
          * NOTE: If null values are permissible this method should be overriden to specify that.
          *
-         * @return whether an actor on the {@link MoneyQuery} should use a default query or not.
+         * @return whether an actor on the {@link MoneyRequest} should use a default query or not.
          */
         protected boolean isEmpty(){
 
@@ -164,7 +163,7 @@ public final class MoneyQuery {
             return this;
         }
 
-        public MoneyQuery getQuery(){
+        public MoneyRequest getQuery(){
             queryObject.setIsQueryEmpty(isEmpty());
             return queryObject;
         }
