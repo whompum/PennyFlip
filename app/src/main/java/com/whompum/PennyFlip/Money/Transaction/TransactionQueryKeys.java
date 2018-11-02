@@ -12,6 +12,7 @@ public class TransactionQueryKeys{
     public static final int SOURCE_ID = 2;
     public static final int PENNY_VALUE = 3;
     public static final int TRANSACTION_TYPE = 4;
+    public static final int OBSERVE = 5;
 
     public static final HashSet<Integer> KEYS = new HashSet<>();
 
