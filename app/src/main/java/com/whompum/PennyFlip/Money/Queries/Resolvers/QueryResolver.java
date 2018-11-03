@@ -6,7 +6,6 @@ import android.support.annotation.WorkerThread;
 import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
 import com.whompum.PennyFlip.Money.Queries.Query.QueryReceiver;
 import com.whompum.PennyFlip.Money.Queries.Query.QueryResult;
-import com.whompum.PennyFlip.Money.Queries.Handlers.QueryHandler;
 
 /**
  * Base strategy interface to query data using a {@link MoneyRequest}
@@ -31,7 +30,7 @@ public abstract class QueryResolver<T> {
     }
 
     public void setQueryReceiver(@NonNull final QueryReceiver<T> receiver){
-       this.client = client;
+       this.client = receiver;
     }
 
     /**
@@ -39,7 +38,7 @@ public abstract class QueryResolver<T> {
      * @param moneyQuery The query parameters
      * @return The data retrieved after querying a data persistence system
      */
-     abstract T resolve(@NonNull final MoneyRequest moneyQuery);
+     public abstract T resolve(@NonNull final MoneyRequest moneyQuery);
 
 
 
