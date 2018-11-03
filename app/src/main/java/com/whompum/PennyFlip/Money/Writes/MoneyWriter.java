@@ -2,16 +2,24 @@ package com.whompum.PennyFlip.Money.Writes;
 
 import android.support.annotation.NonNull;
 
+import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
+import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Wallet.Wallet;
+
 /**
- * Client sided interface that will invoke a save request,
- * most likely a call to {@link MoneyDaoWriter}. This is the
- * interface to the server to which a client to speak to.
- * @param <T> The type of data to save
+ *  Defines the available write operations on {@link Transaction}, {@link Source}, and
+ * {@link Wallet} data. These are client facing methods and their actual implementation
+ * should be abstracted away from any outside party.
+ *
  */
-public interface MoneyWriter<T> {
+public interface MoneyWriter {
+
     /**
-     * Save a new record to storage.
-     * @param t  The data to save
+     * Saves a new Transaction object
+     * @param transaction the object to save
      */
-    void save(@NonNull final T t);
+    void saveTransaction(@NonNull final Transaction transaction);
+    void saveSource(@NonNull final Source source) throws NewSourceTotalConstraintException;
+    void deleteSource(@NonNull final String sourceId);
 }
