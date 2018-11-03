@@ -95,8 +95,6 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
     private NewSourceDialog newSourceDialog;
 
-    private LiveData<List<Source>> data;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,8 +118,7 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
         deliverable.attachResponder(new Responder<LiveData<List<Source>>>() {
             @Override
             public void onActionResponse(@NonNull LiveData<List<Source>> data) {
-                FragmentSourceList.this.data = data;
-                FragmentSourceList.this.data.observe( FragmentSourceList.this, FragmentSourceList.this );
+               data.observe( FragmentSourceList.this, FragmentSourceList.this );
             }
         });
 
