@@ -2,8 +2,6 @@ package com.whompum.PennyFlip.ActivitySourceList.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,9 +35,6 @@ public class NewSourceDialog extends Dialog implements View.OnClickListener {
 
     private int transactionType;
 
-    public NewSourceDialog(@NonNull final Context c, final int transactionType){
-        this(c, null, transactionType);
-    }
 
     public NewSourceDialog(@NonNull Context context,
                            @Nullable final OnSourceCreated client,
@@ -106,61 +101,37 @@ public class NewSourceDialog extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == R.id.id_dialog_cancel) dismiss();
+        if( v.getId() == R.id.id_dialog_cancel ) dismiss();
 
-        if(v.getId() == R.id.id_dialog_done)
-            if(checkTitle(sourceEditor.getText().toString()))
-                checkSource(sourceEditor.getText().toString());
-    }
+        final String title = sourceEditor.getText().toString();
 
-    public void registerNewSourceListener(@NonNull final OnSourceCreated client){
-        this.client = client;
-    }
-
-    private void onTitleError(@StringRes final int titleErrorRes){
-        errorDisplay.setText(titleErrorRes);
-
-        errorDisplay.setAlpha(1F);//IDK why but this is needed
-        errorDisplay.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fade_in));
-
-        content.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake));
+        if( v.getId() == R.id.id_dialog_done )
+            if( canUseTitle( title ) && client != null )
+                 client.onSourceCreated( new Source( title, transactionType  ) );
     }
 
 
-    private boolean checkTitle(@NonNull final String title){
-
-        if(title.replaceAll("\\s", "").length() == 0) {
-            onTitleError(R.string.string_title_error_empty);
+    public boolean canUseTitle(@NonNull String potentialTitle) {
+        if( potentialTitle.replaceAll( "\\s", "" ).length() == 0 ) {
+            onTitleError( R.string.string_title_error_empty );
             return false;
         }
 
-        if(title.contains("%")){
-            onTitleError(R.string.string_title_error_poor_format);
+        if( potentialTitle.contains("%") ){
+            onTitleError( R.string.string_title_error_poor_format );
             return false;
         }
 
         return true;
     }
 
-    private void checkSource(@NonNull final String title){
+    public void onTitleError(@StringRes final int titleErrorRes){
+        errorDisplay.setText( titleErrorRes );
 
-        final Handler sourceChecker = new Handler(new Handler.Callback(){
-            @Override
-            public boolean handleMessage(Message msg) {
+        errorDisplay.setAlpha( 1F );//IDK why but this is needed
+        errorDisplay.startAnimation( AnimationUtils.loadAnimation( getContext(), R.anim.fade_in ) );
 
-                if(msg.obj != null)
-                    onTitleError(R.string.string_title_error_in_use);
-                else{
-                    if(client != null) client.onSourceCreated(new Source(title, transactionType));
-                    dismiss();
-                }
-
-                return true;
-            }
-        });
-
-
-        LocalMoneyProvider.obtain(content.getContext()).fetchSources(sourceChecker, title, null, false);
+        content.startAnimation( AnimationUtils.loadAnimation( getContext(), R.anim.shake ) );
     }
 
 }
