@@ -60,7 +60,7 @@ public abstract class SourceDao implements MoneyDaoWriter<Source>{
      * @param transaction The newly created transaction object to update the source by
      */
     @WorkerThread
-    public void addAmount(@NonNull final Transaction transaction, @NonNull final Source source){
+    public void addAmount(@NonNull final Transaction transaction){
 
         final String id = transaction.getSourceId();
         final long amt = transaction.getAmount();
@@ -68,7 +68,9 @@ public abstract class SourceDao implements MoneyDaoWriter<Source>{
 
         if( amt <= 0 ) return;
 
-        final long newAmt = source.getPennies() + amt;
+        final Source src = fetchById(transaction.getSourceId());
+
+        final long newAmt = src.getPennies() + amt;
 
         updateAmount(id, newAmt);
         updateLastUpdateTimestamp(id, timestamp);
