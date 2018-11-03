@@ -8,8 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -30,10 +28,20 @@ import com.whompum.PennyFlip.ActivitySourceList.Dialog.NewSourceDialog;
 import com.whompum.PennyFlip.ActivitySourceList.Dialog.OnSourceCreated;
 import com.whompum.PennyFlip.ActivitySourceList.OnSortButtonClicked;
 import com.whompum.PennyFlip.Animations.AnimateScale;
-import com.whompum.PennyFlip.Money.RoomMoneyWriter;
+import com.whompum.PennyFlip.Money.DatabaseUtils;
+import com.whompum.PennyFlip.Money.MoneyDatabase;
+import com.whompum.PennyFlip.Money.OnCancelledResponder;
+import com.whompum.PennyFlip.Money.Queries.Deliverable;
+import com.whompum.PennyFlip.Money.Queries.LoggerResponder;
+import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
+import com.whompum.PennyFlip.Money.Queries.Resolvers.QueryHandler;
+import com.whompum.PennyFlip.Money.Queries.Responder;
+import com.whompum.PennyFlip.Money.Queries.SourceQueries;
+import com.whompum.PennyFlip.Money.Source.SourceQueryKeys;
 import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
+import com.whompum.PennyFlip.Money.Writes.RoomMoneyWriter;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceData;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapter;
@@ -53,7 +61,7 @@ import butterknife.Unbinder;
 
 public abstract class FragmentSourceList extends Fragment implements OnItemSelected<Source>,
         SearchView.OnQueryTextListener,
-        OnSortButtonClicked, Handler.Callback, Observer<List<Source>>, OnSourceCreated {
+        OnSortButtonClicked, Observer<List<Source>>, OnSourceCreated {
 
     @LayoutRes
     protected static final int LAYOUT = R.layout.source_list_content;
@@ -78,6 +86,16 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
     @BindView(R.id.id_global_fab) protected FloatingActionButton addFab;
 
+    private MoneyDatabase database;
+
+    private MoneyRequest.QueryBuilder defaultQueryBuilder = new MoneyRequest.QueryBuilder( SourceQueryKeys.KEYS );
+    private MoneyRequest.QueryBuilder searchLikeQueryBuilder = new MoneyRequest.QueryBuilder( SourceQueryKeys.KEYS );
+
+    private SourceQueries queries = new SourceQueries();
+
+    private NewSourceDialog newSourceDialog;
+
+    private LiveData<List<Source>> data;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,8 +111,24 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
         this.listAdapter = new SourceListAdapter(getContext(), color);
 
-        //LocalMoneyProvider.obtain(getContext())
-          //      .fetchObservableSources(new Handler(this), null, transactionType, false);
+        database = DatabaseUtils.getMoneyDatabase( this.getContext() );
+        defaultQueryBuilder.setQueryParameter( SourceQueryKeys.TRANSACTION_TYPE, transactionType );
+
+        final Deliverable<LiveData<List<Source>>> deliverable =
+                queries.queryObservableObservableGroup( defaultQueryBuilder.getQuery(), database );
+
+        deliverable.attachResponder(new Responder<LiveData<List<Source>>>() {
+            @Override
+            public void onActionResponse(@NonNull LiveData<List<Source>> data) {
+                FragmentSourceList.this.data = data;
+                FragmentSourceList.this.data.observe( FragmentSourceList.this, FragmentSourceList.this );
+            }
+        });
+
+        deliverable.attachCancelledResponder( new LoggerResponder( FragmentSourceList.class ) );
+
+        newSourceDialog = new NewSourceDialog(this.getContext(), this, transactionType);
+
     }
 
     @Override
@@ -143,30 +177,11 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
         return false; //We populate progressively not on request
     }
 
-
     @Override
     public boolean onQueryTextChange(String newText) {
         if(!isAdded()) return false;
 
         populate(newText);
-        return true;
-    }
-
-
-    @Override
-    public boolean handleMessage(Message msg) {
-
-        if(msg.obj == null)
-            return true;
-
-        if(msg.obj instanceof LiveData)
-            ((LiveData<List<Source>>)msg.obj).observe(this, this);
-
-        if(msg.obj instanceof List) {
-            Log.i("SEARCHING_FOR_SOURCE", "DATA SIZE: " + (((List) msg.obj).size()));
-            listAdapter.swapDataset((List<Source>) msg.obj);
-        }
-
         return true;
     }
 
@@ -176,19 +191,42 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
             listAdapter.swapDataset(sources);
     }
 
-
     protected void createIntent(@NonNull Source data){
         this.intent = new Intent(getActivity(), ActivitySourceData.class);
     }
 
     @OnClick(R.id.id_global_fab)
     public void launchNewSourceDialog(){
-        new NewSourceDialog(getContext(), this, transactionType).show();
+        newSourceDialog.show();
     }
 
     @Override
-    public void onSourceCreated(@NonNull Source source) {
-        new RoomMoneyWriter(getContext()).saveSource(source);
+    public void onSourceCreated(@NonNull final Source source) {
+
+        //First check if the Source is usable
+        final MoneyRequest request = new MoneyRequest.QueryBuilder( SourceQueryKeys.KEYS )
+                .setQueryParameter( SourceQueryKeys.TITLE, source.getTitle() ).getQuery();
+
+        final Deliverable<Source> deliverable = queries.queryById( request, database );
+
+        deliverable.attachCancelledResponder(new OnCancelledResponder() {
+            @Override
+            public void onCancelledResponse(int reason, String msg) {
+                if( reason == QueryHandler.NULL_DATA_QUERY ) { //Title doesn't exist
+                    new RoomMoneyWriter( database ).saveSource( source );
+                    newSourceDialog.dismiss();
+                }
+            }
+        });
+
+        deliverable.attachResponder(new Responder<Source>() {
+            @Override
+            public void onActionResponse(@NonNull Source data) {
+                //Title exists.
+                newSourceDialog.onTitleError( R.string.string_title_error_in_use );
+            }
+        });
+
     }
 
     public void onItemSelected(@NonNull Source data){
@@ -209,15 +247,22 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
     protected void populate(CharSequence query){
 
-        String sourceName = null;
-        boolean searchLike = false;
-
         if(query != null && query.length() > 0) {
-            sourceName = "%" + query + "%";
-            searchLike = true;
+
+            searchLikeQueryBuilder.setQueryParameter( SourceQueryKeys.LIKE_TITLE, "%" + query + "%")
+                    .setQueryParameter( SourceQueryKeys.TRANSACTION_TYPE, transactionType);
+
+            final Deliverable<List<Source>> deliverable =
+                    queries.queryGroup( searchLikeQueryBuilder.getQuery(), database );
+
+            deliverable.attachResponder(new Responder<List<Source>>() {
+                @Override
+                public void onActionResponse(@NonNull List<Source> data) {
+                    listAdapter.swapDataset( data );
+                }
+            });
         }
 
-        //LocalMoneyProvider.obtain(getContext()).fetchSources(new Handler(this), sourceName, transactionType, searchLike);
     }
 
     @Override
