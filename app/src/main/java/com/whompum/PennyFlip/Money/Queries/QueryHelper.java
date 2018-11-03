@@ -2,6 +2,7 @@ package com.whompum.PennyFlip.Money.Queries;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.whompum.PennyFlip.Money.Queries.Deliverable;
 import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
@@ -29,7 +30,7 @@ public class QueryHelper<T> {
 
             @Override
             public void onQueryFailed(int reason, @Nullable String msg) {
-
+                deliverable.setCancelledResponse( reason, msg );
             }
         });
 
