@@ -15,7 +15,7 @@ public class LoggerResponder implements OnCancelledResponder {
     @Override
     public void onCancelledResponse(int reason, String msg) {
         if( msg != null )
-            Log.e(clsName, msg + "\n CODE: " + reason);
-        else Log.e(clsName, "CODE: " + reason);
+            Log.e( clsName, msg + "\n CODE: " + reason );
+        else Log.e( clsName, "CODE: " + reason );
     }
 }
