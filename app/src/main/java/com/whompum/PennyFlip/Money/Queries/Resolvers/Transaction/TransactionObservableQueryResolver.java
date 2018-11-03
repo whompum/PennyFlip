@@ -22,7 +22,7 @@ public class TransactionObservableQueryResolver extends QueryResolver<LiveData<L
     @Override
     public LiveData<List<Transaction>> resolve(@NonNull MoneyRequest moneyQuery) {
 
-        final TransactionResolverHelper helper = new TransactionResolverHelper(moneyQuery);
+        final TransactionResolverHelper helper = new TransactionResolverHelper( moneyQuery );
 
         LiveData<List<Transaction>> data = null;
 
@@ -32,10 +32,18 @@ public class TransactionObservableQueryResolver extends QueryResolver<LiveData<L
         else if( helper.useSourceId() )
             data = dao.fetchBySource( helper.resolveSourceId() );
 
-        else if( helper.useTransactionType() )
-            data = dao.fetchByType( helper.resolveType() );
+        else if( helper.useTransactionType() ) {
 
-        else if( helper.useTimerange() )
+            if( helper.useTimerange() )
+                data = dao.fetchByTypeAndTime(
+                        helper.resolveType(),
+                        helper.resolveTimerange().getMillisFloor(),
+                        helper.resolveTimerange().getMillisCiel()
+                );
+
+            else data = dao.fetchByType( helper.resolveType() );
+
+        }else if( helper.useTimerange() )
             data = dao.fetchByTime(
                     helper.resolveTimerange().getMillisFloor(),
                     helper.resolveTimerange().getMillisCiel()
@@ -44,11 +52,3 @@ public class TransactionObservableQueryResolver extends QueryResolver<LiveData<L
         return data;
     }
 }
-
-/*
-
-    @Query("SELECT * FROM `Transaction` WHERE timestamp >= :mFloor AND timestamp <= :mCiel")
-    LiveData<List<Transaction>> fetchByTime(final long mFloor, final long mCiel);
-
-
- */
