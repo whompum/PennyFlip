@@ -6,10 +6,15 @@ import android.support.annotation.NonNull;
 
 public class DatabaseUtils {
 
+    private static MoneyDatabase database;
 
     public static MoneyDatabase getMoneyDatabase(@NonNull final Context context){
-        return Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME)
+
+        if( database == null )
+            database = Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME)
                 .build();
+
+        return database;
     }
 
 }
