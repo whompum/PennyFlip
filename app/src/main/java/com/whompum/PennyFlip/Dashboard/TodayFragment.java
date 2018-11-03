@@ -5,10 +5,9 @@ import android.arch.lifecycle.Observer;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,8 +17,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.whompum.PennyFlip.Money.DatabaseUtils;
+import com.whompum.PennyFlip.Money.Queries.Deliverable;
+import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
+import com.whompum.PennyFlip.Money.Queries.Responder;
+import com.whompum.PennyFlip.Money.Queries.TransactionQueries;
 import com.whompum.PennyFlip.Money.TimeRange;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Transaction.TransactionQueryBuilder;
+import com.whompum.PennyFlip.Money.Transaction.TransactionQueryKeys;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
@@ -36,7 +42,7 @@ import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
  * Created by bryan on 1/12/2018.
  */
 
-public class TodayFragment extends Fragment implements Handler.Callback, Observer<List<Transaction>>{
+public class TodayFragment extends Fragment implements Observer<List<Transaction>>{
 
     @LayoutRes
     public static final int LAYOUT = R.layout.dashboard_today_layout;
@@ -58,7 +64,6 @@ public class TodayFragment extends Fragment implements Handler.Callback, Observe
 
     private Unbinder unbinder;
 
-    private Handler resultReceiver = new Handler(this);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,14 +99,6 @@ public class TodayFragment extends Fragment implements Handler.Callback, Observe
         unbinder.unbind();
     }
 
-    @Override
-    public boolean handleMessage(Message msg) {
-        if(msg.obj != null)
-            if(msg.obj instanceof LiveData)
-                ((LiveData<List<Transaction>>)msg.obj).observe(this, this);
-
-        return true;
-    }
 
     @Override
     public void onChanged(@Nullable List<Transaction> transactions) {
@@ -121,12 +118,25 @@ public class TodayFragment extends Fragment implements Handler.Callback, Observe
     }
 
     private void observeTransactions(){
-        LocalMoneyProvider.obtain(getContext())
-                .fetchTransactions(resultReceiver, null, transactionType, fetchRange());
+
+        final MoneyRequest request = new TransactionQueryBuilder()
+                .setQueryParameter( TransactionQueryKeys.TRANSACTION_TYPE, transactionType )
+                .setQueryParameter( TransactionQueryKeys.TIMERANGE, fetchQueryTimeRange() )
+                .getQuery();
+
+        final Deliverable<LiveData<List<Transaction>>> data = new TransactionQueries()
+                .queryObservableObservableGroup( request, DatabaseUtils.getMoneyDatabase( getContext() ) );
+
+        data.attachResponder(new Responder<LiveData<List<Transaction>>>() {
+            @Override
+            public void onActionResponse(@NonNull LiveData<List<Transaction>> data) {
+                data.observe(TodayFragment.this, TodayFragment.this);
+            }
+        });
     }
 
     //Creates a TimeRange at our floor and ciel for the day
-    private TimeRange fetchRange(){
+    private TimeRange fetchQueryTimeRange(){
 
         final long today = Timestamp.now().getStartOfDay();
         final long tomorrow = Timestamp.fromProjection(1).getStartOfDay(); //Manana
