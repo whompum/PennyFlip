@@ -1,12 +1,12 @@
 package com.whompum.PennyFlip.Money.Contracts.Source;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
-import com.whompum.PennyFlip.Money.Contracts.MoneyDaoWriter;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
@@ -14,10 +14,12 @@ import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import java.util.List;
 
 @Dao
-public abstract class SourceDao implements MoneyDaoWriter<Source>{
+public abstract class SourceDao{
 
     @Query("SELECT * FROM Source")
     public abstract List<Source> fetchAll();
+
+
 
     @Query("SELECT * FROM Source WHERE title = :title")
     public abstract Source fetchById(@NonNull final String title);
@@ -38,6 +40,8 @@ public abstract class SourceDao implements MoneyDaoWriter<Source>{
     @Query("SELECT * FROM Source where transactionType = :type")
     public abstract List<Source> fetchOfType(@IntRange(from = TransactionType.ADD, to = TransactionType.CALLIBRATE) final int type);
 
+    @Insert
+    public abstract void insert(@NonNull final Source source);
 
     //Sets the amount of the source @ `title` by `pennies`
     @Query("UPDATE Source SET pennies = :pennies WHERE title = :title")
