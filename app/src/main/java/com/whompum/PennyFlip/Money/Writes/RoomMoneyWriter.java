@@ -1,15 +1,12 @@
 package com.whompum.PennyFlip.Money.Writes;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
+import com.whompum.PennyFlip.Money.DatabaseUtils;
 import com.whompum.PennyFlip.Money.MoneyDatabase;
 import com.whompum.PennyFlip.Money.MoneyThread;
-import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
-import com.whompum.PennyFlip.Money.Queries.WalletQueries;
-import com.whompum.PennyFlip.Money.Queries.WalletRequestBuilder;
 import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Contracts.Source.SourceDao;
@@ -37,14 +34,14 @@ public class RoomMoneyWriter implements MoneyWriter {
 
     public RoomMoneyWriter(@NonNull final Context context){
         //Fetch the database containing the DAO's
-        final MoneyDatabase database =
-                Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME).build();
+        this( DatabaseUtils.getMoneyDatabase( context ) );
+    }
 
+    public RoomMoneyWriter(@NonNull final MoneyDatabase database){
         //Initialize all our DAO's using the MoneyDatabase implementation
         transactionsDao = database.getTransactionAccessor();
         sourceDao = database.getSourceAccessor();
         walletDao = database.getWalletAccessor();
-
     }
 
 
@@ -53,7 +50,7 @@ public class RoomMoneyWriter implements MoneyWriter {
         //Save a transaction using an Operation object dedicated to Transaction saving
 
         new MoneyThread()
-                .doInBackground(new SaveTransactionOperation(transaction));
+                .doInBackground( new SaveTransactionOperation( transaction ) );
 
     }
 
@@ -65,13 +62,13 @@ public class RoomMoneyWriter implements MoneyWriter {
             because, according to our API definition, only a Transaction save can update the value
             of a source or wallet. This is done to make the code more cohesive.
          */
-        if(source.getPennies() > 0)
+        if( source.getPennies() > 0 )
             throw new NewSourceTotalConstraintException();
 
         new MoneyThread().doInBackground(new MoneyThreadOperation() {
             @Override
             public void doOperation() {
-                sourceDao.insert(source);
+                sourceDao.insert( source );
             }
         });
     }
@@ -81,7 +78,7 @@ public class RoomMoneyWriter implements MoneyWriter {
         new MoneyThread().doInBackground(new MoneyThreadOperation() {
             @Override
             public void doOperation() {
-                sourceDao.delete(sourceId);
+                sourceDao.delete( sourceId );
             }
         });
     }
@@ -104,8 +101,8 @@ public class RoomMoneyWriter implements MoneyWriter {
         public synchronized void doOperation() {
             //After saving, update both the wallet and the Source
 
-            transactionsDao.insert(transaction);
-            sourceDao.addAmount(transaction);
+            transactionsDao.insert( transaction );
+            sourceDao.addAmount( transaction );
 
             //Fetch the original wallet total, and then determine if the new wallet total
             //based on the amount and transaction type of the Transaction object.
@@ -115,16 +112,16 @@ public class RoomMoneyWriter implements MoneyWriter {
             long newWalletTotal =
                     ( (wallet = walletDao.fetchWallet()) != null) ? wallet.getValue(): 0L;
 
-            if(transaction.getTransactionType() == TransactionType.ADD)
+            if( transaction.getTransactionType() == TransactionType.ADD )
                 newWalletTotal += transaction.getAmount();
 
-            else if(transaction.getTransactionType() == TransactionType.SPEND) {
+            else if( transaction.getTransactionType() == TransactionType.SPEND ) {
                 //Check for negative values because we don't use sub-zero values for the wallet.
                 long newValue = newWalletTotal - transaction.getAmount();
                 newWalletTotal = (newValue > 0) ? newValue : 0L;
             }
 
-            walletDao.update(new Wallet(newWalletTotal));
+            walletDao.update( new Wallet( newWalletTotal ) );
 
         }
     }
