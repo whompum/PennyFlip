@@ -1,10 +1,15 @@
 package com.whompum.PennyFlip.Money.Queries;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.whompum.PennyFlip.Money.OnCancelledResponder;
 
 public class Deliverable<T> {
 
     private Responder<T> responder;
+    private OnCancelledResponder cancelledResponder;
+
     private T data;
 
     private boolean hasDelivered = false;
@@ -25,6 +30,10 @@ public class Deliverable<T> {
 
     }
 
+    public void attachCancelledResponder(@NonNull final OnCancelledResponder responder){
+        cancelledResponder = responder;
+    }
+
     public void setData(@NonNull final T data){
         this.data = data;
 
@@ -33,6 +42,12 @@ public class Deliverable<T> {
 
     }
 
+    public void setCancelledResponse(final int reason, @Nullable final String msg){
+        if( cancelledResponder != null )
+            cancelledResponder.onCancelledResponse(reason, msg);
+
+        hasDelivered = true;
+    }
 
     private void deliver(){
         responder.onActionResponse( data );
