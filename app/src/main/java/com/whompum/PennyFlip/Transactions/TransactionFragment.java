@@ -15,8 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.whompum.PennyFlip.Money.DatabaseUtils;
+import com.whompum.PennyFlip.Money.Queries.Deliverable;
+import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
+import com.whompum.PennyFlip.Money.Queries.Responder;
+import com.whompum.PennyFlip.Money.Queries.TransactionQueries;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Transaction.TransactionQueryBuilder;
+import com.whompum.PennyFlip.Money.Transaction.TransactionQueryKeys;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transactions.Data.ExpansionPredicate;
@@ -28,11 +35,7 @@ import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by bryan on 12/30/2017.
- */
-
-public class TransactionFragment extends Fragment implements Handler.Callback, Observer<List<Transaction>> {
+public class TransactionFragment extends Fragment implements Observer<List<Transaction>> {
 
     public static final String SOURCE_KEY = "source.ky";
 
@@ -40,8 +43,6 @@ public class TransactionFragment extends Fragment implements Handler.Callback, O
     private static final int LAYOUT_RES = R.layout.transaction_list;
 
     private TransactionListAdapter adapter;
-
-    private Handler resultReceiver = new Handler(this);
 
     public static Fragment newInstance(@NonNull final Bundle args){
         final TransactionFragment fragment = new TransactionFragment();
@@ -59,8 +60,20 @@ public class TransactionFragment extends Fragment implements Handler.Callback, O
 
         this.adapter = new TransactionListAdapter(getContext());
 
-        LocalMoneyProvider.obtain(getContext())
-                .fetchTransactions(resultReceiver, sourceId, null, null);
+        //Fetch transactions data
+        final MoneyRequest request = new TransactionQueryBuilder()
+                .setQueryParameter(TransactionQueryKeys.SOURCE_ID, sourceId )
+                .getQuery();
+
+        final Deliverable<LiveData<List<Transaction>>> deliverable = new TransactionQueries()
+                .queryObservableObservableGroup( request, DatabaseUtils.getMoneyDatabase( getContext() ) );
+
+        deliverable.attachResponder(new Responder<LiveData<List<Transaction>>>() {
+            @Override
+            public void onActionResponse(@NonNull LiveData<List<Transaction>> data) {
+                data.observe( TransactionFragment.this, TransactionFragment.this );
+            }
+        });
 
     }
 
@@ -76,16 +89,6 @@ public class TransactionFragment extends Fragment implements Handler.Callback, O
            transactionsList.addItemDecoration(new TimeLineDecorator(getContext().getResources()));
 
     return layout;
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-
-        if( !(msg.obj instanceof LiveData) ) return true;
-
-        ((LiveData<List<Transaction>>)msg.obj).observe(this, this);
-
-        return true;
     }
 
     @Override
