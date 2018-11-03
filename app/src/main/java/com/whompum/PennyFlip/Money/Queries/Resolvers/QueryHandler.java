@@ -18,7 +18,7 @@ import com.whompum.PennyFlip.Money.Queries.Query.QueryReceiver;
 public class QueryHandler<T> implements Handler.Callback {
 
     public static final int QUERY_SUCCESS = 0;
-    public static final int QUERY_FAILED = 0;
+    public static final int QUERY_FAILED = 1;
 
     public static final int BAD_QUERY_PARAMETER = 1;
     public static final int NULL_DATA_QUERY = 2;
