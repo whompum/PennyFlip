@@ -89,26 +89,6 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
     @BindView(R.id.id_global_editor)
     protected EditText transactionNameEditor;
 
-    /**
-     * Is passed into the LocalMoneyProvider fetchSources method
-     * to recieve a message containing a single Source. We use this source
-     * to see if the source the user wants to make, is already in use.
-     */
-    private Handler sourceChecker = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-
-            if(msg.obj == null) {
-                dismiss();
-                notifyListener();
-            }else{
-                Toast.makeText(getContext(), R.string.string_title_error_in_use, Toast.LENGTH_SHORT)
-                .show();
-            }
-            return true;
-        }
-    });
-
     protected SourceWrapper item;
 
     protected SourceWrapperAdapter sourceListAdapter;
