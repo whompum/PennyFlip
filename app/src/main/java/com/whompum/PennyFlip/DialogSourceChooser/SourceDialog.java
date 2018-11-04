@@ -28,9 +28,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whompum.PennyFlip.Animations.AnimateScale;
+import com.whompum.PennyFlip.Money.DatabaseUtils;
+import com.whompum.PennyFlip.Money.OnCancelledResponder;
+import com.whompum.PennyFlip.Money.Queries.Deliverable;
+import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
+import com.whompum.PennyFlip.Money.Queries.Resolvers.QueryHandler;
+import com.whompum.PennyFlip.Money.Queries.Responder;
+import com.whompum.PennyFlip.Money.Queries.SourceQueries;
 import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Source.SourceQueryKeys;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
 
@@ -43,7 +52,7 @@ import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-public abstract class SourceDialog extends DialogFragment implements OnItemSelected<SourceWrapper>, Handler.Callback{
+public abstract class SourceDialog extends DialogFragment implements OnItemSelected<SourceWrapper>{
 
 
     @ColorRes
@@ -61,6 +70,10 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
     private long timestamp;
     private long pennies;
 
+    protected int transactionType = -1;
+
+    private Unbinder unbinder;
+
     @BindView(R.id.id_global_fab)
     protected FloatingActionButton actionFab;
 
@@ -75,14 +88,6 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
 
     @BindView(R.id.id_global_editor)
     protected EditText transactionNameEditor;
-
-
-    protected int transactionType = -1;
-
-    private Unbinder unbinder;
-
-    private Handler dataReceiver = new Handler(this);
-
 
     /**
      * Is passed into the LocalMoneyProvider fetchSources method
@@ -210,28 +215,21 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
             throw new IllegalArgumentException("A Total must be provided to the Source Dialog");
     }
 
-    @Override //Handles the data fromm the backend
-    public boolean handleMessage(Message msg) {
 
-        //Convert msg.obj to usable data
-        //Check if null
+    private void onDataChanged(@NonNull final List<Source> data){
+
         //Convert List<Source> to AdapterSelecteable
         //Swap Data set of sourceListAdapter
-
-        final List<Source> data = (List<Source>) msg.obj;
-
-        if(data == null) return true;
 
         Log.i("SOURCE_DIALOG", "NUMBER OF RESULTS: " + data.size());
 
         final AdapterSelecteable<SourceWrapper> wrappers = new AdapterSelecteable<>();
 
-        for(Source s: data)
-            wrappers.add(new SourceWrapper(s, SourceWrapper.TAG.REGULAR));
+        for( Source s: data )
+            wrappers.add( new SourceWrapper( s, SourceWrapper.TAG.REGULAR ) );
 
-        sourceListAdapter.swapDataSet(wrappers);
+        sourceListAdapter.swapDataSet( wrappers );
 
-        return true;
     }
 
     @Override
@@ -262,29 +260,79 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
     @OnClick(R.id.id_global_fab)
     protected void onDone(){
 
-        if(item.getTag().equals(SourceWrapper.TAG.NEW))
-             LocalMoneyProvider.obtain(getContext()) //Attempt to fetch this source object to see if it exists
-            .fetchSources(sourceChecker, item.getSourceId(), null, false);
-        else {
+        if( item.getTag().equals( SourceWrapper.TAG.NEW ) ) {
+          /*
+            If the tag is new, it means it doesn't exist in the queried data set,
+            it, however, may exist as a source under a different transaction type.
+            So we'll query to see if the source exists at all. Then we'll check its type
+           */
+
+
+            final MoneyRequest request = new MoneyRequest.QueryBuilder( SourceQueryKeys.KEYS )
+                    .setQueryParameter( SourceQueryKeys.TITLE, item.getSourceId() )
+                    .getQuery();
+
+            final Deliverable<Source> deliverable = new SourceQueries().queryById( request,
+                    DatabaseUtils.getMoneyDatabase( getContext() ) );
+
+            deliverable.attachResponder( new Responder<Source>() {
+                @Override
+                public void onActionResponse(@NonNull Source data) { //Data exits
+
+                    if( data.getTransactionType() != transactionType )
+                        Toast.makeText(
+                                getContext(), R.string.string_title_error_in_use, Toast.LENGTH_SHORT).show();
+
+                    else{
+                        dismiss();
+                        notifyListener();
+                    }
+
+                }
+            });
+
+            deliverable.attachCancelledResponder( new OnCancelledResponder() {
+                @Override
+                public void onCancelledResponse(int reason, String msg) {
+                    if( reason == QueryHandler.NULL_DATA_QUERY ){
+                        dismiss();
+                        notifyListener();
+                    }
+                }
+            });
+
+
+        }else {
             dismiss();
             notifyListener();
         }
+
     }
 
-    private void populate(@Nullable final CharSequence popData){
+    final SourceQueries sourceQueries = new SourceQueries();
+
+    final MoneyRequest.QueryBuilder queryAllBuilder = new MoneyRequest.QueryBuilder(
+            SourceQueryKeys.KEYS
+    );
+
+    private void populate(@Nullable final CharSequence popData) {
         //Fetch Source data that matches the popData like clause
 
-        //Null by default. If popData is null, we want everything for our transaction type
-        String query = null;
-        boolean searchLike = false;
+        final String query = (popData != null) ? "%" + popData.toString() + "%" : "%";
 
-        if(popData != null && popData.length() > 0) {
-            query = "%" + popData.toString() + "%";
-            searchLike = true;
-        }
+        queryAllBuilder.setQueryParameter(SourceQueryKeys.LIKE_TITLE, query)
+                .setQueryParameter(SourceQueryKeys.TRANSACTION_TYPE, transactionType);
 
-        //Will resolve either a list of Sources of our TransactionType only, or our TransactionType plus similar namings.
-        LocalMoneyProvider.obtain(getContext()).fetchSources(dataReceiver, query, transactionType, searchLike);
+        final Deliverable<List<Source>> deliverable = sourceQueries
+                .queryGroup(queryAllBuilder.getQuery(), DatabaseUtils.getMoneyDatabase(getContext()));
+
+        deliverable.attachResponder(new Responder<List<Source>>() {
+            @Override
+            public void onActionResponse(@NonNull List<Source> data) {
+                onDataChanged(data);
+            }
+        });
+
     }
 
 
