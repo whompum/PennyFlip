@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="76dp">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/id_local_guide_adding"
+        app:layout_constraintGuide_percent=".4"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/id_local_guide_spending"
+        app:layout_constraintGuide_percent=".6"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        app:layout_constraintEnd_toStartOf="@id/id_local_guide_adding"
+        android:gravity="center"
+        android:textSize="@dimen/dimen_text_mediano"
+        android:layout_marginEnd="@dimen/dimen_padding_hor_large"
+        android:text="@string/string_adding"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        app:layout_constraintStart_toEndOf="@id/id_local_guide_spending"
+        android:gravity="center"
+        android:textSize="@dimen/dimen_text_mediano"
+        android:layout_marginStart="@dimen/dimen_padding_hor_large"
+        android:text="@string/string_spending"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+
+</android.support.constraint.ConstraintLayout>

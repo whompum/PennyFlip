@@ -3,11 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/id_global_toolbar"
-    android:background="@color/light_green"
     app:contentInsetStart="0dp"
     android:layout_width="match_parent"
     android:layout_height="48dp">
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,6 +13,7 @@
 
     <android.support.v7.widget.AppCompatImageButton
         style="@style/StyleIcon"
+        android:tint="@color/darkest_grey"
         android:id="@id/id_global_nav"
         app:srcCompat="@drawable/icon_arrow_left" />
 
@@ -23,7 +22,7 @@
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/id_global_nav"
         android:text="@string/string_sources"
-        android:textColor="@color/white"
+        android:textColor="@color/darkest_grey"
         android:textSize="@dimen/dimen_text_bigboi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -32,6 +31,7 @@
     <android.support.v7.widget.AppCompatImageButton
         style="@style/StyleIcon"
         android:id="@id/id_global_search"
+        android:tint="@color/darkest_grey"
         app:srcCompat="@drawable/icon_search"
         android:layout_alignParentEnd="true" />
 
@@ -43,4 +43,7 @@
         android:layout_toStartOf="@id/id_global_search" />
 
     </RelativeLayout>
+
+
+
 </android.support.v7.widget.Toolbar>
