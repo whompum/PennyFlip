@@ -3,12 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:layout_height="116dp"
     app:cardElevation="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:selectableItemBackground"
     android:layout_marginStart="@dimen/dimen_padding_hor_base"
     android:layout_marginEnd="@dimen/dimen_padding_hor_base"
     android:layout_width="match_parent"
-    android:layout_height="116dp">
+    android:layout_height="112dp">
 
     <View
         tools:background="@color/dark_green"
