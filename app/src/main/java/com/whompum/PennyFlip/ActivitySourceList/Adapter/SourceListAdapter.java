@@ -18,9 +18,6 @@ import java.util.List;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-/**
- * Created by bryan on 12/28/2017.
- */
 
 public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Holder> implements AdapterItemClickListener{
 
@@ -95,7 +92,7 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
 
         protected AdapterItemClickListener itemClickListener;
 
-        protected TextView sourceName, lastUpdate, viewButton;
+        protected TextView sourceName, lastUpdate;
         protected CurrencyEditText statistics;
 
         public Holder(final View layout, final int highlighting){
@@ -103,13 +100,15 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
 
             this.sourceName = layout.findViewById(R.id.id_global_title);
             this.lastUpdate = layout.findViewById(R.id.id_global_timestamp);
-            this.viewButton = layout.findViewById(R.id.source_list_local_select);
             this.statistics = layout.findViewById(R.id.id_global_total_display);
 
             if(highlighting != -1)
                 statistics.setTextColor(highlighting);
 
-            registerClickables(viewButton);
+            layout.findViewById( R.id.id_local_veneer ).setBackgroundColor( highlighting );
+
+
+            registerClickables( layout );
 
         }
 
