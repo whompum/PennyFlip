@@ -23,7 +23,7 @@ import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 public class NewSourceDialog extends Dialog implements View.OnClickListener {
 
     @LayoutRes
-    public static final int DIALOG_LAYOUT = R.layout.layout_add_source_dialog;
+    public static final int DIALOG_LAYOUT = R.layout.layout_new_source_dialog;
 
     private TextView counterDisplay;
     private EditText sourceEditor;
@@ -85,6 +85,7 @@ public class NewSourceDialog extends Dialog implements View.OnClickListener {
             final int w = m.widthPixels; // Subtract padding
 
             windowParams.width = w;
+            windowParams.dimAmount = .7F;
         }
 
         if(windowParams!= null)
