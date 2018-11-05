@@ -158,6 +158,10 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
         this.list.addOnScrollListener(scrollListener);
 
+        list.addItemDecoration( new SourceListMarginDecorator(
+                getContext().getResources().getDimensionPixelSize( R.dimen.dimen_padding_ver_base )
+        ) );
+
         animator = new AnimateScale(addFab, true);
 
     return view;
