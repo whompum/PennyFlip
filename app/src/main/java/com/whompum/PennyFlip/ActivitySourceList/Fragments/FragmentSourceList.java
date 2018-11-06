@@ -1,80 +1,42 @@
 package com.whompum.PennyFlip.ActivitySourceList.Fragments;
 
-import android.app.AlertDialog;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
+import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
-
-import com.whompum.PennyFlip.ActivitySourceList.Dialog.NewSourceDialog;
-import com.whompum.PennyFlip.ActivitySourceList.Dialog.OnSourceCreated;
-import com.whompum.PennyFlip.ActivitySourceList.OnSortButtonClicked;
-import com.whompum.PennyFlip.Animations.AnimateScale;
-import com.whompum.PennyFlip.Money.DatabaseUtils;
-import com.whompum.PennyFlip.Money.MoneyDatabase;
-import com.whompum.PennyFlip.Money.OnCancelledResponder;
-import com.whompum.PennyFlip.Money.Queries.Deliverable;
-import com.whompum.PennyFlip.Money.Queries.LoggerResponder;
-import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
-import com.whompum.PennyFlip.Money.Queries.Resolvers.QueryHandler;
-import com.whompum.PennyFlip.Money.Queries.Responder;
-import com.whompum.PennyFlip.Money.Queries.SourceQueries;
-import com.whompum.PennyFlip.Money.Source.SourceQueryKeys;
-import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
-import com.whompum.PennyFlip.Money.Writes.RoomMoneyWriter;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.ActivitySourceData.ActivitySourceData;
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListAdapter;
 import com.whompum.PennyFlip.ActivitySourceList.IntentReciever;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
-/**
- * Created by bryan on 12/27/2017.
- */
-
-public abstract class FragmentSourceList extends Fragment implements OnItemSelected<Source>,
-        SearchView.OnQueryTextListener,
-        OnSortButtonClicked, Observer<List<Source>>, OnSourceCreated {
+public class FragmentSourceList extends Fragment implements OnItemSelected<Source>, SourceListClientContract{
 
     @LayoutRes
     protected static final int LAYOUT = R.layout.source_list_content;
 
+    @ColorRes
     protected int highlight = -1;
-
-    private int selectedSourceItem = -1;
-
-    protected int transactionType = -1;
-
-    private AnimateScale animator;
-
-    protected Intent intent;
 
     private IntentReciever intentReciever; //Callback impl to recieve the startActivity intent
 
@@ -84,16 +46,13 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
     @BindView(R.id.id_global_list) protected RecyclerView list;
 
-    @BindView(R.id.id_global_fab) protected FloatingActionButton addFab;
+    public FragmentSourceList newInstance(@NonNull final Integer highlight){
+        final FragmentSourceList fragment = new FragmentSourceList();
 
-    private MoneyDatabase database;
+        fragment.highlight = highlight;
 
-    private MoneyRequest.QueryBuilder defaultQueryBuilder = new MoneyRequest.QueryBuilder( SourceQueryKeys.KEYS );
-    private MoneyRequest.QueryBuilder searchLikeQueryBuilder = new MoneyRequest.QueryBuilder( SourceQueryKeys.KEYS );
-
-    private SourceQueries queries = new SourceQueries();
-
-    private NewSourceDialog newSourceDialog;
+    return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,23 +67,6 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
             color = getContext().getResources().getColor(highlight);
 
         this.listAdapter = new SourceListAdapter(getContext(), color);
-
-        database = DatabaseUtils.getMoneyDatabase( this.getContext() );
-        defaultQueryBuilder.setQueryParameter( SourceQueryKeys.TRANSACTION_TYPE, transactionType );
-
-        final Deliverable<LiveData<List<Source>>> deliverable =
-                queries.queryObservableObservableGroup( defaultQueryBuilder.getQuery(), database );
-
-        deliverable.attachResponder(new Responder<LiveData<List<Source>>>() {
-            @Override
-            public void onActionResponse(@NonNull LiveData<List<Source>> data) {
-               data.observe( FragmentSourceList.this, FragmentSourceList.this );
-            }
-        });
-
-        deliverable.attachCancelledResponder( new LoggerResponder( FragmentSourceList.class ) );
-
-        newSourceDialog = new NewSourceDialog(this.getContext(), this, transactionType);
 
     }
 
@@ -156,13 +98,9 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
         this.list.setAdapter(listAdapter);
 
-        this.list.addOnScrollListener(scrollListener);
-
         list.addItemDecoration( new SourceListMarginDecorator(
                 getContext().getResources().getDimensionPixelSize( R.dimen.dimen_padding_ver_base )
         ) );
-
-        animator = new AnimateScale(addFab, true);
 
     return view;
     }
@@ -174,33 +112,36 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false; //We populate progressively not on request
+    public void display(@NonNull List<Source> data) {
+        swapAdapterData( data );
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        if(!isAdded()) return false;
-
-        populate(newText);
-        return true;
+    public void clear() {
+        swapAdapterData( new ArrayList<Source>() );
     }
 
-    @Override
-    public void onChanged(@Nullable List<Source> sources) {
-        if(listAdapter != null)
-            listAdapter.swapDataset(sources);
+    private void swapAdapterData(@NonNull final List<Source> data){
+
+        if( listAdapter != null ){
+
+            listAdapter.swapDataset( data );
+
+            if( list != null )
+                listAdapter.notifyDataSetChanged();
+        }
+
     }
 
-    protected void createIntent(@NonNull Source data){
-        this.intent = new Intent(getActivity(), ActivitySourceData.class);
+    public void onItemSelected(@NonNull Source data){
+        final Intent intent = new Intent(getActivity(), ActivitySourceData.class);
+        intent.putExtra(ActivitySourceData.DATA, data);
+
+        intentReciever.onDeliverIntent(intent);
     }
 
-    @OnClick(R.id.id_global_fab)
-    public void launchNewSourceDialog(){
-        newSourceDialog.show();
-    }
 
+    /*
     @Override
     public void onSourceCreated(@NonNull final Source source) {
 
@@ -229,43 +170,9 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
         });
 
     }
-
-    public void onItemSelected(@NonNull Source data){
-        createIntent(data);
-        initIntentArgs(data);
-        intentReciever.onDeliverIntent(intent);
-    }
+    */
 
     /**
-     * Initialize intent arguments when we go to launch a new activity
-     * @param data
-     */
-    @CallSuper
-    protected void initIntentArgs(@NonNull final Source data){
-        intent.putExtra(ActivitySourceData.DATA, data);
-    }
-
-
-    protected void populate(CharSequence query){
-
-        if(query != null && query.length() > 0) {
-
-            searchLikeQueryBuilder.setQueryParameter( SourceQueryKeys.LIKE_TITLE, "%" + query + "%")
-                    .setQueryParameter( SourceQueryKeys.TRANSACTION_TYPE, transactionType);
-
-            final Deliverable<List<Source>> deliverable =
-                    queries.queryGroup( searchLikeQueryBuilder.getQuery(), database );
-
-            deliverable.attachResponder(new Responder<List<Source>>() {
-                @Override
-                public void onActionResponse(@NonNull List<Source> data) {
-                    listAdapter.swapDataset( data );
-                }
-            });
-        }
-
-    }
-
     @Override
     public void onSortClicked() {
         final AlertDialog.Builder filterBuilder = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Light_Dialog);
@@ -291,11 +198,33 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
     }
 
 
+
+    protected void populate(CharSequence query){
+
+
+        if(query != null && query.length() > 0) {
+
+            searchLikeQueryBuilder.setQueryParameter( SourceQueryKeys.LIKE_TITLE, "%" + query + "%")
+                    .setQueryParameter( SourceQueryKeys.TRANSACTION_TYPE, transactionType);
+
+            final Deliverable<List<Source>> deliverable =
+                    queries.queryGroup( searchLikeQueryBuilder.getQuery(), database );
+
+            deliverable.attachResponder(new Responder<List<Source>>() {
+                @Override
+                public void onActionResponse(@NonNull List<Source> data) {
+                    listAdapter.swapDataset( data );
+                }
+            });
+        }
+
+    }
+     */
+
     /**
      * Applies a sort order to the search query
      *
      * @param order
-     */
     protected final void sortData(SourceSortOrder order){
         //Resolve the sort comparator form SourceSortOrder
         //Fetch data from SourceListAdapter
@@ -309,12 +238,13 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
         Collections.sort(data, order.resolveSorter());
         listAdapter.notifyDataSetChanged();
     }
+     */
 
     /**
      * Tightly coupled to the positions of R.arrays.sortOrderItems
      * Returns a sort order from the SortOrder Dialog
      * @return The sort order (Given from the selected item)
-     */
+
     private SourceSortOrder getSortOrderFromArray(final int pos){
 
         int sortOrder;
@@ -335,15 +265,5 @@ public abstract class FragmentSourceList extends Fragment implements OnItemSelec
 
         return new SourceSortOrder(sortOrder);
     }
-
-    private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            if(newState == RecyclerView.SCROLL_STATE_DRAGGING)
-                animator.hide(250L);
-            else if(newState == RecyclerView.SCROLL_STATE_IDLE)
-                animator.show(250L);
-        }
-    };
-
+    */
 }
