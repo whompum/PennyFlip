@@ -1,6 +1,8 @@
 package com.whompum.PennyFlip.ActivitySourceList.Adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
 
@@ -23,21 +26,19 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
 
 
     protected int LAYOUT = R.layout.source_list_content_item;
-    protected int highlight;
 
     protected List<Source> dataSet;
     protected LayoutInflater inflater;
     protected OnItemSelected<Source> selectedListener; //Client impl of this interface
 
 
-    public SourceListAdapter(final Context context, final int highlight){
-        this(context, null, highlight);
+    public SourceListAdapter(final Context context){
+        this(context, null);
     }
 
-    public SourceListAdapter(final Context context, @Nullable final List<Source> dataSet, final int highlight){
+    public SourceListAdapter(final Context context, @Nullable final List<Source> dataSet){
         this.dataSet = dataSet;
         this.inflater = LayoutInflater.from(context);
-        this.highlight = highlight;
     }
 
     public void swapDataset(final List<Source> dataSet){
@@ -48,7 +49,7 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType){
-        return new Holder(inflater.inflate(LAYOUT, parent, false), highlight);
+        return new Holder(inflater.inflate(LAYOUT, parent, false));
     }
 
     @Override
@@ -95,27 +96,39 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
         protected TextView sourceName, lastUpdate;
         protected CurrencyEditText statistics;
 
-        public Holder(final View layout, final int highlighting){
+        public Holder(final View layout){
             super(layout);
 
             this.sourceName = layout.findViewById(R.id.id_global_title);
             this.lastUpdate = layout.findViewById(R.id.id_global_timestamp);
             this.statistics = layout.findViewById(R.id.id_global_total_display);
 
-            if(highlighting != -1)
-                statistics.setTextColor(highlighting);
-
-            layout.findViewById( R.id.id_local_veneer ).setBackgroundColor( highlighting );
-
-
             registerClickables( layout );
 
+        }
+
+        private int fetchColor(final int transactionType){
+
+            int color;
+            int colorId = ( transactionType == TransactionType.ADD ) ? R.color.dark_green : R.color.dark_red;
+
+            if(Build.VERSION.SDK_INT >= 23)
+                color = itemView.getContext().getColor( colorId );
+            else
+                color = itemView.getContext().getResources().getColor( colorId );
+
+            return color;
         }
 
         public void bind(final Source data){
             this.sourceName.setText(data.getTitle());
             this.lastUpdate.setText(Timestamp.from(data.getLastUpdate()).getPreferentialDate());
             this.statistics.setText(String.valueOf(data.getPennies()));
+
+            itemView.findViewById( R.id.id_local_veneer ).setBackgroundColor(
+                    fetchColor( data.getTransactionType() )
+            );
+
         }
 
         protected void registerClickables(final View... views){
