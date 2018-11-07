@@ -2,6 +2,7 @@ package com.whompum.PennyFlip.Money.Queries.Query;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -137,7 +138,11 @@ public final class MoneyRequest {
 
                 final Integer key = keys.next();
 
-                if(key == RESERVED_KEY_IS_EMPTY)
+                Log.i("SOURCE_LIST_TEST", "Checking QueryKeys For Values: " +
+                String.valueOf(key));
+
+
+                if( key == RESERVED_KEY_IS_EMPTY || key == RESERVED_KEY_IS_OBSERVABLE )
                     continue;
 
                 if( queryObject.containsNonNullQueryAtKey(key) )
