@@ -31,9 +31,8 @@
 
 
     <!--SOURCE MASTER STRING-->
-    <string name="string_adding">ADDING</string>
-    <string name="string_spending">SPENDING</string>
-    <string name="string_view">VIEW</string>
+    <string name="string_adding">Adding</string>
+    <string name="string_spending">Spending</string>
     <string name="string_expand">EXPAND</string>
     <string name="string_collapse">COLLAPSE</string>
 
@@ -49,6 +48,7 @@
     <!--SOURCE ADD DIALOG-->
     <string name="string_title">Title</string>
     <string name="string_done">Done</string>
+    <string name="string_enter_title_hint">Enter your title here</string>
     <string name="string_title_error_in_use">That title is taken!</string>
     <string name="string_title_error_empty">The title cannot be empty!</string>
     <string name="string_title_error_poor_format">We can\'t use that title!</string>
