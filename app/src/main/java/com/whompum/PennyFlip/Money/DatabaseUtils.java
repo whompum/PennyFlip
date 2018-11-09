@@ -11,7 +11,7 @@ public class DatabaseUtils {
     public static MoneyDatabase getMoneyDatabase(@NonNull final Context context){
 
         if( database == null )
-            database = Room.databaseBuilder(context, MoneyDatabase.class, MoneyDatabase.NAME)
+            database = Room.databaseBuilder(context.getApplicationContext(), MoneyDatabase.class, MoneyDatabase.NAME)
                 .build();
 
         return database;
