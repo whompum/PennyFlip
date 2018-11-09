@@ -113,7 +113,9 @@ public class Timestamp {
         final long floor = getStartOfDay();
         final long ciel = floor + DAY_MILLIS;
 
-        if(getMillis() >= floor && getMillis() < ciel)
+        final long currTime = System.currentTimeMillis();
+
+        if( currTime >= floor && currTime < ciel ) //If within today
             return simpleTime();
 
         return simpleDate();
