@@ -1,7 +1,5 @@
 package com.whompum.PennyFlip.ActivitySourceList.Adapter;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,13 +30,12 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
     protected OnItemSelected<Source> selectedListener; //Client impl of this interface
 
 
-    public SourceListAdapter(final Context context){
-        this(context, null);
+    public SourceListAdapter(){
+        this(null);
     }
 
-    public SourceListAdapter(final Context context, @Nullable final List<Source> dataSet){
+    public SourceListAdapter( @Nullable final List<Source> dataSet ){
         this.dataSet = dataSet;
-        this.inflater = LayoutInflater.from(context);
     }
 
     public void swapDataset(final List<Source> dataSet){
@@ -49,6 +46,10 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType){
+
+        if( inflater == null )
+            inflater = LayoutInflater.from( parent.getContext() );
+
         return new Holder(inflater.inflate(LAYOUT, parent, false));
     }
 
@@ -121,13 +122,15 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
         }
 
         public void bind(final Source data){
+
+            final int color = fetchColor( data.getTransactionType() );
+
             this.sourceName.setText(data.getTitle());
             this.lastUpdate.setText(Timestamp.from(data.getLastUpdate()).getPreferentialDate());
             this.statistics.setText(String.valueOf(data.getPennies()));
 
-            itemView.findViewById( R.id.id_local_veneer ).setBackgroundColor(
-                    fetchColor( data.getTransactionType() )
-            );
+            statistics.setTextColor( color );
+            itemView.findViewById( R.id.id_local_veneer ).setBackgroundColor( color );
 
         }
 
