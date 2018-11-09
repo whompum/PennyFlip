@@ -2,56 +2,60 @@ package com.whompum.PennyFlip.ActivitySourceList;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ArgbEvaluator;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListFragmentAdapter;
+import com.whompum.PennyFlip.ActivitySourceList.Dialog.NewSourceDialog;
+import com.whompum.PennyFlip.ActivitySourceList.Dialog.OnSourceCreated;
 import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceList;
-import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceListAdd;
-import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceListSpend;
-import com.whompum.PennyFlip.Animations.PageTitleStrips;
+import com.whompum.PennyFlip.ActivitySourceList.Fragments.SourceListClientContract;
+import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 
-import butterknife.BindColor;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnPageChange;
 
 
-public class  ActivitySourceList extends AppCompatActivity implements IntentReciever {
+public class  ActivitySourceList extends AppCompatActivity implements IntentReciever, SourceListControllerClient {
+
+    public static final String SEARCH_VIEW_KY = "search_view.ky";
 
     public static final int SEARCH_EDIT_TEXT_ID = android.support.v7.appcompat.R.id.search_src_text;
 
-
-    private ArgbEvaluator argb = new ArgbEvaluator();
-
-    private PageTitleStrips strips;
-
-    private int toolyBaryBottomExpanded;
-
     private SearchView searchView;
-
-    @BindColor(R.color.light_green) protected int sClr;
-
-    @BindColor(R.color.light_red) protected int eClr;
 
     @BindView(R.id.id_global_toolbar) protected Toolbar toolyBary;
 
@@ -63,8 +67,21 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     @BindView(R.id.searchBarContainer) protected ViewGroup searchBarContainer;
 
-    @BindView(R.id.id_fragment_container
-    ) protected FrameLayout searchFragmentContainer;
+    @BindView(R.id.id_search_fragment_container) protected FrameLayout searchFragmentContainer;
+
+    @BindView(R.id.id_global_fab) protected FloatingActionButton newSourceFab;
+
+    private NewSourceDialog newSourceDialog;
+
+    private EditText androidSearchEditor;
+
+    private ActivitySourceListConsumer consumer;
+
+    private SourceListFragmentAdapter adapter;
+
+    private SourceListClientContract searchContract = FragmentSourceList.newInstance();
+
+    private boolean wasSearchViewExpanded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,50 +90,118 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
         ButterKnife.bind(this);
 
+        if(savedInstanceState != null)
+            wasSearchViewExpanded = savedInstanceState.getBoolean( SEARCH_VIEW_KY, false );
+
         setSupportActionBar(toolyBary); //Do we even really need?
 
-        container.setAdapter(new SourceListFragmentAdapter(getSupportFragmentManager()));
-        container.setPageTransformer(false, pageTransformer);
+        adapter = new SourceListFragmentAdapter(
+            getSupportFragmentManager(),
+            FragmentSourceList.newInstance(),
+            FragmentSourceList.newInstance()
+        );
 
-        //Binds the ViewPager fragments, with the title indicator
-        bindFragmentTitles();
+        container.setAdapter( adapter );
+
+        container.setPageTransformer(false, pageTransformer);
 
         searchToolbar.inflateMenu(R.menu.menu_search);
 
         searchView = (SearchView) searchToolbar.getMenu().findItem(R.id.id_global_search).getActionView();
 
-        //Sets the SearchView expansion/collapsing listener
-        searchToolbar.getMenu().findItem(R.id.id_global_search).setOnActionExpandListener(searchExpansionListener);
-
-
-        //Fetch the bottom X of Toolybary (used for translation purposes)
-        toolyBary.post(new Runnable() {
-            @Override
-            public void run() {
-                toolyBaryBottomExpanded = toolyBary.getHeight();
-            }
-        });
-
         customizeSearchEditor();
+
+        this.consumer = new ActivitySourceListController(this, this );
+
     }
 
-    private void customizeSearchEditor(){
-        EditText txtSearch = searchView.findViewById(SEARCH_EDIT_TEXT_ID);
-        txtSearch.setHint(getString(R.string.string_search_loading));
-        txtSearch.setHintTextColor(Color.DKGRAY);
-        txtSearch.setTextColor(getResources().getColor(R.color.light_green));
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean( SEARCH_VIEW_KY,
+                getSearchViewItem().isActionViewExpanded()
+        );
     }
 
-    private void bindFragmentTitles(){
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        strips = new PageTitleStrips((ViewGroup) (findViewById(R.id.id_global_strips_indicator)), new PageTitleStrips.StripClick() {
+        Log.i("RESTART_FIX", "onStart()");
+
+        final ActivitySourceListController c = (ActivitySourceListController) consumer;
+
+        if( !c.hasQueried() ) {
+            c.scheduleQueriedCallback();
+            Log.i("RESTART_FIX", "onStart() hasn't queried");
+        }
+        else {
+            handleInitialQuery();
+            Log.i("RESTART_FIX", "onStart()has queried");
+        }
+
+        getSearchViewItem().setOnActionExpandListener( searchExpansionListener );
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onStripClicked(int position) {
-                container.setCurrentItem(position);
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return consumer.queryWithSearch( newText );
             }
         });
-        strips.bindTitle(this, getString(R.string.string_adding));
-        strips.bindTitle(this, getString(R.string.string_spending));
+
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("RESTART_FIX", "onRestart()");
+    }
+
+    private MenuItem getSearchViewItem(){
+        return searchToolbar.getMenu()
+                .findItem( R.id.id_global_search );
+    }
+
+    @Override
+    public void onDataUpdate(@NonNull List<Source> data, @NonNull final QueryOp op) {
+
+        if( op.equals( QueryOp.DATA_ADD ) )
+            setFragmentDisplayData( data, 0 );
+
+        else if( op.equals( QueryOp.DATA_SPEND ) )
+            setFragmentDisplayData( data, 1 );
+
+        else if( op.equals( QueryOp.QUERIED_LIKE_TITLE ) &&
+                ((Fragment)searchContract).isAdded() ){
+            searchContract.display( data );
+        }
+
+    }
+
+    @Override
+    public void onSaveResult(boolean successful, @Nullable Integer reason) {
+        if( newSourceDialog != null && newSourceDialog.isShowing()  ){
+
+            if( !successful && reason != null && reason == ActivitySourceListController.DATA_ALREADY_EXISTS )
+                newSourceDialog.onTitleError( R.string.string_title_error_in_use );
+            else if ( successful ){
+                newSourceDialog.dismiss();
+                Toast.makeText( this, R.string.string_successfully_saved, Toast.LENGTH_SHORT ).show();
+            }
+        }
+
+    }
+
+    @Override
+    public void onDataQueried() {
+        handleInitialQuery();
     }
 
     /**
@@ -129,10 +214,6 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
         startActivity(intent);
     }
 
-    @OnPageChange(R.id.id_global_pager)
-    public void onPageChange(final int position){
-        strips.setPosition(position);
-    }
 
     @OnClick(R.id.id_global_nav)
     public void navigateUp(){
@@ -144,9 +225,115 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
         searchToolbar.getMenu().findItem(R.id.id_global_search).expandActionView();
     }
 
+
+    @OnClick( R.id.id_global_fab )
+    public void launchNewSourceDialog(){
+        newSourceDialog = new NewSourceDialog(this, new OnSourceCreated() {
+            @Override
+            public void onSourceCreated(@NonNull Source source) {
+                consumer.saveSource( source );
+            }
+        }, resolveCurrentTransactionType());
+        newSourceDialog.show();
+    }
+
+
     @OnClick(R.id.id_global_sort)
-    public void launchSortDialog(){
-        ((OnSortButtonClicked)((SourceListFragmentAdapter)container.getAdapter()).getItem(container.getCurrentItem())).onSortClicked();
+    public void onSortClicked() {
+        final AlertDialog.Builder filterBuilder =
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
+
+        filterBuilder.setTitle(R.string.string_sort_title);
+
+        filterBuilder.setSingleChoiceItems(R.array.sortOrderItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                consumer.setSourceOrder(getSortOrderFromArray(which));
+                dialog.dismiss();
+            }
+        });
+
+        final AlertDialog dialog = filterBuilder.create();
+
+        Window w;
+
+        if ( (w = dialog.getWindow()) != null)
+            w.getAttributes().windowAnimations = R.style.StyleDialogAnimate;
+
+        dialog.show();
+    }
+
+    private void customizeSearchEditor(){
+        androidSearchEditor = searchView.findViewById(SEARCH_EDIT_TEXT_ID);
+        androidSearchEditor.setHint(getString(R.string.string_search_loading));
+        androidSearchEditor.setHintTextColor(Color.DKGRAY);
+        androidSearchEditor.setTextColor(getResources().getColor(R.color.light_blue));
+
+        setEditorFocus( androidSearchEditor, false );
+
+    }
+
+    private void setEditorFocus(@NonNull final EditText editor, final boolean focus){
+        editor.setFocusable( focus );
+        editor.setFocusableInTouchMode( focus );
+
+        if( focus ) editor.requestFocus();
+
+    }
+
+    private void handleInitialQuery(){
+
+        Log.i("RESTART_FIX", "handleInitialQuery()");
+
+        final List<Source> addData = consumer.querySourceData( TransactionType.ADD );
+        final List<Source> spendData = consumer.querySourceData( TransactionType.SPEND );
+
+
+        if( addData != null ) {
+            setFragmentDisplayData(addData, 0);
+            Log.i("RESTART_FIX", "handleInitialQuery() add data size: " + addData.size());
+        }
+        if( spendData != null ) {
+            setFragmentDisplayData(spendData, 1);
+            Log.i("RESTART_FIX", "handleInitialQuery() spend data size: " + spendData.size());
+        }
+    }
+
+    private void setFragmentDisplayData(@NonNull final List<Source> data, final int fragAdapterPos ){
+
+        FragmentSourceList frag = (FragmentSourceList) adapter.getItem( fragAdapterPos );
+
+        if( frag != null )
+            frag.display( data );
+
+    }
+
+
+    /**
+     * Launches a new instance of the same fragment that is already being used
+     * to handle the search queries
+     */
+    private void launchSearchFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .add( R.id.id_search_fragment_container, (Fragment)searchContract )
+                .addToBackStack( "SearchFragment" )
+                .commit();
+        searchFragmentContainer.setVisibility( View.VISIBLE );
+    }
+
+    private void removeQueryFragment(){
+        searchContract.clear();
+        getSupportFragmentManager().popBackStack();
+        searchFragmentContainer.setVisibility(View.GONE);
+    }
+
+
+    public int resolveCurrentTransactionType(){
+        return resolveCurrentTransactionType( container.getCurrentItem() );
+    }
+
+    public int resolveCurrentTransactionType( final int pagePosition ){
+        return ( pagePosition == 0 ) ? TransactionType.ADD : TransactionType.SPEND;
     }
 
     private void enterAnimateSearchBar(){
@@ -162,11 +349,35 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void enterAnimateSearchBarPostApi21(){
 
+        if( wasSearchViewExpanded ) {
+
+            searchBarContainer.setVisibility( View.VISIBLE );
+            setEditorFocus( androidSearchEditor, true );
+
+            return;
+        }
+
         final int x = toolyBary.getWidth();
         final int y = toolyBary.getHeight() - (toolyBary.getHeight()/2);
 
-       final Animator circularShowAnimator =
-               ViewAnimationUtils.createCircularReveal(searchBarContainer, x, y, 0, searchBarContainer .getWidth());
+
+        final Animator circularShowAnimator =
+               ViewAnimationUtils.createCircularReveal(searchBarContainer, x, y, 0, searchBarContainer.getWidth());
+
+       circularShowAnimator.addListener(new AnimatorListenerAdapter() {
+           @Override
+           public void onAnimationEnd(Animator animation) {
+
+               setEditorFocus( androidSearchEditor, true );
+
+               final InputMethodManager imm =
+                       ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE));
+
+               if( imm != null )
+                      imm.showSoftInput( androidSearchEditor, 0 );
+
+           }
+       });
 
        circularShowAnimator.setDuration(350L);
        searchBarContainer.setVisibility(View.VISIBLE);
@@ -202,7 +413,17 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
         circularShowAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+
+                setEditorFocus( androidSearchEditor, false );
+
+                final InputMethodManager imm =
+                ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE));
+
+                if( imm != null )
+                    imm.hideSoftInputFromWindow( androidSearchEditor.getWindowToken(), 0 );
+
                 searchBarContainer.setVisibility(View.INVISIBLE);
+
             }
         });
 
@@ -211,39 +432,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     }
 
     private void exitAnimateSearchBarPreApi21(){
-        //TODO implement a fade or somethign
-    }
-
-    /**
-     * Launches a new instance of the same fragment that is already being used
-     * to handle the search queries
-     */
-    private void launchSearchFragment(){
-
-        final FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-
-        FragmentSourceList fragmentSourceList = null;
-
-        final Fragment currFragmentType = ((SourceListFragmentAdapter)container.getAdapter()).getItem(container.getCurrentItem());
-
-        if(currFragmentType instanceof FragmentSourceListAdd)
-            fragmentSourceList = FragmentSourceListAdd.newInstance(null);
-
-        else if(currFragmentType instanceof FragmentSourceListSpend)
-            fragmentSourceList = FragmentSourceListSpend.newInstance(null);
-
-        fragTrans.add(R.id.id_fragment_container, fragmentSourceList, "backstackTag");
-
-        searchFragmentContainer.setVisibility(View.VISIBLE);
-
-        this.searchView.setOnQueryTextListener(fragmentSourceList);
-
-        fragTrans.addToBackStack("backstackTag").commit();
-    }
-
-    private void removeQueryFragment(){
-        getSupportFragmentManager().popBackStack();
-        searchFragmentContainer.setVisibility(View.GONE);
+        //TODO implement a fade or something
     }
 
 
@@ -252,20 +441,67 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     private MenuItem.OnActionExpandListener searchExpansionListener = new MenuItem.OnActionExpandListener() {
         @Override
         public boolean onMenuItemActionExpand(MenuItem item) {
+
+            final Animation animation = AnimationUtils.loadAnimation(
+                    ActivitySourceList.this, R.anim.container_slide_up
+            );
+
+            toolbarContainer.startAnimation( animation );
+            newSourceFab.startAnimation( animation );
+            container.requestLayout();
             enterAnimateSearchBar();
-            toolbarContainer.animate().y(-toolyBaryBottomExpanded).setDuration(350L).start();
+
             launchSearchFragment();
+
             return true;
         }
 
         @Override
         public boolean onMenuItemActionCollapse(MenuItem item) {
+
+            final Animation animation = AnimationUtils.loadAnimation(
+                    ActivitySourceList.this, R.anim.container_slide_down
+            );
+
+            toolbarContainer.startAnimation( animation );
+            newSourceFab.startAnimation( animation );
+            container.requestLayout();
+
             exitAnimateSearchBar();
-            toolbarContainer.animate().y(0).setDuration(350L).start();
+
             removeQueryFragment();
+
             return true;
         }
     };
+
+
+    /*
+     * Tightly coupled to the positions of R.arrays.sortOrderItems
+     * Returns a sort order from the SortOrder Dialog
+     */
+
+    private SourceSortOrder getSortOrderFromArray(final int pos){
+
+        int sortOrder;
+
+        switch( pos ){
+
+            case 0: sortOrder = SourceSortOrder.SORT_TITLE_DESC; break;
+            case 1: sortOrder = SourceSortOrder.SORT_TITLE_ASC; break;
+            case 2: sortOrder = SourceSortOrder.SORT_LAST_UPDATE_DESC; break;
+            case 3: sortOrder = SourceSortOrder.SORT_LAST_UPDATE_ASC; break;
+            case 4: sortOrder = SourceSortOrder.SORT_CREATION_DATE_DESC; break;
+            case 5: sortOrder = SourceSortOrder.SORT_CREATION_DATE_ASC; break;
+            case 6: sortOrder = SourceSortOrder.SORT_TOTAL_DESC; break;
+            case 7: sortOrder = SourceSortOrder.SORT_TOTAL_ASC; break;
+
+            default: sortOrder = SourceSortOrder.SORT_CREATION_DATE_DESC;
+        }
+
+        return new SourceSortOrder( sortOrder );
+    }
+
 
 
     private ViewPager.PageTransformer pageTransformer = new ViewPager.PageTransformer() {
@@ -274,12 +510,9 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
             /**
              * Animates the toolbar color, and whatnot
              */
-            final int color = (Integer) argb.evaluate(position, eClr, sClr);
-
-            toolyBary.setBackgroundColor(color);
-            strips.getContainer().setBackgroundColor(color);
-
         }
     };
+
+
 
 }
