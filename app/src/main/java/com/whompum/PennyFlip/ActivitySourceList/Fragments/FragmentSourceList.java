@@ -2,9 +2,7 @@ package com.whompum.PennyFlip.ActivitySourceList.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,44 +28,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class FragmentSourceList extends Fragment implements OnItemSelected<Source>, SourceListClientContract{
+public class FragmentSourceList extends Fragment implements OnItemSelected<Source>, SourceListClientContract {
 
     @LayoutRes
     protected static final int LAYOUT = R.layout.source_list_content;
 
-    @ColorRes
-    protected int highlight = -1;
-
     private IntentReciever intentReciever; //Callback impl to recieve the startActivity intent
 
-    protected SourceListAdapter listAdapter;
+    protected SourceListAdapter listAdapter = new SourceListAdapter();
+
+    @BindView(R.id.id_global_list) public RecyclerView list;
 
     private Unbinder unbinder;
 
-    @BindView(R.id.id_global_list) protected RecyclerView list;
-
-    public FragmentSourceList newInstance(@NonNull final Integer highlight){
-        final FragmentSourceList fragment = new FragmentSourceList();
-
-        fragment.highlight = highlight;
-
-    return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //Create early so we can populate ASAP
-
-        int color;
-
-        if(Build.VERSION.SDK_INT >= 23)
-            color = getContext().getColor(highlight);
-        else
-            color = getContext().getResources().getColor(highlight);
-
-        this.listAdapter = new SourceListAdapter(getContext(), color);
-
+    public static FragmentSourceList newInstance(){
+        return new FragmentSourceList();
     }
 
     @Override
@@ -83,26 +58,40 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
 
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        if( container == null ) //Handle edge-cases where fragments are re-used but their views aren't
+            getFragmentManager().beginTransaction()
+            .remove( this ).commit();
+
         final View view = inflater.inflate(LAYOUT, container, false);
 
         this.unbinder = ButterKnife.bind(this, view);
 
-        list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        return view;
+    }
 
-        listAdapter.registerSouceListClickListener(this);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        this.list.setAdapter(listAdapter);
+        list.setLayoutManager( new LinearLayoutManager( getContext(),
+                LinearLayoutManager.VERTICAL, false)
+        );
+
+        listAdapter.registerSouceListClickListener( this );
 
         list.addItemDecoration( new SourceListMarginDecorator(
                 getContext().getResources().getDimensionPixelSize( R.dimen.dimen_padding_ver_base )
         ) );
 
-    return view;
+        list.setAdapter( listAdapter );
+
     }
 
     @Override
@@ -110,6 +99,7 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
         super.onDestroy();
         unbinder.unbind();
     }
+
 
     @Override
     public void display(@NonNull List<Source> data) {
@@ -123,13 +113,17 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
 
     private void swapAdapterData(@NonNull final List<Source> data){
 
-        if( listAdapter != null ){
+        Log.i("RESTART_FIX", "swapAdapterData()");
 
-            listAdapter.swapDataset( data );
+        Log.i("RESTART_FIX", "swapAdapterData() data size: " + data.size() );
 
-            if( list != null )
-                listAdapter.notifyDataSetChanged();
-        }
+        Log.i("RESTART_FIX", "swapAdapterData() is view null: " +
+        String.valueOf(getView() == null)
+        );
+
+
+        this.listAdapter.swapDataset( data );
+        listAdapter.notifyDataSetChanged();
 
     }
 
@@ -140,130 +134,4 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
         intentReciever.onDeliverIntent(intent);
     }
 
-
-    /*
-    @Override
-    public void onSourceCreated(@NonNull final Source source) {
-
-        //First check if the Source is usable
-        final MoneyRequest request = new MoneyRequest.QueryBuilder( SourceQueryKeys.KEYS )
-                .setQueryParameter( SourceQueryKeys.TITLE, source.getTitle() ).getQuery();
-
-        final Deliverable<Source> deliverable = queries.queryById( request, database );
-
-        deliverable.attachCancelledResponder(new OnCancelledResponder() {
-            @Override
-            public void onCancelledResponse(int reason, String msg) {
-                if( reason == QueryHandler.NULL_DATA_QUERY ) { //Title doesn't exist
-                    new RoomMoneyWriter( database ).saveSource( source );
-                    newSourceDialog.dismiss();
-                }
-            }
-        });
-
-        deliverable.attachResponder(new Responder<Source>() {
-            @Override
-            public void onActionResponse(@NonNull Source data) {
-                //Title exists.
-                newSourceDialog.onTitleError( R.string.string_title_error_in_use );
-            }
-        });
-
-    }
-    */
-
-    /**
-    @Override
-    public void onSortClicked() {
-        final AlertDialog.Builder filterBuilder = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Light_Dialog);
-
-        filterBuilder.setTitle(R.string.string_sort_title);
-        filterBuilder.setSingleChoiceItems(R.array.sortOrderItems, selectedSourceItem, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                selectedSourceItem = which;
-                sortData(getSortOrderFromArray(selectedSourceItem));
-                dialog.dismiss();
-            }
-        });
-
-        final AlertDialog dialog = filterBuilder.create();
-
-        final WindowManager.LayoutParams attrs = dialog.getWindow().getAttributes();
-
-        if(attrs != null)
-            attrs.windowAnimations = R.style.StyleDialogAnimate;
-
-        dialog.show();
-    }
-
-
-
-    protected void populate(CharSequence query){
-
-
-        if(query != null && query.length() > 0) {
-
-            searchLikeQueryBuilder.setQueryParameter( SourceQueryKeys.LIKE_TITLE, "%" + query + "%")
-                    .setQueryParameter( SourceQueryKeys.TRANSACTION_TYPE, transactionType);
-
-            final Deliverable<List<Source>> deliverable =
-                    queries.queryGroup( searchLikeQueryBuilder.getQuery(), database );
-
-            deliverable.attachResponder(new Responder<List<Source>>() {
-                @Override
-                public void onActionResponse(@NonNull List<Source> data) {
-                    listAdapter.swapDataset( data );
-                }
-            });
-        }
-
-    }
-     */
-
-    /**
-     * Applies a sort order to the search query
-     *
-     * @param order
-    protected final void sortData(SourceSortOrder order){
-        //Resolve the sort comparator form SourceSortOrder
-        //Fetch data from SourceListAdapter
-        //Sort, and put back in.
-
-        final List<Source> data = listAdapter.getDataSet();
-
-        if(data == null || data.size() == 0)
-            return;
-
-        Collections.sort(data, order.resolveSorter());
-        listAdapter.notifyDataSetChanged();
-    }
-     */
-
-    /**
-     * Tightly coupled to the positions of R.arrays.sortOrderItems
-     * Returns a sort order from the SortOrder Dialog
-     * @return The sort order (Given from the selected item)
-
-    private SourceSortOrder getSortOrderFromArray(final int pos){
-
-        int sortOrder;
-
-        switch(pos){
-
-            case 0: sortOrder = SourceSortOrder.SORT_TITLE_DESC; break;
-            case 1: sortOrder = SourceSortOrder.SORT_TITLE_ASC; break;
-            case 2: sortOrder = SourceSortOrder.SORT_LAST_UPDATE_DESC; break;
-            case 3: sortOrder = SourceSortOrder.SORT_LAST_UPDATE_ASC; break;
-            case 4: sortOrder = SourceSortOrder.SORT_CREATION_DATE_DESC; break;
-            case 5: sortOrder = SourceSortOrder.SORT_CREATION_DATE_ASC; break;
-            case 6: sortOrder = SourceSortOrder.SORT_TOTAL_DESC; break;
-            case 7: sortOrder = SourceSortOrder.SORT_TOTAL_ASC; break;
-
-            default: sortOrder = SourceSortOrder.SORT_CREATION_DATE_DESC;
-        }
-
-        return new SourceSortOrder(sortOrder);
-    }
-    */
 }
