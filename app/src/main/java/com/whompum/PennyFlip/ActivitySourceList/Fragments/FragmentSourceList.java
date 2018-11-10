@@ -113,15 +113,6 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
 
     private void swapAdapterData(@NonNull final List<Source> data){
 
-        Log.i("RESTART_FIX", "swapAdapterData()");
-
-        Log.i("RESTART_FIX", "swapAdapterData() data size: " + data.size() );
-
-        Log.i("RESTART_FIX", "swapAdapterData() is view null: " +
-        String.valueOf(getView() == null)
-        );
-
-
         this.listAdapter.swapDataset( data );
         listAdapter.notifyDataSetChanged();
 
