@@ -97,4 +97,8 @@
 
     <string name="string_notes">Notes</string>
 
+    <string name="string_no_data_adding_source_label">No Adding Sources.</string>
+    <string name="string_no_data_spending_source_label">No Spending Sources.</string>
+    <string name="string_no_data_search_source_label">No Results Found.</string>
+
 </resources>
