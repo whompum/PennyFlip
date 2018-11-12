@@ -7,10 +7,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.AttrRes;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.whompum.PennyFlip.R;
@@ -28,12 +27,12 @@ public class TransactionTypeTitleIndicator extends View {
             Paint.ANTI_ALIAS_FLAG
     );
 
+    private boolean isExpandedDefault = true;
+
     public TransactionTypeTitleIndicator(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         final TypedArray array = context.obtainStyledAttributes( attrs, R.styleable.TransactionTypeTitleIndicator );
-
-        boolean isExpanded = true;
 
         for( int i = 0; i < array.getIndexCount(); i++ ){
 
@@ -43,7 +42,7 @@ public class TransactionTypeTitleIndicator extends View {
                 highlight = array.getColor( attrIndex, -1 );
 
             if( attrIndex == R.styleable.TransactionTypeTitleIndicator_isExpanded )
-                isExpanded = array.getBoolean( attrIndex, true );
+                isExpandedDefault = array.getBoolean( attrIndex, true );
 
         }
 
@@ -54,21 +53,22 @@ public class TransactionTypeTitleIndicator extends View {
 
         indicatorPaint.setStyle( Paint.Style.FILL );
 
-        if( isExpanded )
-            computePathBounds( 1.0F );
-        else
-            computePathBounds( 0.0F );
-
         array.recycle();
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        if( isExpandedDefault )
+            computePathBounds( 1.0F );
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if( isInEditMode() ) {
-            computePathBounds(.1F);
-        }
         canvas.drawPath( indicatorPath, indicatorPaint );
 
         if( !capStart.isEmpty() )
@@ -97,6 +97,10 @@ public class TransactionTypeTitleIndicator extends View {
 
         final float cX = getWidth() * 0.5F;
         final float cY = getHeight() * 0.5f;
+
+
+        Log.i("TITLE_INDICATOR", "getWidth(): " + getWidth());
+        Log.i("TITLE_INDICATOR", "getHeight(): " + getHeight());
 
         //How much width our content should take up based on the percentage
         final float visibleContentWidth = getWidth() * percentage;
