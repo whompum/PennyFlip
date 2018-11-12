@@ -19,7 +19,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -41,6 +40,7 @@ import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Widgets.TransactionTypeTitleIndicator;
 
 import java.util.List;
 
@@ -70,6 +70,10 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     @BindView(R.id.id_search_fragment_container) protected FrameLayout searchFragmentContainer;
 
     @BindView(R.id.id_global_fab) protected FloatingActionButton newSourceFab;
+
+    @BindView(R.id.local_indicator_adding) TransactionTypeTitleIndicator addIndicator;
+
+    @BindView(R.id.local_indicator_spending) TransactionTypeTitleIndicator spendIndicator;
 
     private NewSourceDialog newSourceDialog;
 
@@ -500,9 +504,10 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     private ViewPager.PageTransformer pageTransformer = new ViewPager.PageTransformer() {
         @Override
         public void transformPage(View page, float position) {
-            /**
-             * Animates the toolbar color, and whatnot
-             */
+
+            addIndicator.setPercentage( position );
+            spendIndicator.setPercentage( (1.0F - position) );
+
         }
     };
 
