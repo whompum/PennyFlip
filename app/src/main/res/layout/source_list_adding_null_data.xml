@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:layout_marginBottom="@dimen/dimen_padding_ver_large"
+        android:src="@drawable/graphic_wallet_add"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dimen_source_list_null_data_size"
+        android:layout_height="@dimen/dimen_source_list_null_data_size" />
+
+    <TextView
+        android:text="@string/string_no_data_adding_source_label"
+        android:textSize="@dimen/dimen_text_mediano"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
