@@ -67,4 +67,18 @@
 
     <dimen name="dimen_min_header_width">200dp</dimen>
 
+    <!--
+         NOTE
+         The width of `dimen_source_list_null_data_width` is adjusted based on the <sw> of the screen.
+         Roughly, i aim for a ratio of 1.9/1 screen width to graphic width. And, to preserve aspect ratio,
+         the height its roughly .8 percent of the height.
+
+         Also note the configuration for each value below, in each of the dimen-<SW> files
+         is set based on the halfway value from itself as the floor, and the next file up as the ciel.
+
+         E.g. for the file `dimens.xml - 320dp` with the next file being SW<360>,
+         the configured width would be '340DP' / 1.9 with the height following, respectively.
+     -->
+    <dimen name="dimen_source_list_null_data_size">20dp</dimen>
+
 </resources>

@@ -3,4 +3,6 @@
     <dimen name="dimen_screen_padding">12dp</dimen>
     <dimen name="dimen_margin_dashboard_icon">-12dp</dimen>
 
+    <dimen name="dimen_source_list_null_data_size">175dp</dimen>
+
 </resources>
