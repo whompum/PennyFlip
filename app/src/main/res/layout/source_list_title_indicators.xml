@@ -19,23 +19,58 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
-    <TextView
+    <LinearLayout
         app:layout_constraintEnd_toStartOf="@id/id_local_guide_adding"
-        android:gravity="center"
-        android:textSize="@dimen/dimen_text_mediano"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginEnd="@dimen/dimen_padding_hor_large"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_gravity="center"
+        android:textSize="@dimen/dimen_text_mediano"
         android:text="@string/string_adding"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
-    <TextView
+    <com.whompum.PennyFlip.Widgets.TransactionTypeTitleIndicator
+        app:highlight="@color/dark_green"
+        app:isExpanded="true"
+        android:id="@+id/local_indicator_adding"
+        android:layout_marginTop="@dimen/dimen_padding_ver_small"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="75dp"
+        android:layout_height="3dp" />
+    </LinearLayout>
+
+    <LinearLayout
         app:layout_constraintStart_toEndOf="@id/id_local_guide_spending"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/dimen_padding_hor_large"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <TextView
         android:gravity="center"
         android:textSize="@dimen/dimen_text_mediano"
-        android:layout_marginStart="@dimen/dimen_padding_hor_large"
         android:text="@string/string_spending"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
+    <com.whompum.PennyFlip.Widgets.TransactionTypeTitleIndicator
+        app:highlight="@color/dark_red"
+        app:isExpanded="false"
+        android:id="@+id/local_indicator_spending"
+        android:layout_marginTop="@dimen/dimen_padding_ver_small"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="75dp"
+        android:layout_height="3dp" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
