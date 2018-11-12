@@ -14,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.whompum.PennyFlip.FragmentInflationObserver;
+import com.whompum.PennyFlip.InflationObserver;
+import com.whompum.PennyFlip.InflationOperation;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.R;
@@ -30,8 +33,13 @@ import butterknife.Unbinder;
 
 public class FragmentSourceList extends Fragment implements OnItemSelected<Source>, SourceListClientContract {
 
+    public static final String NO_DATA_LAYOUT_KEY = "noDataLayout.ky";
+
     @LayoutRes
     protected static final int LAYOUT = R.layout.source_list_content;
+
+    @LayoutRes   //Needed to resolve the view to populate error_frame with
+    private int noDataResLayout = -1;
 
     private IntentReciever intentReciever; //Callback impl to recieve the startActivity intent
 
@@ -39,10 +47,25 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
 
     @BindView(R.id.id_global_list) public RecyclerView list;
 
+    @BindView(R.id.id_error_frame) public ViewGroup errorFrame;
+
     private Unbinder unbinder;
 
+    private InflationObserver inflationObserver = new FragmentInflationObserver();
+
     public static FragmentSourceList newInstance(){
-        return new FragmentSourceList();
+        return newInstance( -1 );
+    }
+
+    public static FragmentSourceList newInstance(@NonNull @LayoutRes final Integer noDataResLayout){
+        final FragmentSourceList fragmentSourceList = new FragmentSourceList();
+
+        final Bundle b = new Bundle();
+        b.putInt( NO_DATA_LAYOUT_KEY, noDataResLayout );
+
+        fragmentSourceList.setArguments( b );
+
+        return fragmentSourceList;
     }
 
     @Override
@@ -58,6 +81,15 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
 
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        final Bundle args = getArguments();
+
+        if( args != null )
+            noDataResLayout = args.getInt( NO_DATA_LAYOUT_KEY,-1 );
+    }
 
     @Nullable
     @Override
@@ -65,20 +97,19 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        if( container == null ) //Handle edge-cases where fragments are re-used but their views aren't
-            getFragmentManager().beginTransaction()
-            .remove( this ).commit();
-
         final View view = inflater.inflate(LAYOUT, container, false);
 
         this.unbinder = ButterKnife.bind(this, view);
+
+        if( noDataResLayout != -1 )
+            errorFrame.addView( inflater.inflate( noDataResLayout, errorFrame, false ) );
 
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        inflationObserver.onViewInflated();
 
         list.setLayoutManager( new LinearLayoutManager( getContext(),
                 LinearLayoutManager.VERTICAL, false)
@@ -107,15 +138,48 @@ public class FragmentSourceList extends Fragment implements OnItemSelected<Sourc
     }
 
     @Override
-    public void clear() {
-        swapAdapterData( new ArrayList<Source>() );
+    public void onNoData() {
+
+        if( getView() != null )  //Is displayed
+            toggleErrorFrame( true );
+
+        else inflationObserver.subscribe( new InflationOperation() {
+            @Override
+            public void onInflated() {
+                onNoData();
+            }
+        } );
     }
 
     private void swapAdapterData(@NonNull final List<Source> data){
 
-        this.listAdapter.swapDataset( data );
-        listAdapter.notifyDataSetChanged();
+        if( getView() != null ) {
 
+            if( list.getVisibility() != View.VISIBLE )
+                toggleErrorFrame( false );
+
+            this.listAdapter.swapDataset(data);
+            listAdapter.notifyDataSetChanged();
+        }
+
+        else inflationObserver.subscribe(new InflationOperation() {
+            @Override
+            public void onInflated() {
+                swapAdapterData( data );
+            }
+        } );
+
+    }
+
+    private void toggleErrorFrame(final boolean shouldShow){
+
+        if( shouldShow ){
+            errorFrame.setVisibility( View.VISIBLE );
+            list.setVisibility( View.GONE );
+        } else{
+            list.setVisibility( View.VISIBLE );
+            errorFrame.setVisibility( View.GONE );
+        }
     }
 
     public void onItemSelected(@NonNull Source data){

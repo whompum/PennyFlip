@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface SourceListClientContract {
     void display(@NonNull final List<Source> data);
-    void clear();
+    void onNoData();
 }

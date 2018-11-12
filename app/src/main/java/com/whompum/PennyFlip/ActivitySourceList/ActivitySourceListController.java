@@ -2,6 +2,7 @@ package com.whompum.PennyFlip.ActivitySourceList;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.whompum.PennyFlip.Money.DatabaseUtils;
 import com.whompum.PennyFlip.Money.MoneyDatabase;

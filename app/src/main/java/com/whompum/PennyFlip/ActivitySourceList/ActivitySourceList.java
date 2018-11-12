@@ -79,7 +79,9 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     private SourceListFragmentAdapter adapter;
 
-    private SourceListClientContract searchContract = FragmentSourceList.newInstance();
+    private SourceListClientContract searchContract = FragmentSourceList.newInstance(
+            R.layout.source_list_search_null_data
+    );
 
     private boolean wasSearchViewExpanded = false;
 
@@ -97,8 +99,8 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
         adapter = new SourceListFragmentAdapter(
             getSupportFragmentManager(),
-            FragmentSourceList.newInstance(),
-            FragmentSourceList.newInstance()
+            FragmentSourceList.newInstance( R.layout.source_list_adding_null_data ),
+            FragmentSourceList.newInstance( R.layout.source_list_spending_null_data )
         );
 
         container.setAdapter( adapter );
@@ -128,18 +130,12 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     protected void onStart() {
         super.onStart();
 
-        Log.i("RESTART_FIX", "onStart()");
-
         final ActivitySourceListController c = (ActivitySourceListController) consumer;
 
-        if( !c.hasQueried() ) {
+        if( !c.hasQueried() )
             c.scheduleQueriedCallback();
-            Log.i("RESTART_FIX", "onStart() hasn't queried");
-        }
-        else {
+        else
             handleInitialQuery();
-            Log.i("RESTART_FIX", "onStart()has queried");
-        }
 
         getSearchViewItem().setOnActionExpandListener( searchExpansionListener );
 
@@ -158,12 +154,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.i("RESTART_FIX", "onRestart()");
-    }
-
+    
     private MenuItem getSearchViewItem(){
         return searchToolbar.getMenu()
                 .findItem( R.id.id_global_search );
@@ -180,7 +171,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
         else if( op.equals( QueryOp.QUERIED_LIKE_TITLE ) &&
                 ((Fragment)searchContract).isAdded() ){
-            searchContract.display( data );
+            setFragmentDisplayData( data, searchContract );
         }
 
     }
@@ -283,28 +274,30 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     private void handleInitialQuery(){
 
-        Log.i("RESTART_FIX", "handleInitialQuery()");
-
         final List<Source> addData = consumer.querySourceData( TransactionType.ADD );
         final List<Source> spendData = consumer.querySourceData( TransactionType.SPEND );
 
 
-        if( addData != null ) {
+        if( addData != null )
             setFragmentDisplayData(addData, 0);
-            Log.i("RESTART_FIX", "handleInitialQuery() add data size: " + addData.size());
-        }
-        if( spendData != null ) {
+
+        if( spendData != null )
             setFragmentDisplayData(spendData, 1);
-            Log.i("RESTART_FIX", "handleInitialQuery() spend data size: " + spendData.size());
-        }
+
     }
 
     private void setFragmentDisplayData(@NonNull final List<Source> data, final int fragAdapterPos ){
+        setFragmentDisplayData( data, (FragmentSourceList) adapter.getItem( fragAdapterPos ));
+    }
 
-        FragmentSourceList frag = (FragmentSourceList) adapter.getItem( fragAdapterPos );
+    private void setFragmentDisplayData(@NonNull final List<Source> data,
+                                        final SourceListClientContract clientContract){
 
-        if( frag != null )
-            frag.display( data );
+        if( clientContract == null ) return;
+
+        if( data.size() > 0 )
+            clientContract.display( data );
+        else clientContract.onNoData();
 
     }
 
@@ -322,7 +315,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     }
 
     private void removeQueryFragment(){
-        searchContract.clear();
+        searchContract.onNoData();
         getSupportFragmentManager().popBackStack();
         searchFragmentContainer.setVisibility(View.GONE);
     }
