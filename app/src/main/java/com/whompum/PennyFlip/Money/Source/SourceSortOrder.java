@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.whompum.PennyFlip.Money.Source.Sorting.CreationDateAscendingComparator;
 import com.whompum.PennyFlip.Money.Source.Sorting.CreationDateDescendingComparator;
+import com.whompum.PennyFlip.Money.Source.Sorting.LastUpdateAscendingComparator;
+import com.whompum.PennyFlip.Money.Source.Sorting.LastUpdateDescendingComparator;
 import com.whompum.PennyFlip.Money.Source.Sorting.TitleAscendingComparator;
 import com.whompum.PennyFlip.Money.Source.Sorting.TotalAscendingComparator;
 import com.whompum.PennyFlip.Money.Source.Sorting.TotalDescendingComparator;
@@ -43,11 +45,11 @@ public class SourceSortOrder {
 
     public Comparator<Source> resolveSorter(){
 
-        Log.i("SORTING", "SORT ORDER NUM: " + sortOrder);
-
         switch(sortOrder){
             case SORT_TITLE_DESC: return new TitleDescendingComparator();
             case SORT_TITLE_ASC: return new TitleAscendingComparator();
+            case SORT_LAST_UPDATE_ASC: return new LastUpdateAscendingComparator();
+            case SORT_LAST_UPDATE_DESC: return new LastUpdateDescendingComparator();
             case SORT_CREATION_DATE_DESC: return new CreationDateDescendingComparator();
             case SORT_CREATION_DATE_ASC: return new CreationDateAscendingComparator();
             case SORT_TOTAL_DESC: return new TotalDescendingComparator();
