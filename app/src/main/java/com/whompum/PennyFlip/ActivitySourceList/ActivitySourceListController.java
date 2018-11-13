@@ -1,7 +1,11 @@
 package com.whompum.PennyFlip.ActivitySourceList;
 
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.whompum.PennyFlip.Money.DatabaseUtils;
@@ -25,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class ActivitySourceListController implements ActivitySourceListConsumer, Responder<List<Source>>{
+public class ActivitySourceListController implements ActivitySourceListConsumer, Observer<List<Source>> {
 
     public static final int DATA_ALREADY_EXISTS = -1000;
 
@@ -47,13 +51,14 @@ public class ActivitySourceListController implements ActivitySourceListConsumer,
     private SearchQueryHandler searchQueryHandler;
 
     ActivitySourceListController(@NonNull final Context context,
+                                 @NonNull final LifecycleOwner owner,
                                  @NonNull final SourceListControllerClient client){
 
         this.database = DatabaseUtils.getMoneyDatabase( context );
 
         this.client = client;
 
-        query();
+        query( owner );
 
         searchQueryHandler = new RoomSearchQueryHandler(
             database,
@@ -135,7 +140,7 @@ public class ActivitySourceListController implements ActivitySourceListConsumer,
     }
 
     @Override
-    public void onActionResponse(@NonNull List<Source> data) {
+    public void onChanged(@NonNull List<Source> data) {
 
         hasQueried = true; //Only set here to gaurantee non-null data
 
@@ -167,11 +172,17 @@ public class ActivitySourceListController implements ActivitySourceListConsumer,
 
     }
 
-    private void query() {
+    private void query(@NonNull final LifecycleOwner owner) {
 
         final MoneyRequest req = new MoneyRequest.QueryBuilder( new HashSet<Integer>() ).getQuery();
 
-        new SourceQueries().queryGroup( req, database ).attachResponder( this );
+        new SourceQueries().queryObservableObservableGroup( req, database )
+                .attachResponder(new Responder<LiveData<List<Source>>>() {
+                    @Override
+                    public void onActionResponse(@NonNull LiveData<List<Source>> data) {
+                        data.observe( owner, ActivitySourceListController.this );
+                    }
+                });
 
     }
 

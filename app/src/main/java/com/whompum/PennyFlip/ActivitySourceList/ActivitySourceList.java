@@ -117,7 +117,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
         customizeSearchEditor();
 
-        this.consumer = new ActivitySourceListController(this, this );
+        this.consumer = new ActivitySourceListController(this, this, this );
 
     }
 
