@@ -13,7 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
@@ -47,93 +49,78 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     private Source data;
     private SourceDataConsumer server;
 
-    private SourceFragmentAdapter adapter;
-
-    @BindView(R.id.id_global_pager)
-    protected ViewPager container;
-
     @BindView(R.id.id_global_fab)
     protected FloatingActionButton fab;
 
     private PennyDialog pennyDialog;
 
-    private PageTitleStrips strips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.source);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.source );
 
         ButterKnife.bind(this);
 
-        this.data = (Source) getIntent().getSerializableExtra(DATA);
+        this.data = (Source) getIntent().getSerializableExtra( DATA );
 
         server = new SourceDataController(this, this);
         server.observeSource(data.getTitle(), this);
 
-        initializeUi(data);
+        initializeUi( data );
 
-        adapter = new SourceFragmentAdapter(getSupportFragmentManager(), getFragments());
-        container.setAdapter(adapter);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add( R.id.id_global_container, getFragment() )
+                .commit();
+        
     }
 
     @Override
     public void onSourceChanged(@NonNull Source source) {
         this.data = source; //Will cause temporary data inconsistency issue on configuration change.
-        initializeUi(data);
+        initializeUi( data );
     }
 
     //Initializes the core UI (title displays, value display, lastUpdate)
     private void initializeUi(@NonNull final Source data){
-        ((TextView)findViewById(R.id.id_global_title))
-                .setText(data.getTitle());
 
-        ((CurrencyEditText)findViewById(R.id.id_global_total_display))
-                .setText(String.valueOf(data.getPennies()));
+        int headerColor = -1;
 
-        final String lastUpdate = getString(R.string.string_last_update) + " " + Timestamp.from(data.getLastUpdate()).getPreferentialDate();
+        if( data.getTransactionType() == TransactionType.ADD )
+            headerColor = R.color.dark_green;
 
-        ((TextView)findViewById(R.id.id_global_timestamp)).setText(lastUpdate);
+        else if( data.getTransactionType() == TransactionType.SPEND )
+            headerColor = R.color.dark_red;
 
-        String transactionDisplay = (data.getTransactionType() == TransactionType.ADD)
-                ? getString(R.string.string_total_added)
-                : getString(R.string.string_total_spent);
+        else headerColor = R.color.light_blue;
 
-        ((TextView)findViewById(R.id.local_transaction_display))
-                .setText(transactionDisplay);
+        findViewById( R.id.id_local_source_header )
+                .setBackgroundColor( getResources().getColor( headerColor ) );
+
+        ((TextView)findViewById( R.id.id_global_title ))
+                .setText( data.getTitle() );
+
+        ((CurrencyEditText)findViewById( R.id.id_global_total_display ))
+                .setText( String.valueOf( data.getPennies() ) );
+
+        final String lastUpdate = getString(R.string.string_last_update) + " " + Timestamp.from( data.getLastUpdate() ).getPreferentialDate();
+
+        ((TextView)findViewById( R.id.id_global_timestamp )).setText( lastUpdate );
 
     }
 
-    private List<Fragment> getFragments(){
-        List<Fragment> fragments = new ArrayList<>(3);
-
+    private Fragment getFragment(){
         final Bundle bundle = new Bundle();
         bundle.putString(TransactionFragment.SOURCE_KEY, data.getTitle());
 
-        fragments.add(TransactionFragment.newInstance(bundle));
-        fragments.add(new tempStatisticsFragment());
-
-        strips = new PageTitleStrips((ViewGroup) findViewById(R.id.id_global_strips_indicator), new PageTitleStrips.StripClick() {
-            @Override
-            public void onStripClicked(int position) {
-                container.setCurrentItem(position);
-            }
-        });
-
-        strips.bindTitle(this, getString(R.string.string_transaction));
-        strips.bindTitle(this, getString(R.string.string_statistics));
-
-     return fragments;
+     return TransactionFragment.newInstance( bundle );
     }
 
-    @OnPageChange(R.id.id_global_pager)
-    public void setPageIndicator(final int pos){
-        strips.setPosition(pos);
-    }
 
     @OnClick(R.id.id_global_nav)
     public void navigate(){
-        NavUtils.navigateUpFromSameTask(this);
+        NavUtils.navigateUpFromSameTask( this );
     }
 
     @OnClick(R.id.ic_delete_source)
@@ -143,38 +130,38 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     @OnClick(R.id.id_global_fab)
     public void onFabClicked(){
-        if(pennyDialog != null)  //Done to block double tapping; Avoids creating multiple instances.
-            if(pennyDialog.isAdded()) return;
+        if( pennyDialog != null )  //Done to block double tapping; Avoids creating multiple instances.
+            if( pennyDialog.isAdded() ) return;
 
         //vibrate(500L);
         int styleRes;
 
-        if (data.getTransactionType() == TransactionType.ADD)  //Is adding transaction
+        if( data.getTransactionType() == TransactionType.ADD )  //Is adding transaction
             styleRes = R.style.StylePennyDialogAdd;
         else //Is probably a spending transaction
             styleRes = R.style.StylePennyDialogMinus;
         Log.w("CALLIBRATE", "Callibraion issue?");
 
         final Bundle args = new Bundle();
-        args.putInt(PennyDialog.STYLE_KEY, styleRes);
+        args.putInt( PennyDialog.STYLE_KEY, styleRes );
 
-        this.pennyDialog = SlidePennyDialog.newInstance(pennyListener, args);
+        this.pennyDialog = SlidePennyDialog.newInstance( pennyListener, args );
 
-        pennyDialog.show(getSupportFragmentManager(), SlidePennyDialog.TAG);
+        pennyDialog.show( getSupportFragmentManager(), SlidePennyDialog.TAG );
     }
 
     private void launchDeleteConfDialog(){
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog);
+        final AlertDialog.Builder builder = new AlertDialog.Builder( this, R.style.Theme_AppCompat_Light_Dialog );
 
-        final AlertDialog dialog = builder.setTitle(R.string.string_delete_conf_title)
-               .setMessage(R.string.string_delete_conf_message)
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+        final AlertDialog dialog = builder.setTitle( R.string.string_delete_conf_title )
+               .setMessage( R.string.string_delete_conf_message )
+               .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                }).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                }).setPositiveButton( android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -182,30 +169,30 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
             }
         }).create();
 
-        final WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        Window w;
 
-        if(params != null)
-            params.windowAnimations = R.style.StyleDialogAnimate;
+        if( (w = dialog.getWindow()) != null )
+            w.getAttributes().windowAnimations = R.style.StyleDialogAnimate;
 
         dialog.show();
     }
 
 
     private void deleteSource(){
-        server.deleteSource(data.getTitle());
-        server.unObserve(this);
+        server.deleteSource( data.getTitle() );
+        server.unObserve( this );
         finish();
     }
 
 
     private void launchTransactionNameDialog(@NonNull final long pennies){
 
-        new TransactionTitleDialog(this, new OnTitleListener() {
+        new TransactionTitleDialog( this, new OnTitleListener() {
             @Override
             public void onTitleSet(@NonNull String title) {
-                final Transaction transaction = new Transaction(data.getTitle() ,data.getTransactionType(), pennies);
-                transaction.setTitle(title);
-                server.saveTransaction(transaction);
+                final Transaction transaction = new Transaction( data.getTitle() ,data.getTransactionType(), pennies );
+                transaction.setTitle( title );
+                server.saveTransaction( transaction );
             }
         });
 
@@ -218,10 +205,10 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
                     new Runnable() {
                         @Override
                         public void run() {
-                            launchTransactionNameDialog(l);
+                            launchTransactionNameDialog( l );
                         }
                     }
-                    , 500L);
+                    , 500L );
         }
     };
 
