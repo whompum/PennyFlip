@@ -19,7 +19,8 @@ import com.whompum.PennyFlip.Widgets.HeaderView;
 public class TimeLineDecorator extends RecyclerView.ItemDecoration {
 
     private Paint linePaint = new Paint();
-    private Paint dotPaint = new Paint();
+    private Paint dotOuterPaint = new Paint();
+    private Paint dotInnerPaint = new Paint();
 
     private float spacing;
 
@@ -31,7 +32,14 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
         spacing = Math.abs(resources.getDimensionPixelOffset(R.dimen.dimen_padding_hor_large));
 
         linePaint.setStrokeWidth(resources.getDimensionPixelOffset(R.dimen.dimen_timeline_line_width));
-        dotPaint.setStrokeWidth(resources.getDimensionPixelOffset(R.dimen.dimen_timeline_circle_width));
+
+        dotOuterPaint.setStrokeWidth(
+                resources.getDimensionPixelOffset( R.dimen.dimen_timeline_circle_outer_width )
+        );
+
+        dotInnerPaint.setStrokeWidth( resources.getDimensionPixelOffset(
+                R.dimen.dimen_timeline_circle_inner_width )
+        );
 
         initializeOutrect(resources.getDimensionPixelOffset(R.dimen.dimen_padding_ver_large));
 
@@ -45,7 +53,8 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
             color = resources.getColor( highlightRes );
 
         linePaint.setColor( color );
-        dotPaint.setColor( color );
+        dotOuterPaint.setColor( color );
+        dotInnerPaint.setColor( Color.WHITE );
     }
 
     private void initializeOutrect(final int offsetVer){
@@ -102,7 +111,8 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
             final int cY = dotPositioner.getBottom() - (titleView.getHeight()/2);
             final int cX = (int)(lineCX);
 
-            c.drawCircle(cX, cY, dotPaint.getStrokeWidth(), dotPaint);
+            c.drawCircle(cX, cY, dotOuterPaint.getStrokeWidth(), dotOuterPaint);
+            c.drawCircle(cX, cY, dotInnerPaint.getStrokeWidth(), dotInnerPaint);
 
             //Beer + code works.
         }
