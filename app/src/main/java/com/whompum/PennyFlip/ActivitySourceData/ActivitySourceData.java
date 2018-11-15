@@ -49,11 +49,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     private Source data;
     private SourceDataConsumer server;
 
-    @BindView(R.id.id_global_fab)
-    protected FloatingActionButton fab;
-
     private PennyDialog pennyDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,18 +81,26 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     //Initializes the core UI (title displays, value display, lastUpdate)
     private void initializeUi(@NonNull final Source data){
 
+        int newTransactionImageRes = -1;
+
         int headerColor = -1;
 
-        if( data.getTransactionType() == TransactionType.ADD )
+        if( data.getTransactionType() == TransactionType.ADD ) {
             headerColor = R.color.dark_green;
+            newTransactionImageRes = R.drawable.graphic_plus_green;
+        }
 
-        else if( data.getTransactionType() == TransactionType.SPEND )
+        else if( data.getTransactionType() == TransactionType.SPEND ) {
             headerColor = R.color.dark_red;
+            newTransactionImageRes = R.drawable.graphic_minus_red;
+        }
 
-        else headerColor = R.color.light_blue;
 
         findViewById( R.id.id_local_source_header )
                 .setBackgroundColor( getResources().getColor( headerColor ) );
+
+        ((FloatingActionButton)findViewById( R.id.id_global_fab ))
+                .setImageResource( newTransactionImageRes );
 
         ((TextView)findViewById( R.id.id_global_title ))
                 .setText( data.getTitle() );
@@ -148,6 +152,11 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         this.pennyDialog = SlidePennyDialog.newInstance( pennyListener, args );
 
         pennyDialog.show( getSupportFragmentManager(), SlidePennyDialog.TAG );
+    }
+
+    @OnClick(R.id.id_local_statistic_fab)
+    public void onStatisticsClicked(){
+
     }
 
     private void launchDeleteConfDialog(){
