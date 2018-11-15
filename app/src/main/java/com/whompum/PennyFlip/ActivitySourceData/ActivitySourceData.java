@@ -118,7 +118,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         final Bundle bundle = new Bundle();
         bundle.putString(TransactionFragment.SOURCE_KEY, data.getTitle());
 
-     return TransactionFragment.newInstance( bundle );
+     return TransactionFragment.newInstance( data );
     }
 
 

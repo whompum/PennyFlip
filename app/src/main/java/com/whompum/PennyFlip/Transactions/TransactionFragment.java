@@ -20,6 +20,7 @@ import com.whompum.PennyFlip.Money.Queries.Deliverable;
 import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
 import com.whompum.PennyFlip.Money.Queries.Responder;
 import com.whompum.PennyFlip.Money.Queries.TransactionQueries;
+import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionQueryBuilder;
@@ -44,8 +45,14 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
 
     private TransactionListAdapter adapter;
 
-    public static Fragment newInstance(@NonNull final Bundle args){
+    private Source source;
+
+    public static Fragment newInstance(@NonNull final Source source){
         final TransactionFragment fragment = new TransactionFragment();
+
+        final Bundle args = new Bundle();
+        args.putSerializable( SOURCE_KEY, source );
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,15 +61,17 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final String sourceId = getArguments().getString(SOURCE_KEY);
+        final Bundle args = getArguments();
 
-        if(sourceId == null) throw new IllegalStateException("We must have a Source ID");
+        if( (source = (Source) args.getSerializable( SOURCE_KEY )) == null )
+            throw new IllegalArgumentException("Source musn't be null");
+
 
         this.adapter = new TransactionListAdapter(getContext());
 
         //Fetch transactions data
         final MoneyRequest request = new TransactionQueryBuilder()
-                .setQueryParameter(TransactionQueryKeys.SOURCE_ID, sourceId )
+                .setQueryParameter(TransactionQueryKeys.SOURCE_ID, source.getTitle() )
                 .getQuery();
 
         final Deliverable<LiveData<List<Transaction>>> deliverable = new TransactionQueries()
