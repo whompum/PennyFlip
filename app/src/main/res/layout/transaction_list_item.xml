@@ -33,7 +33,7 @@
 
     <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
             tools:text="$44.72"
-            style="@style/StyleCurrencyEditText.Big"
+            style="@style/StyleCurrencyEditText.Medium"
             android:gravity="end"
             android:layout_width="wrap_content"
             android:textColor="@color/light_green"
