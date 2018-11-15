@@ -36,30 +36,16 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private LayoutInflater inflater;
 
-    private int addColor;
-    private int spendColor;
-
     private Timestamp utility = Timestamp.now();
 
-    public TransactionListAdapter(final Context context){
-        this(context, null);
+    public TransactionListAdapter(){
+        this(null);
     }
 
-    public TransactionListAdapter(final Context context, final List<AdapterItem> list){
+    public TransactionListAdapter(final List<AdapterItem> list){
 
         if(list != null)
             this.dataSet = list;
-
-        inflater = LayoutInflater.from(context);
-
-        if(Build.VERSION.SDK_INT >= 23){
-            addColor = context.getColor(R.color.light_green);
-            spendColor = context.getColor(R.color.light_red);
-        }else{
-            addColor = context.getResources().getColor(R.color.light_green);
-            spendColor = context.getResources().getColor(R.color.light_red);
-        }
-
 
     }
 
@@ -129,10 +115,16 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        if( inflater == null )
+            inflater = LayoutInflater.from( parent.getContext() );
+
         RecyclerView.ViewHolder holder = null;
 
         if(viewType == DATA)
-            holder = new TransactionHolder(inflater.inflate(R.layout.transaction_list_item, parent, false), addColor, spendColor);
+            holder = new TransactionHolder(
+                    inflater.inflate( R.layout.transaction_list_item, parent, false )
+            );
+
         else if(viewType == HEADER)
             holder = new TransactionHeaderHolder(inflater.inflate(R.layout.transaction_list_dynamic_header, parent, false)
             ,this);
