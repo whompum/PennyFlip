@@ -25,6 +25,7 @@ import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionQueryBuilder;
 import com.whompum.PennyFlip.Money.Transaction.TransactionQueryKeys;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transactions.Data.ExpansionPredicate;
@@ -89,13 +90,29 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View layout = inflater.inflate(LAYOUT_RES, container, false);
+        final View layout = inflater.inflate( LAYOUT_RES, container, false );
 
-       final RecyclerView transactionsList = layout.findViewById(R.id.id_global_list);
-           transactionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-           transactionsList.setAdapter(adapter);
-           transactionsList.addItemDecoration(new TransactionStickyHeaders(adapter));
-           transactionsList.addItemDecoration(new TimeLineDecorator(getContext().getResources()));
+       final RecyclerView transactionsList = layout.findViewById( R.id.id_global_list );
+
+           transactionsList.setLayoutManager(
+                   new LinearLayoutManager( getContext(), LinearLayoutManager.VERTICAL, false )
+           );
+
+           transactionsList.setAdapter( adapter );
+
+           transactionsList.addItemDecoration( new TransactionStickyHeaders( adapter ) );
+
+           int timelineClrRes = -1;
+
+           if( source.getTransactionType() == TransactionType.ADD )
+               timelineClrRes = R.color.dark_green;
+
+           else if( source.getTransactionType() == TransactionType.SPEND )
+               timelineClrRes = R.color.dark_red;
+
+           transactionsList.addItemDecoration(
+                   new TimeLineDecorator( getContext().getResources(), timelineClrRes )
+           );
 
     return layout;
     }
