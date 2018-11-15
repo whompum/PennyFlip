@@ -67,7 +67,7 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
             throw new IllegalArgumentException("Source musn't be null");
 
 
-        this.adapter = new TransactionListAdapter(getContext());
+        this.adapter = new TransactionListAdapter();
 
         //Fetch transactions data
         final MoneyRequest request = new TransactionQueryBuilder()
