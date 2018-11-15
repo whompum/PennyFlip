@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,7 +27,7 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
 
     private Rect outRect = new Rect();
 
-    public TimeLineDecorator(@NonNull final Resources resources){
+    public TimeLineDecorator(@NonNull final Resources resources, @ColorRes final int highlightRes){
         spacing = Math.abs(resources.getDimensionPixelOffset(R.dimen.dimen_padding_hor_large));
 
         linePaint.setStrokeWidth(resources.getDimensionPixelOffset(R.dimen.dimen_timeline_line_width));
@@ -39,12 +40,12 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
         int color;
 
         if(Build.VERSION.SDK_INT >= 23)
-             color = resources.getColor(R.color.light_blue, null);
+             color = resources.getColor( highlightRes, null );
         else
-            color = resources.getColor(R.color.light_blue);
+            color = resources.getColor( highlightRes );
 
-        linePaint.setColor(color);
-        dotPaint.setColor(color);
+        linePaint.setColor( color );
+        dotPaint.setColor( color );
     }
 
     private void initializeOutrect(final int offsetVer){
