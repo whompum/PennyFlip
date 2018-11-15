@@ -84,8 +84,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void swapDataset(@Nullable final List<AdapterItem> transactions){
        if(transactions == null) return;
 
-       Log.i("FUCK", "OBJ: " + this);
-
         this.dataSet = transactions;
         notifyDataSetChanged();
     }
