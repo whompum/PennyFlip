@@ -1,5 +1,10 @@
 package com.whompum.PennyFlip.Transactions.Adapter.ViewHolder;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.res.Resources;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -19,21 +24,15 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
     private TextView transactionSource;
     private CurrencyEditText transactionAmount;
 
-    private int addColor;
-    private int spendColor;
-
-    public TransactionHolder(final View layout, final int addClr, final int spendClr){
+    public TransactionHolder(final View layout){
         super(layout);
         transactionLastUpdate = layout.findViewById(R.id.id_global_timestamp);
         transactionSource = layout.findViewById(R.id.id_global_title);
         transactionAmount = layout.findViewById(R.id.id_global_total_display);
-
-        this.addColor = addClr;
-        this.spendColor = spendClr;
     }
 
     @Override
-    public void bind(TransactionsContent item) {
+    public void bind(@NonNull final TransactionsContent item) {
 
         final Transaction t = item.getTransaction();
 
@@ -41,16 +40,41 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
         transactionSource.setText(t.getTitle());
         transactionAmount.setText(String.valueOf(t.getAmount()));
 
-        if(t.getTransactionType() == TransactionType.ADD)
-            setTextColor(addColor);
-        else if(t.getTransactionType() == TransactionType.SPEND)
-            setTextColor(spendColor);
+        if( Build.VERSION.SDK_INT >= 23 )
+            setTextColor( resolveColor( itemView.getContext(), t ) );
 
+        else
+            setTextColor( resolveColorPreMarshmallow( itemView.getContext(), t ) );
     }
 
     private void setTextColor(final int color){
-        transactionSource.setTextColor(color);
         transactionAmount.setTextColor(color);
     }
 
+    @TargetApi(23)
+    private int resolveColor(@NonNull final Context context, @NonNull final Transaction transaction){
+
+        final Resources r = context.getResources();
+
+        if( transaction.getTransactionType() == TransactionType.ADD )
+            return r.getColor( R.color.dark_green, null );
+
+        else if( transaction.getTransactionType() == TransactionType.SPEND )
+            return r.getColor( R.color.dark_red, null );
+
+        return -1;
+    }
+
+    private int resolveColorPreMarshmallow(@NonNull final Context context, @NonNull final Transaction transaction){
+
+        final Resources r = context.getResources();
+
+        if( transaction.getTransactionType() == TransactionType.ADD )
+            return r.getColor( R.color.dark_green );
+        
+        else if( transaction.getTransactionType() == TransactionType.SPEND )
+            return r.getColor( R.color.dark_red );
+
+        return -1;
+    }
 }
