@@ -37,6 +37,8 @@
     <!-- Sort action -->
     <item name="id_global_sort" type="id"/>
 
+    <!-- Containers -->
+    <item name="id_global_container" type="id"/>
 
     <!-- The white search bar of the SourceList activity -->
     <item name="id_source_list_search_toolbar" type="id"/>
