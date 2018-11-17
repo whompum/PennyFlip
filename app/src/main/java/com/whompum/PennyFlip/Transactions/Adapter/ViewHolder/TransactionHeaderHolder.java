@@ -7,13 +7,9 @@ import android.view.View;
 
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.DataBind;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionsGroup;
 import com.whompum.PennyFlip.R;
 
-/**
- * Created by bryan on 1/7/2018.
- */
 
 public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements
         DataBind<TransactionsGroup>,
@@ -21,7 +17,8 @@ public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements
 
     protected AppCompatButton dateDisplay;
     private OnItemSelected<Integer> client;
-    public TransactionHeaderHolder(final View layout,@NonNull final OnItemSelected<Integer> selectedListener){
+
+    public TransactionHeaderHolder(final View layout, @NonNull final OnItemSelected<Integer> selectedListener){
         super(layout);
 
         this.dateDisplay = layout.findViewById(R.id.id_global_timestamp);
@@ -41,6 +38,7 @@ public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements
 
         else if(displayRes == R.string.string_today)
             dateDisplay.setText(itemView.getContext().getString(displayRes));
+
     }
 
     @Override
