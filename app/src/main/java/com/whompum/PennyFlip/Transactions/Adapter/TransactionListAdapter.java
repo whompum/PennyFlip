@@ -1,5 +1,6 @@
 package com.whompum.PennyFlip.Transactions.Adapter;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,9 +20,6 @@ import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by bryan on 1/7/2018.
- */
 
 public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         OnItemSelected<Integer>, TransactionStickyHeaders.StickyData{
@@ -73,7 +71,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     /**
      *
-     * @param pos (N-N) data structure position.
+     * @param pos (A-Z) data structure position.
      * @return The previous header that belongs to that position.
      */
     public TransactionsGroup getLastHeader(/* ADAPTER POSITION */final int pos){
@@ -118,15 +116,27 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         RecyclerView.ViewHolder holder = null;
 
         if(viewType == DATA)
-            holder = new TransactionHolder(
-                    inflater.inflate( R.layout.transaction_list_item, parent, false )
-            );
+            holder = getItemViewHolder( inflater, parent );
 
         else if(viewType == HEADER)
-            holder = new TransactionHeaderHolder(inflater.inflate(R.layout.transaction_list_dynamic_header, parent, false)
-            ,this);
+            holder = getHeaderViewHolder( inflater, parent );
 
     return holder;
+    }
+
+    protected RecyclerView.ViewHolder getItemViewHolder(@NonNull final LayoutInflater inflater,
+                                                      @NonNull final ViewGroup parent){
+        return new TransactionHolder(
+                inflater.inflate( R.layout.transaction_list_item, parent, false )
+               );
+    }
+
+    protected RecyclerView.ViewHolder getHeaderViewHolder(@NonNull final LayoutInflater inflater,
+                                                      @NonNull final ViewGroup parent){
+        return new TransactionHeaderHolder(
+                    inflater.inflate(R.layout.transaction_list_dynamic_header, parent, false),
+                    this
+               );
     }
 
     @Override
