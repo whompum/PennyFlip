@@ -28,6 +28,7 @@ import com.whompum.PennyFlip.Money.Transaction.TransactionQueryKeys;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Transactions.Adapter.TypeBasedTransactionListAdapter;
 import com.whompum.PennyFlip.Transactions.Data.ExpansionPredicate;
 import com.whompum.PennyFlip.Transactions.Decoration.TimeLineDecorator;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
@@ -68,7 +69,7 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
             throw new IllegalArgumentException("Source musn't be null");
 
 
-        this.adapter = new TransactionListAdapter();
+        this.adapter = new TypeBasedTransactionListAdapter( source.getTransactionType() );
 
         //Fetch transactions data
         final MoneyRequest request = new TransactionQueryBuilder()
