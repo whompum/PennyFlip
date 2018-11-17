@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip;
+package com.whompum.PennyFlip.Transactions.Adapter.ViewHolder;
 
 import android.support.annotation.NonNull;
 

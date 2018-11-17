@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
-import com.whompum.PennyFlip.DataBind;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
 import com.whompum.PennyFlip.R;
 

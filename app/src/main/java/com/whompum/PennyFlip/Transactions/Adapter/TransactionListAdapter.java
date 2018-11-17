@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.DataBind;
+import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.DataBind;
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.Time.Timestamp;
