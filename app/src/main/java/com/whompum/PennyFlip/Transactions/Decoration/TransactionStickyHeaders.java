@@ -82,7 +82,7 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
         final View tempZeroChild = parent.getChildAt( 0 );
         final View tempFirstChild = parent.getChildAt( 1 );
 
-        bind(parent, tempZeroChild);  //Fix redundant draw calls
+        bind( parent, tempZeroChild );  //Fix redundant draw calls
 
         if( zeroIndexHeaderSubject.v != tempZeroChild && isHeader( parent, tempZeroChild ) ) {
 
@@ -97,7 +97,7 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
             if( tempFirstChild.equals( zeroIndexHeaderSubject.v ) )
                 firstIndexHeaderSubject.setReleasePoint();
 
-            firstIndexHeaderSubject.set(tempFirstChild);
+            firstIndexHeaderSubject.set( tempFirstChild );
         }
 
         if( firstDrawPass ){
@@ -123,7 +123,7 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
             else {
                 zeroIndexHeaderSubject.isBlocked = false;
-                drawHeader(firstIndexHeaderSubject.getHeaderTop());
+                drawHeader( firstIndexHeaderSubject.getHeaderTop() );
             }
 
         } else
@@ -144,12 +144,12 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
     }
 
     private void bind(@NonNull final RecyclerView parent, final View child){
-        stickyData.bindHeader(header, getAdapterPosition(parent, child));
+        stickyData.bindHeader( header, getAdapterPosition( parent, child ) );
     }
 
     //Returns the adapter position of the on-screen item
     private int getAdapterPosition(@NonNull final RecyclerView parent, final View child){
-        return parent.getChildAdapterPosition(child);
+        return parent.getChildAdapterPosition( child );
     }
 
     private void makeHeader(@NonNull final ViewGroup container){
