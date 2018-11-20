@@ -71,10 +71,10 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
         consumer = new HistoryController(this, this);
 
-        adapter = new TransactionListAdapter(this);
+        //adapter = new TransactionListAdapter(this);
 
-        transactionList.addItemDecoration(new TimeLineDecorator(getResources()));
-        transactionList.addItemDecoration(new TransactionStickyHeaders(adapter));
+        //transactionList.addItemDecoration(new TimeLineDecorator(getResources()));
+        //transactionList.addItemDecoration(new TransactionStickyHeaders(adapter));
 
         transactionList.setLayoutManager(new LinearLayoutManager(this));
 

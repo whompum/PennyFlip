@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHeaderHolder;
 
 import java.util.List;
 

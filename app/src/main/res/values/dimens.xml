@@ -21,6 +21,13 @@
     <dimen name="dimen_circular_reveal_x_offset">76dp</dimen>
 
 
+    <!-- TIMELINE
+        header_inset is dimen_padding_hor_large + dimen_timeline_inset.
+        dimen_timeline_inset is half of the graphic_timeline_(add/spend) drawable
+    -->
+    <dimen name="dimen_header_inset">28dp</dimen>
+    <dimen name="dimen_timeline_inset">8dp</dimen>
+
     <!--The five text sizes for the app. Most content should use normal, but feel free to change
         these values as needed-->
     <dimen name="dimen_text_teeny">10sp</dimen>

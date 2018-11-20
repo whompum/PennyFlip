@@ -29,7 +29,7 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
         transactionLastUpdate = layout.findViewById(R.id.id_global_timestamp);
         transactionSource = layout.findViewById(R.id.id_global_title);
         transactionAmount = layout.findViewById(R.id.id_global_total_display);
-        timelineDot = layout.findViewById( R.id.test );
+        timelineDot = layout.findViewById( R.id.local_timeline_dot);
     }
 
     @Override

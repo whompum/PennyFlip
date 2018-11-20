@@ -62,6 +62,17 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return -1;
     }
 
+
+    public int getLastHeaderItemPos(final int pos){
+
+        if( dataSet != null && dataSet.size() > 0 )
+            for( int a = pos; a >= 0; a-- ) //Will return `pos` it is a header
+                if( getDataAt( a ) instanceof TransactionsGroup )
+                    return a;
+
+        return -1;
+    }
+
     public void swapDataset(@Nullable final List<AdapterItem> transactions){
        if(transactions == null) return;
 
@@ -89,7 +100,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     return null;
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -146,6 +156,9 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         final AdapterItem item = dataSet.get(position);
 
+        if( holder.getLayoutPosition() != 0 && holder.itemView.getAlpha() < 1 )
+            holder.itemView.setAlpha( 1 );
+
         if(viewType == DATA)
             ((DataBind<TransactionsContent>)holder).bind( ((TransactionsContent)item) );
 
@@ -163,26 +176,40 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onItemSelected(Integer pos) {
+        toggleGroup( pos );
+    }
 
-        final AdapterItem item = dataSet.get(pos);
 
-        if(item instanceof TransactionsGroup) {
+    public void toggleGroup(final int groupPos){
+
+        AdapterItem item;
+
+        if( (item = dataSet.get( groupPos ) ) instanceof TransactionsGroup) {
 
             final List<TransactionsContent> items = ((TransactionsGroup) item).getChildren();
 
             final boolean isExpanded = ((TransactionsGroup)item).isExpanded();
 
             if (!isExpanded) //We're expanding
-                if (dataSet.addAll(pos + 1, items))
-                    notifyItemRangeInserted(pos + 1, items.size());
+                expandGroup( groupPos, items );
 
             if(isExpanded) //collapsing
-                if (dataSet.removeAll(items))
-                        notifyDataSetChanged();
+                collapseGroup( items );
 
             ((TransactionsGroup)item).toggle(); //Change state
         }
 
+    }
+
+
+    private void expandGroup(final int groupPos, final List<TransactionsContent> items){
+        if (dataSet.addAll(groupPos + 1, items))
+            notifyItemRangeInserted(groupPos + 1, items.size());
+    }
+
+    private void collapseGroup(final List<TransactionsContent> items){
+        if (dataSet.removeAll(items))
+            notifyDataSetChanged();
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +102,23 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
 
            transactionsList.setAdapter( adapter );
 
-           transactionsList.addItemDecoration( new TransactionStickyHeaders( adapter ) );
+           final TransactionStickyHeaders stickyHeaders =
+                   new TransactionStickyHeaders( adapter, (ViewGroup) layout );
+
+           transactionsList.addItemDecoration( stickyHeaders );
+
+           stickyHeaders.setHeaderClickListener( new View.OnClickListener(){
+               @Override
+               public void onClick(View v) {
+                   //Header was clicked. Now we fetch the last header from the adapter
+                   
+                   final int lastHeaderPos = adapter.getLastHeaderItemPos(
+                           transactionsList.getChildAdapterPosition( transactionsList.getChildAt( 0 ) )  //Adapter pos of children @ index 0
+                   );
+
+                   adapter.toggleGroup( lastHeaderPos );
+               }
+           });
 
            int timelineClrRes = -1;
 
@@ -115,9 +132,11 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
                    new TimeLineDecorator( getContext().getResources(), timelineClrRes )
            );
 
+
     return layout;
     }
 
+    
     @Override
     public void onChanged(@Nullable List<Transaction> transactions) {
 

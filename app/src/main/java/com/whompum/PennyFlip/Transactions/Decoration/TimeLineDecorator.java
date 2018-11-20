@@ -7,8 +7,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.whompum.PennyFlip.R;
@@ -16,34 +18,29 @@ import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
 import com.whompum.PennyFlip.Widgets.HeaderItemView;
 import com.whompum.PennyFlip.Widgets.HeaderView;
 
+/**
+ * Draws a vertical line straight down the RecyclerView's canvas
+ * at the specified position
+ */
 public class TimeLineDecorator extends RecyclerView.ItemDecoration {
 
     private Paint linePaint = new Paint();
-    private Paint dotOuterPaint = new Paint();
-    private Paint dotInnerPaint = new Paint();
-
-    private float spacing;
 
     private float lineCX; //The center X of the line; Used to draw and align the dots
 
     private Rect outRect = new Rect();
 
+    private Rect veneer = new Rect();
+    private  Paint veneerPaint = new Paint();
+
     public TimeLineDecorator(@NonNull final Resources resources, @ColorRes final int highlightRes){
-        spacing = Math.abs(resources.getDimensionPixelOffset(R.dimen.dimen_padding_hor_large));
 
         linePaint.setStrokeWidth(resources.getDimensionPixelOffset(R.dimen.dimen_timeline_line_width));
 
-        dotOuterPaint.setStrokeWidth(
-                resources.getDimensionPixelOffset( R.dimen.dimen_timeline_circle_outer_width )
-        );
-
-        dotInnerPaint.setStrokeWidth( resources.getDimensionPixelOffset(
-                R.dimen.dimen_timeline_circle_inner_width )
-        );
-
         initializeOutrect(resources.getDimensionPixelOffset(R.dimen.dimen_padding_ver_large));
 
-        lineCX = spacing + Math.abs(linePaint.getStrokeWidth()*0.5F);
+        lineCX = /*spacing*/ resources.getDimensionPixelOffset(R.dimen.dimen_padding_hor_large) +
+                resources.getDimensionPixelOffset(R.dimen.dimen_timeline_inset);
 
         int color;
 
@@ -53,15 +50,14 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
             color = resources.getColor( highlightRes );
 
         linePaint.setColor( color );
-        dotOuterPaint.setColor( color );
-        dotInnerPaint.setColor( Color.WHITE );
+
     }
 
     private void initializeOutrect(final int offsetVer){
-        outRect.left = -1;
+        //outRect.left = -1;
         outRect.top = offsetVer/2;
         outRect.bottom = offsetVer/2;
-        outRect.right = (int)spacing;
+        //outRect.right = (int)spacing;
     }
 
     @Override
@@ -75,12 +71,6 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
         //Skip headers. They're offset in their XML
         if(parent.getChildCount() == 0) return;
 
-        else if (view instanceof HeaderView)
-            this.outRect.left = (int)(spacing);
-
-        else if(view instanceof HeaderItemView)
-            this.outRect.left = (int)((spacing*2)+linePaint.getStrokeWidth());
-
         outRect.set(this.outRect);
 
     }
@@ -91,32 +81,11 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
 
         //From position zero, to the last headerItem object.
 
+        c.drawRect( veneer, veneerPaint );
+
         c.drawLine(lineCX, 0, lineCX, //Will draw directly down the middle of lineCX
                 getLineHeight(parent), linePaint);
-
-        //find all title Views
-        for(int i = 0; i < parent.getChildCount(); i++){
-
-            //If header item, find the title
-
-            final View dotPositioner = parent.getLayoutManager().getChildAt(i);
-
-            View titleView;
-
-            if(dotPositioner == null ||
-                    !(dotPositioner instanceof HeaderItemView)  ||
-                    (titleView = dotPositioner.findViewById(R.id.id_global_title)) == null ||
-                    titleView.getVisibility() == View.GONE) continue;
-
-            final int cY = dotPositioner.getBottom() - (titleView.getHeight()/2);
-            final int cX = (int)(lineCX);
-
-            c.drawCircle(cX, cY, dotOuterPaint.getStrokeWidth(), dotOuterPaint);
-            c.drawCircle(cX, cY, dotInnerPaint.getStrokeWidth(), dotInnerPaint);
-
-            //Beer + code works.
-        }
-
+        
     }
 
     /**
@@ -127,29 +96,10 @@ public class TimeLineDecorator extends RecyclerView.ItemDecoration {
      * @return how many pixels to draw for the timelines Height
      */
     private int getLineHeight(@NonNull final RecyclerView parent){
-
-        final RecyclerView.Adapter adapter = parent.getAdapter();
-
-        if(adapter.getItemCount() == 0) //If no data exists
-            return 0;
-
-        //Find last adapter index
-        final int lastAdapterPosition = adapter.getItemCount()-1;
-
-        final int view_type = adapter.getItemViewType(lastAdapterPosition);
-
-        if(view_type != TransactionListAdapter.DATA && view_type != TransactionListAdapter.HEADER)
-            return 0;
-
-        final View lastChild = parent
-                .getLayoutManager()
-                .findViewByPosition(lastAdapterPosition);
-
-        if(lastChild != null)
-            return lastChild.getBottom();
-
+        
         return parent.getHeight();
     }
+
 
 }
 
