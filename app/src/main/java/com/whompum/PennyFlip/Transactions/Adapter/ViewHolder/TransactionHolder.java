@@ -21,6 +21,7 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
 
     private TextView transactionLastUpdate;
     private TextView transactionSource;
+    private View timelineDot;
     private CurrencyEditText transactionAmount;
 
     public TransactionHolder(final View layout){
@@ -28,6 +29,7 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
         transactionLastUpdate = layout.findViewById(R.id.id_global_timestamp);
         transactionSource = layout.findViewById(R.id.id_global_title);
         transactionAmount = layout.findViewById(R.id.id_global_total_display);
+        timelineDot = layout.findViewById( R.id.test );
     }
 
     @Override
@@ -35,7 +37,13 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
 
         final Transaction t = item.getTransaction();
 
-        transactionLastUpdate.setText(Timestamp.from(t.getTimestamp()).getPreferentialDate());
+        if( t.getTransactionType() == TransactionType.ADD )
+            timelineDot.setBackgroundResource( R.drawable.graphic_timeline_add );
+
+        if( t.getTransactionType() == TransactionType.SPEND )
+            timelineDot.setBackgroundResource( R.drawable.graphic_timeline_spend );
+
+        transactionLastUpdate.setText(Timestamp.from(t.getTimestamp()).simpleTime());
         transactionSource.setText(t.getTitle());
         transactionAmount.setText(String.valueOf(t.getAmount()));
 
