@@ -25,18 +25,25 @@
 
 
     <!--PennyDialog styles-->
-    <style name="StylePennyDialogAdd" parent="PennyDialog">
-        <item name="pennyFabSource">@drawable/graphic_plus_green</item>
-        <item name="pennyTitleText">@string/string_add_dialog</item>
-        <item name="pennyTitleTextColor">@color/white</item>
-        <item name="pennyValueCardColor">@color/light_green</item>
-        <item name="pennyNumbersCardColor">@color/darkest_grey</item>
+
+    <style name="StylePennyDialogLight" parent="PennyDialog">
+        <item name="pennyNumbersCardColor">@color/milk_white</item>
+        <item name="pennyValueCardColor">@color/white</item>
+        <item name="pennyNumbersTextColor">@color/darkest_grey</item>
     </style>
-    <style name="StylePennyDialogMinus" parent="PennyDialog">
-        <item name="pennyFabSource">@drawable/graphic_minus_red</item>
+
+    <style name="StylePennyDialogAdd" parent="StylePennyDialogLight">
+        <item name="pennyTitleText">@string/string_add_dialog</item>
+        <item name="pennyFabSource">@drawable/graphic_plus_green</item>
+        <item name="pennyValueTextColor">@color/dark_green</item>
+        <item name="pennyTitleTextColor">@color/dark_green</item>
+    </style>
+
+    <style name="StylePennyDialogMinus" parent="StylePennyDialogLight">
         <item name="pennyTitleText">@string/string_minus_dialog</item>
-        <item name="pennyValueCardColor">@color/light_red</item>
-        <item name="pennyNumbersCardColor">@color/darkest_grey</item>
+        <item name="pennyFabSource">@drawable/graphic_minus_red</item>
+        <item name="pennyValueTextColor">@color/dark_red</item>
+        <item name="pennyTitleTextColor">@color/dark_red</item>
     </style>
 
     <!--Floating Action Buttons-->
