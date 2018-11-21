@@ -55,6 +55,13 @@ public class TransactionTitleDialog extends Dialog {
             }
         });
 
+        view.findViewById(R.id.id_cancel).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                TransactionTitleDialog.this.dismiss();
+            }
+        });
+
         setContentView(view);
 
         if(getWindow() != null)
