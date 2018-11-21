@@ -19,8 +19,20 @@
         android:layout_below="@id/transaction_title_editor"
         android:layout_alignParentEnd="true"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/id_cancel"
+        android:textColor="@color/dark_grey"
+        android:background="@null"
+        android:gravity="start"
+        android:layout_marginStart="@dimen/dimen_padding_hor_large"
+        android:text="@string/string_cancel"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/id_skip"
         android:textColor="@color/dark_grey"
