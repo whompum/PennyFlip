@@ -13,20 +13,17 @@
     <dimen name="dimen_padding_ver_large">24dp</dimen>
     <dimen name="dimen_padding_ver_x_large">48dp</dimen>
 
-    <dimen name="dimen_timeline_line_width">6dp</dimen>
-    <dimen name="dimen_timeline_circle_outer_width">8dp</dimen> <!-- Stroke -->
-    <dimen name="dimen_timeline_circle_inner_width">5dp</dimen>
+    <dimen name="dimen_timeline_line_width">2dp</dimen>
 
     <!--CIRCULAR REVEAL OFFSET-->
     <dimen name="dimen_circular_reveal_x_offset">76dp</dimen>
-
 
     <!-- TIMELINE
         header_inset is dimen_padding_hor_large + dimen_timeline_inset.
         dimen_timeline_inset is half of the graphic_timeline_(add/spend) drawable
     -->
-    <dimen name="dimen_header_inset">28dp</dimen>
-    <dimen name="dimen_timeline_inset">8dp</dimen>
+    <dimen name="dimen_header_inset">22dp</dimen>
+    <dimen name="dimen_timeline_inset">5dp</dimen>
 
     <!--The five text sizes for the app. Most content should use normal, but feel free to change
         these values as needed-->
