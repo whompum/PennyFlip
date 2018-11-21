@@ -31,7 +31,8 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private LayoutInflater inflater;
 
-    private Timestamp utility = Timestamp.now();
+    private Timestamp headerDateUtility = Timestamp.now();
+    private TransactionsGroup lastBoundHeader;
 
     public TransactionListAdapter(){
         this(null);
@@ -222,22 +223,29 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void bindHeader(View header, final int adapterPos) {
-        final TransactionsGroup headerItem = getLastHeader(adapterPos);
 
-        utility.set(System.currentTimeMillis());
+        TransactionsGroup headerItem;
 
-        if(headerItem == null) return;
+        if ((headerItem = getLastHeader(adapterPos)) == null) return;
 
-        final long now = utility.getStartOfDay();
+        if( lastBoundHeader == headerItem )
+            return;
+        
+        else
+            lastBoundHeader = headerItem;
 
-        utility.set(headerItem.getMillis());
+        headerDateUtility.set(System.currentTimeMillis());
 
-        final long headerDay = utility.getStartOfDay();
+        final long now = headerDateUtility.getStartOfDay();
 
-        ((TextView)header.findViewById(R.id.id_global_timestamp))
-                .setText(  ((now == headerDay)
+        headerDateUtility.set(headerItem.getMillis());
+
+        final long headerDay = headerDateUtility.getStartOfDay();
+
+        ((TextView) header.findViewById(R.id.id_global_timestamp))
+                .setText(((now == headerDay)
                         ? header.getContext().getString(R.string.string_today)
-                        : Timestamp.from(headerDay).simpleDate()) );
+                        : Timestamp.from(headerDay).simpleDate()));
 
     }
 
