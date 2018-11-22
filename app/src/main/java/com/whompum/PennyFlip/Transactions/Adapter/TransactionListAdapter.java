@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.DataBind;
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
@@ -15,14 +16,16 @@ import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHeaderHolder;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Transactions.Data.ExpansionSnapshotPredicate;
+import com.whompum.PennyFlip.Transactions.Data.TransactionsGroupConverter;
 import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-
 public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        OnItemSelected<Integer>, TransactionStickyHeaders.StickyData{
+        OnItemSelected<Integer>, TransactionStickyHeaders.StickyData, TransactionsGroup.ToggleListener {
 
     public static final int DATA = 0;
     public static final int HEADER = 1;
@@ -34,72 +37,16 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private Timestamp headerDateUtility = Timestamp.now();
     private TransactionsGroup lastBoundHeader;
 
+    private ExpansionSnapshotPredicate expansionPredicate = new ExpansionSnapshotPredicate();
+    private HashMap<Long, Boolean> snapshot;
+
     public TransactionListAdapter(){
-        this(null);
+        this( new HashMap<Long, Boolean>() );
     }
 
-    public TransactionListAdapter(final List<AdapterItem> list){
-
-        if(list != null)
-            this.dataSet = list;
-
-    }
-
-    public AdapterItem getDataAt(final int position){
-        if( !(dataSet.size() > position) )
-            return null;
-
-        return dataSet.get(position);
-    }
-
-    public int getNextHeaderItemPos(final int pos){
-        //Return the display position of the next Header compared to the current pos, or NO_POS
-
-        if(dataSet != null && pos < dataSet.size() - 1)
-            for(int a = pos+1; a < dataSet.size(); a++)
-                if(dataSet.get(a) instanceof TransactionsGroup)
-                    return a;
-
-        return -1;
-    }
-
-
-    public int getLastHeaderItemPos(final int pos){
-
-        if( dataSet != null && dataSet.size() > 0 )
-            for( int a = pos; a >= 0; a-- ) //Will return `pos` it is a header
-                if( getDataAt( a ) instanceof TransactionsGroup )
-                    return a;
-
-        return -1;
-    }
-
-    public void swapDataset(@Nullable final List<AdapterItem> transactions){
-       if(transactions == null) return;
-
-        this.dataSet = transactions;
-        notifyDataSetChanged();
-    }
-
-    /**
-     *
-     * @param pos (A-Z) data structure position.
-     * @return The previous header that belongs to that position.
-     */
-    public TransactionsGroup getLastHeader(/* ADAPTER POSITION */final int pos){
-
-        if(pos == 0)
-            if((getItemViewType(pos) != HEADER ))
-                return null;
-            else
-                return (TransactionsGroup)dataSet.get(pos);
-
-        for(int i = pos; i >= 0; i--)
-            if(getItemViewType(i) == HEADER)
-                return (TransactionsGroup) dataSet.get(i);
-
-
-    return null;
+    public TransactionListAdapter(@NonNull final HashMap<Long, Boolean> snapshot) {
+        this.snapshot = snapshot;
+        expansionPredicate.setExpansionState( snapshot );
     }
 
     @Override
@@ -180,6 +127,85 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         toggleGroup( pos );
     }
 
+    @Override
+    public void onToggle(long millis, boolean isExpanded) {
+        setSnapshotState( millis, isExpanded );
+    }
+
+    public AdapterItem getDataAt(final int position){
+        if( !(dataSet.size() > position) )
+            return null;
+
+        return dataSet.get(position);
+    }
+
+    public int getNextHeaderItemPos(final int pos){
+        //Return the display position of the next Header compared to the current pos, or NO_POS
+
+        if(dataSet != null && pos < dataSet.size() - 1)
+            for(int a = pos+1; a < dataSet.size(); a++)
+                if(dataSet.get(a) instanceof TransactionsGroup)
+                    return a;
+
+        return -1;
+    }
+
+
+    public int getLastHeaderItemPos(final int pos){
+
+        if( dataSet != null && dataSet.size() > 0 )
+            for( int a = pos; a >= 0; a-- ) //Will return `pos` it is a header
+                if( getDataAt( a ) instanceof TransactionsGroup )
+                    return a;
+
+        return -1;
+    }
+
+    public void swapDataset(@Nullable final List<Transaction> transactions){
+        if(transactions == null) return;
+
+        this.dataSet = adapt( transactions );
+
+        for( AdapterItem item: dataSet )
+            if( item instanceof TransactionsGroup )
+                ((TransactionsGroup) item).setListener( this );
+
+        notifyDataSetChanged();
+    }
+
+    private List<AdapterItem> adapt(@NonNull final List<Transaction> transactions){
+        return TransactionsGroupConverter.fromTransactions( transactions, expansionPredicate );
+    }
+
+    public HashMap<Long, Boolean> getSnapshot() {
+        return snapshot;
+    }
+
+    public void setSnapshot(@NonNull final HashMap<Long, Boolean> snapshot) {
+        this.snapshot = snapshot;
+    }
+
+    /**
+     *
+     * @param pos (A-Z) data structure position.
+     * @return The previous header that belongs to that position.
+     */
+    public TransactionsGroup getLastHeader(/* ADAPTER POSITION */final int pos){
+
+        if(pos == 0)
+            if((getItemViewType(pos) != HEADER ))
+                return null;
+            else
+                return (TransactionsGroup)dataSet.get(pos);
+
+        for(int i = pos; i >= 0; i--)
+            if(getItemViewType(i) == HEADER)
+                return (TransactionsGroup) dataSet.get(i);
+
+
+        return null;
+    }
+
 
     public void toggleGroup(final int groupPos){
 
@@ -198,10 +224,16 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 collapseGroup( items );
 
             ((TransactionsGroup)item).toggle(); //Change state
+
         }
 
     }
 
+    private void setSnapshotState( final long k, final boolean v ){
+        if( snapshot != null )
+            snapshot.put( k, v );
+
+    }
 
     private void expandGroup(final int groupPos, final List<TransactionsContent> items){
         if (dataSet.addAll(groupPos + 1, items))

@@ -3,25 +3,25 @@ package com.whompum.PennyFlip.Transactions.Adapter;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 
-import java.util.List;
+import java.util.HashMap;
+
 
 public class TypeBasedTransactionListAdapter extends TransactionListAdapter {
 
     private int transactionType;
 
     public TypeBasedTransactionListAdapter(final int transactionType) {
-        this( null, transactionType );
+        super();
     }
 
-    public TypeBasedTransactionListAdapter(List<AdapterItem> list, final int transactionType) {
-        super( list );
+    public TypeBasedTransactionListAdapter(final int transactionType,
+                                           @NonNull final HashMap<Long, Boolean> snapshot) {
+        super( snapshot );
 
         this.transactionType = transactionType;
 

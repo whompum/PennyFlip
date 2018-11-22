@@ -143,12 +143,14 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
     public void onDataQueried(@NonNull List<Transaction> data) {
         final long today = Timestamp.now().getStartOfDay();
 
+        /*
         this.adapter.swapDataset(TransactionsGroupConverter.fromTransactions(data, new ExpansionPredicate() {
             @Override
             public boolean expand(long startOfDay, int position) {
                 return today == startOfDay || position  < 2; //If today, or on first/second header.
             }
         }));
+        */
     }
 
     @OnClick(R.id.id_global_nav)
