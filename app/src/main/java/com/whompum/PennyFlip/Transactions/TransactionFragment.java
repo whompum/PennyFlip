@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.LongSparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,14 @@ import com.whompum.PennyFlip.Transactions.Data.TransactionsGroupConverter;
 import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionFragment extends Fragment implements Observer<List<Transaction>> {
+
+    public static final String EXPANSION_SNAPSHOT_KEY = "expansionSnapshot.ky";
 
     public static final String SOURCE_KEY = "source.ky";
 
@@ -69,21 +75,25 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
         if( (source = (Source) args.getSerializable( SOURCE_KEY )) == null )
             throw new IllegalArgumentException("Source musn't be null");
 
+        if( savedInstanceState != null && savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY ) != null )
+            adapter = new TypeBasedTransactionListAdapter(
+                    source.getTransactionType(),
+                    (HashMap) savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY )
+            );
 
-        this.adapter = new TypeBasedTransactionListAdapter( source.getTransactionType() );
+        else
+            this.adapter = new TypeBasedTransactionListAdapter(source.getTransactionType());
 
         //Fetch transactions data
         final MoneyRequest request = new TransactionQueryBuilder()
-                .setQueryParameter(TransactionQueryKeys.SOURCE_ID, source.getTitle() )
+                .setQueryParameter(TransactionQueryKeys.SOURCE_ID, source.getTitle())
                 .getQuery();
-
-        final Deliverable<LiveData<List<Transaction>>> deliverable = new TransactionQueries()
-                .queryObservableObservableGroup( request, DatabaseUtils.getMoneyDatabase( getContext() ) );
-
-        deliverable.attachResponder(new Responder<LiveData<List<Transaction>>>() {
+             final Deliverable<LiveData<List<Transaction>>> deliverable = new TransactionQueries()
+                .queryObservableObservableGroup(request, DatabaseUtils.getMoneyDatabase(getContext()));
+             deliverable.attachResponder(new Responder<LiveData<List<Transaction>>>() {
             @Override
             public void onActionResponse(@NonNull LiveData<List<Transaction>> data) {
-                data.observe( TransactionFragment.this, TransactionFragment.this );
+                data.observe(TransactionFragment.this, TransactionFragment.this);
             }
         });
 
@@ -92,7 +102,7 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View layout = inflater.inflate( LAYOUT_RES, container, false );
+       final View layout = inflater.inflate( LAYOUT_RES, container, false );
 
        final RecyclerView transactionsList = layout.findViewById( R.id.id_global_list );
 
@@ -136,7 +146,13 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
     return layout;
     }
 
-    
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable( EXPANSION_SNAPSHOT_KEY, adapter.getSnapshot() );
+    }
+
     @Override
     public void onChanged(@Nullable List<Transaction> transactions) {
 
@@ -144,14 +160,7 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
 
             Collections.sort(transactions, new DescendingSort());
 
-            final long now = Timestamp.now().getStartOfDay();
-
-            adapter.swapDataset(TransactionsGroupConverter.fromTransactions(transactions, new ExpansionPredicate() {
-                @Override
-                public boolean expand(long startOfDay, final int position) {
-                    return now == startOfDay || position == 0; //If today, or on first header.
-                }
-            }));
+            adapter.swapDataset( transactions );
 
             toggleNoTransactionsDisplay(false);
 
