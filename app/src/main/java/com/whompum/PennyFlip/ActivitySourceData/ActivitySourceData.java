@@ -4,6 +4,7 @@ package com.whompum.PennyFlip.ActivitySourceData;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -65,11 +66,17 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
         initializeUi( data );
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add( R.id.id_global_container, getFragment() )
-                .commit();
-        
+        if( fragmentExists() )
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace( R.id.id_global_container, getFragmentByTag() )
+                    .commit();
+        else
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add( R.id.id_global_container, getFragment(), "TAG" )
+                    .commit();
+
     }
 
     @Override
@@ -94,7 +101,6 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
             headerColor = R.color.dark_red;
             newTransactionImageRes = R.drawable.graphic_minus_red;
         }
-
 
         findViewById( R.id.id_local_source_header )
                 .setBackgroundColor( getResources().getColor( headerColor ) );
@@ -121,6 +127,14 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
      return TransactionFragment.newInstance( data );
     }
 
+    private boolean fragmentExists(){
+        return getFragmentByTag() != null;
+    }
+
+    @Nullable
+    private Fragment getFragmentByTag(){
+        return getSupportFragmentManager().findFragmentByTag( "TAG" );
+    }
 
     @OnClick(R.id.id_global_nav)
     public void navigate(){
