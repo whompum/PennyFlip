@@ -21,6 +21,8 @@ public class TransactionsGroup implements ExpandableGroup, AdapterItem {
 
     private boolean isExpanded = false;
 
+    private ToggleListener listener;
+
     public TransactionsGroup(final long millis){
         this.millis = millis;
         children = new HashSet<>();
@@ -28,6 +30,14 @@ public class TransactionsGroup implements ExpandableGroup, AdapterItem {
 
     public void toggle(){
         isExpanded = !isExpanded;
+
+        if( listener != null )
+            listener.onToggle( millis, isExpanded );
+
+    }
+
+    public void setListener(ToggleListener listener) {
+        this.listener = listener;
     }
 
     public void addChild(@NonNull final TransactionsContent content){
@@ -53,4 +63,10 @@ public class TransactionsGroup implements ExpandableGroup, AdapterItem {
         return isExpanded;
     }
 
+    public interface ToggleListener{
+        void onToggle(final long millis, final boolean isExpanded);
+    }
+
 }
+
+
