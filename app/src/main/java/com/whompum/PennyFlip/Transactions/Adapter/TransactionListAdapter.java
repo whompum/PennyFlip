@@ -54,10 +54,10 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         final AdapterItem item = dataSet.get(position);
 
-        if(item instanceof TransactionsGroup)
+        if( item.isExpandable() )
             return HEADER;
 
-        else if(item instanceof TransactionsContent)
+        else if( !item.isExpandable() )
             return DATA;
 
         else
@@ -142,9 +142,9 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getNextHeaderItemPos(final int pos){
         //Return the display position of the next Header compared to the current pos, or NO_POS
 
-        if(dataSet != null && pos < dataSet.size() - 1)
-            for(int a = pos+1; a < dataSet.size(); a++)
-                if(dataSet.get(a) instanceof TransactionsGroup)
+        if( dataSet != null && pos < dataSet.size() - 1 )
+            for( int a = pos+1; a < dataSet.size(); a++ )
+                if( dataSet.get( a ).isExpandable() )
                     return a;
 
         return -1;
@@ -155,7 +155,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         if( dataSet != null && dataSet.size() > 0 )
             for( int a = pos; a >= 0; a-- ) //Will return `pos` it is a header
-                if( getDataAt( a ) instanceof TransactionsGroup )
+                if( getDataAt( a ).isExpandable() )
                     return a;
 
         return -1;
@@ -211,7 +211,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         AdapterItem item;
 
-        if( (item = dataSet.get( groupPos ) ) instanceof TransactionsGroup) {
+        if( (item = dataSet.get( groupPos ) ).isExpandable() ) {
 
             final List<TransactionsContent> items = ((TransactionsGroup) item).getChildren();
 
