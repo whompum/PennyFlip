@@ -131,6 +131,10 @@ public class TransactionStickyHeaders extends RecyclerView.ItemDecoration {
 
     }
 
+    public View getHeader() {
+        return header;
+    }
+
     private void resetHeader(){
         drawHeader( staticHeaderBounds.top );
     }
