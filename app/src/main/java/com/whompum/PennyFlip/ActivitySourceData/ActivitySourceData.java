@@ -1,6 +1,6 @@
 package com.whompum.PennyFlip.ActivitySourceData;
 
-
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -8,23 +8,18 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.Animations.PageTitleStrips;
+import com.whompum.PennyFlip.ListUtils.ListFragment;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.PennyListener;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.ActivitySourceData.Adapters.SourceFragmentAdapter;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
@@ -33,14 +28,11 @@ import com.whompum.PennyFlip.Transactions.TransactionFragment;
 import com.whompum.PennyFlip.Transactions.TransactionTitleDialog;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import butterknife.OnPageChange;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public class ActivitySourceData extends AppCompatActivity implements SourceDataClient{
@@ -48,7 +40,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     public static final String DATA = "source.ky";
 
     private Source data;
-    private SourceDataConsumer server;
+    private ActivitySourceDataController server;
 
     private PennyDialog pennyDialog;
 
@@ -57,12 +49,9 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         super.onCreate( savedInstanceState );
         setContentView( R.layout.source );
 
-        ButterKnife.bind(this);
+        ButterKnife.bind( this );
 
         this.data = (Source) getIntent().getSerializableExtra( DATA );
-
-        server = new SourceDataController(this, this);
-        server.observeSource(data.getTitle(), this);
 
         initializeUi( data );
 
@@ -74,9 +63,42 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         else
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add( R.id.id_global_container, getFragment(), "TAG" )
+                    .add( R.id.id_global_container, getFragment( resolveNoDataLayout() ), "TAG" )
                     .commit();
 
+        server = new ActivitySourceDataController( this, this, data.getTitle() );
+
+    }
+
+    @Nullable
+    private Integer resolveNoDataLayout(){
+
+        if( data.getTransactionType() == TransactionType.ADD )
+            return R.layout.layout_source_data_no_data_add;
+
+        return null;
+    }
+
+    @Override
+    public void onTransactionChanged(@NonNull List<Transaction> data) {
+
+        final ListFragment frag = getFragmentByTag();
+
+        if( frag == null ) {
+            Log.i("ActivitySourceData", "onTransactionChanged(): " + "Fragment is null!");
+            return;
+        }
+
+        if( data.size() == 0 )
+            getFragmentByTag().onNoData();
+
+        else
+            getFragmentByTag().display( data );
+    }
+
+    @Override
+    public LifecycleOwner getLifecycleOwner() {
+        return this;
     }
 
     @Override
@@ -120,11 +142,11 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     }
 
-    private Fragment getFragment(){
+    private ListFragment<Transaction> getFragment(@Nullable final Integer noDataLayout){
         final Bundle bundle = new Bundle();
         bundle.putString(TransactionFragment.SOURCE_KEY, data.getTitle());
 
-     return TransactionFragment.newInstance( data );
+     return TransactionFragment.newInstance( data, noDataLayout );
     }
 
     private boolean fragmentExists(){
@@ -132,8 +154,8 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     }
 
     @Nullable
-    private Fragment getFragmentByTag(){
-        return getSupportFragmentManager().findFragmentByTag( "TAG" );
+    private ListFragment<Transaction> getFragmentByTag(){
+        return (ListFragment) getSupportFragmentManager().findFragmentByTag( "TAG" );
     }
 
     @OnClick(R.id.id_global_nav)
@@ -203,7 +225,8 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     private void deleteSource(){
         server.deleteSource( data.getTitle() );
-        server.unObserve( this );
+        server.unObserverSource( this );
+        server.unObserveTransactions( this );
         finish();
     }
 
