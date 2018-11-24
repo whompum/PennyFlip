@@ -1,68 +1,57 @@
 package com.whompum.PennyFlip.Transactions;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.LongSparseArray;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Money.DatabaseUtils;
-import com.whompum.PennyFlip.Money.Queries.Deliverable;
-import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
-import com.whompum.PennyFlip.Money.Queries.Responder;
-import com.whompum.PennyFlip.Money.Queries.TransactionQueries;
+import com.whompum.PennyFlip.ListUtils.ListFragment;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Money.Transaction.TransactionQueryBuilder;
-import com.whompum.PennyFlip.Money.Transaction.TransactionQueryKeys;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transactions.Adapter.TypeBasedTransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Data.ExpansionPredicate;
 import com.whompum.PennyFlip.Transactions.Decoration.TimeLineDecorator;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Data.TransactionsGroupConverter;
 import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-public class TransactionFragment extends Fragment implements Observer<List<Transaction>> {
+public class TransactionFragment extends ListFragment<Transaction> {
 
     public static final String EXPANSION_SNAPSHOT_KEY = "expansionSnapshot.ky";
 
     public static final String SOURCE_KEY = "source.ky";
 
-    @LayoutRes
-    private static final int LAYOUT_RES = R.layout.transaction_list;
-
     private TransactionListAdapter adapter;
 
-    private Source source;
-
-    public static Fragment newInstance(@NonNull final Source source){
+    public static ListFragment<Transaction> newInstance(@NonNull final Source source, @Nullable final Integer noDataResLayout){
         final TransactionFragment fragment = new TransactionFragment();
 
         final Bundle args = new Bundle();
         args.putSerializable( SOURCE_KEY, source );
 
+        if( noDataResLayout != null )
+            setNoDataLayoutArg( args, noDataResLayout );
+
         fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ListFragment<Transaction> newInstance(@Nullable final Integer noDataResLayout){
+
+        final  TransactionFragment fragment = new TransactionFragment();
+
+        if( noDataResLayout != null)
+            fragment.setArguments( makeArguments( noDataResLayout ) );
+
         return fragment;
     }
 
@@ -72,80 +61,82 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
 
         final Bundle args = getArguments();
 
-        if( (source = (Source) args.getSerializable( SOURCE_KEY )) == null )
-            throw new IllegalArgumentException("Source musn't be null");
+        final Source source = (Source) args.getSerializable( SOURCE_KEY );
 
-        if( savedInstanceState != null && savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY ) != null )
-            adapter = new TypeBasedTransactionListAdapter(
-                    source.getTransactionType(),
-                    (HashMap) savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY )
-            );
+        if( savedInstanceState != null && savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY ) != null ){
 
-        else
-            this.adapter = new TypeBasedTransactionListAdapter(source.getTransactionType());
+            final HashMap<Long, Boolean> expansionState = (HashMap) savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY );
 
-        //Fetch transactions data
-        final MoneyRequest request = new TransactionQueryBuilder()
-                .setQueryParameter(TransactionQueryKeys.SOURCE_ID, source.getTitle())
-                .getQuery();
-             final Deliverable<LiveData<List<Transaction>>> deliverable = new TransactionQueries()
-                .queryObservableObservableGroup(request, DatabaseUtils.getMoneyDatabase(getContext()));
-             deliverable.attachResponder(new Responder<LiveData<List<Transaction>>>() {
+            if( source != null )
+                adapter = new TypeBasedTransactionListAdapter(
+                        source.getTransactionType(),
+                        expansionState
+                );
+
+            else
+                adapter = new TransactionListAdapter( expansionState );
+
+        }
+
+        else{
+
+            if( source != null )
+                adapter = new TypeBasedTransactionListAdapter( source.getTransactionType() );
+
+            else
+                adapter = new TransactionListAdapter();
+
+        }
+        
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated( view, savedInstanceState );
+
+        list.setLayoutManager(
+                new LinearLayoutManager( getContext(), LinearLayoutManager.VERTICAL, false )
+        );
+
+        list.setAdapter( adapter );
+
+        final TransactionStickyHeaders stickyHeaders =
+                new TransactionStickyHeaders( adapter, (ViewGroup) view.findViewById( R.id.id_global_container ) );
+
+        list.addItemDecoration( stickyHeaders );
+
+        stickyHeaders.setHeaderClickListener( new View.OnClickListener(){
             @Override
-            public void onActionResponse(@NonNull LiveData<List<Transaction>> data) {
-                data.observe(TransactionFragment.this, TransactionFragment.this);
+            public void onClick(View v) {
+                //Header was clicked. Now we fetch the last header from the adapter
+
+                final int lastHeaderPos = adapter.getLastHeaderItemPos(
+                        list.getChildAdapterPosition( list.getChildAt( 0 ) )  //Adapter pos of children @ index 0
+                );
+
+                adapter.toggleGroup( lastHeaderPos );
             }
         });
 
+        int timelineClrRes = R.color.light_blue;
+
+        final Source source = getSource();
+
+        if( source != null ) {
+
+            if (source.getTransactionType() == TransactionType.ADD)
+                timelineClrRes = R.color.dark_green;
+
+            else if (source.getTransactionType() == TransactionType.SPEND)
+                timelineClrRes = R.color.dark_red;
+        }
+
+        list.addItemDecoration(
+                new TimeLineDecorator( getContext().getResources(), timelineClrRes )
+        );
+
     }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       final View layout = inflater.inflate( LAYOUT_RES, container, false );
-
-       final RecyclerView transactionsList = layout.findViewById( R.id.id_global_list );
-
-           transactionsList.setLayoutManager(
-                   new LinearLayoutManager( getContext(), LinearLayoutManager.VERTICAL, false )
-           );
-
-           transactionsList.setAdapter( adapter );
-
-           final TransactionStickyHeaders stickyHeaders =
-                   new TransactionStickyHeaders( adapter, (ViewGroup) layout );
-
-           transactionsList.addItemDecoration( stickyHeaders );
-
-           stickyHeaders.setHeaderClickListener( new View.OnClickListener(){
-               @Override
-               public void onClick(View v) {
-                   //Header was clicked. Now we fetch the last header from the adapter
-                   
-                   final int lastHeaderPos = adapter.getLastHeaderItemPos(
-                           transactionsList.getChildAdapterPosition( transactionsList.getChildAt( 0 ) )  //Adapter pos of children @ index 0
-                   );
-
-                   adapter.toggleGroup( lastHeaderPos );
-               }
-           });
-
-           int timelineClrRes = -1;
-
-           if( source.getTransactionType() == TransactionType.ADD )
-               timelineClrRes = R.color.dark_green;
-
-           else if( source.getTransactionType() == TransactionType.SPEND )
-               timelineClrRes = R.color.dark_red;
-
-           transactionsList.addItemDecoration(
-                   new TimeLineDecorator( getContext().getResources(), timelineClrRes )
-           );
-
-
-    return layout;
-    }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -154,29 +145,23 @@ public class TransactionFragment extends Fragment implements Observer<List<Trans
     }
 
     @Override
-    public void onChanged(@Nullable List<Transaction> transactions) {
-
-        if(transactions != null && transactions.size() > 0) {
-
-            Collections.sort(transactions, new DescendingSort());
-
-            adapter.swapDataset( transactions );
-
-            toggleNoTransactionsDisplay(false);
-
-        }else{
-            toggleNoTransactionsDisplay(true);
-        }
+    protected void handleNewData(@NonNull Collection<Transaction> data) {
+        if( data.size() > 0 )
+            adapter.swapDataset( getSortedList( (List<Transaction>) data ) );
     }
 
+    @Nullable
+    private Source getSource(){
+        final Serializable s = getArguments().getSerializable( SOURCE_KEY );
 
-    private void toggleNoTransactionsDisplay(final boolean toggle){
+        return ( s != null ) ? (Source)s : null;
+    }
 
-        if(getView() != null && !toggle)
-            getView().findViewById(R.id.no_transactions_container).setVisibility(View.INVISIBLE);
+    private List<Transaction> getSortedList(@NonNull final List<Transaction> data){
 
-        if(getView() != null && toggle)
-            getView().findViewById(R.id.no_transactions_container).setVisibility(View.VISIBLE);
+        Collections.sort( data, new DescendingSort() );
+
+        return data;
     }
 
 }
