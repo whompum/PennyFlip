@@ -16,7 +16,7 @@ public class TypeBasedTransactionListAdapter extends TransactionListAdapter {
     private int transactionType;
 
     public TypeBasedTransactionListAdapter(final int transactionType) {
-        super();
+        this.transactionType = transactionType;
     }
 
     public TypeBasedTransactionListAdapter(final int transactionType,
