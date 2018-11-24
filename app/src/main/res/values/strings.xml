@@ -102,4 +102,6 @@
     <string name="string_no_data_spending_source_label">No Spending Sources.</string>
     <string name="string_no_data_search_source_label">No Results Found.</string>
 
+    <string name="string_no_data_default_label">No Data.</string>
+
 </resources>
