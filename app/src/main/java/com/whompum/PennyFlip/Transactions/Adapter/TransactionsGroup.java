@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TransactionsGroup implements ExpandableGroup, AdapterItem {
+public class TransactionsGroup implements AdapterItem {
 
     private long millis;
 
@@ -26,6 +26,11 @@ public class TransactionsGroup implements ExpandableGroup, AdapterItem {
     public TransactionsGroup(final long millis){
         this.millis = millis;
         children = new HashSet<>();
+    }
+
+    @Override
+    public boolean isExpandable() {
+        return true;
     }
 
     public void toggle(){
@@ -43,6 +48,8 @@ public class TransactionsGroup implements ExpandableGroup, AdapterItem {
     public void addChild(@NonNull final TransactionsContent content){
         children.add(content);
     }
+
+
 
     public List<TransactionsContent> getChildren(){
         return getChildren(new DescendingSort());
