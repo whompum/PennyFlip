@@ -1,41 +1,23 @@
 package com.whompum.PennyFlip.ActivityHistory;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
-import com.borax12.materialdaterangepicker.date.MonthAdapter;
+import com.whompum.PennyFlip.ListUtils.ListFragment;
 import com.whompum.PennyFlip.Money.TimeRange;
-import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
-import com.whompum.PennyFlip.Transactions.Adapter.TransactionsGroup;
-import com.whompum.PennyFlip.Transactions.Data.ExpansionPredicate;
-import com.whompum.PennyFlip.Transactions.Data.TransactionsGroupConverter;
-import com.whompum.PennyFlip.Transactions.Decoration.TimeLineDecorator;
-import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
-import com.whompum.PennyFlip.Widgets.HeaderFrameLayout;
-import com.whompum.PennyFlip.Widgets.HeaderView;
+import com.whompum.PennyFlip.Transactions.TransactionFragment;
 
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -48,19 +30,8 @@ import butterknife.OnClick;
 public class ActivityHistory extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         ActivityHistoryClient {
 
-    //private static final Timestamp utility = Timestamp.now();
-
-    @BindView(R.id.id_global_list)
-    protected RecyclerView transactionList;
-
-    @BindView(R.id.local_day_count)
-    protected TextView dayCount;
-
     //The controller
     private ActivityHistoryConsumer consumer;
-
-    //Adapter that displays the Transactions
-    private TransactionListAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,47 +42,19 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
         consumer = new HistoryController(this, this);
 
-        //adapter = new TransactionListAdapter(this);
+        if( fragmentExists() )
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace( R.id.id_global_container, getExistingFragment() )
+                    .commit();
 
-        //transactionList.addItemDecoration(new TimeLineDecorator(getResources()));
-        //transactionList.addItemDecoration(new TransactionStickyHeaders(adapter));
+        else
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add( R.id.id_global_container, getNewFragment(), "TAG" )
+                    .commit();
 
-        transactionList.setLayoutManager(new LinearLayoutManager(this));
 
-        transactionList.setAdapter(adapter);
-
-        /* IS CAUSING TOO MUCH JANK WHEN SCROLLING
-        transactionList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-                final int adapterPos = transactionList.getChildAdapterPosition(recyclerView.getChildAt(0));
-
-                if(adapter.getItemViewType(adapterPos) == TransactionListAdapter.HEADER){
-
-                    utility.set( ((TransactionsGroup)adapter.getDataAt(adapterPos)).getMillis() );
-
-                    final long headerDay = utility.getStartOfDay();
-
-                    utility.set(System.currentTimeMillis());
-
-                    final long todayDay = utility.getStartOfDay();
-
-                    final long dayDifference = todayDay-headerDay;
-
-                    final int dayDelta = (int)(dayDifference / TimeUnit.DAYS.toMillis(1));
-
-                    final String dayCount = (dayDelta == 0)
-                            ? getString(R.string.string_today)
-                            : dayDelta + " " + getString(R.string.string_day_count);
-
-                    ActivityHistory.this.dayCount.setText(dayCount);
-
-                }
-
-            }
-        });
-        */
         //Fetch default value from today and one week ago.
         fetch(new TimeRange(System.currentTimeMillis(), Timestamp.fromPastProjection(6).getMillis()));
     }
@@ -140,17 +83,12 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
     }
 
     @Override
-    public void onDataQueried(@NonNull List<Transaction> data) {
-        final long today = Timestamp.now().getStartOfDay();
+    public void onDataQueried(@Nullable List<Transaction> data) {
+        if( data == null || data.size() == 0 )
+            getExistingFragment().onNoData();
 
-        /*
-        this.adapter.swapDataset(TransactionsGroupConverter.fromTransactions(data, new ExpansionPredicate() {
-            @Override
-            public boolean expand(long startOfDay, int position) {
-                return today == startOfDay || position  < 2; //If today, or on first/second header.
-            }
-        }));
-        */
+        else
+            getExistingFragment().display( data );
     }
 
     @OnClick(R.id.id_global_nav)
@@ -161,9 +99,8 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
     @OnClick(R.id.local_date_picker)
     public void launchDatePicker(){
 
-        final Timestamp floor = Timestamp.from(consumer.fetchStartDate(this));
+        final Timestamp floor = Timestamp.from( consumer.fetchStartDate( this ) );
         final Timestamp ciel = Timestamp.now();
-
 
         final int floorY = floor.getYear();
         final int floorM = floor.getMonth()-1;
@@ -173,25 +110,37 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
         final int cielM = ciel.getMonth()-1;
         final int cielD = ciel.getMonthDay();
 
-       final DatePickerDialog datePicker = DatePickerDialog.newInstance(this,
+       final DatePickerDialog datePicker = DatePickerDialog.newInstance( this,
                 floorY,
                 floorM,
                 floorD,
                 cielY,
                 cielM,
-                cielD);
+                cielD );
 
         final Calendar floorCalendar = Calendar.getInstance();
         final Calendar cielCalendar = Calendar.getInstance();
 
-        floorCalendar.set(floorY, floorM, floorD);
-        cielCalendar.set(cielY, cielM, cielD);
+        floorCalendar.set( floorY, floorM, floorD );
+        cielCalendar.set( cielY, cielM, cielD );
 
-        datePicker.setMinDate(floorCalendar);
-        datePicker.setMaxDate(cielCalendar);
+        datePicker.setMinDate( floorCalendar );
+        datePicker.setMaxDate( cielCalendar );
 
-        datePicker.show(getFragmentManager(), "DatePicker");
+        datePicker.show( getFragmentManager(), "DatePicker" );
 
+    }
+
+    public boolean fragmentExists(){
+        return getSupportFragmentManager().findFragmentByTag( "TAG" ) != null;
+    }
+
+    public ListFragment<Transaction> getNewFragment(){
+        return TransactionFragment.newInstance(  );
+    }
+
+    public ListFragment<Transaction> getExistingFragment(){
+        return (ListFragment) getSupportFragmentManager().findFragmentByTag( "TAG" );
     }
 
 
