@@ -45,6 +45,15 @@ public class TransactionFragment extends ListFragment<Transaction> {
         return fragment;
     }
 
+    public static ListFragment<Transaction> newInstance(){
+
+        final TransactionFragment fragment = new TransactionFragment();
+
+        fragment.setArguments( makeArguments( fragment.noDataResLayout ) );
+
+        return fragment;
+    }
+
     public static ListFragment<Transaction> newInstance(@Nullable final Integer noDataResLayout){
 
         final  TransactionFragment fragment = new TransactionFragment();
