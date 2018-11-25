@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.whompum.PennyFlip.Money.DatabaseUtils;
 import com.whompum.PennyFlip.Money.MoneyDatabase;
+import com.whompum.PennyFlip.Money.Queries.Deliverable;
+import com.whompum.PennyFlip.Money.Queries.LoggerResponder;
 import com.whompum.PennyFlip.Money.Queries.Responder;
 import com.whompum.PennyFlip.Money.Queries.TransactionQueries;
 import com.whompum.PennyFlip.Money.TimeRange;
@@ -19,9 +21,9 @@ import java.util.List;
 
 /**
  * Exposes a historical view of transaction data, according to a {@link TimeRange},
- * to a {@link ActivityHistoryClient}.
+ * from the {@link ActivityHistoryClient}.
  */
-public class HistoryController implements ActivityHistoryConsumer {
+public class HistoryController implements ActivityHistoryConsumer, Responder<List<Transaction>> {
 
     private ActivityHistoryClient client;
 
@@ -36,6 +38,13 @@ public class HistoryController implements ActivityHistoryConsumer {
         database = DatabaseUtils.getMoneyDatabase( context );
     }
 
+    @Override
+    public void onActionResponse(@NonNull List<Transaction> data) {
+        Collections.sort( data, new DescendingSort() );
+
+        if( client != null )
+            client.onDataQueried( data );
+    }
 
     /**
      * Fetch a list of {@link Transaction} objects according to
@@ -48,18 +57,11 @@ public class HistoryController implements ActivityHistoryConsumer {
 
         builder.setQueryParameter( TransactionQueryKeys.TIMERANGE, range );
 
-        server.queryGroup( builder.getQuery(), database )
-          .attachResponder(new Responder<List<Transaction>>() {
-            @Override
-            public void onActionResponse(@NonNull List<Transaction> data) {
+        final Deliverable<List<Transaction>> deliverable =
+            server.queryGroup( builder.getQuery(), database );
 
-                Collections.sort( data, new DescendingSort() );
-
-                if(client != null)
-                    client.onDataQueried( data );
-
-            }
-        });
+        deliverable.attachCancelledResponder( new LoggerResponder( HistoryController.class ) );
+        deliverable.attachResponder( this );
 
     }
 
@@ -72,7 +74,8 @@ public class HistoryController implements ActivityHistoryConsumer {
        //return UserStartDate.getUserStartDate(context);
        //Swap with user start data when in production.
 
-    return 1514793600000L;
+    //return 1514793600000L; //Jan 1st, 2018. For testing
+    return userStartDate;
     }
 
 }
