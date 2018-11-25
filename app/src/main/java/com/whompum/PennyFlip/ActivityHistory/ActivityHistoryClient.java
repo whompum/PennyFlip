@@ -1,6 +1,6 @@
 package com.whompum.PennyFlip.ActivityHistory;
 
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
@@ -11,5 +11,5 @@ import java.util.List;
  * Implemented by {@link ActivityHistory}
  */
 public interface ActivityHistoryClient {
-    void onDataQueried(@NonNull final List<Transaction> data);
+    void onDataQueried(@Nullable final List<Transaction> data);
 }
