@@ -13,7 +13,8 @@ import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Transactions.Adapter.TypeBasedTransactionListAdapter;
+import com.whompum.PennyFlip.Transactions.Adapter.BackgroundResolver;
+import com.whompum.PennyFlip.Transactions.Adapter.HeaderBackgroundResolver;
 import com.whompum.PennyFlip.Transactions.Decoration.TimeLineDecorator;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
 import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
@@ -27,10 +28,28 @@ import java.util.List;
 public class TransactionFragment extends ListFragment<Transaction> {
 
     public static final String EXPANSION_SNAPSHOT_KEY = "expansionSnapshot.ky";
+    public static final String DOT_BACKGROUND_KEY = "dotBackground.ky";
+    public static final String HEADER_BACKGROUND_KEY = "headerBackground.ky";
 
     public static final String SOURCE_KEY = "source.ky";
 
     private TransactionListAdapter adapter;
+
+    private BackgroundResolver dotBackgroundResolver = new BackgroundResolver() {
+        @Override
+        public int getBackground(int transactionType) {
+
+            if( transactionType == TransactionType.ADD )
+                return R.drawable.graphic_timeline_add;
+
+            else if( transactionType == TransactionType.SPEND )
+                return R.drawable.graphic_timeline_spend;
+
+            return R.color.light_blue;
+        }
+    };
+
+    private HeaderBackgroundResolver headerBackgroundResolver;
 
     public static ListFragment<Transaction> newInstance(@NonNull final Source source, @Nullable final Integer noDataResLayout){
         final TransactionFragment fragment = new TransactionFragment();
@@ -72,31 +91,43 @@ public class TransactionFragment extends ListFragment<Transaction> {
 
         final Source source = (Source) args.getSerializable( SOURCE_KEY );
 
-        if( savedInstanceState != null && savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY ) != null ){
+        if( savedInstanceState != null && savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY ) != null )
+            adapter = new TransactionListAdapter(
+                    (HashMap) savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY )
+            );
 
-            final HashMap<Long, Boolean> expansionState = (HashMap) savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY );
 
-            if( source != null )
-                adapter = new TypeBasedTransactionListAdapter(
-                        source.getTransactionType(),
-                        expansionState
-                );
+        else adapter = new TransactionListAdapter();
 
-            else
-                adapter = new TransactionListAdapter( expansionState );
 
-        }
+        if( savedInstanceState != null && savedInstanceState.getSerializable(DOT_BACKGROUND_KEY) != null )
+            dotBackgroundResolver = (BackgroundResolver) savedInstanceState.getSerializable(DOT_BACKGROUND_KEY);
 
-        else{
+        if( dotBackgroundResolver != null )
+            adapter.setItemDotBackgroundResolver(dotBackgroundResolver);
 
-            if( source != null )
-                adapter = new TypeBasedTransactionListAdapter( source.getTransactionType() );
 
-            else
-                adapter = new TransactionListAdapter();
+        if( savedInstanceState != null && savedInstanceState.getSerializable( HEADER_BACKGROUND_KEY ) != null )
+            headerBackgroundResolver = (HeaderBackgroundResolver) savedInstanceState.getSerializable( HEADER_BACKGROUND_KEY );
 
-        }
-        
+        else
+            headerBackgroundResolver = new HeaderBackgroundResolver() {
+            @Override
+            public int getHeaderBackground() {
+
+                if( source != null ) {
+                    if (source.getTransactionType() == TransactionType.ADD)
+                        return R.drawable.background_rounded_rect_green;
+
+                    else if (source.getTransactionType() == TransactionType.SPEND)
+                        return R.drawable.background_rounded_rect_right_red;
+                }
+                return R.drawable.background_rounded_rect_right_blue;
+            }
+        };
+
+        adapter.setHeaderBackgroundResolver( headerBackgroundResolver );
+
     }
 
 
@@ -151,6 +182,8 @@ public class TransactionFragment extends ListFragment<Transaction> {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable( EXPANSION_SNAPSHOT_KEY, adapter.getSnapshot() );
+        outState.putSerializable( DOT_BACKGROUND_KEY, dotBackgroundResolver );
+        outState.putSerializable( HEADER_BACKGROUND_KEY, headerBackgroundResolver );
     }
 
     @Override
@@ -164,6 +197,18 @@ public class TransactionFragment extends ListFragment<Transaction> {
         final Serializable s = getArguments().getSerializable( SOURCE_KEY );
 
         return ( s != null ) ? (Source)s : null;
+    }
+
+    public void setItemDotBackgroundResolver(@NonNull final BackgroundResolver dotResolver){
+        this.dotBackgroundResolver = dotResolver;
+    }
+
+    public void setHeaderBackgroundResolver(@NonNull final HeaderBackgroundResolver backgroundResolver){
+        this.headerBackgroundResolver = backgroundResolver;
+    }
+
+    public TransactionListAdapter getAdapter() {
+        return adapter;
     }
 
     private List<Transaction> getSortedList(@NonNull final List<Transaction> data){
