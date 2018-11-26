@@ -18,7 +18,7 @@ import com.whompum.PennyFlip.R;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-public class TransactionHolder extends RecyclerView.ViewHolder implements DataBind<TransactionsContent> {
+public class TransactionHolder extends TransactionViewHolder<TransactionsContent> {
 
     private TextView transactionLastUpdate;
     private TextView transactionSource;

@@ -11,8 +11,7 @@ import com.whompum.PennyFlip.Transactions.Adapter.TransactionsGroup;
 import com.whompum.PennyFlip.R;
 
 
-public class TransactionHeaderHolder extends RecyclerView.ViewHolder implements
-        DataBind<TransactionsGroup>,
+public class TransactionHeaderHolder extends TransactionViewHolder<TransactionsGroup> implements
         View.OnClickListener{
 
     protected AppCompatButton dateDisplay;
