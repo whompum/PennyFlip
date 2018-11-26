@@ -40,6 +40,9 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private ExpansionSnapshotPredicate expansionPredicate = new ExpansionSnapshotPredicate();
     private HashMap<Long, Boolean> snapshot;
 
+    protected BackgroundResolver dotHighlightResolver;
+    protected HeaderBackgroundResolver headerBackgroundResolver;
+
     public TransactionListAdapter(){
         this( new HashMap<Long, Boolean>() );
     }
@@ -73,24 +76,31 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         RecyclerView.ViewHolder holder = null;
 
-        if(viewType == DATA)
-            holder = getItemViewHolder( inflater, parent );
+        if(viewType == DATA) {
+            holder = getItemViewHolder(inflater, parent);
+            if( dotHighlightResolver != null )
+                ((TransactionHolder)holder).setItemDotHighlightResolver( dotHighlightResolver );
+        }
 
-        else if(viewType == HEADER)
-            holder = getHeaderViewHolder( inflater, parent );
+        else if(viewType == HEADER) {
+            holder = getHeaderViewHolder(inflater, parent);
 
+            holder.itemView.setBackgroundResource(
+                    headerBackgroundResolver.getHeaderBackground()
+            );
+        }
     return holder;
     }
 
     protected RecyclerView.ViewHolder getItemViewHolder(@NonNull final LayoutInflater inflater,
-                                                      @NonNull final ViewGroup parent){
+                                                        @NonNull final ViewGroup parent){
         return new TransactionHolder(
                 inflater.inflate( R.layout.transaction_list_item, parent, false )
                );
     }
 
     protected RecyclerView.ViewHolder getHeaderViewHolder(@NonNull final LayoutInflater inflater,
-                                                      @NonNull final ViewGroup parent){
+                                                          @NonNull final ViewGroup parent){
         return new TransactionHeaderHolder(
                     inflater.inflate(R.layout.transaction_list_dynamic_header, parent, false),
                     this
@@ -130,6 +140,14 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onToggle(long millis, boolean isExpanded) {
         setSnapshotState( millis, isExpanded );
+    }
+
+    public void setItemDotBackgroundResolver(@NonNull final BackgroundResolver dotResolver){
+        this.dotHighlightResolver = dotResolver;
+    }
+
+    public void setHeaderBackgroundResolver(@NonNull final HeaderBackgroundResolver backgroundResolver){
+        this.headerBackgroundResolver = backgroundResolver;
     }
 
     public AdapterItem getDataAt(final int position){
@@ -179,10 +197,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public HashMap<Long, Boolean> getSnapshot() {
         return snapshot;
-    }
-
-    public void setSnapshot(@NonNull final HashMap<Long, Boolean> snapshot) {
-        this.snapshot = snapshot;
     }
 
     /**
