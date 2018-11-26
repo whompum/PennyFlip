@@ -1,9 +1,15 @@
 package com.whompum.PennyFlip.ActivityHistory;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.whompum.PennyFlip.ListUtils.ListFragment;
@@ -12,6 +18,8 @@ import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Transactions.Adapter.BackgroundResolver;
+import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.HolderFactory;
+import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionViewHolder;
 import com.whompum.PennyFlip.Transactions.TransactionFragment;
 
 import java.util.Calendar;
@@ -44,28 +52,9 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
         consumer = new HistoryController(this, this);
 
-        if( fragmentExists() )
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace( R.id.id_global_container, getExistingFragment() )
-                    .commit();
+        final Fragment fragment = initializeFragment();
 
-        else {
-
-            final ListFragment fragment = getNewFragment();
-
-            ((TransactionFragment)fragment).setItemDotBackgroundResolver(new BackgroundResolver() {
-                @Override
-                public int getBackground(int transactionType) {
-                    return R.drawable.graphic_timeline_blue;
-                }
-            });
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.id_global_container, fragment, "TAG")
-                    .commit();
-        }
+        commitFragment( getSupportFragmentManager().beginTransaction(), fragment );
 
         /*
             Fetch the last used TimeRange object (Cached during a config-change)
@@ -78,6 +67,34 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
         else
             fetch(new TimeRange(System.currentTimeMillis(), Timestamp.fromPastProjection(6).getMillis()));
     }
+
+    private void commitFragment(@NonNull final FragmentTransaction transaction, @NonNull final Fragment fragment){
+
+        if( fragmentExists() )
+            transaction.replace( R.id.id_global_container, fragment );
+
+        else transaction.add( R.id.id_global_container, fragment, "TAG" );
+
+        transaction.commit();
+    }
+
+    public Fragment initializeFragment(){
+
+        final TransactionFragment fragment =
+                (TransactionFragment) ( ( fragmentExists() ) ? getExistingFragment() : getNewFragment() );
+
+        fragment.setItemDotBackgroundResolver(new BackgroundResolver() {
+            @Override
+            public int getBackground(int transactionType) {
+                return R.drawable.graphic_timeline_blue;
+            }
+        });
+
+        fragment.setItemViewHolderFactory( new HistoryItemViewFactory() );
+
+        return fragment;
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
