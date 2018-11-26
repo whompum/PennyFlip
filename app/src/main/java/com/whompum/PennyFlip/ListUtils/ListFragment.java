@@ -31,7 +31,7 @@ public abstract class ListFragment<T> extends Fragment implements CollectionQuer
     protected int LAYOUT = R.layout.generic_list_layout;
 
     @LayoutRes   //Needed to resolve the view to populate error_frame with
-    private int noDataResLayout = R.layout.default_no_data_layout;
+    protected int noDataResLayout = R.layout.default_no_data_layout;
 
     @BindView(R.id.id_global_list) public RecyclerView list;
 
