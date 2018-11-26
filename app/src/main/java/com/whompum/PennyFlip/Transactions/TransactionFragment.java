@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +16,7 @@ import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Transactions.Adapter.BackgroundResolver;
 import com.whompum.PennyFlip.Transactions.Adapter.HeaderBackgroundResolver;
+import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.HolderFactory;
 import com.whompum.PennyFlip.Transactions.Decoration.TimeLineDecorator;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionListAdapter;
 import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
@@ -28,28 +30,16 @@ import java.util.List;
 public class TransactionFragment extends ListFragment<Transaction> {
 
     public static final String EXPANSION_SNAPSHOT_KEY = "expansionSnapshot.ky";
-    public static final String DOT_BACKGROUND_KEY = "dotBackground.ky";
-    public static final String HEADER_BACKGROUND_KEY = "headerBackground.ky";
 
     public static final String SOURCE_KEY = "source.ky";
 
     private TransactionListAdapter adapter;
 
-    private BackgroundResolver dotBackgroundResolver = new BackgroundResolver() {
-        @Override
-        public int getBackground(int transactionType) {
-
-            if( transactionType == TransactionType.ADD )
-                return R.drawable.graphic_timeline_add;
-
-            else if( transactionType == TransactionType.SPEND )
-                return R.drawable.graphic_timeline_spend;
-
-            return R.color.light_blue;
-        }
-    };
+    private BackgroundResolver dotBackgroundResolver = new DefaultItemViewDotResolver();
 
     private HeaderBackgroundResolver headerBackgroundResolver;
+
+    private HolderFactory itemViewHolderFactory;
 
     public static ListFragment<Transaction> newInstance(@NonNull final Source source, @Nullable final Integer noDataResLayout){
         final TransactionFragment fragment = new TransactionFragment();
@@ -90,27 +80,17 @@ public class TransactionFragment extends ListFragment<Transaction> {
         final Bundle args = getArguments();
 
         final Source source = (Source) args.getSerializable( SOURCE_KEY );
-
+        
         if( savedInstanceState != null && savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY ) != null )
             adapter = new TransactionListAdapter(
                     (HashMap) savedInstanceState.getSerializable( EXPANSION_SNAPSHOT_KEY )
             );
 
-
         else adapter = new TransactionListAdapter();
 
+        adapter.setItemDotBackgroundResolver( dotBackgroundResolver );
 
-        if( savedInstanceState != null && savedInstanceState.getSerializable(DOT_BACKGROUND_KEY) != null )
-            dotBackgroundResolver = (BackgroundResolver) savedInstanceState.getSerializable(DOT_BACKGROUND_KEY);
-
-        if( dotBackgroundResolver != null )
-            adapter.setItemDotBackgroundResolver(dotBackgroundResolver);
-
-
-        if( savedInstanceState != null && savedInstanceState.getSerializable( HEADER_BACKGROUND_KEY ) != null )
-            headerBackgroundResolver = (HeaderBackgroundResolver) savedInstanceState.getSerializable( HEADER_BACKGROUND_KEY );
-
-        else
+        if( headerBackgroundResolver == null )
             headerBackgroundResolver = new HeaderBackgroundResolver() {
             @Override
             public int getHeaderBackground() {
@@ -128,8 +108,9 @@ public class TransactionFragment extends ListFragment<Transaction> {
 
         adapter.setHeaderBackgroundResolver( headerBackgroundResolver );
 
+        if( itemViewHolderFactory != null )
+            adapter.setItemViewHolderFactory( itemViewHolderFactory );
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -182,8 +163,6 @@ public class TransactionFragment extends ListFragment<Transaction> {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable( EXPANSION_SNAPSHOT_KEY, adapter.getSnapshot() );
-        outState.putSerializable( DOT_BACKGROUND_KEY, dotBackgroundResolver );
-        outState.putSerializable( HEADER_BACKGROUND_KEY, headerBackgroundResolver );
     }
 
     @Override
@@ -201,14 +180,26 @@ public class TransactionFragment extends ListFragment<Transaction> {
 
     public void setItemDotBackgroundResolver(@NonNull final BackgroundResolver dotResolver){
         this.dotBackgroundResolver = dotResolver;
+
+        if( adapter != null )
+            adapter.setItemDotBackgroundResolver( dotBackgroundResolver );
+
     }
 
     public void setHeaderBackgroundResolver(@NonNull final HeaderBackgroundResolver backgroundResolver){
         this.headerBackgroundResolver = backgroundResolver;
+
+        if( adapter != null )
+            adapter.setHeaderBackgroundResolver( headerBackgroundResolver );
+
     }
 
-    public TransactionListAdapter getAdapter() {
-        return adapter;
+    public void setItemViewHolderFactory(@NonNull HolderFactory factory){
+        this.itemViewHolderFactory = factory;
+
+        if( adapter != null )
+            adapter.setItemViewHolderFactory( itemViewHolderFactory );
+
     }
 
     private List<Transaction> getSortedList(@NonNull final List<Transaction> data){
