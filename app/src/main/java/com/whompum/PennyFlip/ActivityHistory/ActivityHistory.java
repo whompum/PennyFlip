@@ -1,7 +1,6 @@
 package com.whompum.PennyFlip.ActivityHistory;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +11,7 @@ import com.whompum.PennyFlip.Money.TimeRange;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Transactions.Adapter.BackgroundResolver;
 import com.whompum.PennyFlip.Transactions.TransactionFragment;
 
 import java.util.Calendar;
@@ -29,6 +29,8 @@ import butterknife.OnClick;
  */
 public class ActivityHistory extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         ActivityHistoryClient {
+
+    public static final String TIMERANGE_KEY = "timerange.ky";
 
     //The controller
     private ActivityHistoryConsumer consumer;
@@ -48,15 +50,44 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
                     .replace( R.id.id_global_container, getExistingFragment() )
                     .commit();
 
-        else
+        else {
+
+            final ListFragment fragment = getNewFragment();
+
+            ((TransactionFragment)fragment).setItemDotBackgroundResolver(new BackgroundResolver() {
+                @Override
+                public int getBackground(int transactionType) {
+                    return R.drawable.graphic_timeline_blue;
+                }
+            });
+
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add( R.id.id_global_container, getNewFragment(), "TAG" )
+                    .add(R.id.id_global_container, fragment, "TAG")
                     .commit();
+        }
 
+        /*
+            Fetch the last used TimeRange object (Cached during a config-change)
+            and re-query with that object. If i can not use that data, fetch using the default
+            which is today, to one week ago.
+         */
 
-        //Fetch default value from today and one week ago.
-        fetch(new TimeRange(System.currentTimeMillis(), Timestamp.fromPastProjection(6).getMillis()));
+        if( savedInstanceState != null && savedInstanceState.getParcelable( TIMERANGE_KEY ) != null )
+            fetch( (TimeRange) savedInstanceState.getParcelable( TIMERANGE_KEY ) );
+        else
+            fetch(new TimeRange(System.currentTimeMillis(), Timestamp.fromPastProjection(6).getMillis()));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(
+                TIMERANGE_KEY,
+                ((HistoryController)consumer).getLastKnownTimerange()
+        );
+
     }
 
     @Override
