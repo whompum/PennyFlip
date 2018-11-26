@@ -13,9 +13,11 @@ import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.DataBind;
 import com.whompum.PennyFlip.ListUtils.AdapterItem;
 import com.whompum.PennyFlip.ListUtils.OnItemSelected;
 import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.HolderFactory;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHeaderHolder;
 import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionHolder;
 import com.whompum.PennyFlip.R;
+import com.whompum.PennyFlip.Transactions.Adapter.ViewHolder.TransactionViewHolder;
 import com.whompum.PennyFlip.Transactions.Data.ExpansionSnapshotPredicate;
 import com.whompum.PennyFlip.Transactions.Data.TransactionsGroupConverter;
 import com.whompum.PennyFlip.Transactions.Decoration.TransactionStickyHeaders;
@@ -42,6 +44,8 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     protected BackgroundResolver dotHighlightResolver;
     protected HeaderBackgroundResolver headerBackgroundResolver;
+
+    protected HolderFactory itemViewHolderFactory;
 
     public TransactionListAdapter(){
         this( new HashMap<Long, Boolean>() );
@@ -94,9 +98,18 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     protected RecyclerView.ViewHolder getItemViewHolder(@NonNull final LayoutInflater inflater,
                                                         @NonNull final ViewGroup parent){
-        return new TransactionHolder(
+
+        RecyclerView.ViewHolder holder = null;
+
+        if( itemViewHolderFactory != null )
+            holder = itemViewHolderFactory.getHolder( inflater, parent );
+
+        if( holder == null )
+            holder = new TransactionHolder(
                 inflater.inflate( R.layout.transaction_list_item, parent, false )
-               );
+            );
+
+        return holder;
     }
 
     protected RecyclerView.ViewHolder getHeaderViewHolder(@NonNull final LayoutInflater inflater,
@@ -118,10 +131,10 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             holder.itemView.setAlpha( 1 );
 
         if(viewType == DATA)
-            ((DataBind<TransactionsContent>)holder).bind( ((TransactionsContent)item) );
+            ((TransactionViewHolder<TransactionsContent>)holder).bind( (TransactionsContent) item );
 
         else if(viewType == HEADER)
-            ((DataBind<TransactionsGroup>)holder).bind((TransactionsGroup) item);
+            ((TransactionViewHolder<TransactionsGroup>)holder).bind( (TransactionsGroup) item);
     }
 
     @Override
@@ -148,6 +161,10 @@ public class TransactionListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void setHeaderBackgroundResolver(@NonNull final HeaderBackgroundResolver backgroundResolver){
         this.headerBackgroundResolver = backgroundResolver;
+    }
+
+    public void setItemViewHolderFactory(@NonNull final HolderFactory factory){
+        this.itemViewHolderFactory = factory;
     }
 
     public AdapterItem getDataAt(final int position){
