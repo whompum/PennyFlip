@@ -2,10 +2,8 @@ package com.whompum.PennyFlip.Transactions.Adapter;
 
 import android.support.annotation.DrawableRes;
 
-import java.io.Serializable;
-
-public abstract class BackgroundResolver implements Serializable {
+public interface BackgroundResolver{
 
     @DrawableRes
-    public abstract int getBackground(final int transactionType);
+    int getBackground(final int transactionType);
 }
