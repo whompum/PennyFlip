@@ -33,6 +33,8 @@ public class HistoryController implements ActivityHistoryConsumer, Responder<Lis
 
     private MoneyDatabase database;
 
+    private TimeRange lastUsedTimeRange;
+
     public HistoryController(@NonNull final Context context, @NonNull final ActivityHistoryClient client){
         this.client = client;
         database = DatabaseUtils.getMoneyDatabase( context );
@@ -63,6 +65,8 @@ public class HistoryController implements ActivityHistoryConsumer, Responder<Lis
         deliverable.attachCancelledResponder( new LoggerResponder( HistoryController.class ) );
         deliverable.attachResponder( this );
 
+        this.lastUsedTimeRange = range;
+
     }
 
     @Override
@@ -78,4 +82,7 @@ public class HistoryController implements ActivityHistoryConsumer, Responder<Lis
     return userStartDate;
     }
 
+    public TimeRange getLastKnownTimerange() {
+        return lastUsedTimeRange;
+    }
 }
