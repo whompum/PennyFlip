@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.whompum.PennyFlip.Widgets.HeaderItemLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingStart="@dimen/dimen_padding_hor_large"
+    android:paddingEnd="@dimen/dimen_padding_hor_large"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/local_timeline_dot"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/graphic_timeline_add"
+        android:layout_width="10dp"
+        android:layout_height="10dp"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/dimen_padding_hor_large"
+        android:paddingStart="@dimen/dimen_padding_hor_large"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            tools:text="12:59 PM"
+            android:layout_gravity="center_vertical"
+            style="@style/StyleTimestamp"/>
+
+        <TextView
+            tools:text="Car Wash"
+            android:id="@+id/id_local_source_title"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/dimen_text_mediano"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <TextView
+        tools:text="Transaction Name"
+        android:id="@id/id_global_title"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/dimen_text_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+        tools:text="$44.72"
+        style="@style/StyleCurrencyEditText.Medium"
+        android:gravity="end"
+        android:layout_width="wrap_content"
+        android:textColor="@color/light_green"
+        android:layout_gravity="end|center"/>
+
+    </LinearLayout>
+
+</com.whompum.PennyFlip.Widgets.HeaderItemLinearLayout>
