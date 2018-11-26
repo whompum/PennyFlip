@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
+import com.whompum.PennyFlip.Transactions.Adapter.BackgroundResolver;
 import com.whompum.PennyFlip.Transactions.Adapter.TransactionsContent;
 import com.whompum.PennyFlip.R;
 
@@ -24,12 +25,14 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
     private View timelineDot;
     private CurrencyEditText transactionAmount;
 
+    private BackgroundResolver dotHighlightResolver;
+
     public TransactionHolder(final View layout){
         super(layout);
-        transactionLastUpdate = layout.findViewById(R.id.id_global_timestamp);
-        transactionSource = layout.findViewById(R.id.id_global_title);
-        transactionAmount = layout.findViewById(R.id.id_global_total_display);
-        timelineDot = layout.findViewById( R.id.local_timeline_dot);
+        transactionLastUpdate = layout.findViewById( R.id.id_global_timestamp );
+        transactionSource = layout.findViewById( R.id.id_global_title );
+        transactionAmount = layout.findViewById( R.id.id_global_total_display );
+        timelineDot = layout.findViewById( R.id.local_timeline_dot );
     }
 
     @Override
@@ -37,11 +40,8 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
 
         final Transaction t = item.getTransaction();
 
-        if( t.getTransactionType() == TransactionType.ADD )
-            timelineDot.setBackgroundResource( R.drawable.graphic_timeline_add );
-
-        if( t.getTransactionType() == TransactionType.SPEND )
-            timelineDot.setBackgroundResource( R.drawable.graphic_timeline_spend );
+        if ( dotHighlightResolver != null )
+            timelineDot.setBackgroundResource( dotHighlightResolver.getBackground( t.getTransactionType() ) );
 
         transactionLastUpdate.setText(Timestamp.from(t.getTimestamp()).simpleTime());
         transactionSource.setText(t.getTitle());
@@ -52,6 +52,10 @@ public class TransactionHolder extends RecyclerView.ViewHolder implements DataBi
 
         else
             setTextColor( resolveColorPreMarshmallow( itemView.getContext(), t ) );
+    }
+
+    public void setItemDotHighlightResolver(@NonNull final BackgroundResolver dotResolver){
+        this.dotHighlightResolver = dotResolver;
     }
 
     private void setTextColor(final int color){
