@@ -86,4 +86,6 @@
      -->
     <dimen name="dimen_source_list_null_data_size">20dp</dimen>
 
+    <dimen name="dimen_today_transaction_height">120dp</dimen>
+
 </resources>

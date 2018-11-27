@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="dimen_today_transaction_height">250dp</dimen>
+    <dimen name="dimen_today_transaction_height">240dp</dimen>
 </resources>
