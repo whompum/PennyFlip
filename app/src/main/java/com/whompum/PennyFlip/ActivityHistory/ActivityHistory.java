@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.whompum.PennyFlip.ListUtils.ListFragment;
@@ -26,6 +27,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -42,6 +44,9 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
     //The controller
     private ActivityHistoryConsumer consumer;
+
+    @BindView(R.id.id_local_today_date_to_display) public TextView toRangeDateDisplay;
+    @BindView(R.id.id_local_from_date_display) public TextView fromRangeDateDisplay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,9 +68,9 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
          */
 
         if( savedInstanceState != null && savedInstanceState.getParcelable( TIMERANGE_KEY ) != null )
-            fetch( (TimeRange) savedInstanceState.getParcelable( TIMERANGE_KEY ) );
+            query( (TimeRange) savedInstanceState.getParcelable( TIMERANGE_KEY ) );
         else
-            fetch(new TimeRange(System.currentTimeMillis(), Timestamp.fromPastProjection(6).getMillis()));
+            query( new TimeRange( System.currentTimeMillis(), Timestamp.fromPastProjection(6).getMillis() ) );
     }
 
     private void commitFragment(@NonNull final FragmentTransaction transaction, @NonNull final Fragment fragment){
@@ -122,12 +127,37 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
         cielMillis = calendar.getTimeInMillis();
 
-        //Now clean the data using Timestamp
+        //Now clean the data using Timestamp &&
+        //set displays
 
-        floorMillis = Timestamp.from(floorMillis).getStartOfDay();
-        cielMillis = Timestamp.from(cielMillis).getStartOfDay()+(    TimeUnit.DAYS.toMillis(1)- 1L);
+        query( new TimeRange(
+                Timestamp.from(floorMillis).getStartOfDay(),
+                Timestamp.from(cielMillis).getStartOfDay()+( TimeUnit.DAYS.toMillis( 1 )- 1L )
+        ));
+    }
 
-        fetch( new TimeRange(floorMillis, cielMillis) );
+    private void query(@NonNull final TimeRange range){
+        setRangeDisplays( range );
+        fetch( range );
+    }
+
+    private void setRangeDisplays(@NonNull final TimeRange range){
+
+        final Timestamp from = Timestamp.from( range.getMillisFloor() );
+        final Timestamp to = Timestamp.from( range.getMillisCiel() );
+
+        if( from.getStringPreferentialDate() != -1 )
+            fromRangeDateDisplay.setText( from.getStringPreferentialDate() );
+
+        else
+            fromRangeDateDisplay.setText( from.simpleDate() );
+
+        if( to.getStringPreferentialDate() != -1 )
+            toRangeDateDisplay.setText( to.getStringPreferentialDate() );
+
+        else
+            toRangeDateDisplay.setText( to.simpleDate() );
+
     }
 
     @Override
