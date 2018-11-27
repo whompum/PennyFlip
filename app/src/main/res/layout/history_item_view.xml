@@ -17,8 +17,8 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:paddingEnd="@dimen/dimen_padding_hor_large"
-        android:paddingStart="@dimen/dimen_padding_hor_large"
+        android:paddingEnd="@dimen/dimen_padding_hor_small"
+        android:layout_marginStart="@dimen/dimen_padding_hor_large"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
@@ -39,6 +39,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginEnd="@dimen/dimen_padding_hor_base"
+        android:paddingStart="@dimen/dimen_padding_hor_small"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -46,7 +48,7 @@
     <TextView
         tools:text="Transaction Name"
         android:id="@id/id_global_title"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="end"
         android:textSize="@dimen/dimen_text_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
