@@ -10,8 +10,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class TodayFragmentAdapter extends FragmentPagerAdapter {
 
-    private static final TodayFragment addFragment = TodayAddFragment.newInstance(null);
-    private static final TodayFragment spendFragment = TodaySpendFragment.newInstance(null);
+    private final TodayFragment addFragment = TodayAddFragment.newInstance(null);
+    private final TodayFragment spendFragment = TodaySpendFragment.newInstance(null);
 
 
     public TodayFragmentAdapter(final FragmentManager fragMan){
