@@ -109,4 +109,11 @@
     <string name="string_to">to:</string>
     <string name="string_from">from:</string>
 
+    <!-- Texts for the Alert when spending transaction is more than in wallet.-->
+    <string name="string_spending_alert_msg">It looks like you don\'t have enough funds for this transaction.
+        Your account balance will be zero afterwards. Would you like to continue?</string>
+
+    <string name="string_transaction_alert">Transaction Alert</string>
+    <string name="string_understand">Understand</string>
+
 </resources>
