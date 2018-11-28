@@ -1,10 +1,10 @@
-package com.whompum.PennyFlip.Dashboard;
+package com.whompum.PennyFlip.Dashboard.Fragments.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Dashboard.Fragments.TodayFragment;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 
 public class TodayFragmentAdapter extends FragmentPagerAdapter {

@@ -1,6 +1,5 @@
-package com.whompum.PennyFlip.Dashboard;
+package com.whompum.PennyFlip.Dashboard.Fragments;
 
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +37,6 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
 
     @LayoutRes
     public static final int LAYOUT = R.layout.dashboard_today_layout;
-
-    @ColorRes
-    protected int VALUE_TEXT_COLOR = R.color.dark_grey;
 
     @BindView(R.id.id_global_total_display) protected CurrencyEditText value;
 

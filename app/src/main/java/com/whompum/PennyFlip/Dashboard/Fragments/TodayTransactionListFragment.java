@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Dashboard;
+package com.whompum.PennyFlip.Dashboard.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.whompum.PennyFlip.Dashboard.Fragments.Adapter.TodayTransactionAdapter;
 import com.whompum.PennyFlip.ListUtils.ListFragment;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;

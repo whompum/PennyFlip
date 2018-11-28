@@ -1,4 +1,4 @@
-package com.whompum.PennyFlip.Dashboard;
+package com.whompum.PennyFlip.Dashboard.Fragments.Adapter;
 
 import android.os.Build;
 import android.support.v7.widget.CardView;
