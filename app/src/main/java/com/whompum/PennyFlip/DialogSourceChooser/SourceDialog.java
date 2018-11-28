@@ -201,8 +201,6 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
         //Convert List<Source> to AdapterSelecteable
         //Swap Data set of sourceListAdapter
 
-        Log.i("SOURCE_DIALOG", "NUMBER OF RESULTS: " + data.size());
-
         final AdapterSelecteable<SourceWrapper> wrappers = new AdapterSelecteable<>();
 
         for( Source s: data )
@@ -351,7 +349,7 @@ public abstract class SourceDialog extends DialogFragment implements OnItemSelec
         else
             populate(s);
 
-        //Check if text is usable. If not, set S to equal ugly.
+        //Check if text is usable. If not, set non usable flag.
 
         if( s.replaceAll("\\s", "").length() == 0 || s.contains("%") )
             s = SourceWrapper.FLAG_NON_USABLE; //We don't allow sources to be identified by whitespaces, or %.

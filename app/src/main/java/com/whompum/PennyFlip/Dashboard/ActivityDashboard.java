@@ -57,7 +57,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
     private Vibrator vibrator;
 
-    private PennyDialog pennyDialog; //Reference is stored so we can prevent accidental instantiation overload
+    private PennyDialog pennyDialog; //Reference is stored so we can prevent multiple instances from existing
 
     @BindColor(R.color.light_green)
     protected int sClr;
