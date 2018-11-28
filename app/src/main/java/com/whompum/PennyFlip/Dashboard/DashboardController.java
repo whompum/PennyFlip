@@ -1,84 +1,103 @@
 package com.whompum.PennyFlip.Dashboard;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.whompum.PennyFlip.Money.DatabaseUtils;
 import com.whompum.PennyFlip.Money.MoneyDatabase;
-import com.whompum.PennyFlip.Money.Queries.Deliverable;
-import com.whompum.PennyFlip.Money.Queries.LoggerResponder;
 import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
 import com.whompum.PennyFlip.Money.Queries.Responder;
+import com.whompum.PennyFlip.Money.Queries.TransactionQueries;
 import com.whompum.PennyFlip.Money.Queries.WalletQueries;
 import com.whompum.PennyFlip.Money.Queries.WalletRequestBuilder;
+import com.whompum.PennyFlip.Money.TimeRange;
+import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
+import com.whompum.PennyFlip.Money.Transaction.TransactionQueryKeys;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.Money.Writes.MoneyWriter;
 import com.whompum.PennyFlip.Money.Writes.RoomMoneyWriter;
 import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
+import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Time.UserStartDate;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Wallet.Wallet;
 
-public class DashboardController implements ActivityDashboardConsumer, Observer<Wallet>{
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-    //private LocalMoneyProvider repo;
+public class DashboardController implements ActivityDashboardConsumer {
 
     private DashboardClient client;
 
     private MoneyWriter writer;
     private MoneyDatabase database;
 
-    public DashboardController(@NonNull final Context context){
-        this(context, null);
-    }
+    private Wallet wallet;
 
     /**
      *
      * @param context used to instantiate a Repo object
-     * @param o Used to track changes occuring to the Wallet
      */
-    public DashboardController(@NonNull final Context context, @Nullable LifecycleOwner o){
+    public DashboardController(@NonNull final Context context, @NonNull final DashboardClient client){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
-        //repo = LocalMoneyProvider.obtain(context);
+
+        this.client = client;
 
         this.database = DatabaseUtils.getMoneyDatabase( context );
 
         this.writer = new RoomMoneyWriter( database );
 
-        if( o != null ) {
-            bindWalletObserver( o );
-        }
+        query();
+
+    }
+
+    private void query(){
+
+        new WalletQueries()
+                .queryObservable( new WalletRequestBuilder().getQuery(), database )
+                .attachResponder(new Responder<LiveData<Wallet>>() {
+                    @Override
+                    public void onActionResponse(@NonNull LiveData<Wallet> data) {
+                        data.observe( client.getLifecycleOwner(), walletObserver );
+                    }
+                });
+
+        final MoneyRequest.QueryBuilder request = new MoneyRequest.QueryBuilder( TransactionQueryKeys.KEYS );
+                request.setQueryParameter(  TransactionQueryKeys.TIMERANGE, fetchCurrentTimerange() );
+
+        new TransactionQueries()
+                .queryObservableObservableGroup( request.getQuery(), database )
+                    .attachResponder(new Responder<LiveData<List<Transaction>>>() {
+                        @Override
+                        public void onActionResponse(@NonNull LiveData<List<Transaction>> data) {
+                            data.observe( client.getLifecycleOwner(), transactionObserver );
+                        }
+                    });
+
+    }
+
+    private TimeRange fetchCurrentTimerange(){
+
+        final long today = Timestamp.now().getStartOfDay();
+        final long tomorrow = Timestamp.fromProjection( 1 ).getStartOfDay(); //Manana
+
+      return new TimeRange( today, tomorrow );
+    }
+
+
+    @Override
+    public long newWalletWithTransaction(@NonNull Transaction transaction) {
+        return wallet.getValue() - transaction.getAmount();
     }
 
     @Override
-    public void bindClient(@NonNull DashboardClient c) {
-        this.client = c;
-    }
-
-    @Override
-    public void bindWalletObserver(@NonNull final LifecycleOwner o){
-        //Fetch an observable wallet, and register the lifecycle owner on it.
-
-        final Deliverable<LiveData<Wallet>> deliverable =
-                new WalletQueries().queryObservable( new WalletRequestBuilder().getQuery(), database );
-
-        deliverable.attachResponder(new Responder<LiveData<Wallet>>() {
-            @Override
-            public void onActionResponse(@NonNull LiveData<Wallet> data) {
-                data.observe( o, DashboardController.this );
-            }
-        });
-
-        deliverable.attachCancelledResponder( new LoggerResponder( DashboardController.class ) );
-
-    }
-
     public void saveTransaction(@NonNull final SourceWrapper w, @NonNull final Transaction t){
+
         //Save the source first, if its new
         if( ( w.getTag().equals( SourceWrapper.TAG.NEW ) ) ) {
 
@@ -93,11 +112,40 @@ public class DashboardController implements ActivityDashboardConsumer, Observer<
         writer.saveTransaction( t );
     }
 
-    @Override
-    public void onChanged(@Nullable Wallet wallet) {
+    private Observer<Wallet> walletObserver = new Observer<Wallet>() {
+        @Override
+        public void onChanged(@Nullable Wallet wallet) {
+            if( wallet != null ) {
+                DashboardController.this.wallet = wallet;
 
-        if( wallet != null )
-            if( client != null )
-                client.onWalletChanged( wallet.getValue() );
-    }
+                if( client != null )
+                    client.onWalletChanged( wallet.getValue() );
+            }
+        }
+    };
+
+    private Observer<List<Transaction>> transactionObserver = new Observer<List<Transaction>>() {
+        @Override
+        public void onChanged(@Nullable List<Transaction> transactions) {
+
+            final List<Transaction> addData = new ArrayList<>();
+            final List<Transaction> spendData = new ArrayList<>();
+
+            if( transactions != null )
+                for( Transaction t: transactions ) {
+                    if (t.getTransactionType() == TransactionType.ADD)
+                        addData.add(t);
+                    else if (t.getTransactionType() == TransactionType.SPEND)
+                        spendData.add(t);
+                }
+
+            Collections.sort( addData, new DescendingSort() );
+            Collections.sort( spendData, new DescendingSort() );
+
+            client.handleAddTransactions( addData );
+            client.handleSpendTransactions( spendData );
+
+        }
+    };
+
 }
