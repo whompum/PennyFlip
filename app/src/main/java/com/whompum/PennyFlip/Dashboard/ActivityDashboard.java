@@ -28,6 +28,7 @@ import com.whompum.PennyFlip.Dashboard.Fragments.Adapter.TodayFragmentAdapter;
 import com.whompum.PennyFlip.Dashboard.Fragments.TodayFragment;
 import com.whompum.PennyFlip.DialogSourceChooser.OnSourceItemSelected;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.PennyListener;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
 import com.whompum.PennyFlip.ActivitySourceList.ActivitySourceList;
@@ -228,7 +229,7 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         startActivity(new Intent(this, ActivitySourceList.class));
     }
 
-    private final PennyDialog.CashChangeListener cashListener = new PennyDialog.CashChangeListener() {
+    private final PennyListener cashListener = new PennyListener() {
         @Override
         public void onPenniesChange(final long pennies) {
 
@@ -249,14 +250,9 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
             }, 500L); //Delayed so the PennyDialog can finish its exit animation.
 
         }
-
-        @Override
-        public void onCashChange(String s) {
-
-        }
     };
 
-    private final PennyDialog.CashChangeListener minusListener = new PennyDialog.CashChangeListener() {
+    private final PennyListener minusListener = new PennyListener() {
         @Override
         public void onPenniesChange(final long pennies) {
 
@@ -279,11 +275,6 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
                     });
                 }
             }, 500L);
-
-        }
-
-        @Override
-        public void onCashChange(String s) {
 
         }
     };
