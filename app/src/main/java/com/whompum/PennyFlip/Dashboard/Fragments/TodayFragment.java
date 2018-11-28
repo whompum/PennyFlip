@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,9 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
                 resolveColor( transactionType )
         );
 
-        getChildFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+        final FragmentManager fragmentManager = getChildFragmentManager();
+
+        fragmentManager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
             @Override
             public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
                 super.onFragmentAttached(fm, f, context);
@@ -93,8 +96,9 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
             }
         }, true);
 
-        commitChildFragment( getChildFragmentManager().beginTransaction() );
-        
+        commitChildFragment( fragmentManager.beginTransaction() );
+
+
     }
 
     @Override
@@ -140,16 +144,17 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     }
 
     private void commitChildFragment(@NonNull final FragmentTransaction fragTrans){
+        commitChildFragment( fragTrans, ( fragmentExists() ) ? getExistingFragment() : getNewFragment() );
+    }
 
-       fragTrans.replace(
-               R.id.id_local_fragment_container,
-               ( fragmentExists() ) ? getExistingFragment() : getNewFragment(),
-               "TAG"
-               );
-
+    private void commitChildFragment(@NonNull final FragmentTransaction fragTrans, @NonNull final Fragment frag){
+        fragTrans.replace(
+                R.id.id_local_fragment_container,
+                frag,
+                "TAG"
+        );
 
         fragTrans.commit();
-
     }
 
     private boolean fragmentExists(){
@@ -157,7 +162,12 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     }
 
     private ListFragment<Transaction> getNewFragment(){
-        return TodayTransactionListFragment.newInstance( getArguments().getInt( TRANSACTION_TYPE_KEY ) );
+        final ListFragment<Transaction> fragment =
+                TodayTransactionListFragment.newInstance( getArguments().getInt( TRANSACTION_TYPE_KEY ) );
+
+        fragment.setRetainInstance( true );
+
+        return fragment;
     }
 
     @Nullable
