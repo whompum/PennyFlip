@@ -9,8 +9,8 @@ import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 
 public class TodayFragmentAdapter extends FragmentPagerAdapter {
 
-    private final TodayFragment addFragment = TodayAddFragment.newInstance( TransactionType.ADD );
-    private final TodayFragment spendFragment = TodaySpendFragment.newInstance( TransactionType.SPEND );
+    private final TodayFragment addFragment = TodayFragment.newInstance( TransactionType.ADD );
+    private final TodayFragment spendFragment = TodayFragment.newInstance( TransactionType.SPEND );
 
 
     public TodayFragmentAdapter(final FragmentManager fragMan){
