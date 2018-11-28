@@ -2,6 +2,7 @@ package com.whompum.PennyFlip.Dashboard;
 
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
@@ -14,13 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
-import com.whompum.PennyFlip.FragmentInflationObserver;
-import com.whompum.PennyFlip.InflationObserver;
-import com.whompum.PennyFlip.InflationOperation;
 import com.whompum.PennyFlip.ListUtils.CollectionQueryReceiver;
 import com.whompum.PennyFlip.ListUtils.ListFragment;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 
 import java.util.Collection;
@@ -42,8 +42,6 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
 
     @ColorRes
     protected int VALUE_TEXT_COLOR = R.color.dark_grey;
-
-    protected int transactionType = Integer.MIN_VALUE;
 
     @BindView(R.id.id_global_total_display) protected CurrencyEditText value;
 
@@ -76,12 +74,17 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+        final int transactionType = getArguments().getInt( TRANSACTION_TYPE_KEY );
+
+        ((EditText)view.findViewById( R.id.id_global_total_display )).setTextColor(
+                resolveColor( getContext(), transactionType )
+        );
+
         getChildFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
             @Override
             public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
                 super.onFragmentAttached(fm, f, context);
                 observer.setAttached( true );
-
             }
 
             @Override
@@ -106,13 +109,9 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     public void onNoData() {
 
         if( getView() != null ) {
-
-            Log.i("FRAG_FIX", "TodayFragment: onNoData()");
-
-            if( observer.isAttached ) {
-                Log.i("FRAG_FIX", "TodayFragment: onNoData() calling ListFrags onNoData");
+            if( observer.isAttached )
                 getExistingFragment().onNoData();
-            }
+
         }else
             observer.subscribe(new FragmentStateOperation() {
                 @Override
@@ -184,6 +183,20 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
 
     }
 
+    private int resolveColor(@NonNull final Context ctx, @ColorRes final int transactionType){
+
+            int color;
+            int colorId = ( transactionType == TransactionType.ADD ) ? R.color.dark_green : R.color.dark_red;
+
+            if(Build.VERSION.SDK_INT >= 23)
+                color = ctx.getColor( colorId );
+            else
+                color = ctx.getResources().getColor( colorId );
+
+            return color;
+    }
+
+
     private static class FragmentStateListener{
 
         private boolean isAttached = false;
@@ -200,15 +213,9 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
 
         }
 
-        public boolean getIsAttached(){
-            return isAttached;
-        }
-
         public void subscribe(@NonNull final  FragmentStateOperation o){
             observers.add( o );
         }
-
-
     }
 
     private interface FragmentStateOperation{
