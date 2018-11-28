@@ -3,6 +3,7 @@ package com.whompum.PennyFlip.Dashboard;
 import android.animation.ArgbEvaluator;
 import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.VibrationEffect;
@@ -13,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -268,7 +270,11 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
                     dialog.registerItemSelectedListener(new OnSourceItemSelected() {
                         @Override
                         public void onSourceItemSelected(@NonNull SourceWrapper wrapper, @NonNull Transaction transaction) {
-                            consumer.saveTransaction(wrapper, transaction);
+
+                            if( consumer.newWalletWithTransaction( transaction ) < 0L )
+                                alertNegativeTransaction( wrapper, transaction );
+                            else
+                                consumer.saveTransaction(wrapper, transaction);
                         }
                     });
                 }
@@ -281,6 +287,26 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
         }
     };
+
+    public void alertNegativeTransaction(@NonNull final SourceWrapper wrapper, @NonNull final Transaction transaction){
+
+        new AlertDialog.Builder( this )
+            .setTitle( R.string.string_transaction_alert )
+            .setMessage( R.string.string_spending_alert_msg )
+            .setNegativeButton( R.string.string_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            } )
+
+            .setPositiveButton( R.string.string_understand, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   consumer.saveTransaction( wrapper, transaction );
+                }
+            } ).show();
+    }
 
     private Bundle generateTransactionDialogArgs(final long pennies){
         final Bundle bundle = new Bundle();
