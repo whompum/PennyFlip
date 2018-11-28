@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -39,6 +40,9 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     public static final int LAYOUT = R.layout.dashboard_today_layout;
 
     @BindView(R.id.id_global_total_display) protected CurrencyEditText value;
+
+    @BindColor(R.color.dark_green) public int clrAdd;
+    @BindColor(R.color.dark_red) public int clrSpend;
 
     private Unbinder unbinder;
 
@@ -72,7 +76,7 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
         final int transactionType = getArguments().getInt( TRANSACTION_TYPE_KEY );
 
         ((EditText)view.findViewById( R.id.id_global_total_display )).setTextColor(
-                resolveColor( getContext(), transactionType )
+                resolveColor( transactionType )
         );
 
         getChildFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
@@ -178,17 +182,15 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
 
     }
 
-    private int resolveColor(@NonNull final Context ctx, @ColorRes final int transactionType){
+    private int resolveColor(@ColorRes final int transactionType){
 
-            int color;
-            int colorId = ( transactionType == TransactionType.ADD ) ? R.color.dark_green : R.color.dark_red;
+        if( transactionType == TransactionType.ADD )
+            return clrAdd;
 
-            if(Build.VERSION.SDK_INT >= 23)
-                color = ctx.getColor( colorId );
-            else
-                color = ctx.getResources().getColor( colorId );
+        else if( transactionType == TransactionType.SPEND )
+            return clrSpend;
 
-            return color;
+        return 0;
     }
 
 
