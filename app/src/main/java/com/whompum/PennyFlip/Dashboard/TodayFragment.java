@@ -1,36 +1,31 @@
 package com.whompum.PennyFlip.Dashboard;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.graphics.Rect;
-import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.Money.DatabaseUtils;
-import com.whompum.PennyFlip.Money.Queries.Deliverable;
-import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
-import com.whompum.PennyFlip.Money.Queries.Responder;
-import com.whompum.PennyFlip.Money.Queries.TransactionQueries;
-import com.whompum.PennyFlip.Money.TimeRange;
+import com.whompum.PennyFlip.FragmentInflationObserver;
+import com.whompum.PennyFlip.InflationObserver;
+import com.whompum.PennyFlip.InflationOperation;
+import com.whompum.PennyFlip.ListUtils.CollectionQueryReceiver;
+import com.whompum.PennyFlip.ListUtils.ListFragment;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
-import com.whompum.PennyFlip.Money.Transaction.TransactionQueryBuilder;
-import com.whompum.PennyFlip.Money.Transaction.TransactionQueryKeys;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Money.Transaction.DescendingSort;
 
-import java.util.Collections;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,8 +33,9 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
+public class TodayFragment extends Fragment implements CollectionQueryReceiver<Transaction> {
 
-public class TodayFragment extends Fragment implements Observer<List<Transaction>>{
+    public static final String TRANSACTION_TYPE_KEY = "transactionType.ky";
 
     @LayoutRes
     public static final int LAYOUT = R.layout.dashboard_today_layout;
@@ -51,22 +47,21 @@ public class TodayFragment extends Fragment implements Observer<List<Transaction
 
     @BindView(R.id.id_global_total_display) protected CurrencyEditText value;
 
-    @BindView(R.id.id_global_list)
-    protected RecyclerView transactionsList;
-
-    private RecyclerView.Adapter transactionsAdapter;
-
-    //Touch delegate for the TransactionsList
-    final Rect delegateBoundary = new Rect();
-
     private Unbinder unbinder;
 
+    private FragmentStateListener observer = new FragmentStateListener();
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        observeTransactions();
+    public static TodayFragment newInstance(@NonNull final Integer transactionType){
+        final TodayFragment fragment = new TodayFragment();
+
+        final Bundle args = new Bundle();
+        args.putInt( TRANSACTION_TYPE_KEY, transactionType );
+
+        fragment.setArguments( args );
+
+        return fragment;
     }
+
 
     @Nullable
     @Override
@@ -75,22 +70,29 @@ public class TodayFragment extends Fragment implements Observer<List<Transaction
 
         unbinder = ButterKnife.bind( this, layout );
 
-        this.transactionsList.setLayoutManager( new LinearLayoutManager( getContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false ) );
-
-        this.transactionsAdapter = new TodayTransactionAdapter( getContext() );
-
-        transactionsList.setAdapter( transactionsAdapter );
-
-        value.setTextColor( getColor( VALUE_TEXT_COLOR ) );
-
-        //Trifecta approach to increasing the lists draggable bounds
-        layout.post( delegate ); //Post a runnable for to be ran AFTER the the layout passes.
-        layout.setOnTouchListener( delegateListener );
-        transactionsList.requestDisallowInterceptTouchEvent( true );
-
     return layout;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        getChildFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+            @Override
+            public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
+                super.onFragmentAttached(fm, f, context);
+                observer.setAttached( true );
+
+            }
+
+            @Override
+            public void onFragmentDetached(FragmentManager fm, Fragment f) {
+                super.onFragmentDetached(fm, f);
+                observer.setAttached( false );
+            }
+        }, true);
+
+        commitChildFragment( getChildFragmentManager().beginTransaction() );
+        
     }
 
     @Override
@@ -101,48 +103,70 @@ public class TodayFragment extends Fragment implements Observer<List<Transaction
 
 
     @Override
-    public void onChanged(@Nullable List<Transaction> transactions) {
+    public void onNoData() {
 
-        if( transactions == null || transactionsAdapter == null ) return;
+        if( getView() != null ) {
 
-       Collections.sort( transactions, new DescendingSort() );
+            Log.i("FRAG_FIX", "TodayFragment: onNoData()");
 
-        /**
-         * set anchor at 0, check if any index has a larger value than index 0.
-         * If yes, then anchor represents that index. Else, nothing.
-         * After one full iteration where we found the best anchor to use.
-         */
-
-        ((TodayTransactionAdapter)transactionsAdapter).swapDataset( transactions );
-        updateValue( transactions );
-    }
-
-    private void observeTransactions(){
-
-        final MoneyRequest request = new TransactionQueryBuilder()
-                .setQueryParameter( TransactionQueryKeys.TRANSACTION_TYPE, transactionType )
-                .setQueryParameter( TransactionQueryKeys.TIMERANGE, fetchQueryTimeRange() )
-                .getQuery();
-
-        final Deliverable<LiveData<List<Transaction>>> data = new TransactionQueries()
-                .queryObservableObservableGroup( request, DatabaseUtils.getMoneyDatabase( getContext() ) );
-
-        data.attachResponder(new Responder<LiveData<List<Transaction>>>() {
-            @Override
-            public void onActionResponse(@NonNull LiveData<List<Transaction>> data) {
-                data.observe( TodayFragment.this, TodayFragment.this );
+            if( observer.isAttached ) {
+                Log.i("FRAG_FIX", "TodayFragment: onNoData() calling ListFrags onNoData");
+                getExistingFragment().onNoData();
             }
-        });
+        }else
+            observer.subscribe(new FragmentStateOperation() {
+                @Override
+                public void onAttached() {
+                    onNoData();
+                }
+            });
+
     }
 
-    //Creates a TimeRange at our floor and ciel for the day
-    private TimeRange fetchQueryTimeRange(){
+    @Override
+    public void display(@NonNull final Collection<Transaction> data) {
 
-        final long today = Timestamp.now().getStartOfDay();
-        final long tomorrow = Timestamp.fromProjection( 1 ).getStartOfDay(); //Manana
+        if( getView() != null ) {
 
-        return new TimeRange( today, tomorrow );
+            updateValue( (List<Transaction>)data );
+
+            if ( observer.isAttached )
+                getExistingFragment().display(data);
+        }else
+            observer.subscribe(new FragmentStateOperation() {
+                @Override
+                public void onAttached() {
+                    display( data );
+                }
+            });
     }
+
+    private void commitChildFragment(@NonNull final FragmentTransaction fragTrans){
+
+       fragTrans.replace(
+               R.id.id_local_fragment_container,
+               ( fragmentExists() ) ? getExistingFragment() : getNewFragment(),
+               "TAG"
+               );
+
+
+        fragTrans.commit();
+
+    }
+
+    private boolean fragmentExists(){
+        return getChildFragmentManager().findFragmentByTag("TAG") != null;
+    }
+
+    private ListFragment<Transaction> getNewFragment(){
+        return TodayTransactionListFragment.newInstance( getArguments().getInt( TRANSACTION_TYPE_KEY ) );
+    }
+
+    @Nullable
+    private ListFragment<Transaction> getExistingFragment(){
+        return (ListFragment<Transaction>) getChildFragmentManager().findFragmentByTag("TAG");
+    }
+
 
     /**
      * Updates the Total Display value for Today's Transactions
@@ -160,47 +184,37 @@ public class TodayFragment extends Fragment implements Observer<List<Transaction
 
     }
 
-    protected void setValue(final long pennies){
-        setValue( String.valueOf( pennies ) );
-    }
+    private static class FragmentStateListener{
 
-    protected void setValue(final String value){
-        this.value.setText( value );
-    }
+        private boolean isAttached = false;
 
-    private int getColor(@ColorRes final int colorRes){
+        private HashSet<FragmentStateOperation> observers = new HashSet<>();
 
-        if( Build.VERSION.SDK_INT >= 23 )
-            return getContext().getColor( colorRes );
-        else
-            return getContext().getResources().getColor( colorRes );
+        public void setAttached(final boolean isAttached){
+            this.isAttached = isAttached;
 
-    }
+            final Iterator<FragmentStateOperation> i = observers.iterator();
 
-    private final Runnable delegate = new Runnable() {
-        @Override
-        public void run() {
-            if( getView() == null )
-                return;
-            delegateBoundary.set( getView().getLeft(),
-                    transactionsList.getTop(),
-                    getView().getRight(),
-                    getView().getBottom() );
+            while( i.hasNext() )
+                i.next().onAttached();
+
         }
-    };
 
-
-    View.OnTouchListener delegateListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch( View v, MotionEvent event ) {
-
-            boolean consume = delegateBoundary.contains( (int)event.getX(), (int)event.getY() );
-
-            if( consume )
-                transactionsList.onTouchEvent( event );
-
-            return consume;
+        public boolean getIsAttached(){
+            return isAttached;
         }
-    };
+
+        public void subscribe(@NonNull final  FragmentStateOperation o){
+            observers.add( o );
+        }
+
+
+    }
+
+    private interface FragmentStateOperation{
+        void onAttached();
+    }
+
+
 
 }
