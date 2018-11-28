@@ -1,12 +1,14 @@
 package com.whompum.PennyFlip.Dashboard;
 
 import android.animation.ArgbEvaluator;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Handler;
@@ -22,6 +24,7 @@ import com.whompum.PennyFlip.ActivityHistory.ActivityHistory;
 import com.whompum.PennyFlip.ActivityStatistics.ActivityStatistics;
 import com.whompum.PennyFlip.Animations.PageTitleStrips;
 import com.whompum.PennyFlip.DialogSourceChooser.OnSourceItemSelected;
+import com.whompum.PennyFlip.ListUtils.CollectionQueryReceiver;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
@@ -33,6 +36,8 @@ import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
 import com.whompum.PennyFlip.Time.Timestamp;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
+
+import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -71,35 +76,62 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard);
-        ButterKnife.bind(this);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.dashboard );
+        ButterKnife.bind( this );
 
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) getSystemService( Context.VIBRATOR_SERVICE );
 
-        consumer = new DashboardController(this);
-        consumer.bindClient(this);
+        consumer = new DashboardController( this, this );
 
         initTodayFragments();
 
         setTodayTimeLabel();
+
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        consumer.bindWalletObserver(this);
+    public void onWalletChanged(long pennies) {
+        value.setText(String.valueOf(pennies));
     }
 
+    @Override
+    public LifecycleOwner getLifecycleOwner() {
+        return this;
+    }
+
+    @Override
+    public void handleAddTransactions(@Nullable List<Transaction> data) {
+        updateFragment( data, getAdapter().getAddFragment() );
+    }
+
+    @Override
+    public void handleSpendTransactions(@Nullable List<Transaction> data) {
+        updateFragment( data, getAdapter().getSpendFragment() );
+    }
+
+    private TodayFragmentAdapter getAdapter(){
+        return (TodayFragmentAdapter) addSpendContainer.getAdapter();
+    }
+
+    private void updateFragment(@Nullable final List<Transaction> data, @NonNull final TodayFragment f){
+
+        if( data != null && data.size() > 0 )
+            f.display( data );
+
+        else
+            f.onNoData();
+
+    }
 
     private void initTodayFragments(){
-        addSpendContainer.setAdapter(new TodayFragmentAdapter(getSupportFragmentManager()));
+        addSpendContainer.setAdapter( new TodayFragmentAdapter( getSupportFragmentManager() ) );
 
-        strips = new PageTitleStrips(stripsLayout, stripClick);
-        strips.bindTitle(this, getString(R.string.string_adding));
-        strips.bindTitle(this, getString(R.string.string_spending));
+        strips = new PageTitleStrips( stripsLayout, stripClick );
+        strips.bindTitle( this, getString(R.string.string_adding) );
+        strips.bindTitle( this, getString(R.string.string_spending) );
 
-        addSpendContainer.setPageTransformer(true, pageTransformer);
+        addSpendContainer.setPageTransformer( true, pageTransformer );
     }
 
     private void setTodayTimeLabel(){
@@ -142,11 +174,6 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         }
     };
 
-    @Override
-    public void onWalletChanged(long pennies) {
-        Log.i("WALLET_FIX", "onWalletChanged(long)#ActivityDashboard new wallet value: " + pennies);
-        value.setText(String.valueOf(pennies));
-    }
 
     @OnClick(R.id.dashboard_local_calibrate)
     public void callibrate(){
