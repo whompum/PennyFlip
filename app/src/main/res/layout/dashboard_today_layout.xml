@@ -15,9 +15,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <android.support.constraint.Guideline
-        app:layout_constraintGuide_percent=".5"
+        app:layout_constraintGuide_percent=".4"
         android:id="@+id/id_local_guide"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -32,13 +31,13 @@
         android:textColor="@color/darkest_grey"/>
 
     <FrameLayout
-        app:layout_constraintTop_toBottomOf="@id/id_local_guide"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="@dimen/dimen_padding_ver_base"
         android:id="@+id/id_local_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="wrap_content"/>
 
 </android.support.constraint.ConstraintLayout>
 
