@@ -4,14 +4,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-/**
- * Created by bryan on 1/12/2018.
- */
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 
 public class TodayFragmentAdapter extends FragmentPagerAdapter {
 
-    private final TodayFragment addFragment = TodayAddFragment.newInstance(null);
-    private final TodayFragment spendFragment = TodaySpendFragment.newInstance(null);
+    private final TodayFragment addFragment = TodayAddFragment.newInstance( TransactionType.ADD );
+    private final TodayFragment spendFragment = TodaySpendFragment.newInstance( TransactionType.SPEND );
 
 
     public TodayFragmentAdapter(final FragmentManager fragMan){
@@ -26,5 +25,13 @@ public class TodayFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return 2;
+    }
+
+    public  TodayFragment getAddFragment(){
+        return addFragment;
+    }
+
+    public TodayFragment getSpendFragment() {
+        return spendFragment;
     }
 }
