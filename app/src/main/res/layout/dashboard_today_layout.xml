@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.whompum.pennydialog.dialog.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.whompum.pennydialog.dialog.ShadowLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_marginTop="6dp"
     android:layout_marginBottom="6dp"
@@ -14,33 +16,31 @@
     android:layout_height="match_parent">
 
 
-    <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
-        style="@style/StyleCurrencyEditText.Large"
-        android:textColor="@color/darkest_grey"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="@dimen/dimen_padding_hor_large"
-        android:layout_marginEnd="@dimen/dimen_padding_hor_large"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:text="@string/string_transaction"
-        android:textSize="@dimen/dimen_text_mediano"
-        android:layout_above="@id/id_global_list"
-        android:layout_marginBottom="16dp"
-        android:layout_centerHorizontal="true"
+    <android.support.constraint.Guideline
+        app:layout_constraintGuide_percent=".5"
+        android:id="@+id/id_local_guide"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_alignParentBottom="true"
-        android:id="@id/id_global_list"
-        android:paddingBottom="24dp"
+    <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+        style="@style/StyleCurrencyEditText.Large"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/id_local_guide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/darkest_grey"/>
+
+    <FrameLayout
+        app:layout_constraintTop_toBottomOf="@id/id_local_guide"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/id_local_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"/>
 
-
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
 
 
 
