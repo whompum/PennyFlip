@@ -104,6 +104,8 @@
 
     <string name="string_no_data_default_label">No Data.</string>
 
+    <string name="string_no_transaction_today_label">No transactions today.</string>
+
     <string name="string_to">to:</string>
     <string name="string_from">from:</string>
 
