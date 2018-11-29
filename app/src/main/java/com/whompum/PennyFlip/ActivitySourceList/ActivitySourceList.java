@@ -35,7 +35,7 @@ import com.whompum.PennyFlip.ActivitySourceList.Adapter.SourceListFragmentAdapte
 import com.whompum.PennyFlip.ActivitySourceList.Dialog.NewSourceDialog;
 import com.whompum.PennyFlip.ActivitySourceList.Dialog.OnSourceCreated;
 import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceList;
-import com.whompum.PennyFlip.ActivitySourceList.Fragments.SourceListClientContract;
+import com.whompum.PennyFlip.ListUtils.ListFragment;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceSortOrder;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
@@ -83,7 +83,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     private SourceListFragmentAdapter adapter;
 
-    private SourceListClientContract searchContract = FragmentSourceList.newInstance(
+    private ListFragment<Source> searchContract = FragmentSourceList.newInstance(
             R.layout.source_list_search_null_data
     );
 
@@ -158,7 +158,6 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     }
 
-    
     private MenuItem getSearchViewItem(){
         return searchToolbar.getMenu()
                 .findItem( R.id.id_global_search );
@@ -173,10 +172,8 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
         else if( op.equals( QueryOp.DATA_SPEND ) )
             setFragmentDisplayData( data, 1 );
 
-        else if( op.equals( QueryOp.QUERIED_LIKE_TITLE ) &&
-                ((Fragment)searchContract).isAdded() ){
+        else if( op.equals( QueryOp.QUERIED_LIKE_TITLE ) && searchContract.isAdded() )
             setFragmentDisplayData( data, searchContract );
-        }
 
     }
 
@@ -273,7 +270,6 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
         editor.setFocusableInTouchMode( focus );
 
         if( focus ) editor.requestFocus();
-
     }
 
     private void handleInitialQuery(){
@@ -295,13 +291,11 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     }
 
     private void setFragmentDisplayData(@NonNull final List<Source> data,
-                                        final SourceListClientContract clientContract){
-
-        if( clientContract == null ) return;
+                                        @NonNull final ListFragment<Source> client){
 
         if( data.size() > 0 )
-            clientContract.display( data );
-        else clientContract.onNoData();
+            client.display( data );
+        else client.onNoData();
 
     }
 
