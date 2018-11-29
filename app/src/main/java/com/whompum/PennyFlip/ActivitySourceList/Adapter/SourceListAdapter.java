@@ -22,12 +22,11 @@ import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
 public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Holder> implements AdapterItemClickListener{
 
-
     protected int LAYOUT = R.layout.source_list_content_item;
 
     protected List<Source> dataSet;
     protected LayoutInflater inflater;
-    protected OnItemSelected<Source> selectedListener; //Client impl of this interface
+    protected OnItemSelected<Integer> selectedListener; //Client impl of this interface
 
 
     public SourceListAdapter(){
@@ -42,7 +41,6 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
         this.dataSet = dataSet;
         notifyDataSetChanged();
     }
-
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -72,21 +70,17 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
         return dataSet;
     }
 
-    private final void registerHolderClickListener(final Holder holder){
+    private void registerHolderClickListener(final Holder holder){
         holder.registerItemClickListener(this);
     }
 
     @Override
     public void listAdapterItemClicked(int listPosition) {
-        notifyListener(dataSet.get(listPosition));
+        if( selectedListener != null )
+            selectedListener.onItemSelected( listPosition );
     }
 
-    private void notifyListener(final Source data){
-        if(selectedListener != null)
-            selectedListener.onItemSelected(data);
-    }
-
-    public void registerSouceListClickListener(@NonNull OnItemSelected<Source> selectedListener){
+    public void registerItemClickListener(@NonNull OnItemSelected<Integer> selectedListener){
         this.selectedListener = selectedListener;
     }
 
