@@ -4,34 +4,30 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
-import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceList;
 
-import java.util.ArrayList;
+import com.whompum.PennyFlip.ListUtils.ListFragment;
+
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by bryan on 12/27/2017.
- */
 
 public class SourceListFragmentAdapter extends FragmentPagerAdapter {
 
-    private List<FragmentSourceList> fragments = null;
+    private List<ListFragment> fragments;
 
     public SourceListFragmentAdapter(final FragmentManager fragmentManager,
-                                     @NonNull final FragmentSourceList... fragments){
+                                     @NonNull final ListFragment... fragments){
         super(fragmentManager);
 
         this.fragments = Arrays.asList( fragments );
-
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        FragmentSourceList fragment = (FragmentSourceList)
+
+        ListFragment fragment = (ListFragment)
                 super.instantiateItem(container, position);
 
         fragments.set( position, fragment );
