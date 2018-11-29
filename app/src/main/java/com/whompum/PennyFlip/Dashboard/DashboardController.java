@@ -3,6 +3,7 @@ package com.whompum.PennyFlip.Dashboard;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.os.health.TimerStat;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -39,12 +40,16 @@ public class DashboardController implements ActivityDashboardConsumer {
 
     private Wallet wallet;
 
+    private TimeRange timeRange;
+
     /**
      *
      * @param context used to instantiate a Repo object
      */
     public DashboardController(@NonNull final Context context, @NonNull final DashboardClient client){
         UserStartDate.set(context); //Sets the user start date. If already set then it will skip
+
+        this.timeRange = getTimeRange();
 
         this.client = client;
 
@@ -67,28 +72,46 @@ public class DashboardController implements ActivityDashboardConsumer {
                     }
                 });
 
-        final MoneyRequest.QueryBuilder request = new MoneyRequest.QueryBuilder( TransactionQueryKeys.KEYS );
-                request.setQueryParameter(  TransactionQueryKeys.TIMERANGE, fetchCurrentTimerange() );
-
-        new TransactionQueries()
-                .queryObservableObservableGroup( request.getQuery(), database )
-                    .attachResponder(new Responder<LiveData<List<Transaction>>>() {
-                        @Override
-                        public void onActionResponse(@NonNull LiveData<List<Transaction>> data) {
-                            data.observe( client.getLifecycleOwner(), transactionObserver );
-                        }
-                    });
+        queryTransactions();
 
     }
 
-    private TimeRange fetchCurrentTimerange(){
+
+    private void queryTransactions(){
+        final MoneyRequest.QueryBuilder request = new MoneyRequest.QueryBuilder( TransactionQueryKeys.KEYS );
+        request.setQueryParameter(  TransactionQueryKeys.TIMERANGE, timeRange );
+
+        new TransactionQueries()
+                .queryObservableObservableGroup( request.getQuery(), database )
+                .attachResponder(new Responder<LiveData<List<Transaction>>>() {
+                    @Override
+                    public void onActionResponse(@NonNull LiveData<List<Transaction>> data) {
+                        data.observe( client.getLifecycleOwner(), transactionObserver );
+                    }
+                });
+    }
+
+    private TimeRange getTimeRange(){
 
         final long today = Timestamp.now().getStartOfDay();
-        final long tomorrow = Timestamp.fromProjection( 1 ).getStartOfDay(); //Manana
+        final long tomorrow = Timestamp.fromProjection( 1 ).getStartOfDay();
 
       return new TimeRange( today, tomorrow );
     }
 
+    @Override
+    public boolean isTimerangeOutdated() {
+
+        final Timestamp current = Timestamp.now();
+
+        if( current.getMillis() > timeRange.getMillisCiel() ){  //Re-query in-case of day change
+            timeRange = getTimeRange();
+            queryTransactions();
+            return true;
+        }
+
+        return false;
+    }
 
     @Override
     public long newWalletWithTransaction(@NonNull Transaction transaction) {
