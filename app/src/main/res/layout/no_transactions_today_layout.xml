@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:textSize="@dimen/dimen_text_mediano"
+    android:textSize="@dimen/dimen_text_normal"
     android:layout_gravity="center"
     android:textColor="@color/darkest_grey"
     android:text="@string/string_no_transaction_today_label"

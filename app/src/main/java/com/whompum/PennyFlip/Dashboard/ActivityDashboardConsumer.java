@@ -8,4 +8,5 @@ import com.whompum.PennyFlip.Money.Transaction.Transaction;
 public interface ActivityDashboardConsumer{
     void saveTransaction(@NonNull final SourceWrapper source, @NonNull final Transaction transaction);
     long newWalletWithTransaction(@NonNull final Transaction transaction);
+    boolean isTimerangeOutdated();
 }

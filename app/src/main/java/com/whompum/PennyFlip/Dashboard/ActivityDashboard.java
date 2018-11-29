@@ -94,6 +94,15 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if( consumer.isTimerangeOutdated() )
+            setTodayTimeLabel();
+
+    }
+
+    @Override
     public void onWalletChanged(long pennies) {
         value.setText(String.valueOf(pennies));
     }
@@ -138,17 +147,17 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     }
 
     private void setTodayTimeLabel(){
-        ((TextView)findViewById(R.id.id_global_timestamp))
-                .setText(Timestamp.now().simpleDate());
+        ((TextView)findViewById( R.id.id_global_timestamp ))
+                .setText( Timestamp.now().simpleDate() );
     }
 
     PageTitleStrips.StripClick stripClick = new PageTitleStrips.StripClick() {
         @Override
         public void onStripClicked(int position) {
 
-            if(addSpendContainer.getCurrentItem() != position) {
-                addSpendContainer.setCurrentItem(position);
-                vibrate(500L);
+            if( addSpendContainer.getCurrentItem() != position ) {
+                addSpendContainer.setCurrentItem( position );
+                vibrate( 500L );
             }
 
         }
@@ -159,10 +168,10 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         strips.setPosition(p);
 
         if(p == 0)
-            ((FloatingActionButton)findViewById(R.id.id_global_fab)).setImageResource(R.drawable.graphic_plus_green);
+            ((FloatingActionButton)findViewById(R.id.id_global_fab)).setImageResource( R.drawable.graphic_plus_green );
 
         else if(p == 1)
-            ((FloatingActionButton)findViewById(R.id.id_global_fab)).setImageResource(R.drawable.graphic_minus_red);
+            ((FloatingActionButton)findViewById(R.id.id_global_fab)).setImageResource( R.drawable.graphic_minus_red );
 
     }
 
