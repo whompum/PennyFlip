@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.whompum.PennyFlip.ListUtils.ListFragment;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
+import com.whompum.PennyFlip.Money.Wallet.Wallet;
 import com.whompum.PennyFlip.PennyListener;
 import com.whompum.PennyFlip.R;
 import com.whompum.PennyFlip.SlidePennyDialog;
@@ -26,6 +27,7 @@ import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.Transactions.OnTitleListener;
 import com.whompum.PennyFlip.Transactions.TransactionFragment;
 import com.whompum.PennyFlip.Transactions.TransactionTitleDialog;
+import com.whompum.PennyFlip.WalletNotificationManager;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
 import java.util.List;
@@ -34,6 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
+import currencyedittext.whompum.com.currencyedittext.CurrencyFormatter;
 
 public class ActivitySourceData extends AppCompatActivity implements SourceDataClient{
 
@@ -44,12 +47,16 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     private PennyDialog pennyDialog;
 
+    private WalletNotificationManager notificationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.source );
 
         ButterKnife.bind( this );
+
+        notificationManager = new WalletNotificationManager( this );
 
         this.data = (Source) getIntent().getSerializableExtra( DATA );
 
@@ -70,6 +77,12 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        notificationManager.unRegister();
+    }
+
     @Nullable
     private Integer resolveNoDataLayout(){
 
@@ -84,10 +97,8 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
         final ListFragment frag = getFragmentByTag();
 
-        if( frag == null ) {
-            Log.i("ActivitySourceData", "onTransactionChanged(): " + "Fragment is null!");
+        if( frag == null )
             return;
-        }
 
         if( data.size() == 0 )
             getFragmentByTag().onNoData();
@@ -105,6 +116,18 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     public void onSourceChanged(@NonNull Source source) {
         this.data = source; //Will cause temporary data inconsistency issue on configuration change.
         initializeUi( data );
+    }
+
+    @Override
+    public void onWalletChanged(@NonNull Wallet wallet) {
+
+        final long value = wallet.getValue();
+
+        notificationManager.onNewWallet(
+                value,
+                CurrencyFormatter.getInstance().convert( value )
+        );
+
     }
 
     //Initializes the core UI (title displays, value display, lastUpdate)
