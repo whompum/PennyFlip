@@ -37,6 +37,7 @@ import com.whompum.PennyFlip.DialogSourceChooser.SourceDialog;
 import com.whompum.PennyFlip.DialogSourceChooser.SourceWrapper;
 import com.whompum.PennyFlip.DialogSourceChooser.SpendingSourceDialog;
 import com.whompum.PennyFlip.Time.Timestamp;
+import com.whompum.PennyFlip.WalletNotificationManager;
 import com.whompum.PennyFlip.Widgets.StickyViewPager;
 import com.whompum.pennydialog.dialog.PennyDialog;
 
@@ -77,11 +78,15 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     @BindView(R.id.id_global_strips_indicator)
     protected ViewGroup stripsLayout;
 
+    private WalletNotificationManager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.dashboard );
         ButterKnife.bind( this );
+
+        manager = new WalletNotificationManager( this );
 
         vibrator = (Vibrator) getSystemService( Context.VIBRATOR_SERVICE );
 
@@ -97,6 +102,8 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     protected void onStart() {
         super.onStart();
 
+        manager.register();
+
         if( consumer.isTimerangeOutdated() )
             setTodayTimeLabel();
 
@@ -105,6 +112,8 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     @Override
     public void onWalletChanged(long pennies) {
         value.setText(String.valueOf(pennies));
+
+        manager.onNewWallet( pennies, value.getText().toString() );
     }
 
     @Override
