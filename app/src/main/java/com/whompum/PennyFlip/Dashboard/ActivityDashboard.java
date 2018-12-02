@@ -102,11 +102,15 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
     protected void onStart() {
         super.onStart();
 
-        manager.register();
-
         if( consumer.isTimerangeOutdated() )
             setTodayTimeLabel();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        manager.unRegister();
     }
 
     @Override
