@@ -116,4 +116,9 @@
     <string name="string_transaction_alert">Transaction Alert</string>
     <string name="string_understand">Understand</string>
 
+    <!-- Notifications -->
+    <string name="string_wallet_channel_name">Wallet</string>
+    <string name="string_wallet_title">Wallet</string>
+    <string name="string_wallet_content_info">Current Balance: </string>
+
 </resources>
