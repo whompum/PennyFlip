@@ -8,9 +8,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        
-
-        // NOTE: Do not place your application dependencies here; they belong
+                // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
@@ -24,8 +22,8 @@ allprojects {
 }
 
 ext{
-    designVer = '26.1.0'
-    pennyDialogVer = '1.1'
+    designVer = '28'
+    pennyDialogVer = '-SNAPSHOT'
 }
 
 task clean(type: Delete) {
