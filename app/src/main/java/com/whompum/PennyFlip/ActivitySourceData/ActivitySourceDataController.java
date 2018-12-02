@@ -15,10 +15,13 @@ import com.whompum.PennyFlip.Money.Queries.Query.MoneyRequest;
 import com.whompum.PennyFlip.Money.Queries.Responder;
 import com.whompum.PennyFlip.Money.Queries.SourceQueries;
 import com.whompum.PennyFlip.Money.Queries.TransactionQueries;
+import com.whompum.PennyFlip.Money.Queries.WalletQueries;
+import com.whompum.PennyFlip.Money.Queries.WalletRequestBuilder;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Source.SourceQueryKeys;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Transaction.TransactionQueryKeys;
+import com.whompum.PennyFlip.Money.Wallet.Wallet;
 import com.whompum.PennyFlip.Money.Writes.RoomMoneyWriter;
 
 import java.util.List;
@@ -96,6 +99,26 @@ public class ActivitySourceDataController implements SourceDataConsumer{
 
         queryTransactions( database );
         querySource( database );
+
+        queryWallet( database );
+
+    }
+
+    private void queryWallet(@NonNull final MoneyDatabase database){
+        final Deliverable<LiveData<Wallet>> walletDeliverable =
+                new WalletQueries().queryObservable( new WalletRequestBuilder().getQuery(), database );
+
+        walletDeliverable.attachResponder(new Responder<LiveData<Wallet>>() {
+            @Override
+            public void onActionResponse(@NonNull LiveData<Wallet> data) {
+                data.observe(client.getLifecycleOwner(), new Observer<Wallet>() {
+                    @Override
+                    public void onChanged(@Nullable Wallet wallet) {
+                        client.onWalletChanged( wallet );
+                    }
+                });
+            }
+        });
 
     }
 
