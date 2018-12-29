@@ -48,6 +48,11 @@
     <item name="id_nav_statistics" type="id"/>
     <item name="id_nav_menu_history" type="id"/>
 
+    <!-- Statistics Graph Overview-->
+    <item name="id_stat_graph_income" type="id"/>
+    <item name="id_stat_graph_expense" type="id"/>
+    <item name="id_stat_graph_container" type="id"/>
+
 </resources>
 
 
