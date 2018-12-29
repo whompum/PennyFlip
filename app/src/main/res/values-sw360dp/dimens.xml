@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dimen_source_list_null_data_size">200dp</dimen>
+    <dimen name="dimen_stats_graph_dot_size">10dp</dimen>
+
 </resources>
