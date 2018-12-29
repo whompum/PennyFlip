@@ -121,4 +121,21 @@
     <string name="string_wallet_title">Wallet</string>
     <string name="string_wallet_content_info">Current Balance: </string>
 
+    <string name="string_income">Income</string>
+    <string name="string_expense">Expense</string>
+
+    <!-- Statistics -->
+    <string name="string_report_net_income">Net Income</string>
+    <string name="string_report_net_expense">Net Expense</string>
+    <string name="string_report_monthly_average">Monthly Average</string>
+    <string name="string_report_two_week_average">Two-Week Average</string>
+    <string name="string_report_daily_average">Daily Average</string>
+    <string name="string_report_income_expense_ratio">Income to Expense Ratio</string>
+    <string name="string_report_last_trans_source">Last Transaction Source</string>
+    <string name="string_report_last_trans_amount">Last Transaction Amount</string>
+    <string name="string_report_top_income_sources">Top Income Source</string>
+    <string name="string_report_top_expense_sources">Top Expense Source</string>
+
+
+
 </resources>
