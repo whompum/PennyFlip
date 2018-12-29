@@ -88,4 +88,9 @@
 
     <dimen name="dimen_today_transaction_height">120dp</dimen>
 
+    <dimen name="dimen_stats_graph_dot_size">12dp</dimen>
+    <dimen name="dimen_stats_graph_dot_padding">2dp</dimen>
+
+    <dimen name="dimen_global_veneer_size">2dp</dimen>
+
 </resources>
