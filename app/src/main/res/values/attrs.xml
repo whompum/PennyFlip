@@ -7,6 +7,19 @@
     <attr name="sourceDataColorSecondary" format="color|reference"/>
     <attr name="sourceDataTotalLabel" format="string|reference"/>
 
+    <attr name="transactionRatingGraphStyle" format="reference"/>
+
+    <declare-styleable name="TransactionRatingGraph">
+        <attr name="dotSize" format="dimension|integer"/>
+        <attr name="dotPadding" format="dimension|integer"/>
+        <attr name="dotColorOn" format="color|reference"/>
+        <attr name="dotColorOff" format="color|reference"/>
+        <attr name="invert" format="boolean|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="StatisticsReportItemCurrency">
+        <attr name="staticText" format="string|reference"/>
+    </declare-styleable>
 
     <declare-styleable name="PurseTotalView">
         <attr name="NAEnabled" format="boolean"/>
