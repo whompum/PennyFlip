@@ -14,8 +14,8 @@
 
     <string name="string_tooltip_calibrate">Re-callibrate your pennies with how much money you really have</string>
 
-    <string name="string_add_dialog">Enter The Amount You Made</string>
-    <string name="string_minus_dialog">Enter The Amount You\'ve Spent</string>
+    <string name="string_add_dialog">Enter Your Income</string>
+    <string name="string_minus_dialog">Enter Your Expense</string>
 
     <string name="string_history">History</string>
     <string name="string_statistics">Statistics</string>
@@ -31,8 +31,8 @@
 
 
     <!--SOURCE MASTER STRING-->
-    <string name="string_adding">Adding</string>
-    <string name="string_spending">Spending</string>
+    <string name="string_adding">Income</string>
+    <string name="string_spending">Expense</string>
     <string name="string_expand">EXPAND</string>
     <string name="string_collapse">COLLAPSE</string>
 
