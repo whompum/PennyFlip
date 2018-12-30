@@ -3,8 +3,6 @@ package com.whompum.PennyFlip.Widgets;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.Fade;
-import android.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,7 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
     private ImageButton btn;
     private TextView txtDisplay;
 
-    private int type = TransactionType.ADD;
+    private int type = TransactionType.INCOME;
 
     private IncomeExpenseChangeListener listener;
 
@@ -48,11 +46,11 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
     @Override
     public void onClick(View v) {
 
-        if( type == TransactionType.ADD )
-            type = TransactionType.SPEND;
+        if( type == TransactionType.INCOME)
+            type = TransactionType.EXPENSE;
 
-        else if( type == TransactionType.SPEND )
-            type = TransactionType.ADD;
+        else if( type == TransactionType.EXPENSE)
+            type = TransactionType.INCOME;
 
         animateForType();
 
@@ -73,10 +71,10 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if( type == TransactionType.ADD )
+                if( type == TransactionType.INCOME)
                     txtDisplay.setText( R.string.string_income );
 
-                else if( type == TransactionType.SPEND )
+                else if( type == TransactionType.EXPENSE)
                     txtDisplay.setText( R.string.string_expense );
 
             }
@@ -95,10 +93,10 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
 
     private Animation fetchAnimationForType(){
 
-        if( type == TransactionType.ADD )
+        if( type == TransactionType.INCOME)
             return AnimationUtils.loadAnimation( getContext(), R.anim.rotate_clockwise_0_180);
 
-        else if( type == TransactionType.SPEND )
+        else if( type == TransactionType.EXPENSE)
             return  AnimationUtils.loadAnimation( getContext(), R.anim.rotate_clockwise_180_0);
 
         return null;

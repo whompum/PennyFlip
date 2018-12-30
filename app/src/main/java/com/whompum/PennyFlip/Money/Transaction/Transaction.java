@@ -30,7 +30,7 @@ public class Transaction {
 
     private long amount;
 
-    @IntRange(from = TransactionType.ADD, to = TransactionType.CALLIBRATE)
+    @IntRange(from = TransactionType.INCOME, to = TransactionType.CALLIBRATE)
     private int transactionType;
 
     public Transaction(int id, String title, long timestamp, long amount, int transactionType, @NonNull String sourceId) {

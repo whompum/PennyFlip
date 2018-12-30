@@ -24,11 +24,11 @@ public interface TransactionObservableDao {
     LiveData<List<Transaction>> fetchByTime(final long mFloor, final long mCiel);
 
     @Query("SELECT * FROM `Transaction` WHERE transactionType = :type")
-    LiveData<List<Transaction>> fetchByType(@IntRange(from = TransactionType.ADD,
+    LiveData<List<Transaction>> fetchByType(@IntRange(from = TransactionType.INCOME,
             to = TransactionType.CALLIBRATE) final int type);
 
     @Query("SELECT * FROM `Transaction` WHERE transactionType = :type AND timestamp >= :mFloor AND timestamp <= :mCiel")
-    LiveData<List<Transaction>> fetchByTypeAndTime(@IntRange(from = TransactionType.ADD,
+    LiveData<List<Transaction>> fetchByTypeAndTime(@IntRange(from = TransactionType.INCOME,
             to = TransactionType.CALLIBRATE) final int type, final long mFloor, final long mCiel);
 }
 

@@ -15,7 +15,7 @@ public class AddSourceDialog extends SourceDialog {
     {
         HEADER_COLOR = R.color.light_green;
         FAB_SRC = R.drawable.graphic_plus_green;
-        transactionType = TransactionType.ADD;
+        transactionType = TransactionType.INCOME;
     }
 
     public static final String TAG = "AddSourceDialog";

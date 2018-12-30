@@ -27,14 +27,14 @@ public interface SourceObservableDao {
     //Fetches a list of source whose title is 'like' `title` and whose type is of `type`
     @Query("SELECT * FROM Source WHERE title like :title AND transactionType = :type")
     LiveData<List<Source>> fetchLikeTitleOfType(@NonNull final String title,
-                                                      @IntRange(from = TransactionType.ADD, to = TransactionType.CALLIBRATE) final int type);
+                                                      @IntRange(from = TransactionType.INCOME, to = TransactionType.CALLIBRATE) final int type);
 
     @Query("SELECT * FROM Source WHERE creationDate >= :mFloor AND creationDate <= :mCiel")
     LiveData<List<Source>> fetchTimeRange(final long mFloor, final long mCiel);
 
     //Fetches a list of Sources whose type is of `type`
     @Query("SELECT * FROM Source where transactionType = :type")
-    LiveData<List<Source>> fetchOfType(@IntRange(from = TransactionType.ADD, to = TransactionType.CALLIBRATE) final int type);
+    LiveData<List<Source>> fetchOfType(@IntRange(from = TransactionType.INCOME, to = TransactionType.CALLIBRATE) final int type);
 
 
 }

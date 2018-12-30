@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -86,7 +85,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     @Nullable
     private Integer resolveNoDataLayout(){
 
-        if( data.getTransactionType() == TransactionType.ADD )
+        if( data.getTransactionType() == TransactionType.INCOME)
             return R.layout.layout_source_data_no_data_add;
 
         return null;
@@ -137,12 +136,12 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
         int headerColor = -1;
 
-        if( data.getTransactionType() == TransactionType.ADD ) {
+        if( data.getTransactionType() == TransactionType.INCOME) {
             headerColor = R.color.dark_green;
             newTransactionImageRes = R.drawable.graphic_plus_green;
         }
 
-        else if( data.getTransactionType() == TransactionType.SPEND ) {
+        else if( data.getTransactionType() == TransactionType.EXPENSE) {
             headerColor = R.color.dark_red;
             newTransactionImageRes = R.drawable.graphic_minus_red;
         }
@@ -199,7 +198,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
         //vibrate(500L);
         int styleRes;
 
-        if( data.getTransactionType() == TransactionType.ADD )  //Is adding transaction
+        if( data.getTransactionType() == TransactionType.INCOME)  //Is adding transaction
             styleRes = R.style.StylePennyDialogAdd;
         else //Is probably a spending transaction
             styleRes = R.style.StylePennyDialogMinus;

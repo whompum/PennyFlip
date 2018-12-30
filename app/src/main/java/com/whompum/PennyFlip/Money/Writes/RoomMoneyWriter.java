@@ -112,10 +112,10 @@ public class RoomMoneyWriter implements MoneyWriter {
             long newWalletTotal =
                     ( (wallet = walletDao.fetchWallet()) != null) ? wallet.getValue(): 0L;
 
-            if( transaction.getTransactionType() == TransactionType.ADD )
+            if( transaction.getTransactionType() == TransactionType.INCOME)
                 newWalletTotal += transaction.getAmount();
 
-            else if( transaction.getTransactionType() == TransactionType.SPEND ) {
+            else if( transaction.getTransactionType() == TransactionType.EXPENSE) {
                 //Check for negative values because we don't use sub-zero values for the wallet.
                 long newValue = newWalletTotal - transaction.getAmount();
                 newWalletTotal = (newValue > 0) ? newValue : 0L;

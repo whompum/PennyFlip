@@ -1,7 +1,6 @@
 package com.whompum.PennyFlip.Dashboard.Fragments;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
@@ -10,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -194,10 +192,10 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
 
     private int resolveColor(@ColorRes final int transactionType){
 
-        if( transactionType == TransactionType.ADD )
+        if( transactionType == TransactionType.INCOME)
             return clrAdd;
 
-        else if( transactionType == TransactionType.SPEND )
+        else if( transactionType == TransactionType.EXPENSE)
             return clrSpend;
 
         return 0;

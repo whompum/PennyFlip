@@ -105,7 +105,7 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.Ho
         private int fetchColor(final int transactionType){
 
             int color;
-            int colorId = ( transactionType == TransactionType.ADD ) ? R.color.dark_green : R.color.dark_red;
+            int colorId = ( transactionType == TransactionType.INCOME) ? R.color.dark_green : R.color.dark_red;
 
             if(Build.VERSION.SDK_INT >= 23)
                 color = itemView.getContext().getColor( colorId );

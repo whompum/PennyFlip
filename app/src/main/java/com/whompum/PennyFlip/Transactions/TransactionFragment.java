@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -96,10 +95,10 @@ public class TransactionFragment extends ListFragment<Transaction> {
             public int getHeaderBackground() {
 
                 if( source != null ) {
-                    if (source.getTransactionType() == TransactionType.ADD)
+                    if (source.getTransactionType() == TransactionType.INCOME)
                         return R.drawable.background_rounded_rect_green;
 
-                    else if (source.getTransactionType() == TransactionType.SPEND)
+                    else if (source.getTransactionType() == TransactionType.EXPENSE)
                         return R.drawable.background_rounded_rect_right_red;
                 }
                 return R.drawable.background_rounded_rect_right_blue;
@@ -146,10 +145,10 @@ public class TransactionFragment extends ListFragment<Transaction> {
 
         if( source != null ) {
 
-            if (source.getTransactionType() == TransactionType.ADD)
+            if (source.getTransactionType() == TransactionType.INCOME)
                 timelineClrRes = R.color.dark_green;
 
-            else if (source.getTransactionType() == TransactionType.SPEND)
+            else if (source.getTransactionType() == TransactionType.EXPENSE)
                 timelineClrRes = R.color.dark_red;
         }
 

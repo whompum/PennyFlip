@@ -3,7 +3,6 @@ package com.whompum.PennyFlip.Dashboard;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
-import android.os.health.TimerStat;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -156,9 +155,9 @@ public class DashboardController implements ActivityDashboardConsumer {
 
             if( transactions != null )
                 for( Transaction t: transactions ) {
-                    if (t.getTransactionType() == TransactionType.ADD)
+                    if (t.getTransactionType() == TransactionType.INCOME)
                         addData.add(t);
-                    else if (t.getTransactionType() == TransactionType.SPEND)
+                    else if (t.getTransactionType() == TransactionType.EXPENSE)
                         spendData.add(t);
                 }
 

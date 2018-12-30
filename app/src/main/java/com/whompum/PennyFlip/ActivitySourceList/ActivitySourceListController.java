@@ -5,8 +5,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.whompum.PennyFlip.Money.DatabaseUtils;
 import com.whompum.PennyFlip.Money.MoneyDatabase;
@@ -76,10 +74,10 @@ public class ActivitySourceListController implements ActivitySourceListConsumer,
                 List<Source> data = null;
                 QueryOp op = null;
 
-                if( source.getTransactionType() == TransactionType.ADD ) {
+                if( source.getTransactionType() == TransactionType.INCOME) {
                     data = localAddSources;
                     op = QueryOp.DATA_ADD;
-                } else if( source.getTransactionType() == TransactionType.SPEND ){
+                } else if( source.getTransactionType() == TransactionType.EXPENSE){
                     data = localSpendSources;
                     op = QueryOp.DATA_SPEND;
                 }
@@ -104,10 +102,10 @@ public class ActivitySourceListController implements ActivitySourceListConsumer,
         if( !hasQueried )
             return null;
 
-        if( transactionType == TransactionType.ADD )
+        if( transactionType == TransactionType.INCOME)
             return localAddSources;
 
-        else if( transactionType == TransactionType.SPEND )
+        else if( transactionType == TransactionType.EXPENSE)
             return localSpendSources;
 
         return null;
@@ -153,10 +151,10 @@ public class ActivitySourceListController implements ActivitySourceListConsumer,
 
             final Source source = i.next();
 
-            if( source.getTransactionType() == TransactionType.ADD )
+            if( source.getTransactionType() == TransactionType.INCOME)
                 localAddSources.add( source );
 
-            else if( source.getTransactionType() == TransactionType.SPEND )
+            else if( source.getTransactionType() == TransactionType.EXPENSE)
                 localSpendSources.add( source );
 
         }

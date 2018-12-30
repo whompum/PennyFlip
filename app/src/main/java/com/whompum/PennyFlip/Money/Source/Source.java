@@ -18,7 +18,7 @@ public class Source implements Serializable{
     @PrimaryKey
     private String title;
 
-    @IntRange(from = TransactionType.ADD, to = TransactionType.CALLIBRATE)
+    @IntRange(from = TransactionType.INCOME, to = TransactionType.CALLIBRATE)
     private int transactionType;
 
     @Nullable

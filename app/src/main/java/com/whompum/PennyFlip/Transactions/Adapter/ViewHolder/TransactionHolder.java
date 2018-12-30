@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -67,10 +66,10 @@ public class TransactionHolder extends TransactionViewHolder<TransactionsContent
 
         final Resources r = context.getResources();
 
-        if( transaction.getTransactionType() == TransactionType.ADD )
+        if( transaction.getTransactionType() == TransactionType.INCOME)
             return r.getColor( R.color.dark_green, null );
 
-        else if( transaction.getTransactionType() == TransactionType.SPEND )
+        else if( transaction.getTransactionType() == TransactionType.EXPENSE)
             return r.getColor( R.color.dark_red, null );
 
         return -1;
@@ -80,10 +79,10 @@ public class TransactionHolder extends TransactionViewHolder<TransactionsContent
 
         final Resources r = context.getResources();
 
-        if( transaction.getTransactionType() == TransactionType.ADD )
+        if( transaction.getTransactionType() == TransactionType.INCOME)
             return r.getColor( R.color.dark_green );
         
-        else if( transaction.getTransactionType() == TransactionType.SPEND )
+        else if( transaction.getTransactionType() == TransactionType.EXPENSE)
             return r.getColor( R.color.dark_red );
 
         return -1;

@@ -274,8 +274,8 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
     private void handleInitialQuery(){
 
-        final List<Source> addData = consumer.querySourceData( TransactionType.ADD );
-        final List<Source> spendData = consumer.querySourceData( TransactionType.SPEND );
+        final List<Source> addData = consumer.querySourceData( TransactionType.INCOME);
+        final List<Source> spendData = consumer.querySourceData( TransactionType.EXPENSE);
 
 
         if( addData != null )
@@ -324,7 +324,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     }
 
     public int resolveCurrentTransactionType( final int pagePosition ){
-        return ( pagePosition == 0 ) ? TransactionType.ADD : TransactionType.SPEND;
+        return ( pagePosition == 0 ) ? TransactionType.INCOME : TransactionType.EXPENSE;
     }
 
     private void enterAnimateSearchBar(){
