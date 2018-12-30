@@ -31,8 +31,8 @@
 
 
     <!--SOURCE MASTER STRING-->
-    <string name="string_adding">Income</string>
-    <string name="string_spending">Expense</string>
+    <string name="string_income">Income</string>
+    <string name="string_expense">Expense</string>
     <string name="string_expand">EXPAND</string>
     <string name="string_collapse">COLLAPSE</string>
 
@@ -121,8 +121,6 @@
     <string name="string_wallet_title">Wallet</string>
     <string name="string_wallet_content_info">Current Balance: </string>
 
-    <string name="string_income">Income</string>
-    <string name="string_expense">Expense</string>
 
     <!-- Statistics -->
     <string name="string_report_net_income">Net Income</string>

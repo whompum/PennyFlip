@@ -153,8 +153,8 @@ public class ActivityDashboard extends AppCompatActivity implements DashboardCli
         addSpendContainer.setAdapter( new TodayFragmentAdapter( getSupportFragmentManager() ) );
 
         strips = new PageTitleStrips( stripsLayout, stripClick );
-        strips.bindTitle( this, getString(R.string.string_adding) );
-        strips.bindTitle( this, getString(R.string.string_spending) );
+        strips.bindTitle( this, getString(R.string.string_income) );
+        strips.bindTitle( this, getString(R.string.string_expense) );
 
         addSpendContainer.setPageTransformer( true, pageTransformer );
     }
