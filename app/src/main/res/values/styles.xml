@@ -25,21 +25,14 @@
 
 
     <!--PennyDialog styles-->
-
-    <style name="StylePennyDialogLight" parent="PennyDialog">
-        <item name="pennyNumbersCardColor">@color/milk_white</item>
-        <item name="pennyValueCardColor">@color/white</item>
-        <item name="pennyNumbersTextColor">@color/darkest_grey</item>
-    </style>
-
-    <style name="StylePennyDialogAdd" parent="StylePennyDialogLight">
+    <style name="StylePennyDialogAdd" parent="PennyDialog.Light">
         <item name="pennyTitleText">@string/string_add_dialog</item>
         <item name="pennyFabSource">@drawable/graphic_plus_green</item>
         <item name="pennyValueTextColor">@color/dark_green</item>
         <item name="pennyTitleTextColor">@color/dark_green</item>
     </style>
 
-    <style name="StylePennyDialogMinus" parent="StylePennyDialogLight">
+    <style name="StylePennyDialogMinus" parent="PennyDialog.Light">
         <item name="pennyTitleText">@string/string_minus_dialog</item>
         <item name="pennyFabSource">@drawable/graphic_minus_red</item>
         <item name="pennyValueTextColor">@color/dark_red</item>
