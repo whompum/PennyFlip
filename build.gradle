@@ -22,8 +22,8 @@ allprojects {
 }
 
 ext{
-    designVer = '28'
-    pennyDialogVer = '-SNAPSHOT'
+    designVer = '28.0.0'
+    pennyDialogVer = 'v1.4.1'
 }
 
 task clean(type: Delete) {
