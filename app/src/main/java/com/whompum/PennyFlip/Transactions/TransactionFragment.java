@@ -96,7 +96,7 @@ public class TransactionFragment extends ListFragment<Transaction> {
 
                 if( source != null ) {
                     if (source.getTransactionType() == TransactionType.INCOME)
-                        return R.drawable.background_rounded_rect_green;
+                        return R.drawable.background_rounded_rect_right_green;
 
                     else if (source.getTransactionType() == TransactionType.EXPENSE)
                         return R.drawable.background_rounded_rect_right_red;
