@@ -1,5 +1,6 @@
 package com.whompum.PennyFlip.Time;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.whompum.PennyFlip.R;
@@ -7,6 +8,7 @@ import com.whompum.PennyFlip.R;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +17,8 @@ import java.util.concurrent.TimeUnit;
  * as well as providing very usefull utility functions like formatting and such
  */
 public class Timestamp {
+
+    public static final String FORMAT_MMMM_YYYY = "MMMM, YYYY";
 
     public static final int AM = 0;
     public static final int PM = 1;
@@ -98,6 +102,11 @@ public class Timestamp {
         return date.get(DateTimeFieldType.halfdayOfDay()) == AM;
     }
 
+    public long getEndOfMonthTimestamp(){
+        return new DateTime( (getMonth() != 12) ? getYear() : getYear()+1, (getMonth() != 12) ? getMonth()+1 : 1, 1, 0, 0,0,0 )
+                .getMillis();
+    }
+
     public String simpleTime(){
         return DateTimeFormat.shortTime().print(getMillis());
     }
@@ -141,6 +150,10 @@ public class Timestamp {
             return R.string.string_today;
 
     return -1;
+    }
+
+    public String getFormattedDate(@NonNull final String pattern){
+        return date.toString( DateTimeFormat.forPattern( pattern ) );
     }
 
 }
