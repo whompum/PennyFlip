@@ -8,6 +8,7 @@ import com.whompum.PennyFlip.Money.Contracts.Transaction.TransactionDao;
 import com.whompum.PennyFlip.Money.Contracts.Transaction.TransactionObservableDao;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Contracts.Source.SourceDao;
+import com.whompum.PennyFlip.Money.Statistics.TransactionStatisticsDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Wallet.Wallet;
 import com.whompum.PennyFlip.Money.Contracts.Wallet.WalletDao;
@@ -22,4 +23,6 @@ public abstract class MoneyDatabase extends RoomDatabase {
     public abstract TransactionDao getTransactionAccessor();
     public abstract TransactionObservableDao getObservableTransactionAccessor();
     public abstract WalletDao getWalletAccessor();
+
+    public abstract TransactionStatisticsDao getStatisticsDao();
 }
