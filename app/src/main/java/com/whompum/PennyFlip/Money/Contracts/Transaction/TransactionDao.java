@@ -46,5 +46,5 @@ public interface TransactionDao{
     List<Transaction> fetchFromSourceAndTime(@NonNull final String sourceId, final long floor, final long ciel);
 
     @Insert
-    void insert(@NonNull final Transaction transaction);
+    int insert(@NonNull final Transaction transaction);
 }
