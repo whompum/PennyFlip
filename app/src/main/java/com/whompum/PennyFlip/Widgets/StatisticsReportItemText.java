@@ -21,16 +21,16 @@ public class StatisticsReportItemText extends StatisticsReportItemView {
         return R.layout.statistics_report_data_item_text;
     }
 
-    public void setCurrency(@StringRes final int value){
-        setCurrency( String.valueOf( value ) );
+    public void setValue(@StringRes final int value){
+        setValue( String.valueOf( value ) );
     }
 
-    public void setCurrency(final String value){
+    public void setValue(final String value){
         getValueView().setText( value );
     }
 
     private TextView getValueView(){
-        return findViewById( R.id.id_global_total_display );
+        return findViewById( R.id.id_local_label );
     }
 
 }
