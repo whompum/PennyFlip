@@ -14,14 +14,13 @@ import com.whompum.PennyFlip.R;
 public abstract class StatisticsReportItemView extends FrameLayout {
 
     public StatisticsReportItemView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super( context, attrs );
+
         inflate( context, getLayout(), this );
 
         final TypedArray array = context.obtainStyledAttributes( attrs, R.styleable.StatisticsReportItemView );
 
         init( array );
-
-        array.recycle();
     }
 
     private void init(@NonNull final TypedArray array){
