@@ -3,8 +3,6 @@ package com.whompum.PennyFlip.Widgets;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.Fade;
-import android.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +26,7 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
     private IncomeExpenseChangeListener listener;
 
     public interface IncomeExpenseChangeListener{
-        void onChange(final int type);
+        void onTransactionTypeChange(final int type);
     }
 
     public IncomeExpenseCheckbox(Context context, @Nullable AttributeSet attrs) {
@@ -57,7 +55,7 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
         animateForType();
 
         if( listener != null )
-            listener.onChange( type );
+            listener.onTransactionTypeChange( type );
 
     }
 
@@ -102,6 +100,10 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
             return  AnimationUtils.loadAnimation( getContext(), R.anim.rotate_clockwise_180_0);
 
         return null;
+    }
+
+    public int getType() {
+        return type;
     }
 
     public void setTypeChangeListener(@NonNull final IncomeExpenseChangeListener l) {
