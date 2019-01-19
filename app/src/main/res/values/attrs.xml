@@ -17,7 +17,7 @@
         <attr name="invert" format="boolean|reference"/>
     </declare-styleable>
 
-    <declare-styleable name="StatisticsReportItemCurrency">
+    <declare-styleable name="StatisticsReportItemView">
         <attr name="staticText" format="string|reference"/>
     </declare-styleable>
 

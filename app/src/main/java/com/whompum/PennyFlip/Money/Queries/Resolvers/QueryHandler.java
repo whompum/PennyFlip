@@ -35,6 +35,10 @@ public class QueryHandler<T> implements Handler.Callback {
         this.resolver = resolver;
     }
 
+    public QueryHandler(){
+
+    }
+
     public void call(@NonNull final MoneyRequest query) {
         new MoneyThread().doInBackground(new MoneyThread.MoneyThreadOperation() {
             @Override
@@ -98,4 +102,7 @@ public class QueryHandler<T> implements Handler.Callback {
         this.queryReceiver = queryReceiver;
     }
 
+    public void setQueryResolver(QueryResolver<T> resolver) {
+        this.resolver = resolver;
+    }
 }

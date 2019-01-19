@@ -10,6 +10,7 @@ import com.whompum.PennyFlip.Money.MoneyThread;
 import com.whompum.PennyFlip.Money.Source.NewSourceTotalConstraintException;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Contracts.Source.SourceDao;
+import com.whompum.PennyFlip.Money.Statistics.TransactionStatisticsDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Contracts.Transaction.TransactionDao;
 import com.whompum.PennyFlip.Money.Transaction.TransactionType;
@@ -32,6 +33,9 @@ public class RoomMoneyWriter implements MoneyWriter {
     //DAO for Wallet objects
     private WalletDao walletDao;
 
+    //Dao for Statistics
+    private TransactionStatisticsDao transactionStatisticsDao;
+
     public RoomMoneyWriter(@NonNull final Context context){
         //Fetch the database containing the DAO's
         this( DatabaseUtils.getMoneyDatabase( context ) );
@@ -42,6 +46,7 @@ public class RoomMoneyWriter implements MoneyWriter {
         transactionsDao = database.getTransactionAccessor();
         sourceDao = database.getSourceAccessor();
         walletDao = database.getWalletAccessor();
+        transactionStatisticsDao = database.getStatisticsDao();
     }
 
 
@@ -101,7 +106,12 @@ public class RoomMoneyWriter implements MoneyWriter {
         public synchronized void doOperation() {
             //After saving, update both the wallet and the Source
 
-            transactionsDao.insert( transaction );
+            final long rowId = transactionsDao.insert( transaction );
+
+            transaction.setId( (int)rowId );
+
+            transactionStatisticsDao.onMonetaryTransaction( transaction );
+
             sourceDao.addAmount( transaction );
 
             //Fetch the original wallet total, and then determine if the new wallet total
@@ -122,6 +132,8 @@ public class RoomMoneyWriter implements MoneyWriter {
             }
 
             walletDao.update( new Wallet( newWalletTotal ) );
+
+
 
         }
     }

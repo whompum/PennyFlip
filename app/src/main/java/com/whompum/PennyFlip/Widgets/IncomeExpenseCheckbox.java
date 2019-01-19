@@ -12,21 +12,30 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.whompum.PennyFlip.Money.Transaction.TransactionType;
 import com.whompum.PennyFlip.R;
 
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.SPEND;
 
-public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickListener{
+
+public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickListener,
+Animation.AnimationListener{
 
     private ImageButton btn;
     private TextView txtDisplay;
 
+<<<<<<< HEAD
     private int type = TransactionType.INCOME;
+=======
+    private int type = ADD;
+>>>>>>> statistics
 
     private IncomeExpenseChangeListener listener;
 
+    private boolean animInProgress = false;
+
     public interface IncomeExpenseChangeListener{
-        void onChange(final int type);
+        void onTransactionTypeChange(final int type);
     }
 
     public IncomeExpenseCheckbox(Context context, @Nullable AttributeSet attrs) {
@@ -45,30 +54,41 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+        toggle();
+    }
 
+<<<<<<< HEAD
         if( type == TransactionType.INCOME)
             type = TransactionType.EXPENSE;
 
         else if( type == TransactionType.EXPENSE)
             type = TransactionType.INCOME;
+=======
+    public void toggle(){
+        if( type == ADD )
+            setType( SPEND );
+
+        else if( type == SPEND )
+            setType( ADD );
+>>>>>>> statistics
+
+    }
+
+    public void setType(final int newType){
+
+        if( newType == type || animInProgress )
+            return;
+
+        type = newType;
 
         animateForType();
 
         if( listener != null )
-            listener.onChange( type );
+            listener.onTransactionTypeChange( type );
 
     }
 
-    private void animateForType(){
-
-        final Animation animation = fetchAnimationForType();
-
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
+<<<<<<< HEAD
             @Override
             public void onAnimationEnd(Animation animation) {
                 if( type == TransactionType.INCOME)
@@ -76,30 +96,50 @@ public class IncomeExpenseCheckbox extends LinearLayout implements View.OnClickL
 
                 else if( type == TransactionType.EXPENSE)
                     txtDisplay.setText( R.string.string_expense );
+=======
+    @Override
+    public void onAnimationStart(Animation animation) {
+        animInProgress = true;
+    }
 
-            }
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        txtDisplay.setText( (type==ADD) ? R.string.string_income : R.string.string_expense  );
+        animInProgress = false;
+    }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+    @Override
+    public void onAnimationRepeat(Animation animation) { /*Unused*/ }
+>>>>>>> statistics
 
-            }
-        });
+    private void animateForType(){
 
-        btn.startAnimation(
-                animation
-        );
+        final Animation animation = fetchAnimationForType();
+
+        animation.setAnimationListener( this );
+
+        btn.startAnimation( animation );
 
     }
 
     private Animation fetchAnimationForType(){
 
+<<<<<<< HEAD
         if( type == TransactionType.INCOME)
             return AnimationUtils.loadAnimation( getContext(), R.anim.rotate_clockwise_0_180);
 
         else if( type == TransactionType.EXPENSE)
             return  AnimationUtils.loadAnimation( getContext(), R.anim.rotate_clockwise_180_0);
+=======
+        if( type == ADD )
+            return AnimationUtils.loadAnimation( getContext(), R.anim.rotate_clockwise_0_180);
 
-        return null;
+        return  AnimationUtils.loadAnimation( getContext(), R.anim.rotate_clockwise_180_0);
+    }
+>>>>>>> statistics
+
+    public int getType() {
+        return type;
     }
 
     public void setTypeChangeListener(@NonNull final IncomeExpenseChangeListener l) {

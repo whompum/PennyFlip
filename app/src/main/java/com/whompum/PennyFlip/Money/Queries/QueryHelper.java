@@ -16,6 +16,8 @@ public class QueryHelper<T> {
     private Deliverable<T> deliverable;
     private QueryHandler<T> handler;
 
+    private QueryOperation<T> operation;
+
     public QueryHelper(QueryResolver<T> resolver) {
         deliverable = new Deliverable<>();
 
@@ -24,8 +26,16 @@ public class QueryHelper<T> {
         handler.setQueryReceiver(new QueryReceiver<T>() {
             @Override
             public void onQueryReceived(@Nullable QueryResult<T> t) {
-                if( t != null && t.getT() != null )
-                    deliverable.setData( t.getT() );
+
+                T data;
+
+                if( t != null && (data = t.getT()) != null ){
+
+                    if( operation != null )
+                        data = operation.operate( data );
+
+                    deliverable.setData( data );
+                }
             }
 
             @Override
@@ -34,6 +44,10 @@ public class QueryHelper<T> {
             }
         });
 
+    }
+
+    public void setOperation(QueryOperation<T> operation) {
+        this.operation = operation;
     }
 
     public Deliverable<T> query(@NonNull final MoneyRequest request){
