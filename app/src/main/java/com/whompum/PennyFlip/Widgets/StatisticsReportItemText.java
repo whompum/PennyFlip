@@ -22,14 +22,14 @@ public class StatisticsReportItemText extends StatisticsReportItemView {
     }
 
     public void setValue(@StringRes final int value){
-        setValue( String.valueOf( value ) );
+        getValueView().setText( value );
     }
 
     public void setValue(final String value){
         getValueView().setText( value );
     }
 
-    private TextView getValueView(){
+    public TextView getValueView(){
         return findViewById( R.id.id_local_label );
     }
 

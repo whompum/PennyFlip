@@ -1,0 +1,36 @@
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.whompum.PennyFlip.Widgets.TransactionRatingGraph
+        app:dotSize="12dp"
+        app:dotPadding="2dp"
+        android:paddingStart="@dimen/dimen_padding_hor_small"
+        android:paddingEnd="@dimen/dimen_padding_hor_small"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:invert="true"
+        android:id="@id/id_stat_graph_income"/>
+    
+    <View
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <com.whompum.PennyFlip.Widgets.TransactionRatingGraph
+        app:dotSize="12dp"
+        app:dotPadding="2dp"
+        android:paddingStart="@dimen/dimen_padding_hor_small"
+        android:paddingEnd="@dimen/dimen_padding_hor_small"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@id/id_stat_graph_expense"/>
+
+</merge>

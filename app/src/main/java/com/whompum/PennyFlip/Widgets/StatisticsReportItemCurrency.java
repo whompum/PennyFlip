@@ -33,7 +33,7 @@ public class StatisticsReportItemCurrency extends StatisticsReportItemView {
         getCurrencyView().setText( cash );
     }
 
-    private CurrencyEditText getCurrencyView(){
+    public CurrencyEditText getCurrencyView(){
         return findViewById( R.id.id_global_total_display );
     }
 

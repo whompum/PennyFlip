@@ -8,13 +8,14 @@ import com.whompum.PennyFlip.Money.Contracts.Transaction.TransactionDao;
 import com.whompum.PennyFlip.Money.Contracts.Transaction.TransactionObservableDao;
 import com.whompum.PennyFlip.Money.Source.Source;
 import com.whompum.PennyFlip.Money.Contracts.Source.SourceDao;
+import com.whompum.PennyFlip.Money.Statistics.TransactionStatistics;
 import com.whompum.PennyFlip.Money.Statistics.TransactionStatisticsDao;
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.Money.Wallet.Wallet;
 import com.whompum.PennyFlip.Money.Contracts.Wallet.WalletDao;
 
 
-@Database(entities = {Source.class, Transaction.class, Wallet.class}, version = 1, exportSchema = false)
+@Database(entities = {Source.class, Transaction.class, Wallet.class, TransactionStatistics.class}, version = 1, exportSchema = false)
 public abstract class MoneyDatabase extends RoomDatabase {
     public static final String NAME = "money.db";
 

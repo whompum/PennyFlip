@@ -24,6 +24,16 @@ public class SourceQueries {
         ).query( request );
     }
 
+    public Deliverable<List<Source>> queryGroupWithOperation(@NonNull final MoneyRequest request,
+                                                             @NonNull final MoneyDatabase database,
+                                                             @NonNull final QueryOperation<List<Source>> operation){
+        final QueryHelper<List<Source>> helper = new QueryHelper<>( new SourceQueryResolver( database ) );
+
+        helper.setOperation( operation );
+
+        return helper.query( request );
+    }
+
     public Deliverable<LiveData<List<Source>>> queryObservableObservableGroup(@NonNull final MoneyRequest request,
                                                                                    @NonNull final MoneyDatabase database){
         return new QueryHelper<>(

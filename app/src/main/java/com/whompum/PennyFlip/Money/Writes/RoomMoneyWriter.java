@@ -106,9 +106,9 @@ public class RoomMoneyWriter implements MoneyWriter {
         public synchronized void doOperation() {
             //After saving, update both the wallet and the Source
 
-            final int rowId = transactionsDao.insert( transaction );
+            final long rowId = transactionsDao.insert( transaction );
 
-            transaction.setId( rowId );
+            transaction.setId( (int)rowId );
 
             transactionStatisticsDao.onMonetaryTransaction( transaction );
 

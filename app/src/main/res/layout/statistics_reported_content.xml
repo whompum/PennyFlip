@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.whompum.PennyFlip.Widgets.IncomeExpenseCheckbox
+        android:id="@+id/id_local_income_expense_checkbox"
+        android:background="@color/darkest_grey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_padding_ver_small"
+            android:paddingBottom="@dimen/dimen_padding_ver_large"
+            android:paddingStart="@dimen/dimen_padding_hor_large"
+            android:paddingEnd="@dimen/dimen_padding_hor_large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.whompum.PennyFlip.Widgets.StatisticsReportItemCurrency
+                style="@style/StyleReportDataItem"
+                app:staticText="@string/string_report_net_income"
+                android:id="@+id/id_local_net_amount" />
+            <com.whompum.PennyFlip.Widgets.StatisticsReportItemCurrency
+                style="@style/StyleReportDataItem"
+                app:staticText="@string/string_report_daily_average"
+                android:id="@+id/id_local_daily_average"/>
+
+            <com.whompum.PennyFlip.Widgets.StatisticsReportItemCurrency
+                style="@style/StyleReportDataItem"
+                app:staticText="@string/string_report_transaction_average"
+                android:id="@+id/id_local_transaction_average"/>
+
+            <com.whompum.PennyFlip.Widgets.StatisticsReportItemText
+                style="@style/StyleReportDataItem"
+                app:staticText="@string/string_report_transaction_count"
+                android:id="@+id/id_local_transaction_count"/>
+
+            <com.whompum.PennyFlip.Widgets.StatisticsReportItemText
+                style="@style/StyleReportDataItem"
+                android:visibility="gone"
+                app:staticText="@string/string_report_income_expense_ratio"
+                android:id="@+id/id_local_income_expense_ratio"/>
+
+            <com.whompum.PennyFlip.Widgets.StatisticsReportItemText
+                style="@style/StyleReportDataItem"
+                app:staticText="@string/string_report_last_trans_source"
+                android:id="@+id/id_local_last_transaction_source"/>
+
+            <com.whompum.PennyFlip.Widgets.StatisticsReportItemCurrency
+                style="@style/StyleReportDataItem"
+                app:staticText="@string/string_report_last_trans_amount"
+                android:visibility="gone"
+                android:id="@+id/id_local_last_transaction_amount"/>
+
+            <com.whompum.PennyFlip.Widgets.StatisticsReportItemText
+                style="@style/StyleReportDataItem"
+                app:staticText="@string/string_report_top_income_sources"
+                android:visibility="gone"
+                android:id="@+id/id_local_top_sources_container"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@id/id_global_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.whompum.PennyFlip.Time;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
@@ -7,6 +8,7 @@ import com.whompum.PennyFlip.R;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -154,6 +156,11 @@ public class Timestamp {
 
     public String getFormattedDate(@NonNull final String pattern){
         return date.toString( DateTimeFormat.forPattern( pattern ) );
+    }
+
+    @CheckResult
+    public Days getActiveDays(){
+        return Days.daysBetween( getDate(), new DateTime( System.currentTimeMillis() ) );
     }
 
 }

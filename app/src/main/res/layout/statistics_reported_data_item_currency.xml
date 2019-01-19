@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        tools:text="Data Item Ex"
+        android:id="@+id/id_global_title"
+        android:layout_gravity="center_vertical|start"
+        android:textSize="@dimen/dimen_text_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <currencyedittext.whompum.com.currencyedittext.CurrencyEditText
+        style="@style/StyleCurrencyEditText.Medium"
+        android:textColor="@color/dark_green"
+        android:layout_gravity="center_vertical|end" />
+
+</merge>

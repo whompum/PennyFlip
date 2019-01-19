@@ -1,84 +1,117 @@
 package com.whompum.PennyFlip.ActivityStatistics;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSpinner;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
-import com.whompum.PennyFlip.Money.TimeRange;
+import com.whompum.PennyFlip.ActivityStatistics.Data.ReportData;
+import com.whompum.PennyFlip.ActivityStatistics.Fragment.ReportDataFragment;
+import com.whompum.PennyFlip.ActivityStatistics.Fragment.StatisticsViewLayerContract;
+import com.whompum.PennyFlip.Money.Source.Source;
+import com.whompum.PennyFlip.Money.Transaction.Transaction;
 import com.whompum.PennyFlip.R;
-import com.whompum.PennyFlip.Time.Timestamp;
-import com.whompum.PennyFlip.Time.UserStartDate;
+import com.whompum.PennyFlip.Widgets.TransactionGraphContainer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class ActivityStatistics extends AppCompatActivity {
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
 
-    @BindView(R.id.local_month_selector) protected AppCompatSpinner monthSelector;
-    @BindView(R.id.local_year_selector) protected AppCompatSpinner yearSelector;
+public class ActivityStatistics extends AppCompatActivity implements StatisticsMvpContract.View,
+        StatisticsViewLayerContract.Activity{
 
-    @BindView(R.id.local_container) protected ViewGroup container; //Used for animations, touch handling
+    @BindView(R.id.id_local_date_selector) public Spinner dateSelector;
+    @BindView(R.id.id_stat_graph_container) public TransactionGraphContainer transactionGraph;
 
-    private DateQueryable queryable;
+    private DateListAdapter dateListAdapter;
+
+    private StatisticsMvpContract.Presenter presenter;
+
+    private StatisticsViewLayerContract.Fragment reportDataFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.statistics_layout_main);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.statistics );
+        ButterKnife.bind( this );
 
-        ButterKnife.bind(this);
+        reportDataFragment = (StatisticsViewLayerContract.Fragment) getFragment();
 
-        //Init the Monthly Spinner
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(this, R.layout.statistics_month_selector_layout,
-                        getResources().getStringArray(R.array.timeRanges));
-        adapter.setDropDownViewResource(R.layout.drop_down_selector_item_layout);
-        monthSelector.setAdapter(adapter);
+        if( savedInstanceState == null )
+            injectReportDataFragment();
 
+        setSupportActionBar( findViewById( R.id.id_global_toolbar ) );
 
-        //Reset the Adapter to another for the Yearly Spinner
-        adapter =
-                new ArrayAdapter<>(this, R.layout.statistics_year_selector_layout,
-                        UserStartDate.getActiveYears(this));
-        adapter.setDropDownViewResource(R.layout.drop_down_selector_item_layout);
-        yearSelector.setAdapter(adapter);
+        if( getSupportActionBar() != null )
+            getSupportActionBar().setDisplayHomeAsUpEnabled( true );
 
+        initializeDateSelector();
 
-        //Initialize The StatisticsFragment/ Queryable IMPL
-        final Fragment queryable = StatisticsFragment.newInstance(null);
+        presenter = new StatisticsPresenter( this, this );
 
-        getFragmentManager()
+        presenter.onStatisticsTypeSelected( ADD );
+
+    }
+
+    @Override
+    public void onTransactionTypeChange(int newType) {
+        presenter.onStatisticsTypeSelected( newType ); //Default Query
+    }
+
+    @Override
+    public void displayUserMonths(List<Long> monthDates) {
+        dateListAdapter.swapDataSet( monthDates );
+    }
+
+    @Override
+    public void displayTransactionsOverview(@NonNull List<Transaction> data) {
+    }
+
+    @Override
+    public void displayReportData(@NonNull final ReportData data) {
+        reportDataFragment.displayReportData( data );
+    }
+
+    @Override
+    public void displayTopSources(@Nullable List<Source> sources, int transactionType) {
+        reportDataFragment.displayTopSources( sources, transactionType );
+    }
+
+    private void initializeDateSelector(){
+        dateListAdapter = new DateListAdapter( this, android.R.layout.simple_list_item_1 );
+
+        dateSelector.setAdapter( dateListAdapter );
+
+        dateSelector.setOnItemSelectedListener(new SimpleSpinnerItemSelectedListener() {
+            @Override
+            void onItemSelected(int pos) {
+
+                long selectedMonth;
+                if( (selectedMonth = dateListAdapter.getItem( pos )) != -1L )
+                    presenter.onMonthSelected( selectedMonth );
+
+            }
+        });
+    }
+
+    private void injectReportDataFragment(){
+        getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.local_container, queryable)
+                .add( R.id.id_global_container, (Fragment)reportDataFragment, ReportDataFragment.TAG )
                 .commit();
-
-        this.queryable = (DateQueryable) queryable;
-
-        //Set range to the current month
-        this.queryable.setDate(/*Current Timerange*/ getCurrentMonthlyRange());
-
     }
 
-    @OnClick(R.id.id_global_nav)
-    public void navigate(){
-        NavUtils.navigateUpFromSameTask(this);
-    }
+    private Fragment getFragment(){
 
+        if( getSupportFragmentManager().findFragmentByTag( ReportDataFragment.TAG ) != null )
+            return getSupportFragmentManager().findFragmentByTag( ReportDataFragment.TAG );
 
-    private TimeRange getCurrentMonthlyRange(){
-       return new TimeRange(Timestamp.fromProjection(Timestamp.now().getMonthDay()).getStartOfDay(),
-               System.currentTimeMillis());
+        return new ReportDataFragment();
     }
 
 }

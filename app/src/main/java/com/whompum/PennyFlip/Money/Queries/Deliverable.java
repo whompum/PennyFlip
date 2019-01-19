@@ -15,7 +15,7 @@ public class Deliverable<T> {
     private boolean hasDelivered = false;
     private boolean overrideNewResponder = true;
 
-    public void attachResponder(@NonNull final Responder<T> responder){
+    public Deliverable<T> attachResponder(@NonNull final Responder<T> responder){
 
         //Assign the Responder of data. IF responder isn't null, or responder can override original.
         if( ( hasResponder() && overrideNewResponder) ||
@@ -28,10 +28,12 @@ public class Deliverable<T> {
         if( isWaitingToDeliver() ) //We can deliver
             deliver();
 
+        return this;
     }
 
-    public void attachCancelledResponder(@NonNull final OnCancelledResponder responder){
+    public Deliverable<T> attachCancelledResponder(@NonNull final OnCancelledResponder responder){
         cancelledResponder = responder;
+        return this;
     }
 
     public void setData(@NonNull final T data){

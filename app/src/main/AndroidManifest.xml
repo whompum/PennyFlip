@@ -43,6 +43,7 @@
 
 
         <activity android:name=".ActivityStatistics.ActivityStatistics"
+                  android:screenOrientation="portrait"
                   android:parentActivityName=".Dashboard.ActivityDashboard"
                   android:theme="@style/AppTheme"/>
 
