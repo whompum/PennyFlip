@@ -17,7 +17,7 @@ public class TransactionStatisticsTest {
     public void setUp() throws Exception {
 
         sut = new TransactionStatistics(
-                TransactionType.ADD,
+                TransactionType.INCOME,
                 5000L, //5 dollars
                 5,
                 1000,
@@ -29,7 +29,7 @@ public class TransactionStatisticsTest {
 
     private Transaction stubTransaction = new Transaction(1,
             "test", System.currentTimeMillis(),
-            2872L, TransactionType.ADD, "SourceTitleTest" );
+            2872L, TransactionType.INCOME, "SourceTitleTest" );
 
     @Test
     public void updateWithTransaction_properNetAmount(){

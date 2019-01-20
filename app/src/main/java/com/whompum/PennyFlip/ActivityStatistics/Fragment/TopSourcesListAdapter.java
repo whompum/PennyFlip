@@ -23,8 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import currencyedittext.whompum.com.currencyedittext.CurrencyEditText;
 
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.SPEND;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.INCOME;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.EXPENSE;
 
 public class TopSourcesListAdapter extends RecyclerView.Adapter<TopSourcesListAdapter.SourcesViewHolder> {
 
@@ -84,8 +84,8 @@ public class TopSourcesListAdapter extends RecyclerView.Adapter<TopSourcesListAd
         }
 
         @ColorInt
-        private int getColorForType(@IntRange(from = ADD, to = SPEND) final int type){
-            return (type == ADD) ? green : red;
+        private int getColorForType(@IntRange(from = INCOME, to = EXPENSE) final int type){
+            return (type == INCOME) ? green : red;
         }
 
     }

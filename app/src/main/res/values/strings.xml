@@ -45,7 +45,7 @@
     <string name="string_delete_conf_title">Delete</string>
     <string name="string_delete_conf_message">Delete this source, and all of its meta data?</string>
 
-    <!--SOURCE ADD DIALOG-->
+    <!--SOURCE INCOME DIALOG-->
     <string name="string_title">Title</string>
     <string name="string_done">Done</string>
     <string name="string_enter_title_hint">Enter your title here</string>

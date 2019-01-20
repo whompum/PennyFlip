@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.INCOME;
 
 public class ActivityStatistics extends AppCompatActivity implements StatisticsMvpContract.View,
         StatisticsViewLayerContract.Activity{
@@ -54,7 +54,7 @@ public class ActivityStatistics extends AppCompatActivity implements StatisticsM
 
         presenter = new StatisticsPresenter( this, this );
 
-        presenter.onStatisticsTypeSelected( ADD );
+        presenter.onStatisticsTypeSelected(INCOME);
 
     }
 

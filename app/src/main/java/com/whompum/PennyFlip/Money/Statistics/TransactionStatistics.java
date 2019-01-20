@@ -13,14 +13,14 @@ import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
 import java.io.Serializable;
 
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.SPEND;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.INCOME;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.EXPENSE;
 
 @Entity
 public class TransactionStatistics implements Serializable {
 
     @PrimaryKey
-    @IntRange(from = ADD, to = SPEND)
+    @IntRange(from = INCOME, to = EXPENSE)
     private int transactionType;
 
     //Id of the last transaction

@@ -32,12 +32,12 @@ public class TransactionGraphContainer extends LinearLayout {
         inflater.inflate( LAYOUT_ID, this, true );
 
         graphs.put(
-                TransactionType.ADD,
+                TransactionType.INCOME,
                 (TransactionRatingGraph) findViewById( R.id.id_stat_graph_income )
         );
 
         graphs.put(
-                TransactionType.SPEND,
+                TransactionType.EXPENSE,
                 (TransactionRatingGraph) findViewById( R.id.id_stat_graph_expense )
         );
 
@@ -46,7 +46,7 @@ public class TransactionGraphContainer extends LinearLayout {
 
     }
 
-    public void setDayCount(@IntRange(from = TransactionType.ADD, to = TransactionType.SPEND) final int type,
+    public void setDayCount(@IntRange(from = TransactionType.INCOME, to = TransactionType.EXPENSE) final int type,
                             @IntRange(from = 1, to = TransactionRatingGraph.DAY_COUNT_MAX) final int dayCount){
 
         graphs.get( type )
@@ -55,11 +55,11 @@ public class TransactionGraphContainer extends LinearLayout {
     }
 
     public void setIncomeDayCount(final int dayCount){
-        setDayCount( TransactionType.ADD, dayCount );
+        setDayCount( TransactionType.INCOME, dayCount );
     }
 
     public void setExpenseDayCount(final int dayCount){
-        setDayCount( TransactionType.SPEND, dayCount );
+        setDayCount( TransactionType.EXPENSE, dayCount );
     }
 
     public void setIncomeRating(@NonNull  final int[] days, @NonNull final int[] ratings){

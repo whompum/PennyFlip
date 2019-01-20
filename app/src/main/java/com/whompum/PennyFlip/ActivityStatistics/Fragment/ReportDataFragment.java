@@ -34,8 +34,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.SPEND;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.INCOME;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.EXPENSE;
 
 public class ReportDataFragment extends Fragment implements StatisticsViewLayerContract.Fragment {
 
@@ -143,7 +143,7 @@ public class ReportDataFragment extends Fragment implements StatisticsViewLayerC
     }
 
     public void onTransactionTypeChange(int type) {
-        this.currentState = ( type == ADD ) ? incomeState : expenseState;
+        this.currentState = ( type == INCOME) ? incomeState : expenseState;
         notifyActivityOfInternalStateChange();
     }
 
@@ -168,7 +168,7 @@ public class ReportDataFragment extends Fragment implements StatisticsViewLayerC
 
     private abstract class TransactionState{
 
-        @IntRange(from = ADD, to = SPEND)
+        @IntRange(from = INCOME, to = EXPENSE)
         private int transactionType;
 
         @ColorRes
@@ -177,7 +177,7 @@ public class ReportDataFragment extends Fragment implements StatisticsViewLayerC
         private TextView[] dynamicColoredViews;
         private Map<Integer, WeakReference<TextView>> dynamicTextualViews;
 
-        TransactionState(@IntRange(from = ADD, to = SPEND) final int transactionType,
+        TransactionState(@IntRange(from = INCOME, to = EXPENSE) final int transactionType,
                          @ColorRes final int color){
             this.transactionType = transactionType;
             this.color = color;
@@ -205,7 +205,7 @@ public class ReportDataFragment extends Fragment implements StatisticsViewLayerC
 
         }
 
-        @IntRange(from = ADD, to = SPEND)
+        @IntRange(from = INCOME, to = EXPENSE)
         protected int getTransactionType(){
             return transactionType;
         }
@@ -218,7 +218,7 @@ public class ReportDataFragment extends Fragment implements StatisticsViewLayerC
     private class IncomeState extends TransactionState{
 
         public IncomeState() {
-            super( TransactionType.ADD, R.color.dark_green );
+            super( TransactionType.INCOME, R.color.dark_green );
         }
 
         @SuppressLint("UseSparseArrays")
@@ -239,7 +239,7 @@ public class ReportDataFragment extends Fragment implements StatisticsViewLayerC
     private class ExpenseState extends TransactionState{
 
         public ExpenseState() {
-            super( SPEND, R.color.dark_red );
+            super(EXPENSE, R.color.dark_red );
         }
 
 

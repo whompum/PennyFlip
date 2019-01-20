@@ -11,15 +11,15 @@ import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
 import java.util.List;
 
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.SPEND;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.INCOME;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.EXPENSE;
 
 @RestrictTo(RestrictTo.Scope.SUBCLASSES)
 interface StatisticsMvpContract {
 
     interface Presenter{
         void onMonthSelected(final long monthMillis);
-        void onStatisticsTypeSelected(@IntRange(from = ADD, to = SPEND) final int transactionType);
+        void onStatisticsTypeSelected(@IntRange(from = INCOME, to = EXPENSE) final int transactionType);
     }
 
     interface View{

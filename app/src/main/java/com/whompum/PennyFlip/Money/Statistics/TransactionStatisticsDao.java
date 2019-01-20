@@ -7,26 +7,25 @@ import android.arch.persistence.room.Update;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import com.whompum.PennyFlip.Money.Transaction.Transaction;
 
 import java.util.List;
 
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.SPEND;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.INCOME;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.EXPENSE;
 
 @Dao
 public abstract class TransactionStatisticsDao {
 
     @Query("SELECT * FROM TransactionStatistics Where transactionType = :transactionType")
-    public abstract TransactionStatistics fetchByType(@IntRange(from = ADD, to = SPEND) final int transactionType);
+    public abstract TransactionStatistics fetchByType(@IntRange(from = INCOME, to = EXPENSE) final int transactionType);
 
     @Query("SELECT * FROM TransactionStatistics")
     public abstract List<TransactionStatistics> fetchAll();
 
     @Query("SELECT netAmount FROM TransactionStatistics WHERE transactionType = :type")
-    public abstract long fetchNetAmount(@IntRange(from = ADD, to = SPEND) final int type);
+    public abstract long fetchNetAmount(@IntRange(from = INCOME, to = EXPENSE) final int type);
 
     @Insert
     public abstract void insert(@NonNull final TransactionStatistics statistics);
@@ -54,7 +53,7 @@ public abstract class TransactionStatisticsDao {
         }
 
         final TransactionStatistics oppositeStats =
-                fetchByType( (t.getTransactionType() == ADD) ? SPEND : ADD );
+                fetchByType( (t.getTransactionType() == INCOME) ? EXPENSE : INCOME);
 
         if( oppositeStats != null ){
             updateTransactionRatio( oppositeStats );
@@ -75,7 +74,7 @@ public abstract class TransactionStatisticsDao {
 
         final long netAmount = s.getNetAmount();
 
-        final long oppositeNetAmount = fetchNetAmount( (s.getTransactionType() == ADD) ? SPEND : ADD );
+        final long oppositeNetAmount = fetchNetAmount( (s.getTransactionType() == INCOME) ? EXPENSE : INCOME);
 
         if( netAmount <= 0L )
             s.setTransactionRatio( 0D );

@@ -10,12 +10,12 @@ import com.whompum.PennyFlip.Money.Statistics.TransactionStatistics.TransactionM
 
 import java.util.List;
 
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.ADD;
-import static com.whompum.PennyFlip.Money.Transaction.TransactionType.SPEND;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.INCOME;
+import static com.whompum.PennyFlip.Money.Transaction.TransactionType.EXPENSE;
 
 public class ReportData {
 
-    @IntRange(from = ADD, to = SPEND)
+    @IntRange(from = INCOME, to = EXPENSE)
     private int transactionType;
 
     private long netAmount;
@@ -40,7 +40,7 @@ public class ReportData {
 
     private boolean hasRecentTransaction = false;
 
-    public ReportData(@IntRange(from = ADD, to = SPEND) final int type){
+    public ReportData(@IntRange(from = INCOME, to = EXPENSE) final int type){
         this.transactionType = type;
     }
 
@@ -82,7 +82,7 @@ public class ReportData {
     }
 
 
-    @IntRange(from = ADD, to = SPEND)
+    @IntRange(from = INCOME, to = EXPENSE)
     public int getTransactionType(){
         return transactionType;
     }
