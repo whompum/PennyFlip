@@ -124,14 +124,14 @@ public class DashboardController implements ActivityDashboardConsumer {
         if( ( w.getTag().equals( SourceWrapper.TAG.NEW ) ) ) {
 
             try{
-                writer.saveSource( w.getSource() );
+                writer.saveSourceAndTransaction( w.getSource(), t );
             }catch ( NewSourceTotalConstraintException e ){
                 w.getSource().setPennies( 0L );
-                writer.saveSource( w.getSource() );
+                writer.saveSourceAndTransaction( w.getSource(), t );
             }
 
-        }
-        writer.saveTransaction( t );
+        }else
+            writer.saveTransaction( t );
     }
 
     private Observer<Wallet> walletObserver = new Observer<Wallet>() {
