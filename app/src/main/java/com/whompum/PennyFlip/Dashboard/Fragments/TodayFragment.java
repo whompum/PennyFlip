@@ -1,5 +1,6 @@
 package com.whompum.PennyFlip.Dashboard.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +71,7 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     return layout;
     }
 
+    @SuppressLint("CommitTransaction")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
@@ -80,23 +83,17 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
 
         final FragmentManager fragmentManager = getChildFragmentManager();
 
-        fragmentManager.registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
-            @Override
-            public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
-                super.onFragmentAttached(fm, f, context);
-                observer.setAttached( true );
-            }
+        if( !fragmentExists() ){
+            fragmentManager.registerFragmentLifecycleCallbacks( observer, true );
+            commitChildFragment( fragmentManager.beginTransaction() );
+        }
+        
+    }
 
-            @Override
-            public void onFragmentDetached(FragmentManager fm, Fragment f) {
-                super.onFragmentDetached(fm, f);
-                observer.setAttached( false );
-            }
-        }, true);
-
-        commitChildFragment( fragmentManager.beginTransaction() );
-
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        observer.clearSubscriptions();
     }
 
     @Override
@@ -109,49 +106,40 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     @Override
     public void onNoData() {
 
-        if( getView() != null ) {
-            if( observer.isAttached )
-                getExistingFragment().onNoData();
+        if( getExistingFragment() != null )
+            getExistingFragment().onNoData();
+        else
+            observer.subscribe( () -> getExistingFragment().onNoData() );
 
-        }else
-            observer.subscribe(new FragmentStateOperation() {
-                @Override
-                public void onAttached() {
-                    onNoData();
-                }
-            });
 
     }
 
     @Override
     public void display(@NonNull final Collection<Transaction> data) {
 
-        if( getView() != null ) {
-
+        if( getView() != null )
             updateValue( (List<Transaction>)data );
 
-            if ( observer.isAttached )
-                getExistingFragment().display(data);
-        }else
-            observer.subscribe(new FragmentStateOperation() {
-                @Override
-                public void onAttached() {
-                    display( data );
-                }
-            });
+        if( getExistingFragment() != null )
+            getExistingFragment().display( data );
+
+        else{
+            observer.subscribe( () -> getExistingFragment().display( data ) );
+        }
+
     }
 
     private void commitChildFragment(@NonNull final FragmentTransaction fragTrans){
-        commitChildFragment( fragTrans, ( fragmentExists() ) ? getExistingFragment() : getNewFragment() );
+        commitChildFragment( fragTrans, getNewFragment() );
     }
 
     private void commitChildFragment(@NonNull final FragmentTransaction fragTrans, @NonNull final Fragment frag){
-        fragTrans.replace(
+        fragTrans.add(
                 R.id.id_local_fragment_container,
                 frag,
                 "TAG"
         );
-
+                
         fragTrans.commit();
     }
 
@@ -162,9 +150,7 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     private ListFragment<Transaction> getNewFragment(){
         final ListFragment<Transaction> fragment =
                 TodayTransactionListFragment.newInstance( getArguments().getInt( TRANSACTION_TYPE_KEY ) );
-
-        fragment.setRetainInstance( true );
-
+        
         return fragment;
     }
 
@@ -202,14 +188,16 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
     }
 
 
-    private static class FragmentStateListener{
-
-        private boolean isAttached = false;
+    private static class FragmentStateListener extends FragmentManager.FragmentLifecycleCallbacks{
 
         private HashSet<FragmentStateOperation> observers = new HashSet<>();
 
-        public void setAttached(final boolean isAttached){
-            this.isAttached = isAttached;
+        @Override
+        public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, @Nullable Bundle savedInstanceState) {
+            notifyViewCreated();
+        }
+
+        public void notifyViewCreated(){
 
             final Iterator<FragmentStateOperation> i = observers.iterator();
 
@@ -218,9 +206,10 @@ public class TodayFragment extends Fragment implements CollectionQueryReceiver<T
 
         }
 
-        public void subscribe(@NonNull final  FragmentStateOperation o){
+        public void subscribe(@NonNull final FragmentStateOperation o){
             observers.add( o );
         }
+        public void clearSubscriptions(){ observers.clear(); }
     }
 
     private interface FragmentStateOperation{
