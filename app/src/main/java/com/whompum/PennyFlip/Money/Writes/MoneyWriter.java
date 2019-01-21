@@ -21,5 +21,6 @@ public interface MoneyWriter {
      */
     void saveTransaction(@NonNull final Transaction transaction);
     void saveSource(@NonNull final Source source) throws NewSourceTotalConstraintException;
+    void saveSourceAndTransaction(Source s, Transaction t);
     void deleteSource(@NonNull final String sourceId);
 }

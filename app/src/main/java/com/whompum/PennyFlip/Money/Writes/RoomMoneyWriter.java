@@ -1,8 +1,10 @@
 package com.whompum.PennyFlip.Money.Writes;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
+import android.util.Log;
 
 import com.whompum.PennyFlip.Money.DatabaseUtils;
 import com.whompum.PennyFlip.Money.MoneyDatabase;
@@ -88,7 +90,14 @@ public class RoomMoneyWriter implements MoneyWriter {
         });
     }
 
+    @Override
+    public synchronized void saveSourceAndTransaction(Source s, Transaction transaction){
 
+        new MoneyThread().doInBackground( new SaveSourceTransactionOperation( s, transaction ) );
+
+    }
+
+    
     /**
      * Utility operation that aggregates operations during a
      * {@link Transaction} write
@@ -101,10 +110,14 @@ public class RoomMoneyWriter implements MoneyWriter {
             this.transaction = transaction;
         }
 
+        @CallSuper
         @WorkerThread
         @Override
         public synchronized void doOperation() {
             //After saving, update both the wallet and the Source
+
+            Log.i(RoomMoneyWriter.class.getSimpleName(), "doOperation()");
+            Log.i(RoomMoneyWriter.class.getSimpleName(), "Transaction Foreign Key: " + transaction.getSourceId() );
 
             final long rowId = transactionsDao.insert( transaction );
 
@@ -133,8 +146,25 @@ public class RoomMoneyWriter implements MoneyWriter {
 
             walletDao.update( new Wallet( newWalletTotal ) );
 
+        }
+    }
 
+    private class SaveSourceTransactionOperation extends SaveTransactionOperation{
 
+        private Source source;
+
+        public SaveSourceTransactionOperation(@NonNull final Source source,
+                                              @NonNull Transaction transaction) {
+            super(transaction);
+            this.source = source;
+        }
+
+        @Override
+        public synchronized void doOperation() {
+
+            sourceDao.insert( source );
+
+            super.doOperation();
         }
     }
 
