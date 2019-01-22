@@ -101,11 +101,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
 
         setSupportActionBar(toolyBary); //Do we even really need?
 
-        adapter = new SourceListFragmentAdapter(
-            getSupportFragmentManager(),
-            FragmentSourceList.newInstance( R.layout.source_list_adding_null_data ),
-            FragmentSourceList.newInstance( R.layout.source_list_spending_null_data )
-        );
+        adapter = new SourceListFragmentAdapter( getSupportFragmentManager() );
 
         container.setAdapter( adapter );
 
@@ -287,7 +283,7 @@ public class  ActivitySourceList extends AppCompatActivity implements IntentReci
     }
 
     private void setFragmentDisplayData(@NonNull final List<Source> data, final int fragAdapterPos ){
-        setFragmentDisplayData( data, (FragmentSourceList) adapter.getItem( fragAdapterPos ));
+        setFragmentDisplayData( data, adapter.getFragmentAtPosition( fragAdapterPos ));
     }
 
     private void setFragmentDisplayData(@NonNull final List<Source> data,
