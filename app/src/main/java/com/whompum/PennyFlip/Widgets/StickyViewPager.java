@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -28,9 +29,7 @@ public class StickyViewPager extends ViewPager {
     private static final int RIGHT = 1;
     private static final int LEFT = -1;
 
-
     private enum BOUNDS {LEFT, RIGHT, XOR}
-
 
     private ViewDragHelper dragger;
     private int dragLimit;
@@ -44,7 +43,7 @@ public class StickyViewPager extends ViewPager {
 
     private boolean dragging = false;
 
-    private Map<View, Integer> childrenStart = new HashMap<>(2);
+    private SparseArray<View> childrenStart = new SparseArray<>(2);
 
     public StickyViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -86,12 +85,12 @@ public class StickyViewPager extends ViewPager {
         }
 
         @Override
-        public int getViewHorizontalDragRange(View child) {
+        public int getViewHorizontalDragRange(@NonNull View child) {
             return dragLimit;
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
+        public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
 
             int direction = 0;
 
@@ -119,18 +118,22 @@ public class StickyViewPager extends ViewPager {
             else if(draggedLeft > rightBounds)
                 draggedLeft = rightBounds;
 
-            notifySubscriber(direction, Math.max(childrenStart.get(child), draggedLeft) - Math.min(childrenStart.get(child), draggedLeft) );
+            final int childrenStartIndex = childrenStart.indexOfValue( child );
+
+            notifySubscriber(direction,
+                    Math.max(childrenStart.keyAt( childrenStartIndex ), draggedLeft)
+                         - Math.min(childrenStart.keyAt( childrenStartIndex), draggedLeft) );
+
             return draggedLeft;
         }
 
         @Override
-        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+        public void onViewReleased(@NonNull final View releasedChild, float xvel, float yvel) {
+
+            final int childrenStartIndex = childrenStart.indexOfValue( releasedChild );
 
             if (bounds == BOUNDS.LEFT)
-                dragger.smoothSlideViewTo(releasedChild, childrenStart.get(releasedChild), releasedChild.getTop());
-
-            else if(bounds == BOUNDS.RIGHT)
-                dragger.smoothSlideViewTo(releasedChild, childrenStart.get(releasedChild), releasedChild.getTop());
+                dragger.smoothSlideViewTo(releasedChild, childrenStart.keyAt( childrenStartIndex ), releasedChild.getTop());
 
             invalidate();
 
@@ -154,7 +157,6 @@ public class StickyViewPager extends ViewPager {
      * @param drag
      */
     private void notifySubscriber(@IntRange(from = LEFT, to = RIGHT) final int direction, final int drag){
-        Log.i("SUBSCRIBER_DRAG", "DRAG: " + drag * direction);
         if(OnStickyDrag != null)
             OnStickyDrag.onDrag(drag * direction);
     }
@@ -181,7 +183,6 @@ public class StickyViewPager extends ViewPager {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-
         if(event.getActionMasked() == MotionEvent.ACTION_DOWN)
             this.touchPointer = event.getPointerId(0);
 
@@ -196,16 +197,13 @@ public class StickyViewPager extends ViewPager {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        Log.i(TAG, "onLayout()");
         captureChildrensLeft();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Log.i(TAG, "onSizeChanged()");
         captureDragLimit();
-
     }
 
     private void captureDragLimit(){
@@ -217,12 +215,8 @@ public class StickyViewPager extends ViewPager {
      * Since the Left value is the subject, we use the view itself as a Key
      */
     private void captureChildrensLeft(){
-        Log.i(TAG, "captureChildrensLeft()");
-        for(int a = 0; a < getChildCount(); a++) {
-            Log.i(TAG, "fetching child at index: " + a);
-            Log.i(TAG, "Their left is: " + getChildAt( a ).getX() );
-            this.childrenStart.put(getChildAt(a), (int) getChildAt(a).getLeft());
-        }
+        for(int a = 0; a < getChildCount(); a++)
+            this.childrenStart.put(getChildAt(a).getLeft(), getChildAt(a));
     }
 
 
