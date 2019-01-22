@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ViewDragHelper;
@@ -21,6 +22,8 @@ import java.util.Map;
  */
 
 public class StickyViewPager extends ViewPager {
+
+    public static final String TAG = StickyViewPager.class.getSimpleName();
 
     private static final int RIGHT = 1;
     private static final int LEFT = -1;
@@ -52,7 +55,7 @@ public class StickyViewPager extends ViewPager {
     private final ViewDragHelper.Callback draggerCallbacks = new ViewDragHelper.Callback() {
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            resolveBounds();
+            resolveDragDirection();
 
 
             //If pointerId is from a secondary pointer, then discard
@@ -193,13 +196,14 @@ public class StickyViewPager extends ViewPager {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        Log.i(TAG, "onLayout()");
         captureChildrensLeft();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
+        Log.i(TAG, "onSizeChanged()");
         captureDragLimit();
 
     }
@@ -213,10 +217,12 @@ public class StickyViewPager extends ViewPager {
      * Since the Left value is the subject, we use the view itself as a Key
      */
     private void captureChildrensLeft(){
-
-        for(int a = 0; a < getChildCount(); a++)
-            this.childrenStart.put(getChildAt(a), (int)getChildAt(a).getX());
-
+        Log.i(TAG, "captureChildrensLeft()");
+        for(int a = 0; a < getChildCount(); a++) {
+            Log.i(TAG, "fetching child at index: " + a);
+            Log.i(TAG, "Their left is: " + getChildAt( a ).getX() );
+            this.childrenStart.put(getChildAt(a), (int) getChildAt(a).getLeft());
+        }
     }
 
 
@@ -232,27 +238,30 @@ public class StickyViewPager extends ViewPager {
      *Determines the direction a Drag can be in
      * E.G. If we are at the end item, then a sticky drag can only be to the right of the view
      */
-    private void resolveBounds(){
+    private void resolveDragDirection(){
 
         final int pos = getCurrentItem();
+
+        final PagerAdapter adapter = getAdapter();
 
         final boolean ltr = getLayoutDirection() == LAYOUT_DIRECTION_LTR;
 
         if(pos == 0) {
-            if (ltr){
+            if (ltr)
                 bounds = BOUNDS.LEFT;
-            }else if(!ltr)
+            else
                 bounds = BOUNDS.RIGHT;
         }
 
-        else if(pos == getAdapter().getCount() - 1) {
-            if (ltr){
-                bounds = BOUNDS.RIGHT;
-            }else if(!ltr)
-                bounds = BOUNDS.LEFT;
-        }
+        else if( adapter != null )
+            if (pos == adapter.getCount() - 1) {
+                if (ltr)
+                    bounds = BOUNDS.RIGHT;
+                else
+                    bounds = BOUNDS.LEFT;
+            }
 
-        if(getAdapter().getCount() == 0)
+        if(adapter != null && adapter.getCount() == 0)
             bounds = BOUNDS.XOR; //Can drag either Left, or right;
     }
 
