@@ -1,5 +1,6 @@
 package com.whompum.PennyFlip.ActivityHistory;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,6 +49,7 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
     @BindView(R.id.id_local_today_date_to_display) public TextView toRangeDateDisplay;
     @BindView(R.id.id_local_from_date_display) public TextView fromRangeDateDisplay;
 
+    @SuppressWarnings("All")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +59,11 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
 
         consumer = new HistoryController(this, this);
 
+        //Returns a new or existing fragment with the proper factories
         final Fragment fragment = initializeFragment();
 
-        commitFragment( getSupportFragmentManager().beginTransaction(), fragment );
+        if( savedInstanceState == null )
+            commitFragment( getSupportFragmentManager().beginTransaction(), fragment );
 
         /*
             Fetch the last used TimeRange object (Cached during a config-change)
@@ -68,25 +72,19 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
          */
 
         if( savedInstanceState != null && savedInstanceState.getParcelable( TIMERANGE_KEY ) != null )
-            query( (TimeRange) savedInstanceState.getParcelable( TIMERANGE_KEY ) );
+            query( savedInstanceState.getParcelable( TIMERANGE_KEY ) );
         else
             query( new TimeRange( System.currentTimeMillis(), Timestamp.fromPastProjection(6).getMillis() ) );
     }
 
     private void commitFragment(@NonNull final FragmentTransaction transaction, @NonNull final Fragment fragment){
-
-        if( fragmentExists() )
-            transaction.replace( R.id.id_global_container, fragment );
-
-        else transaction.add( R.id.id_global_container, fragment, "TAG" );
-
+        transaction.add( R.id.id_global_container, fragment, "TAG" );
         transaction.commit();
     }
 
     public Fragment initializeFragment(){
 
-        final TransactionFragment fragment =
-                (TransactionFragment) ( ( fragmentExists() ) ? getExistingFragment() : getNewFragment() );
+        final TransactionFragment fragment = ((fragmentExists()) ? getExistingFragment() : getNewFragment());
 
         fragment.setItemDotBackgroundResolver(new BackgroundResolver() {
             @Override
@@ -213,12 +211,12 @@ public class ActivityHistory extends AppCompatActivity implements DatePickerDial
         return getSupportFragmentManager().findFragmentByTag( "TAG" ) != null;
     }
 
-    public ListFragment<Transaction> getNewFragment(){
-        return TransactionFragment.newInstance(  );
+    public TransactionFragment getNewFragment(){
+        return (TransactionFragment) TransactionFragment.newInstance(  );
     }
 
-    public ListFragment<Transaction> getExistingFragment(){
-        return (ListFragment) getSupportFragmentManager().findFragmentByTag( "TAG" );
+    public TransactionFragment getExistingFragment(){
+        return (TransactionFragment) getSupportFragmentManager().findFragmentByTag( "TAG" );
     }
 
 
