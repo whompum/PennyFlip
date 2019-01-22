@@ -1,6 +1,7 @@
 package com.whompum.PennyFlip.Widgets;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,13 +10,12 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 
 /**
@@ -29,12 +29,18 @@ public class StickyViewPager extends ViewPager {
     private static final int RIGHT = 1;
     private static final int LEFT = -1;
 
-    private enum BOUNDS {LEFT, RIGHT, XOR}
+    public static final int STICKY_BOUNDS_LEFT = 0;
+    public static final int STICKY_BOUNDS_RIGHT = 1;
+    public static final int STICKY_BOUNDS_XOR = 2;
+
+    @IntDef({STICKY_BOUNDS_LEFT, STICKY_BOUNDS_RIGHT, STICKY_BOUNDS_XOR})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface StickyBounds { }
+
+    private int stickyBounds = 0;
 
     private ViewDragHelper dragger;
     private int dragLimit;
-
-    private BOUNDS bounds = null;
 
     //Will use to sort out multi-touches since this is a single touch environment
     int touchPointer = -1;
@@ -99,14 +105,14 @@ public class StickyViewPager extends ViewPager {
 
             int draggedLeft = left;
 
-            if(bounds == BOUNDS.LEFT) {
+            if(stickyBounds == STICKY_BOUNDS_LEFT) {
                 leftBounds = getPaddingLeft();
                 rightBounds = Math.min((getWidth() - getPaddingRight()), getViewHorizontalDragRange(child));
                 direction = RIGHT;
             }
 
 
-            if(bounds == BOUNDS.RIGHT){
+            if(stickyBounds == STICKY_BOUNDS_RIGHT){
                 leftBounds = Math.max(getPaddingStart(), getWidth() - getViewHorizontalDragRange(child) );
                 rightBounds = getWidth() - getPaddingEnd();
                 direction = LEFT;
@@ -132,7 +138,7 @@ public class StickyViewPager extends ViewPager {
 
             final int childrenStartIndex = childrenStart.indexOfValue( releasedChild );
 
-            if (bounds == BOUNDS.LEFT)
+            if (stickyBounds == STICKY_BOUNDS_LEFT)
                 dragger.smoothSlideViewTo(releasedChild, childrenStart.keyAt( childrenStartIndex ), releasedChild.getTop());
 
             invalidate();
@@ -242,21 +248,21 @@ public class StickyViewPager extends ViewPager {
 
         if(pos == 0) {
             if (ltr)
-                bounds = BOUNDS.LEFT;
+                stickyBounds = STICKY_BOUNDS_LEFT;
             else
-                bounds = BOUNDS.RIGHT;
+                stickyBounds = STICKY_BOUNDS_RIGHT;
         }
 
         else if( adapter != null )
             if (pos == adapter.getCount() - 1) {
                 if (ltr)
-                    bounds = BOUNDS.RIGHT;
+                    stickyBounds = STICKY_BOUNDS_RIGHT;
                 else
-                    bounds = BOUNDS.LEFT;
+                    stickyBounds = STICKY_BOUNDS_LEFT;
             }
 
         if(adapter != null && adapter.getCount() == 0)
-            bounds = BOUNDS.XOR; //Can drag either Left, or right;
+            stickyBounds = STICKY_BOUNDS_XOR; //Can drag either Left, or right;
     }
 
 
