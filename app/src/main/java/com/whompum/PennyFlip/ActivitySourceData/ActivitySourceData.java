@@ -72,8 +72,14 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStart() {
+        super.onStart();
+        notificationManager.register();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         notificationManager.unRegister();
     }
 
@@ -166,6 +172,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
      return TransactionFragment.newInstance( data, noDataLayout );
     }
 
+    @Deprecated
     private boolean fragmentExists(){
         return getFragmentByTag() != null;
     }
@@ -197,7 +204,6 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
             styleRes = R.style.StylePennyDialogAdd;
         else //Is probably a spending transaction
             styleRes = R.style.StylePennyDialogMinus;
-        Log.w("CALLIBRATE", "Callibraion issue?");
 
         final Bundle args = new Bundle();
         args.putInt( PennyDialog.STYLE_KEY, styleRes );
