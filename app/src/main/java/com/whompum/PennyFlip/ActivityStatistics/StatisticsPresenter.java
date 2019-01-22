@@ -25,6 +25,7 @@ import com.whompum.PennyFlip.Time.UserStartDate;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Instant;
 import org.joda.time.MutableDateTime;
 
 import java.util.ArrayList;
@@ -106,14 +107,10 @@ class StatisticsPresenter implements StatisticsMvpContract.Presenter{
     }
 
     private int getActiveUserDays(){
-        final int days = Days.daysBetween( new DateTime( userStartDate ), DateTime.now() ).getDays();
-
-        Log.i("DATE_FIX", "UserStartDate: " + userStartDate + "\n"
-        + "Now: " + System.currentTimeMillis());
-
-        Log.i("DATE_FIX", "Days between: " + days);
-
-        return days;
+        return Days.daysBetween(
+                new DateTime( userStartDate ).withTimeAtStartOfDay().toLocalDate(),
+                new DateTime( System.currentTimeMillis() ).withTimeAtStartOfDay().toLocalDate()
+        ).getDays();
     }
 
     private void loadTopSources(final ReportData data){
