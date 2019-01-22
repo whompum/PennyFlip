@@ -61,12 +61,7 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
 
         initializeUi( data );
 
-        if( fragmentExists() )
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace( R.id.id_global_container, getFragmentByTag() )
-                    .commit();
-        else
+        if( savedInstanceState == null )
             getSupportFragmentManager()
                     .beginTransaction()
                     .add( R.id.id_global_container, getFragment( resolveNoDataLayout() ), "TAG" )
@@ -176,8 +171,8 @@ public class ActivitySourceData extends AppCompatActivity implements SourceDataC
     }
 
     @Nullable
-    private ListFragment<Transaction> getFragmentByTag(){
-        return (ListFragment) getSupportFragmentManager().findFragmentByTag( "TAG" );
+    private TransactionFragment getFragmentByTag(){
+        return (TransactionFragment) getSupportFragmentManager().findFragmentByTag( "TAG" );
     }
 
     @OnClick(R.id.id_global_nav)
