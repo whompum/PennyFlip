@@ -1,36 +1,36 @@
 package com.whompum.PennyFlip.ActivitySourceList.Adapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.Size;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-
-import com.whompum.PennyFlip.ListUtils.ListFragment;
-
-import java.util.Arrays;
-import java.util.List;
-
+import com.whompum.PennyFlip.ActivitySourceList.Fragments.FragmentSourceList;
+import com.whompum.PennyFlip.R;
 
 public class SourceListFragmentAdapter extends FragmentPagerAdapter {
 
-    private List<ListFragment> fragments;
+    private FragmentSourceList incomeSources;
+    private FragmentSourceList expenseSources;
 
-    public SourceListFragmentAdapter(final FragmentManager fragmentManager,
-                                     @NonNull final ListFragment... fragments){
+    public SourceListFragmentAdapter(@NonNull final FragmentManager fragmentManager){
         super(fragmentManager);
-
-        this.fragments = Arrays.asList( fragments );
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
 
-        ListFragment fragment = (ListFragment)
+        FragmentSourceList fragment = (FragmentSourceList)
                 super.instantiateItem(container, position);
 
-        fragments.set( position, fragment );
+        if( position == 0 )
+            incomeSources = fragment;
+        else if( position == 1 )
+            expenseSources = fragment;
 
         return fragment;
     }
@@ -38,22 +38,37 @@ public class SourceListFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        if( fragments == null || position < 0 || position > fragments.size()-1 ) return null;
+        if( position == 0 )
+            return FragmentSourceList.newInstance( R.layout.source_list_adding_null_data );
+        else if( position == 1 )
+            return FragmentSourceList.newInstance( R.layout.source_list_spending_null_data );
 
-        return fragments.get( position );
+        return null;
+    }
+
+    @Nullable
+    public FragmentSourceList getFragmentAtPosition(@Size(min = 0) final int position){
+
+        if( position == 0 )
+            return incomeSources;
+        else if( position == 1 )
+            return expenseSources;
+
+        return null;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         super.destroyItem(container, position, object);
-        fragments.remove( position );
+        if( position == 0 )
+            incomeSources = null;
+        else if( position == 1 )
+            expenseSources = null;
     }
 
+    @Size(min = 2)
     @Override
     public int getCount() {
-        if( fragments == null )
-            return 0;
-
-        return fragments.size();
+        return 2;
     }
 }
